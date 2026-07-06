@@ -425,7 +425,6 @@
     transform: scale(1.015);
     transition: transform .9s ease, filter .9s ease;
   }
-  .page-intro.is-visible .page-visual img,
   .page-visual:hover img {
     transform: scale(1.06);
     filter: saturate(1.06);
@@ -1443,30 +1442,24 @@
   .foot-col a:hover { color: var(--green-deep); }
   .footer-bottom { margin-top: 36px; padding-top: 18px; border-top: 1px solid #f0e8f8; display: flex; justify-content: space-between; gap: 20px; color: #8a8199; font-size: 12px; }
 
-  .reveal { opacity: 1; transform: none; transition: none; }
-  .reveal.is-visible { opacity: 1; transform: translateY(0); }
-  .reveal .card,
-  .reveal .compact-row,
-  .reveal .feature-mini,
-  .reveal .story-photo,
-  .reveal .story-text,
-  .reveal .route-map-board,
-  .reveal .buscatch-device,
-  .reveal .buscatch-flow li {
-    opacity: 1;
-    transform: none;
-    transition: box-shadow .2s ease, border-color .2s ease;
+  .reveal { opacity: 1; transform: none; }
+  .card,
+  .compact-row,
+  .feature-mini,
+  .story-photo,
+  .story-text,
+  .route-map-board,
+  .buscatch-device,
+  .buscatch-flow li {
+    transition: transform .35s cubic-bezier(.2, .7, .3, 1), box-shadow .3s ease, border-color .25s ease;
   }
-  .reveal.is-visible .card,
-  .reveal.is-visible .compact-row,
-  .reveal.is-visible .feature-mini,
-  .reveal.is-visible .story-photo,
-  .reveal.is-visible .story-text,
-  .reveal.is-visible .route-map-board,
-  .reveal.is-visible .buscatch-device,
-  .reveal.is-visible .buscatch-flow li {
-    opacity: 1;
-    transform: translateY(0);
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
   @keyframes heroZoom { from { transform: scale(1.05); } to { transform: scale(1); } }
   @keyframes floatMascot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
@@ -1971,21 +1964,6 @@
   .subpage-next .card {
     min-height: 150px;
   }
-  .subpage-shell .reveal,
-  .subpage-next.reveal,
-  .subpage-shell .reveal .card,
-  .subpage-shell .reveal .compact-row,
-  .subpage-shell .reveal .feature-mini,
-  .subpage-shell .reveal .story-photo,
-  .subpage-shell .reveal .story-text,
-  .subpage-shell .reveal .route-map-board,
-  .subpage-shell .reveal .buscatch-device,
-  .subpage-shell .reveal .buscatch-flow li,
-  .subpage-next.reveal .card {
-    opacity: 1;
-    transform: none;
-  }
-
   @media (max-width: 900px) {
     .subpage-layout {
       grid-template-columns: 1fr;
@@ -4154,8 +4132,6 @@
     requestAnimationFrame(() => {
       const target = document.getElementById(id);
       if (!target) return;
-      const revealParent = target.closest(".reveal");
-      if (revealParent) revealParent.classList.add("is-visible");
       setTimeout(() => target.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
     });
   }
@@ -4212,6 +4188,25 @@
 	    const result = document.querySelector("#detailResult");
 	    const applyLink = result?.querySelector("a");
 	    const yen = new Intl.NumberFormat("ja-JP");
+	    const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+	    let countUpFrame = null;
+	    function animateAmount(total) {
+	      if (countUpFrame) cancelAnimationFrame(countUpFrame);
+	      const from = Number(String(out.textContent).replace(/[^0-9]/g, "")) || 0;
+	      if (reduceMotionQuery.matches || !from || from === total) {
+	        out.textContent = `${yen.format(total)}円`;
+	        return;
+	      }
+	      const duration = 380;
+	      const start = performance.now();
+	      const step = (now) => {
+	        const progress = Math.min((now - start) / duration, 1);
+	        const eased = 1 - Math.pow(1 - progress, 3);
+	        out.textContent = `${yen.format(Math.round(from + (total - from) * eased))}円`;
+	        if (progress < 1) countUpFrame = requestAnimationFrame(step);
+	      };
+	      countUpFrame = requestAnimationFrame(step);
+	    }
 	    course.innerHTML = Object.entries(simOptions).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join("");
 	    function syncLicenses() {
 	      const selected = simOptions[course.value];
@@ -4228,7 +4223,7 @@
 	        note.innerHTML = `MT免許は、AT卒業後の「MT移行（AT解除）」（技能4時限・一律36,300円）で取得できます。詳しくは<a class="phone-link" href="tel:0927102188">092-710-2188</a>へお問い合わせください。`;
 	      } else {
 	        const value = lic[user.value][plan.value];
-	        out.textContent = `${yen.format(value)}円`;
+	        animateAmount(value);
 	        note.textContent = `${selected.label} / ${lic.label} / ${userLabel} / ${planLabel}`;
 	      }
 	      const params = new URLSearchParams({
@@ -4466,29 +4461,7 @@
   }
 
   function setupReveal() {
-    const items = document.querySelectorAll(".reveal");
-    items.forEach((item) => {
-      item.querySelectorAll(".card, .compact-row, .feature-mini, .story-photo, .story-text").forEach((child, index) => {
-        child.style.transitionDelay = `${Math.min(index * 70, 420)}ms`;
-      });
-    });
-    if (!("IntersectionObserver" in window)) {
-      items.forEach((item) => item.classList.add("is-visible"));
-      return;
-    }
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.14, rootMargin: "0px 0px -8% 0px" });
-    items.forEach((item) => observer.observe(item));
-    requestAnimationFrame(() => items.forEach((item) => {
-      const rect = item.getBoundingClientRect();
-      if (rect.top < window.innerHeight * .95) item.classList.add("is-visible");
-    }));
+    /* スクロール出現アニメは廃止（無効化残骸のtransitionDelay焼き込みがホバー演出を壊していたため掃除済み） */
   }
 
 	  function setupMobileMenu() {
