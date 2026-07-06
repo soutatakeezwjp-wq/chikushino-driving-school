@@ -11,7 +11,44 @@
 <meta property="og:url" content="https://chikushino-driving-school.pages.dev/" />
 <meta property="og:image" content="https://chikushino-driving-school.pages.dev/images/ogp/chikushino-ogp.webp" />
 <meta name="twitter:card" content="summary_large_image" />
+<link rel="canonical" href="https://chikushi-ds.com/">
 <link rel="icon" href="images/brand-assets/cds-symbol-logo.png" type="image/png">
+<script>
+  /* ★GA4測定ID：公開前に analytics.google.com で取得した「G-」で始まる実IDに、
+     この1行だけ差し替えてください（index.html と detail.html の2ファイルにあります） */
+  window.GA4_MEASUREMENT_ID = "G-XXXXXXXXXX";
+</script>
+<script>
+  (function () {
+    var id = window.GA4_MEASUREMENT_ID;
+    if (!id || id.indexOf("XXXX") !== -1) return; /* 未設定の間は何も送信しない */
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + id;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag("js", new Date());
+    gtag("config", id);
+  })();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "DrivingSchool",
+  "name": "筑紫野自動車学校",
+  "url": "https://chikushi-ds.com/",
+  "telephone": "+81-92-710-2188",
+  "address": {
+    "@type": "PostalAddress",
+    "postalCode": "818-0025",
+    "addressRegion": "福岡県",
+    "addressLocality": "筑紫野市",
+    "streetAddress": "筑紫120番地1"
+  },
+  "image": "https://chikushi-ds.com/images/ogp/chikushino-ogp.webp"
+}
+</script>
 <link rel="preload" as="image" href="images/generated-hero/chikushino-hero-grounded-2026-07-03.webp" media="(min-width: 769px)" fetchpriority="high">
 <link rel="preload" as="image" href="images/generated-hero/chikushino-hero-grounded-mobile-2026-07-03.webp" media="(max-width: 768px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">

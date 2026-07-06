@@ -1,6 +1,22 @@
+// ⚠️ お知らせフィードの取得先。
+// 現在は現行WPサイト（chikushi-ds.com）のRSSを参照しているため、
+// 8月のDNS切替（chikushi-ds.com→新サイト）を行うとこのURLは自壊する。
+// 【切替前に必須】次のどちらかを実施すること：
+//   案A: 旧WPをサブドメイン（例 https://old.chikushi-ds.com/feed/）に残し、
+//        Cloudflare Pagesの環境変数 WORDPRESS_FEED_URL にそのURLを設定する
+//   案B: microCMS等へ載せ替え、このWorkerの取得処理を差し替える
+// 環境変数 WORDPRESS_FEED_URL が設定されていればそちらが優先される。
 const WORDPRESS_FEED_URL = "https://chikushi-ds.com/feed/";
 const DEFAULT_LIMIT = 6;
 const MAX_LIMIT = 12;
+const FEED_TIMEOUT_MS = 8000;
+const GAS_TIMEOUT_MS = 10000;
+
+function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timer));
+}
 
 function decodeEntities(value = "") {
   return value
@@ -139,6 +155,12 @@ async function handleApplication(request, env) {
     return jsonResponse({ ok: false, error: "Invalid JSON body" }, 400);
   }
 
+  // honeypot（人間には見えない欄）が埋まっていたらボットとみなしサイレント破棄。
+  // ボットに気づかれないよう、成功と同じレスポンスを返す（GASへは転送しない）。
+  if (String(payload.honeypot || "").trim()) {
+    return jsonResponse({ ok: true, configured, applicationId: `CDS-SPAM-${Date.now()}` });
+  }
+
   const enrichedPayload = normalizeApplicationPayload(payload, request);
   const validationError = validateApplicationPayload(enrichedPayload);
   if (validationError) {
@@ -155,11 +177,11 @@ async function handleApplication(request, env) {
   }
 
   try {
-    const response = await fetch(env.GAS_APPLICATION_WEBHOOK_URL, {
+    const response = await fetchWithTimeout(env.GAS_APPLICATION_WEBHOOK_URL, {
       method: "POST",
       headers: { "content-type": "application/json; charset=utf-8" },
       body: JSON.stringify(enrichedPayload)
-    });
+    }, GAS_TIMEOUT_MS);
     const text = await response.text();
     let gasPayload;
     try {
@@ -194,23 +216,24 @@ async function handleApplication(request, env) {
   }
 }
 
-async function handleWordPressPosts(request) {
+async function handleWordPressPosts(request, env) {
   const url = new URL(request.url);
   const requestedLimit = Number(url.searchParams.get("limit") || DEFAULT_LIMIT);
   const limit = Math.min(Math.max(requestedLimit || DEFAULT_LIMIT, 1), MAX_LIMIT);
+  const feedUrl = (env && env.WORDPRESS_FEED_URL) || WORDPRESS_FEED_URL;
 
   try {
-    const response = await fetch(WORDPRESS_FEED_URL, {
+    const response = await fetchWithTimeout(feedUrl, {
       headers: {
         "user-agent": "chikushino-driving-school-site/1.0"
       },
       cf: { cacheTtl: 300, cacheEverything: true }
-    });
+    }, FEED_TIMEOUT_MS);
 
     if (!response.ok) {
       return jsonResponse({
         ok: false,
-        source: WORDPRESS_FEED_URL,
+        source: feedUrl,
         error: `WordPress feed returned ${response.status}`
       }, 502);
     }
@@ -219,7 +242,7 @@ async function handleWordPressPosts(request) {
     const posts = parseFeed(xml, limit);
     return jsonResponse({
       ok: true,
-      source: WORDPRESS_FEED_URL,
+      source: feedUrl,
       fetchedAt: new Date().toISOString(),
       count: posts.length,
       posts
@@ -227,7 +250,7 @@ async function handleWordPressPosts(request) {
   } catch (error) {
     return jsonResponse({
       ok: false,
-      source: WORDPRESS_FEED_URL,
+      source: feedUrl,
       error: error instanceof Error ? error.message : "Unknown error"
     }, 500);
   }
@@ -237,11 +260,19 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/api/wordpress-posts") {
-      return handleWordPressPosts(request);
+      return handleWordPressPosts(request, env);
     }
     if (url.pathname === "/api/application") {
       return handleApplication(request, env);
     }
-    return env.ASSETS.fetch(request);
+    const response = await env.ASSETS.fetch(request);
+    // pages.dev（プレビュー用ドメイン）は検索エンジンに載せない。
+    // 本番ドメイン（chikushi-ds.com）に切り替えた後の重複インデックスを防ぐ。
+    if (url.hostname.endsWith(".pages.dev")) {
+      const noindexed = new Response(response.body, response);
+      noindexed.headers.set("X-Robots-Tag", "noindex");
+      return noindexed;
+    }
+    return response;
   }
 };

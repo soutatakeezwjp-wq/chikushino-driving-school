@@ -12,6 +12,26 @@
 <meta property="og:image" content="https://chikushino-driving-school.pages.dev/images/ogp/chikushino-ogp.webp" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" href="images/brand-assets/cds-symbol-logo.png" type="image/png">
+<script>
+  /* ★GA4測定ID：公開前に analytics.google.com で取得した「G-」で始まる実IDに、
+     この1行だけ差し替えてください（index.html と detail.html の2ファイルにあります） */
+  window.GA4_MEASUREMENT_ID = "G-XXXXXXXXXX";
+</script>
+<script>
+  (function () {
+    var id = window.GA4_MEASUREMENT_ID;
+    if (!id || id.indexOf("XXXX") !== -1) return; /* 未設定の間は何も送信しない */
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + id;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag("js", new Date());
+    /* ページ判定（?page=）後に renderPage() から手動で page_view を送るため自動送信は止める */
+    gtag("config", id, { send_page_view: false });
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -3956,6 +3976,67 @@
     `).join("");
   }
 
+  function updatePageMeta(id, page, isNotFound) {
+    const canonicalUrl = isNotFound ? "https://chikushi-ds.com/detail.html" : `https://chikushi-ds.com/detail.html?page=${id}`;
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = canonicalUrl;
+    const description = (page.lead || "").replace(/\s+/g, " ").trim().slice(0, 120) || "筑紫野自動車学校の詳細案内ページです。";
+    const setContent = (selector, value) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute("content", value);
+    };
+    setContent('meta[name="description"]', description);
+    setContent('meta[property="og:title"]', document.title);
+    setContent('meta[property="og:description"]', description);
+    setContent('meta[property="og:url"]', canonicalUrl);
+    let robots = document.querySelector('meta[name="robots"]');
+    if (isNotFound) {
+      if (!robots) {
+        robots = document.createElement("meta");
+        robots.name = "robots";
+        document.head.appendChild(robots);
+      }
+      robots.content = "noindex";
+    } else if (robots) {
+      robots.remove();
+    }
+  }
+
+  function injectFaqJsonLd() {
+    if (document.querySelector("script[data-faq-jsonld]")) return;
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.setAttribute("data-faq-jsonld", "true");
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(([q, a]) => ({
+        "@type": "Question",
+        "name": q,
+        "acceptedAnswer": { "@type": "Answer", "text": a }
+      }))
+    });
+    document.head.appendChild(script);
+  }
+
+  const notFoundPage = {
+    title: "ページが見つかりません",
+    lead: "お探しのページは見つかりませんでした。URLをご確認いただくか、下のリンクからお進みください。",
+    body: `
+      <section class="reveal"><div class="wrap">
+        <div class="compact-list">
+          <a class="compact-row" href="index.html"><small>TOP</small><strong>トップページへ戻る</strong><span>›</span></a>
+          <a class="compact-row" href="detail.html?page=admission"><small>GUIDE</small><strong>入校案内を見る</strong><span>›</span></a>
+          <a class="compact-row" href="detail.html?page=price"><small>PRICE</small><strong>料金・シミュレーター</strong><span>›</span></a>
+        </div>
+      </div></section>`
+  };
+
   function renderPage() {
     const params = new URLSearchParams(location.search);
     const aliases = {
@@ -3976,15 +4057,25 @@
     };
     const requested = params.get("page");
     const resolved = aliases[requested] || requested;
-    const id = pages[resolved] ? resolved : "admission";
-    const page = pages[id];
+    const isNotFound = Boolean(requested) && !pages[resolved];
+    const id = !isNotFound && pages[resolved] ? resolved : "admission";
+    const page = isNotFound ? notFoundPage : pages[id];
     document.title = `${page.title}｜筑紫野自動車学校`;
+    updatePageMeta(id, page, isNotFound);
+    if (!isNotFound && id === "faq") injectFaqJsonLd();
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "page_view", {
+        page_title: document.title,
+        page_location: location.href,
+        page_path: `${location.pathname}${location.search}`
+      });
+    }
     const visual = page.topVisual || {
       desktop: `images/detail-pages/visuals/${id}-desktop.webp`,
       mobile: `images/detail-pages/visuals/${id}-mobile.webp`,
       alt: `${page.title}の情報を整理した図`
     };
-    const topVisual = `<section class="subpage-infographic"><div class="wrap">
+    const topVisual = isNotFound ? "" : `<section class="subpage-infographic"><div class="wrap">
       <picture>
         <source media="(max-width: 767px)" srcset="${visual.mobile || visual.src}">
         <img src="${visual.desktop || visual.src}" alt="${visual.alt}" loading="eager" decoding="async">
