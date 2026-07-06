@@ -1934,6 +1934,17 @@
     background: #fff;
     box-shadow: 0 18px 38px rgba(45, 27, 87, .10);
   }
+  .price-simulator-cta .page-summary {
+    align-items: stretch;
+  }
+  .price-simulator-cta .summary-card {
+    border-color: rgba(92, 49, 155, .18);
+    background: linear-gradient(135deg, #fbf8ff 0%, #fff 58%, #f6fff2 100%);
+  }
+  .price-simulator-cta .compact-row {
+    border-color: rgba(92, 49, 155, .2);
+    background: #fff;
+  }
   .subpage-main .plan-panel {
     margin-top: 18px;
     padding: 26px;
@@ -3795,13 +3806,32 @@
     pamphlet: ["pamphlet-summary.webp", "パンフレット設置情報を整理した図解"],
     recruit: ["recruit-summary.webp", "採用情報を整理した図解"]
   };
-  const imageFirstPages = new Set(Object.keys(pageInfoVisuals));
+  const priceSimulatorLinks = {
+    standard: ["ordinary_at", "普通車の料金は、免許の有無や通い方で変わります。表ではなく、条件を選んで確認できます。"],
+    camp_price: ["ordinary_at", "短期プランを検討する前に、普通車ATの基本条件をシミュレーターで確認できます。"],
+    semi_medium: ["semi_medium", "準中型は、現在お持ちの免許によって料金が大きく変わります。条件を選んで確認できます。"],
+    bike: ["motorcycle_mt", "二輪は、車種と現在お持ちの免許によって料金が変わります。条件を選んで確認できます。"],
+    license: ["ordinary_at", "取得したい免許を選ぶ前に、料金の目安をシミュレーターで確認できます。"]
+  };
 
   function infoVisualHtml(id) {
     const visual = pageInfoVisuals[id];
     if (!visual) return "";
     const [file, alt] = visual;
     return `<section class="reveal"><div class="wrap"><figure class="detail-info-visual"><img loading="lazy" decoding="async" src="images/detail-pages/infographics/${file}" alt="${alt}"></figure></div></section>`;
+  }
+
+  function priceSimulatorCtaHtml(id) {
+    const item = priceSimulatorLinks[id];
+    if (!item) return "";
+    const [course, lead] = item;
+    return `<section class="reveal price-simulator-cta"><div class="wrap page-summary">
+      <article class="summary-card"><span class="eyebrow">PRICE SIMULATOR</span><strong>料金はシミュレーターで確認。</strong><p>${lead}</p></article>
+      <div class="compact-list">
+        <a class="compact-row" href="detail.html?page=price&simCourse=${course}#price-simulator"><small>SIM</small><strong>料金シミュレーターを開く</strong><span>›</span></a>
+        <a class="compact-row" href="detail.html?page=application"><small>FORM</small><strong>条件を相談する</strong><span>›</span></a>
+      </div>
+    </div></section>`;
   }
 
   function relatedCards(current) {
@@ -3980,6 +4010,7 @@
 	          <article class="subpage-main" data-page="${id}">
             <p class="subpage-lead">${page.lead}</p>
             ${infoVisualHtml(id)}
+            ${priceSimulatorCtaHtml(id)}
             ${page.body}
           </article>
         </div>
@@ -3989,11 +4020,9 @@
 	    const siteDirectoryGrid = document.querySelector("#siteDirectoryGrid");
     if (siteDirectoryGrid) siteDirectoryGrid.innerHTML = directoryMenu();
 	    setupReveal();
-	    if (imageFirstPages.has(id)) {
-	      document.querySelectorAll(".subpage-main section").forEach((section) => {
-	        if (section.querySelector(".data-table")) section.classList.add("mobile-table-section");
-	      });
-	    }
+	    document.querySelectorAll(".subpage-main section").forEach((section) => {
+	      if (section.querySelector(".data-table")) section.classList.add("mobile-table-section");
+	    });
 	    linkPhoneNumbers(document.body);
 	    setupPriceSimulator();
 	    setupApplicationForm();
@@ -4112,6 +4141,9 @@
 	      countUpFrame = requestAnimationFrame(step);
 	    }
 	    course.innerHTML = Object.entries(simOptions).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join("");
+	    const simulatorParams = new URLSearchParams(location.search);
+	    const initialCourse = simulatorParams.get("simCourse");
+	    if (initialCourse && simOptions[initialCourse]) course.value = initialCourse;
 	    function syncLicenses() {
 	      const selected = simOptions[course.value];
 	      license.innerHTML = Object.entries(selected.licenses).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join("");
