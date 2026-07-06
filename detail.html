@@ -12,9 +12,29 @@
 <meta property="og:image" content="https://chikushino-driving-school.pages.dev/images/ogp/chikushino-ogp.webp" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" href="images/brand-assets/cds-symbol-logo.png" type="image/png">
+<script>
+  /* ★GA4測定ID：公開前に analytics.google.com で取得した「G-」で始まる実IDに、
+     この1行だけ差し替えてください（index.html と detail.html の2ファイルにあります） */
+  window.GA4_MEASUREMENT_ID = "G-XXXXXXXXXX";
+</script>
+<script>
+  (function () {
+    var id = window.GA4_MEASUREMENT_ID;
+    if (!id || id.indexOf("XXXX") !== -1) return; /* 未設定の間は何も送信しない */
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + id;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag("js", new Date());
+    /* ページ判定（?page=）後に renderPage() から手動で page_view を送るため自動送信は止める */
+    gtag("config", id, { send_page_view: false });
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --purple: #5c319b;
@@ -41,7 +61,7 @@
     --shadow: 0 14px 34px rgba(45, 27, 87, .10);
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 140px; }
   body {
     margin: 0;
     background: #fff;
@@ -405,7 +425,6 @@
     transform: scale(1.015);
     transition: transform .9s ease, filter .9s ease;
   }
-  .page-intro.is-visible .page-visual img,
   .page-visual:hover img {
     transform: scale(1.06);
     filter: saturate(1.06);
@@ -1423,30 +1442,24 @@
   .foot-col a:hover { color: var(--green-deep); }
   .footer-bottom { margin-top: 36px; padding-top: 18px; border-top: 1px solid #f0e8f8; display: flex; justify-content: space-between; gap: 20px; color: #8a8199; font-size: 12px; }
 
-  .reveal { opacity: 1; transform: none; transition: none; }
-  .reveal.is-visible { opacity: 1; transform: translateY(0); }
-  .reveal .card,
-  .reveal .compact-row,
-  .reveal .feature-mini,
-  .reveal .story-photo,
-  .reveal .story-text,
-  .reveal .route-map-board,
-  .reveal .buscatch-device,
-  .reveal .buscatch-flow li {
-    opacity: 1;
-    transform: none;
-    transition: box-shadow .2s ease, border-color .2s ease;
+  .reveal { opacity: 1; transform: none; }
+  .card,
+  .compact-row,
+  .feature-mini,
+  .story-photo,
+  .story-text,
+  .route-map-board,
+  .buscatch-device,
+  .buscatch-flow li {
+    transition: transform .35s cubic-bezier(.2, .7, .3, 1), box-shadow .3s ease, border-color .25s ease;
   }
-  .reveal.is-visible .card,
-  .reveal.is-visible .compact-row,
-  .reveal.is-visible .feature-mini,
-  .reveal.is-visible .story-photo,
-  .reveal.is-visible .story-text,
-  .reveal.is-visible .route-map-board,
-  .reveal.is-visible .buscatch-device,
-  .reveal.is-visible .buscatch-flow li {
-    opacity: 1;
-    transform: translateY(0);
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
   @keyframes heroZoom { from { transform: scale(1.05); } to { transform: scale(1); } }
   @keyframes floatMascot { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
@@ -1951,21 +1964,6 @@
   .subpage-next .card {
     min-height: 150px;
   }
-  .subpage-shell .reveal,
-  .subpage-next.reveal,
-  .subpage-shell .reveal .card,
-  .subpage-shell .reveal .compact-row,
-  .subpage-shell .reveal .feature-mini,
-  .subpage-shell .reveal .story-photo,
-  .subpage-shell .reveal .story-text,
-  .subpage-shell .reveal .route-map-board,
-  .subpage-shell .reveal .buscatch-device,
-  .subpage-shell .reveal .buscatch-flow li,
-  .subpage-next.reveal .card {
-    opacity: 1;
-    transform: none;
-  }
-
   @media (max-width: 900px) {
     .subpage-layout {
       grid-template-columns: 1fr;
@@ -2020,8 +2018,8 @@
       <a class="rail-link" href="detail.html?page=students"><span>在校生メニュー<small>STUDENTS</small></span><span>›</span></a>
     </div>
     <div class="rail-sns" aria-label="SNSリンク">
-      <a href="https://page.line.me/115cacad" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 LINE公式"><img class="sns-icon" src="images/icons/line.svg" alt=""></a>
-      <a href="https://www.instagram.com/chikushino_ds/" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 Instagram"><img class="sns-icon" src="images/icons/instagram.svg" alt=""></a>
+      <a href="https://page.line.me/115cacad" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 LINE公式"><img loading="lazy" decoding="async" class="sns-icon" src="images/icons/line.svg" alt=""></a>
+      <a href="https://www.instagram.com/chikushino_ds/" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 Instagram"><img loading="lazy" decoding="async" class="sns-icon" src="images/icons/instagram.svg" alt=""></a>
     </div>
   </aside>
 
@@ -2097,7 +2095,7 @@
     <a href="detail.html?page=application">資料請求<small>REQUEST</small></a>
     <a href="detail.html?page=application">仮申込<small>ENTRY</small></a>
     <a href="tel:0927102188">電話<small>CALL</small></a>
-    <a href="https://page.line.me/115cacad" target="_blank" rel="noopener"><img class="sns-icon" src="images/icons/line.svg" alt="">LINE<small>CHAT</small></a>
+    <a href="https://page.line.me/115cacad" target="_blank" rel="noopener"><img loading="lazy" decoding="async" class="sns-icon" src="images/icons/line.svg" alt="">LINE<small>CHAT</small></a>
   </nav>
 
   <main id="page"></main>
@@ -2197,7 +2195,7 @@
     ["住民票が他県でも入校できますか？", "はい、入校できます。しかし卒業した後、運転免許試験場での学科試験などは、住民票のある都道府県にて受ける必要があります。"],
     ["土日しか通えないのですが、それでも免許は取れますか？", "はい、土日のみでも免許は取得できます。予約状況や時期によって卒業までの期間は変わるため、早めの相談がおすすめです。"],
     ["運動や操作などが苦手なのですが、それでも免許は取れますか？", "はい、ご安心ください。筑紫野自動車学校の指導員が丁寧に指導いたします。不安なところやわからないところは、遠慮せずいつでも気軽にご質問ください。"],
-    ["普通自動車教習の場合、卒業までにかかる期間はどれ位になりますか？", "来校される頻度や技能教習予約取得時の混み具合などで変わりますが、技能教習予約が混雑していなければオートマの場合は最短約3週間程、マニュアルの場合は最短約4週間程で卒業することが可能です。"],
+    ["普通自動車教習の場合、卒業までにかかる期間はどれ位になりますか？", "来校される頻度や技能教習予約取得時の混み具合などで変わりますが、技能教習予約が混雑していなければ最短約3週間程で卒業することが可能です。"],
     ["自動車学校が混雑しない時期はいつ頃でしょうか？", "混雑しづらい時期は9月、10月、11月頃になります。それ以外の時期は比較的混雑している傾向にあります。"],
     ["スクールバスは無料で利用できますか？", "はい、送迎は無料でご利用になれます。詳しくは送迎バス・アクセスのページをご覧ください。"],
     ["託児所に子供を預けることはできますか？", "はい。筑紫野自動車学校は託児所を完備しております。利用条件や空き状況は事前にお問い合わせください。"],
@@ -2205,10 +2203,10 @@
     ["技能教習の予約変更やキャンセルの方法を教えてください。", "筑紫野自動車学校内の予約機、またはパソコンやスマートフォンでも予約変更・キャンセルが可能です。教習開始時間10分程前までであれば、無料でキャンセルを承ります。それ以降は技能教習キャンセル料がかかりますのでご注意ください。"],
     ["教習にはどのような服装で行けばいいでしょうか？", "運転しやすい服装であれば、どのようなものでも構いません。履物は靴底の低いものが良いです。露出が極端に多い服装や、かかとの高い履物は避けてください。"],
     ["眼鏡やコンタクトを忘れた場合でも教習は受けられますか？", "いいえ。眼鏡やコンタクトが必要な方は、教習時には必ず着用していただく必要があります。"],
-    ["教習の途中で、オートマとマニュアルを変更することはできますか？", "マニュアルからオートマへの変更のみ可能です。オートマからマニュアルへの変更はできません。"],
+    ["マニュアル（MT）免許を取りたいのですが、どうすればいいですか？", "当校の普通車教習はAT取得となります。MT免許をご希望の方は、AT卒業後に「MT移行（AT解除）」（技能4時限・一律36,300円）を受けることで取得できます。すでにAT限定免許をお持ちの方は、限定解除（普通自動車審査）で取得できます。"],
     ["修了検定、卒業検定とは何ですか？", "修了検定とは自動車学校内で身につけた運転技術を確認する試験です。修了検定（技能検定）と仮免許学科試験に合格することで仮免許証が取得でき、これにより路上教習が受けられるようになります。卒業検定とは、路上での運転技術と場内での方向変換、縦列駐車などの技術を確認する卒業前の試験です。"],
     ["修了検定、卒業検定はいつ行われていますか？", "修了検定、卒業検定の日時は、教習カレンダーや各検定ページで確認できます。最新の予定は受付にもお問い合わせください。"],
-    ["入校の申し込みをしに行きたいのですが、予約は必要ですか？", "入校申し込みの来校予約は必須ではありません。受付日時を確認のうえお越しください。事前に仮入校フォームから相談しておくと手続きがスムーズです。"],
+    ["入校の申し込みをしに行きたいのですが、予約は必要ですか？", "入校申し込みの来校予約は必須ではありません。受付日時を確認のうえお越しください。事前に仮申込フォームから相談しておくと手続きがスムーズです。"],
     ["1日で受けられる教習時間に限度はありますか？", "技能教習の場合、1段階では2時限、2段階では3時限まで受けられます。ただし2段階で連続して受けられるのは2時限までです。"],
     ["妊娠していても入校はできますか？", "入校前にご相談ください。体調に配慮した対応を心がけますが、教習内容などを詳しく相談したうえでご自身で判断いただく必要があります。"],
     ["「公安委員会指定」とはどういうことですか？", "公安委員会の基準を満たしている自動車学校のことです。公安委員会指定の自動車学校を卒業すると、運転免許試験場での技能試験は免除されます。筑紫野自動車学校は公安委員会指定校です。"]
@@ -2247,20 +2245,18 @@
           <tr><th>現有免許</th><th>デイプラン学生<br><small>8:30〜18:30</small></th><th>デイプラン一般</th><th>フリープラン<br><small>8:30〜20:30</small></th></tr>
         </thead>
         <tbody>
-          <tr><td>なし</td><td><span class="amount">314,930円</span></td><td><span class="amount">+5,000円</span></td><td><span class="amount">+22,000円</span></td></tr>
-          <tr><td>原付</td><td><span class="amount">311,630円</span></td><td><span class="amount">+5,000円</span></td><td><span class="amount">+22,000円</span></td></tr>
-          <tr><td>自動二輪車</td><td><span class="amount">241,670円</span></td><td><span class="amount">+5,000円</span></td><td><span class="amount">+22,000円</span></td></tr>
+          <tr><td>なし</td><td><span class="amount">322,850円</span></td><td><span class="amount">+5,000円</span></td><td><span class="amount">+22,000円</span></td></tr>
+          <tr><td>原付</td><td><span class="amount">319,550円</span></td><td><span class="amount">+5,000円</span></td><td><span class="amount">+22,000円</span></td></tr>
+          <tr><td>自動二輪車</td><td><span class="amount">249,150円</span></td><td><span class="amount">+5,000円</span></td><td><span class="amount">+22,000円</span></td></tr>
         </tbody>
       </table>
 	      <div class="fee-list">
-	        <p class="subnote">普通自動車ATの主要料金表「322,850円〜」は、基本プラン料金に仮免手数料・証明写真代などの諸費用を含めた目安です。基本プラン表の「314,930円」とは含まれる費用が異なります。</p>
-	        <p>◎ 自分の都合のよい時間に通って免許取得するプランです。◎ 自分のペースで通い免許を取りたい方にオススメ！！ ◎ オプション選択で最短スケジュール作成も可能です。</p>
-        <p>仮免学科試験、仮免試験手数料1,800円（非課税）、仮免交付手数料1,100円（非課税）が別途必要です。マニュアル車をご希望の方は、オプションプランのマニュアルプラン料金が別途必要になります。</p>
-        <p>(仮免学科試験）仮免試験手数料1,800円(非課税)仮免交付手数料1,100円(非課税)が別途必要です。※マニュアル車ご希望の方はオプションプランのマニュアルプラン料金が別途必要になります。※各種料金の他にコミコミプランは別途料金がかかります。</p>
-        <p>【内訳】（消費税込） 入学金51,200円・技能教習料（1時限）5,830円・学科教習料1段階22,000円・学科教習料2段階35,200円。教科書代3,300円(免なし・原付持の方)・適性検査料3,300円・効果測定料3,300円・高速通行料1,100円・修了検定料5,500円。卒業検定料6,600円・原付講習料3,300円・証明写真代1,100円・証明書発行料3,300円・フリープラン料22,000円。</p>
-        <p>〇その他諸費用（消費税込） 延長・補習教習料（1時限）5,830円・修了検定再検定料（1回）5,500円・卒業検定再検定料（1回）6,600円、証明書再発行料3,300円、技能教習無断キャンセル料（1回）5,000円（非課税）、技能検定無断キャンセル料（1回）5,000円（非課税）。</p>
-        <p>証明書再発行料3,300円・仮免試験再受験料（1回）1,800円（非課税）・技能教習無断キャンセル料（1回）5,000円（非課税）も、必要に応じて別途発生します。</p>
-        <p>お客様のご都合に合わせた通い方を選べます。※コミコミプランのお申込みの方でも仮免学科試験の再受験料、無断キャンセル料が必要となる場合があります。</p>
+	        <p class="subnote">MT免許をご希望の方は、AT卒業後に「MT移行（AT解除）」（技能4時限・全プラン一律36,300円）で取得できます。</p>
+	        <p>◎ 自分の都合のよい時間に通って免許取得するプランです。◎ 自分のペースで通い免許を取りたい方にオススメ！！</p>
+        <p>仮免試験手数料1,800円（非課税）・仮免交付手数料1,100円（非課税）が別途必要です。</p>
+        <p>【内訳】（消費税込） 入学金52,300円・技能教習料（1時限）6,050円・学科教習料1段階22,000円・学科教習料2段階35,200円。教科書代3,300円(免なし・原付持の方)・適性検査料3,300円・効果測定料3,300円・高速通行料1,100円・修了検定料5,500円。卒業検定料6,600円・原付講習料3,300円・証明写真代1,100円・証明書発行料3,300円・フリープラン料22,000円。</p>
+        <p>〇その他諸費用（消費税込） 延長・補習教習料（1時限）6,050円・修了検定再検定料（1回）5,500円・卒業検定再検定料（1回）6,600円・証明書再発行料3,300円・仮免試験再受験料（1回）1,800円（非課税）・技能教習／技能検定の無断キャンセル料（1回）各5,000円（非課税）。</p>
+        <p>※コミコミプランのお申込みの方でも仮免学科試験の再受験料、無断キャンセル料が必要となる場合があります。</p>
       </div>`;
   }
 
@@ -2269,25 +2265,18 @@
       full: [
         ["AT", "ATコミコミプラン<br><small>補習・延長教習料、技能検定再検定料がかからないプランです</small>", "+11,000円", "+11,000円"],
         ["AT", "スケジュールプラン<br><small>ご都合に合わせたスケジュール通りに教習を進めるプランです</small>", "+55,000円", "+77,000円"],
-        ["AT", "合宿風ハイスピードプラン<br><small>自宅から通って短期取得を目指すプランです</small>", "+55,000円", "+77,000円"],
-        ["MT", "マニュアルプラン", "+27,500円", "+27,500円"],
-        ["MT", "MTコミコミプラン<br><small>補習・延長教習料、技能検定再検定料がかからないプランです</small>", "+22,000円", "+22,000円"],
-        ["MT", "スケジュールプラン<br><small>ご都合に合わせたスケジュール通りに教習を進めるプランです</small>", "+55,000円", "+77,000円"]
+        ["AT", "合宿風ハイスピードプラン<br><small>自宅から通って短期取得を目指すプランです</small>", "要問い合わせ", "要問い合わせ"]
       ],
       komikomi: [
-        ["AT", "ATコミコミプラン<br><small>補習・延長教習料、技能検定再検定料がかからないプランです</small>", "+11,000円", "+11,000円"],
-        ["MT", "マニュアルプラン", "+27,500円", "+27,500円"],
-        ["MT", "MTコミコミプラン<br><small>補習・延長教習料、技能検定再検定料がかからないプランです</small>", "+22,000円", "+22,000円"]
+        ["AT", "ATコミコミプラン<br><small>補習・延長教習料、技能検定再検定料がかからないプランです</small>", "+11,000円", "+11,000円"]
       ],
       highspeed: [
-        ["AT", "合宿風ハイスピードプラン<br><small>短期スケジュールに合わせて教習を進めるプランです</small>", "+55,000円", "+77,000円"],
+        ["AT", "合宿風ハイスピードプラン<br><small>短期スケジュールに合わせて教習を進めるプランです</small>", "要問い合わせ", "要問い合わせ"],
         ["AT", "ATコミコミプラン<br><small>補習・延長教習料、技能検定再検定料がかからないプランです</small>", "+11,000円", "+11,000円"]
       ],
       schedule: [
         ["AT", "ATスケジュールプラン<br><small>ご都合に合わせたスケジュール通りに教習を進めるプランです</small>", "+55,000円", "+77,000円"],
-        ["AT", "ATコミコミプラン<br><small>補習・延長教習料、技能検定再検定料がかからないプランです</small>", "+11,000円", "+11,000円"],
-        ["MT", "MTスケジュールプラン<br><small>ご都合に合わせたスケジュール通りに教習を進めるプランです</small>", "+55,000円", "+77,000円"],
-        ["MT", "MTコミコミプラン<br><small>補習・延長教習料、技能検定再検定料がかからないプランです</small>", "+22,000円", "+22,000円"]
+        ["AT", "ATコミコミプラン<br><small>補習・延長教習料、技能検定再検定料がかからないプランです</small>", "+11,000円", "+11,000円"]
       ]
     }[type];
     return `
@@ -2326,13 +2315,11 @@
           <ul class="info-list">
             <li>卒業までに教習料金がどのくらいかかるか不安なお客様におすすめのプランです。</li>
             <li>延長・補習教習料、技能検定再検定料などの追加料金が一切不要です。</li>
-            <li>◎ 卒業までに教習料金がどのくらいかかるか不安なお客様にオススメのプランです。</li>
-            <li>◎ 延長・補習教習料・技能検定再検定料などの追加料金が一切不要。</li>
             <li>各種料金にオプションプラン料金が別途必要です。</li>
           </ul>
           <h4>オプションプラン（税込）</h4>
           ${ordinaryOptionTableHtml("komikomi")}
-          <p class="subnote">マニュアル車をご希望の方は、マニュアルプラン料金が別途必要になります。</p>
+          <p class="subnote">MT免許をご希望の方は、AT卒業後の「MT移行（AT解除）」（一律36,300円）で取得できます。</p>
           ${ordinaryNoticeHtml()}
           ${ordinaryDiscountHtml()}
         </article>
@@ -2342,21 +2329,18 @@
           <ul class="info-list">
             <li>◎ 自宅から通って、合宿とほぼ同じ期間で免許取得するプランです。</li>
             <li>◎ 当校の作成したスケジュールどおりに教習を進めていくプランです。</li>
-            <li>とにかく早く免許が取りたい方におすすめです。</li>
-            <li>自宅から通って、合宿とほぼ同じ期間で免許取得するプランです。</li>
-            <li>当校の作成したスケジュールどおりに教習を進めていくプランです。</li>
-            <li>最短17日が目安です。最短日数は目安であり、個人差等により延びる場合があります。各入校日先着1名です。</li>
+            <li>とにかく早く免許が取りたい方におすすめです。最短17日が目安です。</li>
           </ul>
-          <p class="subnote">※最短日数は目安であり、個人差等により延びる場合があります。※各入校日先着1名。※各種料金に合宿風ハイスピードプラン料金が別途必要です。当校スケジュールに合わせて、補習・延長教習料・技能検定再検定料がかからないコミコミプランも確認できます。</p>
+          <p class="subnote">※最短日数は目安であり、個人差等により延びる場合があります。※各入校日先着1名。※各種料金に合宿風ハイスピードプラン料金が別途必要です。</p>
           <h4>オプションプラン（税込）</h4>
           ${ordinaryOptionTableHtml("highspeed")}
-          <div class="sample-shot"><img src="images/current-site/pages/camp_price-01.jpg" alt="合宿風ハイスピードプラン サンプル"></div>
+          <div class="sample-shot"><img loading="lazy" decoding="async" src="images/current-site/pages/camp_price-01.jpg" alt="合宿風ハイスピードプラン サンプル"></div>
           ${ordinaryNoticeHtml()}
           ${ordinaryDiscountHtml()}
         </article>
         <article class="plan-panel" id="ordinary-schedule">
           <h3>スケジュールプラン</h3>
-          <p><strong>対応車種：普通車（MT・AT）</strong></p>
+          <p><strong>対応車種：普通車（AT）</strong></p>
           <ul class="info-list">
             <li>毎日は通えないけれど早く免許を取りたい方におすすめです。</li>
             <li>都合の良い日時のみ通って短期間で免許取得を目指すプランです。</li>
@@ -2366,7 +2350,7 @@
           </ul>
           <h4>オプションプラン（税込）</h4>
           ${ordinaryOptionTableHtml("schedule")}
-          <div class="sample-shot"><img src="images/current-site/pages/standard-01.jpg" alt="スケジュールプラン サンプル"></div>
+          <div class="sample-shot"><img loading="lazy" decoding="async" src="images/current-site/pages/standard-01.jpg" alt="スケジュールプラン サンプル"></div>
           ${ordinaryNoticeHtml()}
           ${ordinaryDiscountHtml()}
         </article>
@@ -2477,8 +2461,8 @@
         <section class="reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">PAYMENT / PROCEDURE</span><h2 class="section-title">入校手続きとお支払いのご案内</h2><p class="section-lead">ローンや手続きの流れを、申し込み前に確認しやすく整理しています。</p></div></div>
           <div class="grid cols-2">
-            <article class="card real-photo-card"><img src="images/current-site/pages/procedure-01.gif" alt="入校案内 支払い手続き PC版"><div class="card-copy"><h3>お支払い・ローン案内</h3><p>支払い方法やローンの確認ポイントを、申し込み前に見られます。</p></div></article>
-            <article class="card real-photo-card"><img src="images/current-site/pages/procedure-02.gif" alt="入校案内 支払い手続き スマホ版"><div class="card-copy"><h3>スマホ向け手続き案内</h3><p>スマホで見たときにも、支払い準備の流れを確認できます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/procedure-01.gif" alt="入校案内 支払い手続き PC版"><div class="card-copy"><h3>お支払い・ローン案内</h3><p>支払い方法やローンの確認ポイントを、申し込み前に見られます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/procedure-02.gif" alt="入校案内 支払い手続き スマホ版"><div class="card-copy"><h3>スマホ向け手続き案内</h3><p>スマホで見たときにも、支払い準備の流れを確認できます。</p></div></article>
           </div>
         </div></section>`
     },
@@ -2501,7 +2485,7 @@
               ["bike", "普通二輪・大型二輪", "趣味にも通勤にも。普通二輪、小型限定、大型二輪まで対応。", "images/real/motorcycle-real.jpg", "object-position: 46% 62%;"],
               ["limited", "各種限定解除", "AT限定からMTへ、準中型5t限定、二輪の限定解除など。", "images/real/motorcycle-real.jpg", "object-position: 72% 58%;"],
               ["training", "ペーパー・高齢者・企業講習", "運転再開、免許更新、法人向け安全教育まで地域の交通安全を支援。", "images/real/classroom-real.jpg", ""]
-            ].map(([id,h,p,img,style])=>`<a class="card hoverable" href="detail.html?page=${id}"><img src="${img}" alt="${h}" style="${style}"><h3>${h}</h3><p>${p}</p></a>`).join("")}
+            ].map(([id,h,p,img,style])=>`<a class="card hoverable" href="detail.html?page=${id}"><img loading="lazy" decoding="async" src="${img}" alt="${h}" style="${style}"><h3>${h}</h3><p>${p}</p></a>`).join("")}
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap">
@@ -2554,20 +2538,15 @@
             <ul class="info-list">
               <li>とにかく早く免許が取りたい方におすすめです。</li>
               <li>自宅から通って、合宿とほぼ同じ期間で免許取得するプランです。</li>
-              <li>学校作成スケジュールどおりに教習を進めます。</li>
-              <li>最短17日が目安です。各入校日先着1名です。</li>
-              <li>◎ 当校の作成したスケジュールどおりに教習を進めていくプランです。</li>
-              <li>※最短日数は目安であり、個人差等により延びる場合があります。※各入校日先着1名</li>
+              <li>当校の作成したスケジュールどおりに教習を進めていきます。</li>
+              <li>最短17日が目安です（個人差等により延びる場合があります）。各入校日先着1名です。</li>
               <li>※各種料金に合宿風ハイスピードプラン料金が別途必要です。</li>
             </ul>
             <h4>オプションプラン（税込）</h4>
             ${ordinaryOptionTableHtml("highspeed")}
-            <div class="sample-shot"><img src="images/current-site/pages/camp_price-01.jpg" alt="合宿風ハイスピードプラン サンプル"></div>
+            <div class="sample-shot"><img loading="lazy" decoding="async" src="images/current-site/pages/camp_price-01.jpg" alt="合宿風ハイスピードプラン サンプル"></div>
             ${ordinaryNoticeHtml()}
             ${ordinaryDiscountHtml()}
-            <div class="notice-box">
-              <p>当校スケジュールに合わせて、短期間で免許取得を目指します。・高速教習は原則実車で行います。・医師・看護師等の資格をお持ちの方は窓口へお申し出下さい。学科３時限が免除となります。・当校卒業の方は卒業生割引があります。・割引や特典の併用は出来ない場合があります。・途中退校(転校)の場合は当校規定により残金の清算を致します。・教習料金は改定する場合があります。</p>
-            </div>
           </div>
         </div></section>`
     },
@@ -2588,33 +2567,26 @@
           <div class="section-head"><div><span class="eyebrow">PRICE</span><h2 class="section-title">主な料金</h2></div></div>
           <p class="section-lead">デイプランは8:30〜18:30、フリープランは8:30〜20:30の時間帯で通えるプランです。基本プラン、準中型車コミコミプラン、スケジュールプランから通い方に合わせて選べます。</p>
           <table class="data-table"><thead><tr><th>現有免許</th><th>デイプラン学生</th><th>一般</th><th>フリー</th></tr></thead><tbody>
-            <tr><td>なし</td><td>395,670円</td><td>+5,000円</td><td>+22,000円</td></tr>
-            <tr><td>原付</td><td>392,370円</td><td>+5,000円</td><td>+22,000円</td></tr>
-            <tr><td>自動二輪車</td><td>321,530円</td><td>+5,000円</td><td>+22,000円</td></tr>
-            <tr><td>普通車AT</td><td>174,790円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>普通車MT</td><td>149,710円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>なし</td><td>401,280円</td><td>+5,000円</td><td>+22,000円</td></tr>
+            <tr><td>原付</td><td>397,980円</td><td>+5,000円</td><td>+22,000円</td></tr>
+            <tr><td>自動二輪車</td><td>326,920円</td><td>+5,000円</td><td>+22,000円</td></tr>
+            <tr><td>普通車AT</td><td>177,760円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>普通車MT</td><td>152,240円</td><td>+5,000円</td><td>+11,000円</td></tr>
           </tbody></table>
           <div class="grid cols-2" style="margin-top:18px;">
             <article class="card"><h3>準中型コミコミプラン</h3><p>卒業までに教習料金がどのくらいかかるか不安な方におすすめです。補習・延長教習料、技能検定再検定料がかからないプランです。</p></article>
             <article class="card"><h3>スケジュールプラン</h3><p>毎日は通えないけれど早く免許を取りたい方におすすめです。都合のよい日時のみ通って短期間で免許取得を目指し、お客様の都合に合わせたスケジュール通りに教習を進めます。最短25日が目安です。</p></article>
           </div>
           <div class="notice-box">
-            <p>お客様のご都合に合わせた通い方を選べます。準中型コミコミプランは、卒業までに教習料金がどのくらいかかるか不安なお客様にオススメのプランです。延長・補習教習料・技能検定再検定料などの追加料金が一切不要です。</p>
-            <p>◎ 卒業までに教習料金がどのくらいかかるか不安なお客様にオススメのプランです。◎ 延長・補習教習料・技能検定再検定料などの追加料金が一切不要。※各種料金に準中型コミコミプラン料金が別途必要です。</p>
-            <p>スケジュールプランは、早く免許を取りたい方にオススメ！！ 都合の良い日時のみ通学し、短期間で免許取得可能なプランです。お客様の都合に合わせてスケジュールを作成し教習を進めていくプランです。</p>
-            <p>◎ 都合の良い日時のみ通学し、短期間で免許取得可能！ 短期間で免許取得するプランです。◎ お客様の都合に合わせてスケジュールを作成し教習を進めていくプランです。</p>
-            <p>※デイプランでご入校の方は8:30 ～ 18:30、フリープランでご入校の方は8:30 ～ 20:30 の間でスケジュールを作成いたします。※最短日数は目安であり、個人差等により延びる場合があります。※各入校日先着3名です。</p>
+            <p>※スケジュールは、デイプランは8:30〜18:30、フリープランは8:30〜20:30の間で作成します。※最短日数は目安であり、個人差等により延びる場合があります。※スケジュールプランは各入校日先着3名です。</p>
           </div>
-          <p class="subnote">各種料金に準中型コミコミプラン料金、またはスケジュールプラン料金が別途必要です。</p>
+          <p class="subnote">各種料金に準中型コミコミプラン料金（+22,000円）、またはスケジュールプラン料金（+55,000円／12〜3月は+77,000円）が別途必要です。</p>
           <div class="notice-box">
-            <p>◎ 自分の都合のよい時間に通って免許取得するプランです。◎ 自分のペースで通い免許を取りたい方にオススメ！！ ◎ オプション選択で最短スケジュール作成も可能です。</p>
-            <p>(仮免学科試験）仮免試験手数料1,800円(非課税)仮免交付手数料1,100円(非課税)が別途必要です。</p>
-            <p>【内訳】（消費税込） 入学金53,400円・技能教習料（1時限）6,270円・学科教習料1段階 22,000円・学科教習料2段階 37,400円。教科書代3,300円・適性検査料3,300円・効果測定料3,300円。高速通行料1,100円・証明写真代1,100円・原付講習料3,300円。修了検定料5,500円・卒業検定料6,600円・フリープラン料22,000円。</p>
-            <p>〇その他諸費用（消費税込） 延長・補習教習料（1時限）6,270円・修了検定再検定料（1回）5,500円・卒業検定再検定料（1回）6,600円。証明書再発行料3,300円。仮免試験再受験料（1回）1,800円（非課税）。技能教習無断キャンセル料（1回）5,000円（非課税）。技能検定無断キャンセル料（1回）5,000円（非課税）。</p>
-            <p><strong>仮免試験手数料等</strong>：仮免学科試験は仮免試験手数料1,800円（非課税）、仮免交付手数料1,100円（非課税）が別途必要です。</p>
-            <p><strong>基本料金内訳（税込）</strong>：入学金53,400円、技能教習料（1時限）6,270円、学科教習料1段階22,000円、学科教習料2段階37,400円、教科書代3,300円、適性検査料3,300円、効果測定料3,300円、高速通行料1,100円、証明写真代1,100円、原付講習料3,300円、修了検定料5,500円、卒業検定料6,600円、フリープラン料22,000円。</p>
-            <p><strong>その他諸費用（税込）</strong>：延長・補習教習料（1時限）6,270円、修了検定再検定料5,500円、卒業検定再検定料6,600円、証明書再発行料3,300円、仮免試験再受験料1,800円（非課税）、技能教習無断キャンセル料5,000円（非課税）、技能検定無断キャンセル料5,000円（非課税）。</p>
-            <p>高速教習は原則実車で行います。医師・看護師等の資格をお持ちの方は窓口へお申し出ください。学科3時限が免除となります。当校卒業の方は卒業生割引があります。割引や特典の併用はできない場合があります。途中退校・転校の場合は当校規定により残金の清算を致します。教習料金は改定する場合があります。</p>
+            <p>◎ 自分の都合のよい時間に通って免許取得するプランです。◎ 自分のペースで通い免許を取りたい方にオススメ！！</p>
+            <p>仮免試験手数料1,800円（非課税）・仮免交付手数料1,100円（非課税）が別途必要です。</p>
+            <p>【内訳】（消費税込） 入学金54,500円・技能教習料（1時限）6,380円・学科教習料1段階22,000円・学科教習料2段階37,400円・教科書代3,300円・適性検査料3,300円・効果測定料3,300円・高速通行料1,100円・証明写真代1,100円・原付講習料3,300円・修了検定料5,500円・卒業検定料6,600円・フリープラン料22,000円。</p>
+            <p>〇その他諸費用（消費税込） 延長・補習教習料（1時限）6,380円・修了検定再検定料（1回）5,500円・卒業検定再検定料（1回）6,600円・証明書再発行料3,300円・仮免試験再受験料（1回）1,800円（非課税）・技能教習／技能検定の無断キャンセル料（1回）各5,000円（非課税）。</p>
+            <p>高速教習は原則実車で行います。医師・看護師等の資格をお持ちの方は窓口へお申し出ください（学科3時限免除）。当校卒業の方は卒業生割引があります。割引や特典の併用はできない場合があります。途中退校・転校の場合は当校規定により残金を清算します。教習料金は改定する場合があります。</p>
           </div>
           <div class="discount-panel">
             <h3>割引</h3>
@@ -2644,46 +2616,41 @@
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">LARGE MOTORCYCLE</span><h2 class="section-title">大型自動二輪車</h2><p class="section-lead">大型自動二輪車の基本プラン料金です。現有免許により料金が変わります。</p></div></div>
           <table class="data-table"><thead><tr><th>大型二輪 現有免許</th><th>デイ学生</th><th>一般</th><th>フリー</th></tr></thead><tbody>
-            <tr><td>普通車</td><td>203,500円</td><td>+5,000円</td><td>+22,000円</td></tr>
-            <tr><td>小型二輪AT</td><td>166,650円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>小型二輪MT</td><td>146,850円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>普通二輪AT</td><td>127,050円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>普通二輪MT</td><td>107,250円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>普通車</td><td>206,910円</td><td>+5,000円</td><td>+22,000円</td></tr>
+            <tr><td>小型二輪AT</td><td>169,290円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>小型二輪MT</td><td>149,050円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>普通二輪AT</td><td>128,810円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>普通二輪MT</td><td>108,570円</td><td>+5,000円</td><td>+11,000円</td></tr>
           </tbody></table>
           <div class="grid cols-2" style="margin-top:18px;">
-            <article class="card"><h3>普通自動二輪車</h3><p>MTはなし・原付179,300円、普通車111,650円。ATはなし・原付161,700円、普通車94,050円が目安です。一般区分、フリープランは別途加算があります。</p></article>
+            <article class="card"><h3>普通自動二輪車</h3><p>MTはなし・原付181,390円、普通車113,520円。ATはなし・原付163,350円、普通車95,480円が目安です。一般区分、フリープランは別途加算があります。</p></article>
             <article class="card"><h3>小型自動二輪</h3><p>通勤や近距離移動に使いやすい小型二輪も対応しています。小型二輪車AT、小型二輪車MT、普通二輪車AT、普通二輪車MTなど、AT/MTと現有免許に応じて必要時限と料金が変わります。</p></article>
           </div>
           <h3 style="margin-top:24px;">普通自動二輪車 料金</h3>
           <table class="data-table"><thead><tr><th>車種</th><th>現有免許</th><th>デイ学生</th><th>一般</th><th>フリー</th></tr></thead><tbody>
-            <tr><td>MT</td><td>なし・原付</td><td>179,300円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>MT</td><td>普通車</td><td>111,650円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>AT</td><td>なし・原付</td><td>161,700円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>AT</td><td>普通車</td><td>94,050円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>MT</td><td>なし・原付</td><td>181,390円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>MT</td><td>普通車</td><td>113,520円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>AT</td><td>なし・原付</td><td>163,350円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>AT</td><td>普通車</td><td>95,480円</td><td>+5,000円</td><td>+11,000円</td></tr>
           </tbody></table>
           <h3 style="margin-top:24px;">小型自動二輪 料金</h3>
           <table class="data-table"><thead><tr><th>車種</th><th>現有免許</th><th>デイ学生</th><th>一般</th><th>フリー</th></tr></thead><tbody>
-            <tr><td>MT</td><td>なし・原付</td><td>158,400円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>MT</td><td>普通車</td><td>90,750円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>AT</td><td>なし・原付</td><td>145,200円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>AT</td><td>普通車</td><td>81,950円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>MT</td><td>なし・原付</td><td>159,720円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>MT</td><td>普通車</td><td>91,850円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>AT</td><td>なし・原付</td><td>146,190円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>AT</td><td>普通車</td><td>82,830円</td><td>+5,000円</td><td>+5,500円</td></tr>
           </tbody></table>
           <div class="notice-box">
-            <p>大型自動二輪車・普通自動二輪車・小型自動二輪の各基本プランは、◎ 自分の都合のよい時間に通って免許取得するプランです。◎ 自分のペースで通い免許を取りたい方にオススメ！！</p>
-            <p>※７月～８月の二輪技能教習は熱中症予防のために8:30～11:30、16:30～20:30の間で行います。</p>
-            <p>【内訳】（消費税込）大型自動二輪車は、入学金38,000円・技能教習料（1時限）4,950円・学科教習料1段階 22,000円・学科教習料2段階 35,200円、教科書代1,100円・適性検査料3,300円・証明写真代1,100円、証明書発行料3,300円・卒業検定料6,050円・フリープラン料22,000円です。</p>
-            <p>普通自動二輪車は、入学金24,800円・技能教習料（1時限）4,400円・学科教習料1段階 22,000円・学科教習料2段階 35,200円、教科書代3,300円・適性検査料3,300円・効果測定料1,650円、証明書発行料3,300円・証明写真代1,100円・卒業検定料6,050円、フリープラン料11,000円です。</p>
-            <p>小型自動二輪は、入学金34,700円・技能教習料（1時限）4,400円・学科教習料1段階 22,000円・学科教習料2段階 35,200円、教科書代3,300円・適性検査料3,300円・効果測定料1,650円、証明書発行料3,300円・証明写真代1,100円・卒業検定料6,050円、フリープラン料11,000円です。</p>
-            <p>〇その他諸費用（消費税込）延長・補習教習料、証明書再発行料3,300円、卒業検定再検定料（1回）6,050円、技能教習無断キャンセル料（1回）5,000円（非課税）、技能検定無断キャンセル料（1回）5,000円（非課税）。</p>
-            <p><strong>大型二輪 内訳（税込）</strong>：入学金38,000円、技能教習料（1時限）4,950円、学科教習料1段階22,000円、学科教習料2段階35,200円、教科書代1,100円、適性検査料3,300円、証明写真代1,100円、証明書発行料3,300円、卒業検定料6,050円、フリープラン料22,000円。</p>
-            <p><strong>普通二輪・小型二輪 内訳（税込）</strong>：入学金、技能教習料（1時限）4,400円、学科教習料、教科書代、適性検査料、効果測定料、証明書発行料、証明写真代、卒業検定料6,050円、フリープラン料が含まれます。</p>
-            <p><strong>その他諸費用（税込）</strong>：延長・補習教習料、証明書再発行料3,300円、卒業検定再検定料6,050円、技能教習無断キャンセル料5,000円（非課税）、技能検定無断キャンセル料5,000円（非課税）。医師・看護師等の資格をお持ちの方は窓口へお申し出ください。学科3時限が免除となります。</p>
-            <p>当校卒業の方は卒業生割引があります。割引や特典の併用はできない場合があります。途中退校・転校の場合は当校規定により残金の清算を致します。教習料金は改定する場合があります。</p>
+            <p>◎ 自分の都合のよい時間に通って免許取得する基本プランです。◎ 自分のペースで通い免許を取りたい方にオススメ！！</p>
+            <p>※7月〜8月の二輪技能教習は熱中症予防のため、8:30〜11:30、16:30〜20:30の間で行います。</p>
+            <p>【内訳】（消費税込） 入学金38,000円・技能教習料（1時限：大型二輪5,060円／普通・小型二輪4,510円）・学科教習料1段階22,000円・学科教習料2段階35,200円・教科書代3,300円（免なし・原付持の方）／1,100円（免有の方）・適性検査料3,300円・効果測定料1,650円・卒業検定料6,050円・証明写真代1,100円・証明書発行料3,300円・フリープラン料22,000円。</p>
+            <p>〇その他諸費用（消費税込） 延長・補習教習料（1時限：大型5,060円／普通・小型4,510円）・卒業検定再検定料（1回）6,050円・証明書再発行料3,300円・技能教習／技能検定の無断キャンセル料（1回）各5,000円（非課税）。</p>
+            <p>医師・看護師等の資格をお持ちの方は窓口へお申し出ください（学科3時限免除）。当校卒業の方は卒業生割引があります。割引や特典の併用はできない場合があります。途中退校・転校の場合は当校規定により残金を清算します。教習料金は改定する場合があります。</p>
           </div>
           <div class="discount-panel">
             <h3>割引</h3>
-            <p>卒業生割引は、教習料金の合計が11万円以上の方は20,000円割引、11万円未満の方は10,000円割引です。複数人での入校割引は、2人以上で入校すると3人以上でもお1人様5,000円割引です。</p>
-            <p class="subnote">割引の併用はできません。同月内に入校が必要です。その他の割引や特典等との併用はできません。一緒に入校するのは、どの車種とでも組み合わせできます。</p>
+            <p>卒業生割引は、教習料金の合計が11万円以上の方は20,000円割引、11万円未満の方は10,000円割引です。複数人での入校割引は、免許なしや原付免許のみお持ちの方は3人以上でお1人様15,000円、2人でお1人様10,000円割引。普通車や自動二輪免許をお持ちの方は、2人以上でお1人様5,000円割引です。</p>
+            <p class="subnote">割引の併用はできません。同月内に入校が必要です。一緒に入校する車種は組み合わせ可能です。</p>
           </div>
           <p class="subnote">デイプランは8:30〜18:30、フリープランは8:30〜20:30です。二輪技能教習は夏季の熱中症予防により時間帯が変わる場合があります。</p>
         </div></section>`
@@ -2697,7 +2664,7 @@
       badges: ["普通車審査", "準中型5t", "二輪AT", "小型限定"],
       body: `
         <section class="reveal"><div class="wrap grid cols-4">
-          <article class="card"><h3>普通自動車審査</h3><p>AT免許からMT免許へ。デイ学生料金の目安は60,720円です。</p></article>
+          <article class="card"><h3>普通自動車審査</h3><p>AT免許からMT免許へ。デイ学生料金の目安は62,150円です。当校のAT卒業直後の方は「MT移行（AT解除）」一律36,300円で取得できます。</p></article>
           <article class="card"><h3>準中型5t限定審査</h3><p>準中型車5t限定から準中型車へ。仕事で必要な方にも。</p></article>
           <article class="card"><h3>普通二輪AT審査</h3><p>AT限定からMTへ。乗りたいバイクに合わせて解除できます。</p></article>
           <article class="card"><h3>小型二輪審査</h3><p>MT小型自動二輪車審査、AT小型限定二輪車からMT小型限定二輪車への審査にも対応します。</p></article>
@@ -2705,26 +2672,24 @@
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">PRICE</span><h2 class="section-title">限定解除料金表</h2><p class="section-lead">お持ちの免許に合わせて、必要な限定解除の料金を確認できます。</p></div></div>
           <table class="data-table"><thead><tr><th>審査内容</th><th>対象</th><th>デイ学生</th><th>一般</th><th>フリー</th></tr></thead><tbody>
-            <tr><td>普通自動車審査</td><td>AT免許 → MT免許</td><td>60,720円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>準中型車5t限定審査</td><td>AT5t限定 → 準中型車</td><td>93,500円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>準中型車5t限定審査</td><td>MT5t限定 → 準中型車</td><td>68,420円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>普通自動二輪車AT審査</td><td>AT小型二輪車 → AT普通二輪車</td><td>59,950円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>普通自動二輪車AT審査</td><td>MT小型二輪車 → AT普通二輪車</td><td>51,150円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>MT普通自動二輪車審査</td><td>AT小型二輪車 → MT普通二輪車</td><td>73,150円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>MT普通自動二輪車審査</td><td>MT小型二輪車 → MT普通二輪車</td><td>59,950円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>MT普通自動二輪車審査</td><td>AT普通二輪車 → MT普通二輪車</td><td>59,950円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>MT小型自動二輪車審査</td><td>AT小型限定二輪車 → MT小型限定二輪車</td><td>55,550円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>普通自動車審査</td><td>AT免許 → MT免許</td><td>62,150円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>準中型車5t限定審査</td><td>AT5t限定 → 準中型車</td><td>95,480円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>準中型車5t限定審査</td><td>MT5t限定 → 準中型車</td><td>69,960円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>普通自動二輪車AT審査</td><td>AT小型二輪車 → AT普通二輪車</td><td>60,500円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>普通自動二輪車AT審査</td><td>MT小型二輪車 → AT普通二輪車</td><td>51,480円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>MT普通自動二輪車審査</td><td>AT小型二輪車 → MT普通二輪車</td><td>74,030円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>MT普通自動二輪車審査</td><td>MT小型二輪車 → MT普通二輪車</td><td>60,500円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>MT普通自動二輪車審査</td><td>AT普通二輪車 → MT普通二輪車</td><td>60,500円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>MT小型自動二輪車審査</td><td>AT小型限定二輪車 → MT小型限定二輪車</td><td>55,990円</td><td>+5,000円</td><td>+5,500円</td></tr>
           </tbody></table>
+          <p class="subnote">当校のAT教習を卒業した直後の方（AT卒業証明書をお持ちの方）は、審査ではなく「MT移行（AT解除）」（技能4時限・全プラン一律36,300円）でMT免許を取得できます。</p>
           <div class="notice-box">
             <p>◎ AT免許→MT免許。◎ 準中型車（5t）限定→準中型車。◎ AT・MT小型二輪車免許→AT普通二輪車免許。◎ AT二輪車・MT小型二輪車免許→MT普通二輪車免許。◎ AT小型限定二輪車免許→MT小型限定二輪車免許。</p>
-            <p>【内訳】（消費税込）普通自動車審査は、入学金28,100円・技能教習料（1時限）5,830円・適性検査料3,300円、証明写真代1,100円・卒業検定料6,600円・証明書発行料3,300円、フリープラン料5,500円です。</p>
-            <p>〇その他諸費用（消費税込）延長・補習教習料（1時限）5,830円・卒業検定再検定料（1回）6,600円・証明書再発行料3,300円、技能教習無断キャンセル料（1回）5,000円（非課税）、技能検定無断キャンセル料（1回）5,000円（非課税）。</p>
-            <p>・割引や特典の併用は出来ない場合があります。・途中退校(転校)の場合は当校規定により残金の清算を致します。・教習料金は改定する場合があります。※割引の併用はできません。</p>
-            <p><strong>普通自動車審査の内訳（税込）</strong>：入学金28,100円、技能教習料（1時限）5,830円、適性検査料3,300円、証明写真代1,100円、卒業検定料6,600円、証明書発行料3,300円、フリープラン料5,500円。</p>
-            <p><strong>準中型車5t限定審査の内訳（税込）</strong>：入学金34,040円、技能教習料（1時限）6,270円、適性検査料3,300円、証明写真代1,100円、卒業検定料6,600円、証明書発行料3,300円、フリープラン料5,500円。</p>
-            <p><strong>二輪審査の内訳（税込）</strong>：入学金29,200円、技能教習料（1時限）4,400円、適性検査料3,300円、証明写真代1,100円、卒業検定料6,050円、証明書発行料3,300円、フリープラン料5,500円。</p>
-            <p><strong>その他諸費用（税込）</strong>：延長・補習教習料、卒業検定再検定料、証明書再発行料3,300円、技能教習無断キャンセル料5,000円（非課税）、技能検定無断キャンセル料5,000円（非課税）。</p>
-            <p>デイプランは8:30〜18:30、フリープランは8:30〜20:30です。割引や特典の併用ができない場合があります。途中退校・転校の場合は当校規定により残金の清算を致します。教習料金は改定する場合があります。</p>
+            <p><strong>普通自動車審査の内訳（税込）</strong>：入学金28,650円、技能教習料（1時限）6,050円、適性検査料3,300円、証明写真代1,100円、卒業検定料6,600円、証明書発行料3,300円、フリープラン料5,500円。</p>
+            <p><strong>準中型車5t限定審査の内訳（税込）</strong>：入学金35,140円、技能教習料（1時限）6,380円、適性検査料3,300円、証明写真代1,100円、卒業検定料6,600円、証明書発行料3,300円、フリープラン料5,500円。</p>
+            <p><strong>二輪審査の内訳（税込）</strong>：入学金29,200円、技能教習料（1時限）4,510円、適性検査料3,300円、証明写真代1,100円、卒業検定料6,050円、証明書発行料3,300円、フリープラン料5,500円。</p>
+            <p><strong>その他諸費用（税込）</strong>：延長・補習教習料（技能教習料と同額／1時限）、卒業検定再検定料、証明書再発行料3,300円、技能教習／技能検定の無断キャンセル料（1回）各5,000円（非課税）。</p>
+            <p>デイプランは8:30〜18:30、フリープランは8:30〜20:30です。割引や特典の併用ができない場合があります。途中退校・転校の場合は当校規定により残金を清算します。教習料金は改定する場合があります。</p>
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap page-summary">
@@ -2741,7 +2706,7 @@
       badges: ["普通車", "二輪", "外国免許切替", "試験受験講習"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
-          <article class="summary-card"><span class="eyebrow">SUPPORT</span><strong>不安解消やご要望にベテランスタッフが対応。</strong><p>ペーパードライバー講習、ペーパーライダー講習、運転免許試験の受験講習、外国免許からの切替講習に対応しています。「運転をしない期間が長くて運転をするのが怖い」「免許を取ってからほとんど運転したことがないけど、大丈夫？」そんな不安解消やご要望にベテランスタッフがお応えします。学校周辺の公道を利用しての講習も実施しており、ご要望に合わせて高速道路での走行方法なども行います。高速道路利用の場合、通行料金は別途必要となります。</p></article>
+          <article class="summary-card"><span class="eyebrow">SUPPORT</span><strong>不安解消やご要望にベテランスタッフが対応。</strong><p>ペーパードライバー講習、ペーパーライダー講習、運転免許試験の受験講習、外国免許からの切替講習に対応。初回に運転技量をチェックし、技量に応じてプランを組み立てます。学校周辺の公道や高速道路での講習にも対応します（高速通行料は別途）。</p></article>
           <div class="compact-list">
             <a class="compact-row" href="detail.html?page=application"><small>FORM</small><strong>ペーパー講習を相談</strong><span>›</span></a>
             <a class="compact-row" href="detail.html?page=access"><small>ACCESS</small><strong>来校方法を確認</strong><span>›</span></a>
@@ -2759,15 +2724,6 @@
             <article class="card"><h3>対象者</h3><p>もう数年運転していないので運転が不安な方、運転免許試験場で一般の技能試験を受験される方、外国免許からの切替を申請される方が対象です。</p></article>
             <article class="card"><h3>講習予約</h3><p>事前申し込みが必要です。初回日は30分前までにお越しください。火曜日は休校日です。</p></article>
             <article class="card"><h3>注意事項</h3><p>講習は当校の車両で行います。車種はご自身がお持ちの運転免許証で可能な車両となります。外国免許からの切替を申請される方は、切替を申請する車両となります。講習中のケガについては自己責任となります。講習料の有効期限は初回講習日から6ヶ月間です。</p></article>
-          </div>
-          <div class="notice-box">
-            <p>そんな不安解消やご要望にベテランスタッフがお応えします。運転技量をチェックし、技量に応じて、プランを組み立てます。また、学校周辺の公道を利用しての講習も実施しております。ご要望に合わせて、高速道路での走行方法なども行いますのでおさらい感覚でお気軽に受講いただけます。</p>
-            <p>※高速道路利用の場合、通行料金は別途必要となります。もう数年運転していないので、運転が不安な方、運転免許試験場で、一般で技能試験を受験される方もご相談ください。</p>
-            <p>複数回コースをご利用の場合は、割引があります。複数回コースは以下のコース料金となります。※5回以上をご希望の方はお気軽に、お問い合わせください。※途中で終了の場合返金はありません。</p>
-            <p>※講習は当校の車両で行います。※車種はご自身がお持ちの運転免許証で可能な車両となります。（ペーパードライバー講習・ペーパーライダー講習）※外国免許からの切替を申請される方は、切替を申請する車両となります。※講習中のケガについては、自己責任となります。ご了承ください。</p>
-            <p>初回に運転技量をチェックし、技量に応じて、プランを組み立てます。学校周辺の公道を利用しての講習も実施しております。ご要望に合わせて、高速道路での走行方法なども行いますので、おさらい感覚でお気軽に受講いただけます。高速道路利用の場合、通行料金は別途必要となります。</p>
-            <p>※講習料の有効期限は初回講習日から６ヶ月間です。事前にお申し込みが必要です。</p>
-            <p>電話問い合わせ・ご相談先：092-710-2188 月曜と水曜から日曜 ９時から１８時。月曜日・水曜日～金曜日の講習時間、土曜日・日曜日の講習時間も受付でご確認ください。時期・時間にお受けできない場合がございます。</p>
           </div>
           <div class="plan-panel">
             <h3>講習予約・手続き</h3>
@@ -2793,7 +2749,7 @@
       badges: ["70歳以上", "事前予約", "通知ハガキ", "実車指導"],
       body: `
         <section class="reveal"><div class="wrap photo-story">
-          <figure class="story-photo"><img src="images/current-site/pages/senior-02.gif" alt="高齢者講習の案内"></figure>
+          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/current-site/pages/senior-02.gif" alt="高齢者講習の案内"></figure>
           <div class="story-text"><h2 class="accent-heading">高齢者講習通知書が届いたらご予約ください。</h2><p>運転免許有効期間満了日6ヶ月以内に、公安委員会指定の自動車学校で受講しなければ更新できません。筑紫野自動車学校へお電話で予約してください。</p><p>予約電話番号：092-710-2188</p></div>
         </div></section>
         <section class="band reveal"><div class="wrap grid cols-3">
@@ -2804,8 +2760,7 @@
         <section class="reveal"><div class="wrap">
           <div class="plan-panel">
             <h3>高齢者講習とは</h3>
-            <p>高齢者講習とは、70歳以上の高齢者の方にいつまでも安全運転をしてもらうために、運転免許証の更新をする際に、運転に必要な身体機能の検査等を行うとともに実車による運転指導を行うものです。</p>
-            <p>70歳以上の方が運転免許の更新をしようとする場合、運転免許有効期間満了日6ヶ月以内に、公安委員会指定の自動車学校で受講しなければ更新できません。高齢者講習をお受け頂くには、事前にご予約が必要です。</p>
+            <p>70歳以上の方が運転免許を更新する際に必要な、身体機能の検査等と実車による運転指導です。有効期間満了日の6ヶ月以内に公安委員会指定の自動車学校で受講する必要があり、事前予約が必要です。</p>
           </div>
         </div></section>
         <section class="reveal"><div class="wrap">
@@ -2825,15 +2780,7 @@
             </div>
           </div>
           <div class="notice-box">
-            <p>※高齢者講習をお受け頂くには、事前にご予約が必要です。高齢者講習通知書（お知らせのハガキ）が届いたら、筑紫野自動車学校へお電話にてご予約をして下さい。高齢者講習日の予約をお取り致します。併せて、講習日にご準備頂くものなどご案内致します。</p>
-            <p>ご予約電話番号（筑紫野自動車学校）：092-710-2188。ご予約のお電話の際、ご準備頂くものは、運転免許証、高齢者講習通知書（お知らせのハガキ）、筆記用具（講習日や時間をお伝えします）です。</p>
-            <p>お電話でご予約頂いた、講習日の講習開始時間に合わせてご来校下さい。当日ご準備頂くものは、高齢者講習通知書（お知らせのハガキ）、運転免許証、印鑑（認印可）、講習手数料、運転に適した服装、眼鏡等（必要な方）です。</p>
-            <p>予約時：・高齢者講習通知書（お知らせのハガキ）・筆記用具（講習日や時間をお伝えします）。講習日当日：・印鑑（認印可）・運転に適した服装（2時間講習の方のみ）もご準備ください。</p>
-            <p><strong>予約時にご準備いただくもの</strong>：運転免許証、高齢者講習通知書（お知らせのハガキ）、筆記用具。75歳以上の方は認知機能検査結果通知書も確認してください。</p>
-            <p><strong>講習日当日にご準備いただくもの</strong>：高齢者講習通知書、運転免許証、印鑑（認印可）、講習手数料、運転に適した服装、眼鏡等（必要な方）。・眼鏡等（必要な方のみ）もご持参ください。75歳以上の方は認知機能検査結果通知書もお持ちください。上記以外の方（原付等）も通知書の内容をご確認ください。</p>
-            <p><strong>75歳以上で違反がある方</strong>：高齢者講習に加え、運転技能検査が必要になる場合があります。実車による技能検査を受けるため、運転に適した服装でお越しください。</p>
-            <p><strong>高齢者講習から免許更新までの流れ</strong>：案内のハガキが届いたらハガキに掲載の指定の機関へお電話して下さい。ハガキに記載されている指定の場所へお電話にて認知機能検査のご予約をして下さい。認知症の恐れあり・認知症の恐れなしに分けられます。検査結果によっては免許証の更新ができません。</p>
-            <p><strong>運転免許証更新手続き</strong>：講習終了後、終了証明書をお渡し致します。後日、運転免許更新手続きへは、運転免許試験場などで更新して下さい。</p>
+            <p>※75歳以上の方は、予約時・講習日当日ともに認知機能検査結果通知書もご準備ください。検査結果によっては免許証の更新ができない場合があります。</p>
           </div>
         </div></section>`
     },
@@ -2851,23 +2798,13 @@
           <article class="card"><h3>必要なもの</h3><p>身分証明書、住民票、印鑑、黒色ボールペン、鉛筆、消しゴム、手袋、雨具などを確認してください。</p></article>
         </div></section>
         <section class="reveal"><div class="wrap page-summary">
-          <article class="summary-card"><span class="eyebrow">MOPED LICENSE</span><strong>講習終了証明書を受け取り、運転免許試験場で試験を受けます。</strong><p>16歳から取得ができる原付免許は、取得の際には必ず自動車教習所で原付講習を受講します。そして、講習終了証明書の交付をしてもらい、運転免許試験場で試験を受けなければいけません。講習の内容や実施の日程など、詳しくはお電話でお問い合わせください。受講には事前の予約が必要です。</p></article>
+          <article class="summary-card"><span class="eyebrow">MOPED LICENSE</span><strong>講習終了証明書を受け取り、運転免許試験場で試験を受けます。</strong><p>原付免許の取得には、自動車教習所での原付講習の受講と、講習終了証明書の交付が必要です。講習内容や実施日程は、お電話でお問い合わせください（要事前予約）。</p></article>
           <div class="compact-list"><a class="compact-row" href="tel:0927102188"><small>TEL</small><strong>予約先 092-710-2188</strong><span>›</span></a></div>
-        </div></section>
-        <section class="reveal"><div class="wrap">
-          <div class="notice-box">
-            <p>16歳から取得ができる原付免許は取得の際には必ず自動車教習所で原付講習を受講します。講習の内容や、実施の日程など、詳しくはお電話でお問い合わせください。予約先 TEL:092-710-2188。</p>
-            <p>【受講には、事前の予約が必要です。】【まずは、お電話にて予約手続きを行って下さい。】講習時間：3時間（開始時間はご予約の際、ご案内致します。）講習内容：実車指導（基本操作・基本走行・応用走行）、座学（安全運転の知識）。</p>
-            <p>講習当日、受付でご記入頂きます。身分証明書（いずれか１つ）は、パスポート、マイナンバーカード（通知カードは不可）、健康保険証、学生証、特別永住者証明書、在留カード、外国人登録証、住民基本台帳カード、運転免許証（小型特殊等）です。</p>
-            <p>【受講には、事前の予約が必要です】まずは、お電話にて予約手続きを行って下さい。原付免許講習の内容は、実車指導で基本操作、基本走行、応用走行を行い、座学で安全運転の知識を確認します。講習時間は3時間です。</p>
-            <p>住民票（本籍地記載のもの）は、マイナンバー（個人番号）が記載されていないものをご準備ください。ただし、原付免許試験に合格されている方は、運転免許試験合格通知書、運転免許証を保有されている方は同運転免許証をそれぞれ持参下さい。印鑑（認印でも可）※シャチハタは不可。黒色のボールペン、鉛筆、消しゴム。運転適性相談をお受けの方は、運転適性相談通知書。</p>
-            <p>原付免許講習時の服装：当日は実際に原付を運転していただきますので、運転に適した服装でお越しください。</p>
-          </div>
         </div></section>
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">MOPED COURSE</span><h2 class="section-title">原付免許講習受講の際に必要なもの</h2></div></div>
           <div class="grid cols-2">
-            <article class="card"><h3>本人確認・書類</h3><p>原付免許講習申出書・誓約書は講習当日、受付でご記入いただきます。身分証明書、住民票（本籍地記載・マイナンバー記載なし）、印鑑（認印でも可、シャチハタ不可）をご準備ください。原付免許試験に合格されている方は運転免許試験合格通知書、運転免許証を保有されている方は同運転免許証を持参してください。</p></article>
+            <article class="card"><h3>本人確認・書類</h3><p>原付免許講習申出書・誓約書は講習当日、受付でご記入いただきます。身分証明書、住民票（本籍地記載・マイナンバー記載なし）、印鑑（認印でも可、シャチハタ不可）をご準備ください。原付免許試験に合格されている方は運転免許試験合格通知書、運転免許証を保有されている方は同運転免許証、運転適性相談をお受けの方は運転適性相談通知書も持参してください。</p></article>
           <article class="card"><h3>筆記用具・服装</h3><p>黒色のボールペン、鉛筆、消しゴム、手袋、雨具（雨天時）をご準備ください。長袖・長ズボン・運動靴・手袋（軍手可）で受講してください。半袖、半ズボン、スカート、サンダル、ハイヒール、下駄などの場合、転倒時に危険なため受講をお断りする可能性があります。</p></article>
           </div>
           <div class="plan-panel">
@@ -2892,7 +2829,7 @@
           <div class="grid cols-3">
 	            <article class="card"><h3>普通車AT</h3><p>免許なし・学生・デイの主要料金目安です。</p><div class="price">322,850円〜</div><p class="mini">基本プラン料金に、仮免手数料・証明写真代などの諸費用を含めた目安です。</p></article>
 	            <article class="card"><h3>普通二輪MT</h3><p>普通車免許所持・学生・デイの料金目安です。</p><div class="price">113,520円〜</div><p class="mini">一般区分は118,520円〜です。条件により料金が変わります。</p></article>
-            <article class="card"><h3>準中型車</h3><p>お仕事やキャリアアップで必要な方へ。</p><div class="price">424,370円〜</div><p class="mini">仕事で必要になって取得される方や、キャリアアップのために取得される方も多い免許です。</p></article>
+            <article class="card"><h3>準中型車</h3><p>お仕事やキャリアアップで必要な方へ。</p><div class="price">401,280円〜</div><p class="mini">仕事で必要になって取得される方や、キャリアアップのために取得される方も多い免許です。</p></article>
           </div>
           <div class="grid cols-3" style="margin-top:18px;">
             <article class="card"><h3>普通自動車教習</h3><p>多くの人が持っている普通自動車免許。普通車AT/MT、基本プラン、コミコミプラン、スケジュールプランを確認できます。</p></article>
@@ -2948,7 +2885,7 @@
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">PRICE TABLE</span><h2 class="section-title">主要料金表</h2><p class="section-lead">令和8年8月1日改定の税込料金を、主要コースごとに確認できます。</p></div></div>
 	          <table class="data-table"><thead><tr><th>車種</th><th>現有免許</th><th>技能</th><th>学科</th><th>デイ学生</th><th>デイ一般</th><th>フリー学生</th><th>フリー一般</th></tr></thead><tbody>${courseRows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>
-	          <p class="subnote">普通車MT（免許なしから）はお電話でご確認ください（092-710-2188）。普通車ATの主要料金表は、基本プラン料金に仮免手数料・証明写真代などの諸費用を含めた目安です。</p>
+	          <p class="subnote">普通車MT免許は、AT卒業後の「MT移行（AT解除）」（技能4時限・全プラン一律36,300円）で取得できます。詳しくはお電話でご確認ください（092-710-2188）。</p>
           <div class="badge-row"><span class="badge orange">仮免試験手数料等は別途</span><span class="badge green">普通車フリープラン +22,000円</span><span class="badge">一般区分 +5,000円</span></div>
         </div></section>
         <section class="reveal"><div class="wrap">
@@ -2966,7 +2903,7 @@
         ${ordinaryPlansHtml()}
         <section class="reveal"><div class="wrap grid cols-3">
           <article class="card"><h3>普通車オプション</h3><p>ATコミコミプラン 11,000円、スケジュールプラン 55,000円〜77,000円。合宿風ハイスピードは時期・定員の確認が必要です。</p></article>
-          <article class="card"><h3>割引</h3><p>卒業生割、紹介割、ペア割、トリプル割などの制度があります。併用可否は受付で確認できます。</p></article>
+          <article class="card"><h3>割引</h3><p>卒業生割引（10,000〜20,000円）や、複数人での入校割引（2人・3人以上）などの制度があります。併用可否は受付で確認できます。</p></article>
           <article class="card"><h3>支払い</h3><p>現金、振込、ローンに対応。未成年・学生の方もローン相談ができます。</p></article>
         </div></section>`
     },
@@ -2977,7 +2914,7 @@
 	      lead: "無料送迎バス、バスキャッチ、最寄駅、駐車場の情報をひとつにまとめています。",
       image: "images/real/classroom-wide.jpg",
       visualCaption: "筑紫野市・朝倉市・太宰府市などから通学しやすく",
-      badges: ["無料送迎バス", "バスキャッチ", "筑紫野市筑紫120-1"],
+      badges: ["無料送迎バス", "バスキャッチ", "筑紫野市筑紫120番地1"],
       body: `
         <section class="reveal"><div class="wrap access-route-showcase">
           <div class="route-map-board" aria-label="無料送迎バスの対応エリア">
@@ -3000,9 +2937,7 @@
           </div>
           <div class="story-text">
             <h2 class="accent-heading">通学に便利な無料送迎バスが便利です！</h2>
-            <p>通学しやすいように「無料送迎バス」を運行しております。筑紫野市、朝倉市、太宰府市などに乗降場所があります。</p>
-            <p>勤務先や学校・自宅近くの乗降場所からご利用いただけます。自宅近くの乗降場所からご利用頂けます。乗降場所は下のボタンからご確認いただけます。</p>
-            <p>通学に便利な無料送迎バスが便利です! 勤務先や学校・自宅近くの乗降場所からご利用頂けます。</p>
+            <p>通学しやすいように「無料送迎バス」を運行しております。筑紫野市、朝倉市、太宰府市などに乗降場所があり、勤務先や学校・自宅近くの乗降場所からご利用いただけます。乗降場所は下のボタンからご確認ください。</p>
             <div class="hero-actions"><a class="btn btn-purple" href="https://buscatch.jp/pc/area_map.php" target="_blank" rel="noopener">乗降場所の確認はこちらから</a></div>
           </div>
           <div class="hero-actions" style="margin-top:18px;">
@@ -3013,10 +2948,8 @@
         <section id="buscatch" class="band reveal"><div class="wrap buscatch-showcase">
           <div class="story-text">
             <h2 class="accent-heading">バスキャッチで24時間送迎バスが予約できます！</h2>
-            <p>筑紫野自動車学校では送迎バスの運行状況をリアルタイム検索可能な《バスキャッチシステム》を導入しています。教習生はどなたでも無料で自由にご利用いただけます。</p>
-            <p>バスキャッチなら、24時間いつでも予約・キャンセルができるので、急な予定の変更があってもサイトから変更ができるので安心です。</p>
-            <p>バスが乗車予定の場所に近づいたらメールでお知らせする機能もありますので、バスが到着するのを気にしながらずっとスマホサイトを見続ける必要はありません。バス停の場所はサイトから確認できるので、いつもと違う場所からの乗車も可能です。スマホアプリからもご予約ができます。</p>
-            <p>バスキャッチなら、24時間いつでも予約・キャンセルができるので、急な予定の変更があってもサイトから変更ができるので安心！バス停の場所はサイトから確認できるのでいつもと違う場所からの乗車も可能です。バスキャッチの予約はこちらから（ＰＣ）。</p>
+            <p>送迎バスの運行状況をリアルタイム検索できる《バスキャッチシステム》を導入しています。教習生はどなたでも無料でご利用いただけます。</p>
+            <p>24時間いつでも予約・キャンセルができるので、急な予定変更も安心。バスが乗車予定の場所に近づくとメールでお知らせする機能もあります。バス停の場所もサイトから確認でき、いつもと違う場所からの乗車も可能です。スマホアプリからも予約できます。</p>
             <ul class="buscatch-flow">
               <li><span>1</span>乗車したいエリア・バス停を選択</li>
               <li><span>2</span>予約・キャンセルをスマホから操作</li>
@@ -3035,11 +2968,11 @@
             </div>
           </div>
         </div></section>
-        <section class="band reveal"><div class="wrap">
+        <section class="band reveal" id="map"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">GOOGLE MAP</span><h2 class="section-title">学校所在地・Googleマップ</h2><p class="section-lead">〒818-0025 福岡県筑紫野市筑紫120番地1。Googleマップをサイト内で確認できます。</p></div></div>
           <iframe title="筑紫野自動車学校 地図" src="https://www.google.com/maps?q=%E7%AD%91%E7%B4%AB%E9%87%8E%E8%87%AA%E5%8B%95%E8%BB%8A%E5%AD%A6%E6%A0%A1&output=embed" loading="lazy" style="width:100%;height:440px;border:0;border-radius:8px;box-shadow:0 16px 44px rgba(45,27,87,.10);"></iframe>
           <div class="grid cols-2" style="margin-top:18px;">
-            <article class="card real-photo-card"><img src="images/current-site/pages/map-01.jpg" alt="アクセスマップ"><div class="card-copy"><h3>アクセスマップ</h3><p>学校周辺の位置関係を、Googleマップと合わせて確認できます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/map-01.jpg" alt="アクセスマップ"><div class="card-copy"><h3>アクセスマップ</h3><p>学校周辺の位置関係を、Googleマップと合わせて確認できます。</p></div></article>
             <article class="card"><h3>所在地</h3><p>〒818-0025 福岡県筑紫野市筑紫120番地1。送迎バスや来校ルートも同じページで確認できます。</p></article>
           </div>
         </div></section>`
@@ -3058,15 +2991,10 @@
         </div></section>
         <section class="band reveal"><div class="wrap">
           <div class="school-statement">筑紫野自動車学校は福岡県公安委員会指定校・技能試験免除</div>
-          <p>福岡県公安委員会指定校ですので、すべての免許について試験場では技能試験が免除です。いつも使っている学校のコースで検定を受けることができるため、不安なく検定を受けることができます。</p>
-          <div class="notice-box">
-            <p>筑紫野自動車学校は、普通自動車免許、準中型自動車免許、自動二輪車免許まで取得できるスクールで、取得後に別の免許を取得したい！という場合にも、卒業割引が受けられ免許も取得することができます。</p>
-            <p>筑紫野自動車学校では、刻々と変わる交通状況や複雑な道路環境に対応できるように「運転シミュレーター」等を使用しての教習も行っております。わかりやすい教習で事故を起こさない。事故に合わない指導を目指しています。</p>
-            <p>届出校は試験（検定）を運転免許試験場で合格するまで通い続けなければいけませんが、福岡県公安委員会指定校である筑紫野自動車学校は、いつも使っている学校のコースでの検定なので、不安なく検定を受けることができます。福岡県公安委員会指定校について詳しくご確認したい方は、下のボタンからご確認いただけます。</p>
-          </div>
+          <p>福岡県公安委員会指定校ですので、すべての免許について試験場では技能試験が免除です。届出校と違い、いつも使っている学校のコースで検定を受けられるため、不安なく検定に臨めます。</p>
         </div></section>
         <section class="reveal"><div class="wrap photo-story">
-          <figure class="story-photo"><img src="images/real/classroom-real.jpg" alt="広い教室と受付"></figure>
+          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/real/classroom-real.jpg" alt="広い教室と受付"></figure>
           <div class="story-text">
             <h2 class="accent-heading">令和2年設立の新しい自動車学校で教習が受けられます！</h2>
             <p>大人数収容の教室で、プロジェクターを使用した授業なども受けられます。</p>
@@ -3074,7 +3002,7 @@
           </div>
         </div></section>
         <section class="reveal"><div class="wrap photo-story reverse">
-          <figure class="story-photo"><img src="images/real/classroom-wide.jpg" alt="フロント・待合室"></figure>
+          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/real/classroom-wide.jpg" alt="フロント・待合室"></figure>
           <div class="story-text">
             <h2 class="accent-heading">フロント・待合室も新しくなり、過ごしやすい環境です。</h2>
             <p>広くて明るい受付。広々としたフロントだから待ち時間も快適にお過ごしいただけます。</p>
@@ -3082,18 +3010,11 @@
           </div>
         </div></section>
         <section class="reveal"><div class="wrap photo-story">
-          <figure class="story-photo"><img src="images/real/childcare-real.jpg" alt="託児施設"></figure>
+          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/real/childcare-real.jpg" alt="託児施設"></figure>
           <div class="story-text">
             <h2 class="accent-heading">託児施設完備でお子様と一緒でも安心！</h2>
             <p>教習の度に託児所に預けるのはちょっと不安、教習が終わってからお迎えに行くのは大変という忙しい方のために、校内に託児所を設置しています。</p>
             <p>遊具も完備し、ゆったり広々としたお部屋です。教習の合間に様子を見に行くことも、空き時間に一緒に遊ぶこともできます。</p>
-          </div>
-        </div></section>
-        <section class="reveal"><div class="wrap">
-          <div class="notice-box">
-            <p>大人数収容の教室で、プロジェクターを使用した授業なども受けられます。シミュレーターも完備していますので、実車では体験できない勉強が出来ます。また広いコースもあり夜間設備もバッチリ！</p>
-            <p>広くて明るい受付。広々としたフロントだから待ち時間も快適にお過ごしいただけます。受付も近くにあるので、分からないことはいつでもお問合せする事ができます。入校案内なども、各種申込手続きを受付スタッフが丁寧にご説明いたします。</p>
-            <p>教習の度に託児所に預けるのはちょっと不安・・・教習が終わってからお迎えに行くのは大変！という忙しいお母さんの為に校内に託児所を設置いたしました！遊具も完備、ゆったり広々としたお部屋です。教習の合間に様子を見に行くこともでき空き時間には一緒に遊ぶことも出来ます。</p>
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap">
@@ -3106,9 +3027,9 @@
         <section class="reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">FACILITY PHOTOS</span><h2 class="section-title">施設の様子</h2><p class="section-lead">受付、教室、託児室など、学校の実際の雰囲気が分かる写真をまとめています。</p></div></div>
           <div class="grid cols-3">
-            <article class="card real-photo-card"><img src="images/current-site/pages/school-01.jpg" alt="筑紫野自動車学校の施設写真1"><div class="card-copy"><h3>学校の雰囲気</h3><p>実際の学校の様子を写真で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img src="images/current-site/pages/school-02.jpg" alt="筑紫野自動車学校の施設写真2"><div class="card-copy"><h3>教習環境</h3><p>校舎・教室・コースなどの実物写真を補完します。</p></div></article>
-            <article class="card real-photo-card"><img src="images/current-site/pages/school-03.jpg" alt="筑紫野自動車学校の施設写真3"><div class="card-copy"><h3>安心できる施設</h3><p>受付、教室、託児室など、通う前に雰囲気を確認できます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/school-01.jpg" alt="筑紫野自動車学校の施設写真1"><div class="card-copy"><h3>学校の雰囲気</h3><p>実際の学校の様子を写真で確認できます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/school-02.jpg" alt="筑紫野自動車学校の施設写真2"><div class="card-copy"><h3>教習環境</h3><p>校舎・教室・コースなどの実物写真を補完します。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/school-03.jpg" alt="筑紫野自動車学校の施設写真3"><div class="card-copy"><h3>安心できる施設</h3><p>受付、教室、託児室など、通う前に雰囲気を確認できます。</p></div></article>
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap">
@@ -3147,7 +3068,6 @@
             <div class="compact-list">
               <article class="compact-row archive-row"><small>2024年12月20日</small><strong>オンライン学科教習について</strong><span>小テスト問題や回答ボタン等が視聴画面の大きさによりスクロールが必要になる場合があります。</span></article>
               <article class="compact-row archive-row"><small>2023年1月27日</small><strong>在校生向けのお知らせ</strong><span>教習・学科・検定に関する案内は、在校生メニューから確認できます。</span></article>
-              <article class="compact-row archive-row"><small>2020年5月29日</small><strong>新型コロナウイルス感染防止対策について</strong><span>指定教習所における感染防止ガイドラインに沿った対策を実施しています。</span></article>
             </div>
           </div>
         </div></section>
@@ -3171,30 +3091,6 @@
             <article id="musasi" class="card"><h3>効果測定MUSASI</h3><p>学科試験対策に使う効果測定システムです。仮免前・卒検前の確認に活用してください。ログインして利用し、苦手な問題を繰り返し練習できます。</p><div class="hero-actions"><a class="btn btn-purple" href="https://www.musasi.jp/amagi/" target="_blank" rel="noopener">学科練習をする</a></div></article>
           </div>
         </div></section>
-        <section class="band reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">INFECTION CONTROL</span><h2 class="section-title">新型コロナウイルス感染防止対策について</h2><p class="section-lead">指定教習所における感染防止ガイドラインに沿った対策を実施しています。</p></div></div>
-          <div class="grid cols-3">
-            <article class="card"><h3>来校時のお願い</h3><p>マスクの着用にご協力ください。マスクの無い方は受付までお越しください。消毒液を各所に設置していますので、手指の消毒、こまめな手洗い、ソーシャルディスタンス（最低1メートルの間隔の確保）にご協力ください。</p></article>
-            <article class="card"><h3>職員の館内感染防止対策</h3><p>職員は全員マスクを着用して業務を行います。検温を毎朝実施し、体調不良の無い職員が業務にあたります。教室など人の手が触れる場所は適宜消毒し、受付カウンターには飛沫防止ガードを設置しています。</p></article>
-            <article class="card"><h3>教習・講習等の感染防止対策</h3><p>教習車の窓は適度に開けて換気し、車両のハンドル、シフトレバーなどは毎時間消毒しています。複数教習（応急救護、高速教習等）は受講人数を制限の上で実施し、二輪教習については同乗教習を行いません。</p></article>
-            <article class="card"><h3>来校をお控えいただく場合</h3><p>発熱や咳の症状がある方、新型コロナウイルス陽性者と濃厚接触がある方、過去14日以内に入国制限対象地域への滞在歴がある方は、来校前に学校へご相談ください。</p></article>
-            <article class="card"><h3>教室・フロア</h3><p>定期的に窓を開け換気しています。フロアと学科教室はソーシャルディスタンスが確保できる座席配置にし、机等の消毒も行っています。</p></article>
-            <article class="card"><h3>送迎バス</h3><p>送迎バスは適度に窓を開け、飛沫防止シートを装着して運行しています。乗車時も手指消毒や体調管理にご協力ください。</p></article>
-          </div>
-          <div class="notice-box" style="margin-top:18px;">
-            <ul class="info-list">
-              <li>当校では指定教習所における新型コロナウイルス感染症の感染防止のためのガイドラインに沿った対策を実施しております。ご理解とご協力をお願い致します。</li>
-              <li>消毒液を各所に設置しています。手指の消毒にご協力ください。</li>
-              <li>ソーシャルディスタンス（最低1メートルの間隔の確保）にご協力ください。</li>
-              <li>職員は体調確認を行い、体調不良の無い職員が業務にあたります。</li>
-              <li>教習・講習等の感染防止対策として、教習車や送迎バスの消毒・換気を行います。</li>
-              <li>発熱や咳の症状がある方、陽性者と濃厚接触がある方、過去14日以内に入国制限対象地域に滞在歴がある方は来校をお控えください。</li>
-              <li>教室など人の手が触れる場所は適宜消毒しております。フロアはソーシャルディスタンスが確保できる座席配置をしております。</li>
-              <li>教習車の窓は適度に開けて換気しております。車両のハンドル、シフトレバーなどは毎時間消毒しております。</li>
-              <li>次の方は、ご来校をお控えいただくようお願い致します。発熱や咳の症状のある方、新型コロナウイルスについて陽性と診断された方と濃厚接触がある方などです。</li>
-            </ul>
-          </div>
-        </div></section>
         <section class="reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">CHECK LIST</span><h2 class="section-title">教習前に確認すること</h2><p class="section-lead">服装、予約変更、検定前の確認など、在校中によくある不安を短く整理しています。</p></div></div>
           <div class="grid cols-2">
@@ -3211,7 +3107,7 @@
       lead: "月別の教習カレンダーを、画像つきで確認できます。",
       image: "images/current-site/pages/teaching-02.png",
       visualCaption: "月ごとの教習予定を見落としにくく",
-      badges: ["5月", "6月", "学科予定", "休校日"],
+      badges: ["月別カレンダー", "学科予定", "休校日", "検定日"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">CALENDAR</span><strong>学科予定・休校日・検定日を月ごとに確認できます。</strong><p>教習カレンダーを月ごとに掲載しています。来校前や技能予約前に、最新月の予定を確認してください。</p></article>
@@ -3221,10 +3117,13 @@
             <a class="compact-row" href="detail.html?page=sotsugyoukentei"><small>TEST</small><strong>卒業検定について確認</strong><span>›</span></a>
           </div>
         </div></section>
+        <!-- ★更新運用メモ：毎月、下のカレンダー画像（teaching-01.png / teaching-02.png）を最新月のものに差し替え、
+             見出しの「〇月」も合わせて書き換えること。将来的にはmicroCMS等での自動更新に載せ替え予定。 -->
         <section class="reveal"><div class="wrap real-photo-grid">
-          <article class="card real-photo-card"><img src="images/current-site/pages/teaching-01.png" alt="5月教習カレンダー"><div class="card-copy"><h3>5月教習カレンダー</h3><p>教習予定を月ごとに確認できます。</p></div></article>
-          <article class="card real-photo-card"><img src="images/current-site/pages/teaching-02.png" alt="6月教習カレンダー"><div class="card-copy"><h3>6月教習カレンダー</h3><p>学科予定、休校日などを月ごとに確認できます。</p></div></article>
+          <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/teaching-01.png" alt="5月教習カレンダー"><div class="card-copy"><h3>5月教習カレンダー</h3><p>教習予定を月ごとに確認できます。</p></div></article>
+          <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/teaching-02.png" alt="6月教習カレンダー"><div class="card-copy"><h3>6月教習カレンダー</h3><p>学科予定、休校日などを月ごとに確認できます。</p></div></article>
         </div></section>
+        <section class="reveal"><div class="wrap"><p class="subnote">※最新月のカレンダーが表示されていない場合は、お手数ですが受付またはお電話（<a class="phone-link" href="tel:0927102188">092-710-2188</a>）でご確認ください。</p></div></section>
         <section class="band reveal"><div class="wrap cta-strip"><div><strong>検定日程も合わせて確認できます。</strong><p>修了検定・卒業検定の案内を在校生メニューからすぐ見られます。</p></div><a class="btn btn-purple" href="detail.html?page=students">在校生メニューへ</a></div></section>`
     },
     syuryokentei: {
@@ -3243,7 +3142,7 @@
           </div>
         </div></section>
         <section class="reveal"><div class="wrap real-photo-grid">
-          <article class="card real-photo-card"><img src="images/current-site/pages/syuryokentei-01.png" alt="修了検定について"><div class="card-copy"><h3>修了検定について</h3><p>検定受付や確認事項をまとめています。</p></div></article>
+          <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/syuryokentei-01.png" alt="修了検定について"><div class="card-copy"><h3>修了検定について</h3><p>検定受付や確認事項をまとめています。</p></div></article>
         </div></section>
         <section class="band reveal"><div class="wrap grid cols-3"><article class="card"><h3>日程確認</h3><p>検定日、集合時間、受付の流れを事前に確認します。</p></article><article class="card"><h3>持ち物</h3><p>必要書類、眼鏡等、筆記用具などを忘れないように確認します。</p></article><article class="card"><h3>不安なとき</h3><p>予約や受検条件で不明な点は受付へ相談できます。</p></article></div></section>`
     },
@@ -3263,7 +3162,7 @@
           </div>
         </div></section>
         <section class="reveal"><div class="wrap real-photo-grid">
-          <article class="card real-photo-card"><img src="images/current-site/pages/sotsugyoukentei-01.png" alt="卒業検定について"><div class="card-copy"><h3>卒業検定について</h3><p>卒業検定の受付や確認事項をまとめています。</p></div></article>
+          <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/sotsugyoukentei-01.png" alt="卒業検定について"><div class="card-copy"><h3>卒業検定について</h3><p>卒業検定の受付や確認事項をまとめています。</p></div></article>
         </div></section>
         <section class="band reveal"><div class="wrap grid cols-3"><article class="card"><h3>受検前</h3><p>技能教習の進行、検定予約、集合時間を確認します。</p></article><article class="card"><h3>当日</h3><p>受付、説明、検定、結果確認の流れを見落とさない導線にします。</p></article><article class="card"><h3>卒業後</h3><p>免許センターでの学科試験や交付手続きへ進みます。</p></article></div></section>`
     },
@@ -3273,7 +3172,7 @@
       lead: "免許の相談、料金確認、送迎の確認、資料請求、仮入校申し込みまで。迷ったら、まずここから相談できます。",
       image: "images/real/classroom-real.jpg",
       visualCaption: "料金・送迎・入校日の相談までまとめて",
-      badges: ["資料請求", "お問い合わせ", "仮入校", "郵送/デジタル選択"],
+      badges: ["資料請求", "お問い合わせ", "仮申込", "郵送/デジタル選択"],
       body: `
 	        <section class="reveal"><div class="wrap grid cols-3">
 	          <article class="card"><h3>資料請求</h3><p>パンフレットや入校案内を確認したい方へ。郵送・デジタル送付の希望も相談できます。</p></article>
@@ -3284,8 +3183,8 @@
 	        <section class="band reveal"><div class="wrap">
 	          <div class="section-head"><div><span class="eyebrow">ENTRY FLOW</span><h2 class="section-title">仮入校申し込みの流れ</h2><p class="section-lead">PC・スマホどちらでも、入力から送信までの流れを確認できます。</p></div></div>
           <div class="grid cols-2">
-            <article class="card real-photo-card"><img src="images/current-site/pages/entry-01.gif" alt="仮入校申し込み PC用ステップ"><div class="card-copy"><h3>PCでの申し込み手順</h3><p>入力から送信までの流れを、図解で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img src="images/current-site/pages/entry-02.gif" alt="仮入校申し込み スマホ用ステップ"><div class="card-copy"><h3>スマホでの申し込み手順</h3><p>スマホ閲覧時にも、どの順番で進めるかが分かるように掲載します。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/entry-01.gif" alt="仮入校申し込み PC用ステップ"><div class="card-copy"><h3>PCでの申し込み手順</h3><p>入力から送信までの流れを、図解で確認できます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/entry-02.gif" alt="仮入校申し込み スマホ用ステップ"><div class="card-copy"><h3>スマホでの申し込み手順</h3><p>スマホ閲覧時にも、どの順番で進めるかが分かるように掲載します。</p></div></article>
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap">
@@ -3305,7 +3204,7 @@
 	            <div class="field"><label for="organization">お勤め先（学校・会社）名</label><input id="organization" name="organization" placeholder="学校名・会社名"></div>
 	            <div class="field"><label for="introducer">紹介者名</label><input id="introducer" name="introducer" placeholder="紹介者がいる場合"></div>
 	            <div class="field"><label for="desiredEntryDate">入校希望日</label><input id="desiredEntryDate" name="desiredEntryDate" placeholder="木曜日・土曜日など"></div>
-	            <div class="field" data-entry-field><label for="priceCourse">料金コース</label><select id="priceCourse" name="priceCourse"><option value="" selected>選択してください</option><option value="ordinary_at">普通自動車AT</option><option value="ordinary_mt">普通自動車MT</option><option value="semi_medium">準中型MT</option><option value="motorcycle_mt">普通二輪MT</option><option value="motorcycle_at">普通二輪AT</option></select></div>
+	            <div class="field" data-entry-field><label for="priceCourse">料金コース</label><select id="priceCourse" name="priceCourse"><option value="" selected>選択してください</option><option value="ordinary_at">普通自動車AT</option><option value="ordinary_mt">普通自動車MT（AT取得後に移行）</option><option value="semi_medium">準中型MT</option><option value="motorcycle_mt">普通二輪MT</option><option value="motorcycle_at">普通二輪AT</option></select></div>
 	            <div class="field" data-entry-field><label for="currentLicense">現在の免許証</label><select id="currentLicense" name="currentLicense"><option value="" selected>選択してください</option></select></div>
 	            <div class="field" data-entry-field><label for="userType">区分</label><select id="userType" name="userType"><option value="" selected>選択してください</option><option value="student">学生</option><option value="general">一般</option></select></div>
 	            <div class="field" data-entry-field><label for="pricePlan">料金プラン</label><select id="pricePlan" name="pricePlan"><option value="" selected>選択してください</option><option value="day">デイプラン</option><option value="free">フリープラン</option></select></div>
@@ -3351,9 +3250,9 @@
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">TOPICS</span><strong>学校からのお知らせ・活動報告を写真付きで掲載。</strong><p>交通安全活動、表彰、学校からのお知らせなど、大切な情報を見やすく整理しています。</p></article>
           <div class="compact-list">
-            <a class="compact-row" href="detail.html?page=topics"><small>2026.05.27</small><strong>交通事故防止コンクールにおいて金賞を受賞しました</strong><span>›</span></a>
-            <a class="compact-row" href="detail.html?page=topics"><small>2026.05.13</small><strong>福岡県指定自動車学校協会会長から表彰状を頂きました。</strong><span>›</span></a>
-            <a class="compact-row" href="detail.html?page=topics"><small>2026.02.09</small><strong>福岡県警察本部交通部運転免許試験課長から表彰状を頂きました。</strong><span>›</span></a>
+            <div class="compact-row"><small>2026.05.27</small><strong>交通事故防止コンクールにおいて金賞を受賞しました</strong></div>
+            <div class="compact-row"><small>2026.05.13</small><strong>福岡県指定自動車学校協会会長から表彰状を頂きました。</strong></div>
+            <div class="compact-row"><small>2026.02.09</small><strong>福岡県警察本部交通部運転免許試験課長から表彰状を頂きました。</strong></div>
           </div>
         </div></section>
         <section class="reveal"><div class="wrap cta-strip"><div><strong>休校日や検定情報を見落としたくない方へ。</strong><p>在校生向けページに、カレンダー・検定・オンライン学科の入口をまとめています。</p></div><a class="btn btn-purple" href="detail.html?page=students">在校生メニューへ</a></div></section>`
@@ -3381,7 +3280,7 @@
               ["sumi-asami", "角 麻美", "すみちゃん", "音楽を聴く・美味しそうな料理のレシピを見る"],
               ["goto-ryoko", "後藤 良子", "りょうこ", "ガーデニング"],
               ["goto-keiko", "後藤 桂子", "けいこ", "料理、ミシン"],
-	              ["sawamizu-nobuo", "澤水 信雄", "久留米散策", "久留米の街歩き・釣り"],
+	              ["sawamizu-nobuo", "澤水 信雄", "", "久留米の街歩き・釣り"],
               ["tanigawa-takuro", "谷川 拓郎", "たっしゃん", "読書"],
               ["yamamoto-shosuke", "山本 勝介", "山本 勝", "動物園巡り"],
               ["nakamura-masanobu", "中村 正信", "散歩ッポ", "スポーツ観戦"],
@@ -3392,8 +3291,8 @@
               ["shirachi-sadaaki", "白地 貞昭", "重戦車", "スポーツカー、バイク、スイーツ巡り"],
               ["yamamoto-kazuhiro", "山本 一博", "山本2号", "旅行"],
               ["matsumoto-yoichi", "松本 洋一", "シャッ君", "釣り・キャンプ"],
-              ["teshima-yukio", "手嶋 幸男", "ユキオ", "非常勤教習指導員"]
-            ].map(([slug, name, nickname, hobby])=>`<article class="instructor-profile-card"><img src="images/instructors-anime/${slug}.webp" alt="${name} 指導員"><div><h3>${name}</h3><dl><div><dt>ニックネーム</dt><dd>${nickname}</dd></div><div><dt>趣味</dt><dd>${hobby}</dd></div></dl></div></article>`).join("")}
+              ["teshima-yukio", "手嶋 幸男", "ユキオ", ""]
+            ].map(([slug, name, nickname, hobby])=>`<article class="instructor-profile-card"><img loading="lazy" decoding="async" src="images/instructors-anime/${slug}.webp" alt="${name} 指導員"><div><h3>${name}</h3><dl>${nickname ? `<div><dt>ニックネーム</dt><dd>${nickname}</dd></div>` : ""}${hobby ? `<div><dt>趣味</dt><dd>${hobby}</dd></div>` : ""}</dl></div></article>`).join("")}
           </div>
         </div></section>
         <section class="reveal"><div class="wrap cta-strip"><div><strong>不安なことは、申し込み前に相談できます。</strong><p>運転が苦手、通える日が限られる、送迎を使いたいなど、気になる点を先に確認しましょう。</p></div><a class="btn btn-orange" href="detail.html?page=application">相談してみる</a></div></section>`
@@ -3412,7 +3311,7 @@
         ["広い教習コース","広いコースと夜間設備で、のびのび練習できます。","images/real/course-vehicles.jpg"],
         ["送迎バス","広いエリアをカバーし、通学を支えます。","images/real/bus-real.jpg"],
         ["二輪・各種講習","普通二輪、限定解除、講習メニューにも対応しています。","images/real/motorcycle-real.jpg"]
-      ].map(([h,p,img])=>`<article class="card hoverable real-photo-card"><img src="${img}" alt="${h}"><div class="card-copy"><h3>${h}</h3><p>${p}</p></div></article>`).join("")}</div></section>`
+      ].map(([h,p,img])=>`<article class="card hoverable real-photo-card"><img loading="lazy" decoding="async" src="${img}" alt="${h}"><div class="card-copy"><h3>${h}</h3><p>${p}</p></div></article>`).join("")}</div></section>`
     },
     why: {
       eyebrow: "WHY LICENSE",
@@ -3435,17 +3334,7 @@
               ["07", "学校の帰りに通えるから。大学生協の提携校だから。", "大学帰りに通える距離感と、学生向けの相談しやすさ。日常の延長で免許取得を進められます。", "images/real/course-car-card-real.jpg"],
               ["08", "ママの免許取得でも、お子様と一緒でも安心だから。", "託児施設を備えているので、お子様連れでも相談しながら通えます。子育て中の免許取得を支えます。", "images/real/childcare-room-real.jpg"],
               ["09", "無料送迎バスで自宅近くやバイト先から学校に通いたいから。", "自宅近く、学校、勤務先など、生活の動線に合わせて送迎を確認できます。無理なく通えるかを先に見られます。", "images/real/bus-front-real.jpg"]
-            ].map(([no,h,p,img])=>`<article class="card hoverable reason-card"><img src="${img}" alt="${h}"><div class="reason-copy"><span class="reason-no">${no}</span><h3>${h}</h3><p>${p}</p></div></article>`).join("")}
-          </div>
-        </div></section>
-        <section class="band reveal"><div class="wrap">
-	          <div class="section-head"><div><span class="eyebrow">ORIGINAL REASONS</span><h2 class="section-title">私が自動車学校に通う理由。</h2><p class="section-lead">現行サイトで伝えている通う理由も、言い換えすぎず読みやすく整理しています。</p></div></div>
-          <div class="grid cols-2">
-            <article class="card"><h3>仕事や将来のため</h3><p>要運転免許の職種や業種もまだまだありますよね。就職後も運転免許があれば仕事の幅も広がります。社会に出ると突然運転免許が必要になることも。先を見越して自動車学校に通ってみてはいかがですか？</p></article>
-            <article class="card"><h3>子育てや暮らしのため</h3><p>小さなお子様とお出かけする時に、運転免許の本当のありがたみがわかるのかもしれませんね。自動車のある生活はドライブや旅行など楽しいイベントも増えますよね。めざせバラ色の生活!!</p></article>
-            <article class="card"><h3>自分のペースで通えるから</h3><p>通学型の自動車学校であれば、卒業までの期間を気にせずじっくり通うことも可能ですよ。時間に余裕のある方は今が通い時かも。生活が忙しくなる前に免許を取ってしまいましょう。</p></article>
-            <article class="card"><h3>休みや遊びに活かせるから</h3><p>コツコツ時間を作って免許を取り、長期のお休みに車を使ってしっかり遊ぶ…賢い作戦かもしれません。通学型の自動車学校でもスケジュールをうまく調整すれば合宿校と同程度の期間で免許取得可能です。</p></article>
-            <article class="card"><h3>近くて安心だから</h3><p>家から近いと気軽に通えるので、ペーパードライバー向けの講習や限定解除などの際にも安心ですよね。</p></article>
+            ].map(([no,h,p,img])=>`<article class="card hoverable reason-card"><img loading="lazy" decoding="async" src="${img}" alt="${h}"><div class="reason-copy"><span class="reason-no">${no}</span><h3>${h}</h3><p>${p}</p></div></article>`).join("")}
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap page-summary">
@@ -3466,23 +3355,13 @@
       badges: ["朝倉郡", "朝倉市", "筑紫野市", "設置先一覧"],
       body: `
         <section class="reveal"><div class="wrap photo-story">
-          <figure class="story-photo"><img src="images/current-site/pages/pamphlet-01.jpg" alt="パンフレット設置情報"></figure>
+          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/current-site/pages/pamphlet-01.jpg" alt="パンフレット設置情報"></figure>
           <div class="story-text">
             <h2 class="accent-heading">近くの設置先でパンフレットを確認できます。</h2>
             <p>朝倉郡、朝倉市、筑紫野市などの案内所名、所在地、電話番号を地域ごとに探しやすく整理しています。</p>
             <p>資料請求フォームからもパンフレット送付やデジタル案内を相談できます。</p>
             <div class="hero-actions"><a class="btn btn-orange" href="detail.html?page=application">資料請求する</a></div>
           </div>
-        </div></section>
-        <section class="band reveal"><div class="wrap grid cols-3">
-          <article class="card"><h3>朝倉郡エリア</h3><p>筑前町周辺の設置先を掲載。整骨院、店舗、事業所など、生活導線上で手に取れる場所を整理します。</p></article>
-          <article class="card"><h3>朝倉市エリア</h3><p>朝倉市内の設置先を掲載。通学・通勤のついでに確認しやすい場所をまとめます。</p></article>
-          <article class="card"><h3>筑紫野市エリア</h3><p>学校周辺や市内の設置先を掲載。詳しい資料が必要な方は資料請求へ進めます。</p></article>
-          <article class="card"><h3>小郡市エリア</h3><p>小郡市内の設置先を掲載。通勤・通学圏からパンフレットを確認できます。</p></article>
-          <article class="card"><h3>久留米市エリア</h3><p>久留米市内の設置先も掲載し、周辺地域からの資料確認に対応します。</p></article>
-          <article class="card"><h3>太宰府市エリア</h3><p>太宰府市内の設置先を掲載。店舗や事業所など、生活圏内で手に取りやすい場所を整理します。</p></article>
-          <article class="card"><h3>福岡市エリア</h3><p>天神・早良区方面の設置先も掲載。学校から少し離れたエリアでも資料を確認できます。</p></article>
-          <article class="card"><h3>三井郡・春日市エリア</h3><p>三井郡大刀洗町、春日市の設置先も掲載し、広域からの資料確認に対応します。</p></article>
         </div></section>
         <section class="reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">SPOT LIST</span><h2 class="section-title">パンフレット設置案内所</h2><p class="section-lead">案内所名、所在地、電話番号を地域別に掲載しています。</p></div></div>
@@ -3634,12 +3513,6 @@
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">JOB DESCRIPTION</span><h2 class="section-title">募集要項</h2></div></div>
           <p class="section-lead">筑紫野自動車学校では、教習指導員有資格者を募集しています。教習生のために親身になれる方を募集しています。しばらく教習業務から離れていた方もご相談ください。</p>
-          <div class="notice-box">
-            <p>筑紫野自動車学校では、現在、教習指導員有資格者の募集を行っております。教習生のために親身になれる方を募集しています。しばらく教習業務から離れていても心配ありません。ご連絡をお待ちしています！</p>
-            <p>※初心運転者の育成に携わる教習指導を行っていただきます。勤務時間は10時30分 〜 20時30分（4月 〜 1月）、9時30分 〜 20時30分（2月 〜 3月）です。</p>
-            <p>☆インストラクター（教習指導員）◎教習開始後、上記給与に実績に応じ教習手当・残業手当支給。役職給・職能給・通勤手当・家族手当・残業手当・資格手当・休日手当 等があります。</p>
-            <p>昇給は年1回（10月）、当社規定により基本給（年齢テーブル）と職能給が上がります。福利厚生保険などは、社会保険等（健康・厚生年金・雇用・労災）、車通勤可、資格取得支援です。</p>
-          </div>
           <table class="data-table"><tbody><tr><th>職種</th><td>インストラクター（教習指導員）</td></tr><tr><th>仕事内容</th><td>初心運転者の育成に携わる教習指導を行っていただきます。</td></tr><tr><th>雇用形態</th><td>正社員（指導員候補生期間は契約社員）</td></tr><tr><th>対象学歴</th><td>インストラクター：大学卒・短大卒・専門学校卒</td></tr><tr><th>勤務地</th><td>筑紫野自動車学校</td></tr><tr><th>勤務時間</th><td>10:30〜20:30（4月〜1月）/ 9:30〜20:30（2月〜3月）</td></tr><tr><th>給与</th><td>教習開始後、給与に実績に応じた教習手当・残業手当を支給します。</td></tr><tr><th>諸手当</th><td>役職給、職能給、通勤手当、家族手当、残業手当、資格手当、休日手当 等</td></tr><tr><th>賞与</th><td>実績による</td></tr><tr><th>昇給</th><td>年1回（10月）。当社規定により基本給（年齢テーブル）と職能給が上がります。</td></tr><tr><th>福利厚生</th><td>社会保険等（健康・厚生年金・雇用・労災）、車通勤可、資格取得支援</td></tr><tr><th>休日・休暇</th><td>年間スケジュールにより年間約105日。有給休暇、慶弔休暇あり。</td></tr><tr><th>応募方法</th><td>履歴書を〒818-0025 福岡県筑紫野市筑紫120番地1 筑紫野自動車学校 総務課宛に郵送してください。</td></tr><tr><th>連絡先</th><td>筑紫野自動車学校 総務課 / TEL：092-710-2188</td></tr></tbody></table>
         </div></section>
         <section class="reveal"><div class="wrap cta-strip"><div><strong>応募前に学校の雰囲気を知りたい方へ。</strong><p>学校紹介、施設紹介、教官紹介ページで働く環境を確認できます。</p></div><a class="btn btn-purple" href="detail.html?page=school">学校紹介を見る</a></div></section>`
@@ -3672,9 +3545,7 @@
             <article class="card"><h3>入校希望者情報</h3><p>入校希望者のお名前（漢字・カタカナ）、メールアドレス、電話番号を入力します。「個人情報保護方針」をご確認いただいた後、個人情報保護方針への同意に同意して送信します。</p></article>
           </div>
           <div class="notice-box">
-            <p>友人・知人ご紹介。友人、知人ご紹介フォームからご紹介して頂いた方には、謝礼をお渡しします。</p>
-            <p>「個人情報保護方針」をご確認いただいた後、下記の項目をご入力ください。入力の際、アルファベット・数字は半角文字、カタカナは全角文字をお使いください。また、外字等の特殊な文字は使用しないでください。お名前（カタカナ）も忘れずに入力してください。</p>
-            <p>もし数時間経っても自動返信メールが届かない場合は、お手数ですが、下記までお問い合わせください。Email：info@chikushi-ds.com / TEL：092-710-2188</p>
+            <p>数時間経っても自動返信メールが届かない場合は、お手数ですがお問い合わせください。Email：info@chikushi-ds.com / TEL：092-710-2188</p>
           </div>
         </div></section>`
     },
@@ -3687,37 +3558,32 @@
       badges: ["技能時限", "学科時限", "修了検定", "卒業検定"],
       body: `
         <section class="reveal"><div class="wrap grid cols-3 steps">
-          ${["入校説明・適性検査","第1段階の技能・学科","修了検定・仮免学科","第2段階の路上教習","卒業検定","免許センターで本試験"].map((t)=>`<article class="card step-card"><h3>${t}</h3><p>必要な持ち物や予約の確認をしながら、次にやることが分かるように案内します。</p></article>`).join("")}
-        </div></section>
-        <section class="reveal"><div class="wrap">
-          <div class="notice-box">
-            <p>普通自動車免許取得までの流れ：AT車・MT車使用、AT車卒業後MT車取得（AT車+MT車使用）。※自動二輪免許持ちの方は学科試験が免除になります。</p>
-            <p>準中型車免許取得までの流れ：現有免許なし・原付免許あり、普通車MT、普通車ATなど、現有免許に応じて必要な教習時限が変わります。</p>
-            <p>二輪車免許取得までの流れ：現有免許なし・原付免許あり、普通自動二輪AT車、普通自動二輪（小型限定）AT車、普通自動二輪車（小型限定）MT車などを確認できます。</p>
-            <p>限定解除までの流れ：普通自動車MT車、準中型車、普通自動二輪、普通二輪小型限定など、解除したい条件に応じた流れを確認できます。</p>
-            <p><strong>普通自動車免許取得までの流れ</strong>：AT普通自動車、MT普通自動車、AT車卒業後MT車取得など、取得する免許と現有免許により必要な技能教習・学科教習の規定時限数が変わります。自動二輪免許持ちの方は学科試験が免除になります。</p>
-            <p><strong>二輪・準中型・限定解除の流れ</strong>：普通二輪、大型二輪、準中型、準中型限定解除なども、入校から適性検査、技能教習、卒業検定、免許センター手続きまでの流れを確認できます。</p>
-          </div>
+          ${[
+            ["入校説明・適性検査", "入校日に教習の進め方の説明と運転適性検査を受けます。"],
+            ["第1段階の技能・学科", "場内コースでの技能教習と学科教習を進めます。"],
+            ["修了検定・仮免学科", "修了検定と仮免学科試験に合格すると、仮免許が交付されます。"],
+            ["第2段階の路上教習", "路上での技能教習と第2段階の学科で、実践力を身につけます。"],
+            ["卒業検定", "路上・場内での卒業検定に合格すると、卒業証明書が交付されます。"],
+            ["免許センターで本試験", "運転免許試験場で学科試験に合格すると免許交付。技能試験は免除です。"]
+          ].map(([t, p])=>`<article class="card step-card"><h3>${t}</h3><p>${p}</p></article>`).join("")}
         </div></section>
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">LICENSE FLOW</span><h2 class="section-title">免許交付までの流れ</h2><p class="section-lead">普通車・準中型・二輪など、免許ごとの流れを確認できます。</p></div></div>
           <div class="grid cols-3">
-            <article class="card real-photo-card"><img src="images/current-site/pages/license-01.png" alt="普通車AT 免許交付の流れ"><div class="card-copy"><h3>普通車AT</h3><p>入校から卒業、免許センターでの交付までの流れ。</p></div></article>
-            <article class="card real-photo-card"><img src="images/current-site/pages/license-03.png" alt="普通車AT/MT 免許交付の流れ"><div class="card-copy"><h3>普通車AT/MT</h3><p>普通車取得時の段階を現行図版で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img src="images/current-site/pages/license-04.png" alt="準中型 免許交付の流れ"><div class="card-copy"><h3>準中型</h3><p>現有免許に応じた流れを確認しやすくします。</p></div></article>
-            <article class="card real-photo-card"><img src="images/current-site/pages/license-05.png" alt="普通二輪 免許交付の流れ"><div class="card-copy"><h3>普通二輪</h3><p>二輪免許の取得ステップを現行画像で掲載。</p></div></article>
-            <article class="card real-photo-card"><img src="images/current-site/pages/license-06.png" alt="自動二輪 免許交付の流れ"><div class="card-copy"><h3>自動二輪</h3><p>二輪系の取得ステップも、図版で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img src="images/current-site/pages/license-07.png" alt="二輪 免許交付の流れ"><div class="card-copy"><h3>二輪各種</h3><p>普通二輪・大型二輪の流れ確認に使えます。</p></div></article>
-            <article class="card real-photo-card"><img src="images/current-site/pages/license-08.png" alt="限定解除 免許交付の流れ"><div class="card-copy"><h3>限定解除</h3><p>限定解除の受講から審査までを確認できます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-01.png" alt="普通車AT 免許交付の流れ"><div class="card-copy"><h3>普通車AT</h3><p>入校から卒業、免許センターでの交付までの流れ。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-03.png" alt="普通車AT/MT 免許交付の流れ"><div class="card-copy"><h3>普通車AT/MT</h3><p>普通車取得時の段階を現行図版で確認できます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-04.png" alt="準中型 免許交付の流れ"><div class="card-copy"><h3>準中型</h3><p>現有免許に応じた流れを確認しやすくします。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-05.png" alt="普通二輪 免許交付の流れ"><div class="card-copy"><h3>普通二輪</h3><p>二輪免許の取得ステップを現行画像で掲載。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-06.png" alt="自動二輪 免許交付の流れ"><div class="card-copy"><h3>自動二輪</h3><p>二輪系の取得ステップも、図版で確認できます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-07.png" alt="二輪 免許交付の流れ"><div class="card-copy"><h3>二輪各種</h3><p>普通二輪・大型二輪の流れ確認に使えます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-08.png" alt="限定解除 免許交付の流れ"><div class="card-copy"><h3>限定解除</h3><p>限定解除の受講から審査までを確認できます。</p></div></article>
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">REQUIRED HOURS</span><h2 class="section-title">主な必要時限</h2><p class="section-lead">現有免許により必要な技能・学科時限が変わります。料金シミュレーターと合わせて確認できます。</p></div></div>
           <table class="data-table"><thead><tr><th>車種</th><th>現有免許</th><th>技能教習 規定時限数</th><th>学科教習 規定時限数</th></tr></thead><tbody>
             <tr><td>普通自動車AT</td><td>なし・原付</td><td>31時限</td><td>26時限</td></tr>
-            <tr><td>普通自動車MT</td><td>なし・原付</td><td>34時限</td><td>26時限</td></tr>
             <tr><td>普通自動車AT</td><td>自動二輪</td><td>29時限</td><td>2時限</td></tr>
-            <tr><td>普通自動車MT</td><td>自動二輪</td><td>32時限</td><td>2時限</td></tr>
             <tr><td>AT車卒業後MT車取得</td><td>なし・原付</td><td>35時限</td><td>26時限</td></tr>
             <tr><td>AT車卒業後MT車取得</td><td>自動二輪</td><td>33時限</td><td>2時限</td></tr>
             <tr><td>準中型車</td><td>なし・原付</td><td>41時限</td><td>27時限</td></tr>
@@ -3729,6 +3595,7 @@
             <tr><td>普通自動二輪MT</td><td>なし・原付</td><td>19時限</td><td>26時限</td></tr>
             <tr><td>普通自動二輪MT</td><td>普通車</td><td>17時限</td><td>1時限</td></tr>
             <tr><td>大型自動二輪MT</td><td>普通車</td><td>31時限</td><td>1時限</td></tr>
+            <tr><td>大型自動二輪MT</td><td>小型二輪AT</td><td>24時限</td><td>-</td></tr>
             <tr><td>大型自動二輪MT</td><td>小型二輪MT</td><td>20時限</td><td>-</td></tr>
             <tr><td>大型自動二輪MT</td><td>普通二輪AT</td><td>16時限</td><td>-</td></tr>
             <tr><td>大型自動二輪MT</td><td>普通二輪MT</td><td>12時限</td><td>-</td></tr>
@@ -3786,20 +3653,11 @@
           </div>
           <div class="notice-box" style="margin-top:18px;">
             <ul class="info-list">
-              <li>業務上の交通事故は企業様にとって、最も身近で深刻なリスクと言えます。</li>
-              <li>企業ドライバーとして初めて従事される方が、即戦力として活躍できるように、この講習を通してプロ意識を育成する。</li>
-              <li>現在企業ドライバーとして従事されている方の運転の慣れや過信による事故を防ぐ。</li>
-              <li>企業様向け安全講習では、運転診断を通して安全運転意識の再確認を図り、安全運転の心得とは？を再確認、再認識して頂けることを目的とし行います。</li>
-              <li>自動車運転に関わるマナーと心構えを講師による講義形式で実施、交通法規に基づいた運転技能を当校の技能検定員によって、指導いたします。</li>
-              <li>普通車講習で3時間の場合の例です。1時間目-OD式運転適性検査、2時間目-運転技能診断、3時間目-運転技能矯正。講習料（1時限）は7,000円（税込）です。</li>
-              <li>企業ドライバーとして初めて従事される方が、即戦力として活躍できるように、この講習を通してプロ意識を育成します。</li>
-              <li>現在企業ドライバーとして従事されている方の運転の慣れや過信による事故を防ぎます。</li>
-              <li>ドライバーの安全教育を積極的に行っているという企業のCSR（社会的責任）にもつながります。</li>
-              <li>企業様向け安全講習では、運転診断を通して安全運転意識の再確認を図り、安全運転の心得とは何かを再確認、再認識して頂けることを目的とし行います。</li>
-              <li>企業の安全意識管理に応え、ドライバーの安全意識の向上と交通事故防止を図ることを目的とした講習を行い、企業のイメージアップに貢献させて頂きます。</li>
-              <li>企業様の安全管理及び、社員教育の一環としてご利用下さい。</li>
-              <li>各企業様よりご希望をお伺いして、講習プランを作成致します。</li>
-              <li>講習の内容・人数・時間帯は、業務内容や受講者の運転経験に合わせてご相談いただけます。</li>
+              <li>初めて企業ドライバーとして従事される方のプロ意識を育成し、即戦力として活躍できるようにします。</li>
+              <li>現在従事されている方の、運転の慣れや過信による事故を防ぎます。</li>
+              <li>ドライバーの安全教育を積極的に行っているという、企業のCSR（社会的責任）・イメージアップにもつながります。</li>
+              <li>マナーと心構えは講師による講義形式で、運転技能は当校の技能検定員による実車指導で行います。</li>
+              <li>講習の内容・人数・時間帯は、業務内容や受講者の運転経験に合わせて講習プランを作成します。お気軽にご相談ください。</li>
             </ul>
           </div>
           <div class="grid cols-4" style="margin-top:18px;">
@@ -3816,7 +3674,7 @@
 	      lead: "筑紫野自動車学校を運営する株式会社CDSの基本情報です。",
       image: "images/real/building-facade-real.jpg",
       visualCaption: "福岡県公安委員会指定・技能試験免除",
-      badges: ["株式会社CDS", "公安委員会指定校", "筑紫野市筑紫120-1"],
+      badges: ["株式会社CDS", "公安委員会指定校", "筑紫野市筑紫120番地1"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">PROFILE</span><strong>地域の交通安全を支える、公安委員会指定の自動車学校。</strong><p>筑紫野自動車学校は、普通自動車・準中型・自動二輪などの免許取得をサポートし、地域の交通安全教育センターとしての役割も担っています。</p></article>
@@ -3846,7 +3704,7 @@
           </div>
         </div></section>
         <section class="reveal"><div class="wrap photo-story">
-          <figure class="story-photo"><img src="images/real/building-sign-real.jpg" alt="筑紫野自動車学校の校舎サイン"></figure>
+          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/real/building-sign-real.jpg" alt="筑紫野自動車学校の校舎サイン"></figure>
           <div class="story-text"><h2 class="accent-heading">交通事故のない安全安心な地域社会の実現を目指して。</h2><p>地域における交通安全教育センターとして、学校や企業の交通安全教育活動、児童の保護誘導活動などにも取り組んでいます。</p><p>入校を検討する方だけでなく、地域や企業との関わりも見えるように、会社概要ページとして独立させました。</p></div>
         </div></section>`
     },
@@ -3978,6 +3836,67 @@
     `).join("");
   }
 
+  function updatePageMeta(id, page, isNotFound) {
+    const canonicalUrl = isNotFound ? "https://chikushi-ds.com/detail.html" : `https://chikushi-ds.com/detail.html?page=${id}`;
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = canonicalUrl;
+    const description = (page.lead || "").replace(/\s+/g, " ").trim().slice(0, 120) || "筑紫野自動車学校の詳細案内ページです。";
+    const setContent = (selector, value) => {
+      const el = document.querySelector(selector);
+      if (el) el.setAttribute("content", value);
+    };
+    setContent('meta[name="description"]', description);
+    setContent('meta[property="og:title"]', document.title);
+    setContent('meta[property="og:description"]', description);
+    setContent('meta[property="og:url"]', canonicalUrl);
+    let robots = document.querySelector('meta[name="robots"]');
+    if (isNotFound) {
+      if (!robots) {
+        robots = document.createElement("meta");
+        robots.name = "robots";
+        document.head.appendChild(robots);
+      }
+      robots.content = "noindex";
+    } else if (robots) {
+      robots.remove();
+    }
+  }
+
+  function injectFaqJsonLd() {
+    if (document.querySelector("script[data-faq-jsonld]")) return;
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.setAttribute("data-faq-jsonld", "true");
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(([q, a]) => ({
+        "@type": "Question",
+        "name": q,
+        "acceptedAnswer": { "@type": "Answer", "text": a }
+      }))
+    });
+    document.head.appendChild(script);
+  }
+
+  const notFoundPage = {
+    title: "ページが見つかりません",
+    lead: "お探しのページは見つかりませんでした。URLをご確認いただくか、下のリンクからお進みください。",
+    body: `
+      <section class="reveal"><div class="wrap">
+        <div class="compact-list">
+          <a class="compact-row" href="index.html"><small>TOP</small><strong>トップページへ戻る</strong><span>›</span></a>
+          <a class="compact-row" href="detail.html?page=admission"><small>GUIDE</small><strong>入校案内を見る</strong><span>›</span></a>
+          <a class="compact-row" href="detail.html?page=price"><small>PRICE</small><strong>料金・シミュレーター</strong><span>›</span></a>
+        </div>
+      </div></section>`
+  };
+
   function renderPage() {
     const params = new URLSearchParams(location.search);
     const aliases = {
@@ -3998,15 +3917,25 @@
     };
     const requested = params.get("page");
     const resolved = aliases[requested] || requested;
-    const id = pages[resolved] ? resolved : "admission";
-    const page = pages[id];
+    const isNotFound = Boolean(requested) && !pages[resolved];
+    const id = !isNotFound && pages[resolved] ? resolved : "admission";
+    const page = isNotFound ? notFoundPage : pages[id];
     document.title = `${page.title}｜筑紫野自動車学校`;
+    updatePageMeta(id, page, isNotFound);
+    if (!isNotFound && id === "faq") injectFaqJsonLd();
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "page_view", {
+        page_title: document.title,
+        page_location: location.href,
+        page_path: `${location.pathname}${location.search}`
+      });
+    }
     const visual = page.topVisual || {
       desktop: `images/detail-pages/visuals/${id}-desktop.webp`,
       mobile: `images/detail-pages/visuals/${id}-mobile.webp`,
       alt: `${page.title}の情報を整理した図`
     };
-    const topVisual = `<section class="subpage-infographic"><div class="wrap">
+    const topVisual = isNotFound ? "" : `<section class="subpage-infographic"><div class="wrap">
       <picture>
         <source media="(max-width: 767px)" srcset="${visual.mobile || visual.src}">
         <img src="${visual.desktop || visual.src}" alt="${visual.alt}" loading="eager" decoding="async">
@@ -4085,8 +4014,6 @@
     requestAnimationFrame(() => {
       const target = document.getElementById(id);
       if (!target) return;
-      const revealParent = target.closest(".reveal");
-      if (revealParent) revealParent.classList.add("is-visible");
       setTimeout(() => target.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
     });
   }
@@ -4101,7 +4028,7 @@
 	      }
 	    },
 	    ordinary_mt: {
-	      label: "普通自動車MT",
+	      label: "普通自動車MT（AT取得後に移行）",
 	      licenses: {
 	        phone: { label: "免許なし・原付など", phoneOnly: true }
 	      }
@@ -4110,6 +4037,8 @@
       label: "準中型MT",
       licenses: {
         none: { label: "なし", student: { day: 401280, free: 423280 }, general: { day: 406280, free: 428280 } },
+        moped: { label: "原付", student: { day: 397980, free: 419980 }, general: { day: 402980, free: 424980 } },
+        motorcycle: { label: "自動二輪", student: { day: 326920, free: 348920 }, general: { day: 331920, free: 353920 } },
         at_car: { label: "AT普通車", student: { day: 177760, free: 188760 }, general: { day: 182760, free: 193760 } },
         mt_car: { label: "MT普通車", student: { day: 152240, free: 163240 }, general: { day: 157240, free: 168240 } }
       }
@@ -4141,6 +4070,25 @@
 	    const result = document.querySelector("#detailResult");
 	    const applyLink = result?.querySelector("a");
 	    const yen = new Intl.NumberFormat("ja-JP");
+	    const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+	    let countUpFrame = null;
+	    function animateAmount(total) {
+	      if (countUpFrame) cancelAnimationFrame(countUpFrame);
+	      const from = Number(String(out.textContent).replace(/[^0-9]/g, "")) || 0;
+	      if (reduceMotionQuery.matches || !from || from === total) {
+	        out.textContent = `${yen.format(total)}円`;
+	        return;
+	      }
+	      const duration = 380;
+	      const start = performance.now();
+	      const step = (now) => {
+	        const progress = Math.min((now - start) / duration, 1);
+	        const eased = 1 - Math.pow(1 - progress, 3);
+	        out.textContent = `${yen.format(Math.round(from + (total - from) * eased))}円`;
+	        if (progress < 1) countUpFrame = requestAnimationFrame(step);
+	      };
+	      countUpFrame = requestAnimationFrame(step);
+	    }
 	    course.innerHTML = Object.entries(simOptions).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join("");
 	    function syncLicenses() {
 	      const selected = simOptions[course.value];
@@ -4154,10 +4102,10 @@
 	      const planLabel = plan.options[plan.selectedIndex]?.textContent || "";
 	      if (lic.phoneOnly) {
 	        out.textContent = "お電話で確認";
-	        note.innerHTML = `${selected.label} / ${lic.label}は、料金確認が必要です。<a class="phone-link" href="tel:0927102188">092-710-2188</a>へお問い合わせください。`;
+	        note.innerHTML = `MT免許は、AT卒業後の「MT移行（AT解除）」（技能4時限・一律36,300円）で取得できます。詳しくは<a class="phone-link" href="tel:0927102188">092-710-2188</a>へお問い合わせください。`;
 	      } else {
 	        const value = lic[user.value][plan.value];
-	        out.textContent = `${yen.format(value)}円`;
+	        animateAmount(value);
 	        note.textContent = `${selected.label} / ${lic.label} / ${userLabel} / ${planLabel}`;
 	      }
 	      const params = new URLSearchParams({
@@ -4395,29 +4343,7 @@
   }
 
   function setupReveal() {
-    const items = document.querySelectorAll(".reveal");
-    items.forEach((item) => {
-      item.querySelectorAll(".card, .compact-row, .feature-mini, .story-photo, .story-text").forEach((child, index) => {
-        child.style.transitionDelay = `${Math.min(index * 70, 420)}ms`;
-      });
-    });
-    if (!("IntersectionObserver" in window)) {
-      items.forEach((item) => item.classList.add("is-visible"));
-      return;
-    }
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.14, rootMargin: "0px 0px -8% 0px" });
-    items.forEach((item) => observer.observe(item));
-    requestAnimationFrame(() => items.forEach((item) => {
-      const rect = item.getBoundingClientRect();
-      if (rect.top < window.innerHeight * .95) item.classList.add("is-visible");
-    }));
+    /* スクロール出現アニメは廃止（無効化残骸のtransitionDelay焼き込みがホバー演出を壊していたため掃除済み） */
   }
 
 	  function setupMobileMenu() {

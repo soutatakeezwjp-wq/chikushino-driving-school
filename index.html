@@ -11,12 +11,49 @@
 <meta property="og:url" content="https://chikushino-driving-school.pages.dev/" />
 <meta property="og:image" content="https://chikushino-driving-school.pages.dev/images/ogp/chikushino-ogp.webp" />
 <meta name="twitter:card" content="summary_large_image" />
+<link rel="canonical" href="https://chikushi-ds.com/">
 <link rel="icon" href="images/brand-assets/cds-symbol-logo.png" type="image/png">
+<script>
+  /* ★GA4測定ID：公開前に analytics.google.com で取得した「G-」で始まる実IDに、
+     この1行だけ差し替えてください（index.html と detail.html の2ファイルにあります） */
+  window.GA4_MEASUREMENT_ID = "G-XXXXXXXXXX";
+</script>
+<script>
+  (function () {
+    var id = window.GA4_MEASUREMENT_ID;
+    if (!id || id.indexOf("XXXX") !== -1) return; /* 未設定の間は何も送信しない */
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + id;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { dataLayer.push(arguments); };
+    gtag("js", new Date());
+    gtag("config", id);
+  })();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "DrivingSchool",
+  "name": "筑紫野自動車学校",
+  "url": "https://chikushi-ds.com/",
+  "telephone": "+81-92-710-2188",
+  "address": {
+    "@type": "PostalAddress",
+    "postalCode": "818-0025",
+    "addressRegion": "福岡県",
+    "addressLocality": "筑紫野市",
+    "streetAddress": "筑紫120番地1"
+  },
+  "image": "https://chikushi-ds.com/images/ogp/chikushino-ogp.webp"
+}
+</script>
 <link rel="preload" as="image" href="images/generated-hero/chikushino-hero-grounded-2026-07-03.webp" media="(min-width: 769px)" fetchpriority="high">
 <link rel="preload" as="image" href="images/generated-hero/chikushino-hero-grounded-mobile-2026-07-03.webp" media="(max-width: 768px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --purple: #5c319b;
@@ -52,7 +89,7 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; overflow-x: hidden; }
+  html { scroll-behavior: smooth; overflow-x: hidden; scroll-padding-top: 140px; }
   body {
     margin: 0;
     color: var(--text);
@@ -67,8 +104,25 @@
   }
   img { width: 100%; display: block; }
   a { color: inherit; text-decoration: none; }
-  button, input, select, textarea { font: inherit; font-family: var(--jp); }
-  p, h1, h2, h3, h4, h5, h6, li, dt, dd, a, button, input, select, textarea {
+  button,
+  input,
+  select,
+  textarea { font: inherit; font-family: var(--jp); }
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  li,
+  dt,
+  dd,
+  a,
+  button,
+  input,
+  select,
+  textarea {
     font-feature-settings: "palt";
   }
   .wrap { width: min(100% - 56px, var(--max)); margin-inline: auto; }
@@ -95,12 +149,12 @@
       --content-wrap: min(calc(var(--content-vw) - 56px), var(--max));
     }
     .topbar,
-    main,
-    footer {
+  main,
+  footer {
       width: calc(100% - var(--rail));
     }
     .topics-viewport,
-    .instructor-viewport {
+  .instructor-viewport {
       margin-inline: calc((var(--content-vw) - var(--content-wrap)) / -2);
     }
     .topics-grid {
@@ -438,7 +492,8 @@
     background: rgba(255,255,255,.22);
     font-size: 13px;
   }
-  .btn-white .circle, .btn-outline .circle { background: var(--purple-soft); color: var(--purple); }
+  .btn-white .circle,
+  .btn-outline .circle { background: var(--purple-soft); color: var(--purple); }
   .nav {
     height: 44px;
     border-top: 1px solid var(--line-soft);
@@ -924,7 +979,6 @@
   }
   .topic-card,
   .course-card,
-  .strength-card,
   .info-card {
     background: #fff;
     border: 1px solid var(--line-soft);
@@ -942,7 +996,6 @@
   }
   .topic-card:hover,
   .course-card:hover,
-  .strength-card:hover,
   .info-card:hover {
     transform: translateY(-13px) scale(1.075);
     box-shadow: 0 30px 68px rgba(65, 168, 84, .25);
@@ -950,21 +1003,18 @@
   }
   .topic-card img,
   .course-card img,
-  .strength-card img,
   .student-photo img,
   .access-visual img {
     transition: transform .55s cubic-bezier(.16,1,.3,1), filter .3s ease;
   }
   .topic-card:hover img,
   .course-card:hover img,
-  .strength-card:hover img,
   .info-card:hover img {
     transform: scale(1.16);
     filter: saturate(1.08);
   }
   .topic-card:hover .topic-title,
   .course-card:hover .course-link,
-  .strength-card:hover .strength-title,
   .info-card:hover h3 {
     color: var(--green-deep);
   }
@@ -1016,108 +1066,6 @@
     0%, 100% { opacity: .22; transform: scale(.88); }
     50% { opacity: .72; transform: scale(1); }
   }
-
-  .menu-board {
-    padding-top: 10px;
-  }
-  .menu-board-panel {
-    display: grid;
-    grid-template-columns: .82fr 1.68fr;
-    gap: 18px;
-    align-items: stretch;
-    border-radius: 18px;
-    background:
-      radial-gradient(circle at 100% 0%, rgba(118, 201, 107, .16), transparent 34%),
-      linear-gradient(135deg, #fff, #fbf8ff);
-    border: 1px solid rgba(92, 49, 155, .18);
-    box-shadow: var(--soft-shadow);
-    padding: 18px;
-  }
-  .menu-board-copy {
-    padding: 18px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, rgba(92, 49, 155, .10), rgba(255,255,255,.78));
-  }
-  .menu-board-copy small {
-    display: block;
-    color: var(--orange);
-    font-family: var(--latin);
-    font-weight: 900;
-    letter-spacing: .12em;
-    margin-bottom: 10px;
-  }
-  .menu-board-copy h2 {
-    margin: 0 0 12px;
-    color: var(--purple-deep);
-    font-family: var(--jp);
-    font-size: clamp(27px, 3vw, 42px);
-    font-weight: 600;
-    line-height: 1.24;
-  }
-  .menu-board-copy p {
-    margin: 0;
-    color: #544963;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.8;
-  }
-  .menu-board-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-  }
-  .menu-tile {
-    display: grid;
-    gap: 8px;
-    min-height: 116px;
-    padding: 16px;
-    border: 1px solid rgba(92, 49, 155, .18);
-    border-radius: 12px;
-    background: rgba(255,255,255,.86);
-    color: var(--purple-ink);
-    box-shadow: 0 8px 18px rgba(45, 27, 87, .045);
-    transition: transform .22s cubic-bezier(.16,1,.3,1), box-shadow .22s ease, border-color .22s ease, background .22s ease;
-  }
-  .menu-tile:hover {
-    transform: translateY(-9px) scale(1.07);
-    border-color: rgba(118, 201, 107, .72);
-    background: #fff;
-    box-shadow: 0 24px 48px rgba(65, 168, 84, .18);
-  }
-  .menu-tile small {
-    color: var(--green-deep);
-    font-family: var(--latin);
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: .08em;
-  }
-  .menu-tile strong {
-    font-size: 17px;
-    line-height: 1.35;
-  }
-  .menu-tile span {
-    justify-self: end;
-    display: grid;
-    place-items: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    color: #fff;
-    background: var(--purple);
-    transition: transform .22s ease, background .22s ease;
-  }
-  .menu-tile:hover span {
-    transform: scale(1.18);
-    background: var(--green);
-  }
-
-  .notice-band {
-    padding: 42px 0 52px;
-    background:
-      radial-gradient(circle at 7% 8%, rgba(118, 201, 107, .10), transparent 30%),
-      linear-gradient(180deg, #fff, #fbf8ff 100%);
-    overflow: hidden;
-  }
   .notice-panel {
     position: relative;
   }
@@ -1159,87 +1107,6 @@
     font-size: 11px;
     font-weight: 600;
   }
-  .notice-list {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 22px;
-    position: relative;
-    z-index: 1;
-  }
-  .notice-tile {
-    display: grid;
-    grid-template-rows: 56% 44%;
-    aspect-ratio: 1 / 1;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #fff;
-    border: 1px solid rgba(92, 49, 155, .10);
-    box-shadow: 0 18px 42px rgba(45, 27, 87, .10);
-    transition: transform .28s cubic-bezier(.16,1,.3,1), box-shadow .28s ease, border-color .28s ease;
-  }
-  .notice-tile:hover {
-    transform: translateY(-12px) scale(1.035);
-    border-color: rgba(118, 201, 107, .62);
-    box-shadow: 0 28px 64px rgba(65, 168, 84, .18);
-  }
-  .notice-tile img {
-    height: 100%;
-    object-fit: cover;
-    background: #f8f3ff;
-    transition: transform .6s cubic-bezier(.16,1,.3,1), filter .28s ease;
-  }
-  .notice-tile:hover img {
-    transform: scale(1.09);
-    filter: saturate(1.08);
-  }
-  .notice-tile-body {
-    display: grid;
-    align-content: space-between;
-    gap: 12px;
-    padding: 18px;
-  }
-  .notice-tile h3 {
-    margin: 0;
-    color: var(--purple-ink);
-    font-size: clamp(17px, 1.7vw, 22px);
-    font-weight: 800;
-    line-height: 1.45;
-    letter-spacing: 0;
-  }
-  .notice-tile-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-  }
-  .notice-tile-foot time {
-    color: #8a809b;
-    font-family: var(--latin);
-    font-size: 13px;
-    font-weight: 800;
-  }
-  .notice-row {
-    display: grid;
-    grid-template-columns: 112px 96px 1fr 24px;
-    align-items: center;
-    gap: 14px;
-    min-height: 58px;
-    padding: 12px 22px;
-    border-bottom: 1px solid var(--line-soft);
-    color: var(--purple-ink);
-    transition: background .2s ease, color .2s ease;
-  }
-  .notice-row:last-child { border-bottom: 0; }
-  .notice-row:hover {
-    background: #f5fbf1;
-    color: var(--green-deep);
-  }
-  .notice-row time {
-    color: #776d8d;
-    font-family: var(--latin);
-    font-size: 12px;
-    font-weight: 600;
-  }
   .notice-tag {
     display: inline-grid;
     place-items: center;
@@ -1265,16 +1132,6 @@
   .notice-tag.is-local {
     background: #e5f4fb;
     color: var(--blue);
-  }
-  .notice-row strong {
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 1.55;
-  }
-  .notice-row .arrow {
-    width: 22px;
-    height: 22px;
-    font-size: 13px;
   }
 
   .entry-routes {
@@ -1923,52 +1780,6 @@
     font-size: 33px;
   }
 
-  .strength-head {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 24px;
-  }
-  .strength-head h2 {
-    color: var(--purple-ink);
-    font-family: var(--jp);
-    font-size: 35px;
-    font-weight: 500;
-    margin: 0;
-    position: relative;
-  }
-  .strength-head h2::before,
-  .strength-head h2::after {
-    content: "";
-    position: absolute;
-    top: 52%;
-    width: 70px;
-    height: 1px;
-    background: var(--line);
-  }
-  .strength-head h2::before { right: calc(100% + 18px); }
-  .strength-head h2::after { left: calc(100% + 18px); }
-  .strength-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 16px;
-  }
-  .strength-card img { height: 116px; object-fit: cover; }
-  .strength-body { padding: 17px 14px 18px; text-align: center; }
-  .strength-title {
-    color: var(--purple);
-    font-size: 15px;
-    font-weight: 700;
-    margin: 0 0 8px;
-    line-height: 1.35;
-  }
-  .strength-text {
-    margin: 0;
-    color: #5d536f;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1.55;
-  }
-
   .school-points {
     position: relative;
     padding: 48px 0 58px;
@@ -2312,7 +2123,7 @@
     display: grid;
     grid-template-rows: auto auto 1fr;
     min-height: 100%;
-    color: var(--ink);
+    color: var(--purple-ink);
     text-decoration: none;
     background: #fff;
   }
@@ -2627,7 +2438,7 @@
     gap: 8px;
     padding: 18px 28px 0;
     text-align: center;
-    color: var(--ink);
+    color: var(--purple-ink);
     font-family: var(--latin);
     font-size: 18px;
     font-weight: 800;
@@ -2700,59 +2511,47 @@
   .reveal {
     opacity: 1;
     transform: none;
-    transition: none;
   }
-  .reveal.is-visible {
-    opacity: 1;
-    transform: translateY(0);
+  .topic-card,
+  .route-link,
+  .course-card,
+  .point-card,
+  .flow-card,
+  .info-card,
+  .instagram-post {
+    transition: transform .35s cubic-bezier(.2, .7, .3, 1), box-shadow .3s ease, border-color .25s ease;
   }
-  .school-points.reveal,
-  .school-points.reveal .point-card {
-    opacity: 1;
-    transform: none;
-  }
-	  .reveal .topic-card,
-	  .reveal .notice-row,
-	  .reveal .notice-tile,
-	  .reveal .menu-tile,
-	  .reveal .route-link,
-	  .reveal .course-card,
-	  .reveal .strength-card,
-	  .reveal .point-card,
-	  .reveal .flow-card,
-	  .reveal .info-card,
-	  .reveal .instagram-post {
-    opacity: 1;
-    transform: none;
-    transition: box-shadow .2s ease, border-color .2s ease;
-  }
-	  .reveal.is-visible .topic-card,
-	  .reveal.is-visible .notice-row,
-	  .reveal.is-visible .notice-tile,
-	  .reveal.is-visible .menu-tile,
-	  .reveal.is-visible .route-link,
-	  .reveal.is-visible .course-card,
-	  .reveal.is-visible .strength-card,
-	  .reveal.is-visible .point-card,
-	  .reveal.is-visible .flow-card,
-	  .reveal.is-visible .info-card,
-	  .reveal.is-visible .instagram-post {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-	  .reveal.is-visible .topic-card:hover,
-	  .reveal.is-visible .notice-tile:hover,
-	  .reveal.is-visible .course-card:hover,
-	  .reveal.is-visible .menu-tile:hover,
-	  .reveal.is-visible .strength-card:hover,
-	  .reveal.is-visible .point-card:hover,
-	  .reveal.is-visible .info-card:hover,
-	  .reveal.is-visible .flow-card:hover,
-	  .reveal.is-visible .instagram-post:hover {
+  .topic-card:hover,
+  .course-card:hover,
+  .point-card:hover,
+  .info-card:hover,
+  .flow-card:hover,
+  .instagram-post:hover {
     transform: translateY(-13px) scale(1.075);
   }
-  .reveal.is-visible .route-link:hover {
+  .route-link:hover {
     transform: translateY(-12px) scale(1.065);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .price-example-card {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .55s ease, transform .55s cubic-bezier(.2, .7, .3, 1);
+    }
+    .price-example-card.is-shown {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+  *::before,
+  *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
   .cta-banner h2 {
     margin: 0 0 6px;
@@ -2890,7 +2689,7 @@
 
   @media (min-width: 1180px) {
     .topics-viewport,
-    .instructor-viewport {
+  .instructor-viewport {
       margin-inline: calc((var(--content-vw) - var(--content-wrap)) / -2);
     }
     .topics-grid {
@@ -2901,8 +2700,8 @@
 
   @media (max-width: 1179px) {
     .topbar,
-    main,
-    footer {
+  main,
+  footer {
       width: 100%;
     }
     .right-rail { display: none; }
@@ -2911,15 +2710,12 @@
   @media (max-width: 1050px) {
     .header-actions .tel { display: none; }
     .nav { gap: 24px; }
-    .topics-grid, .course-grid { gap: 14px; }
-    .menu-board-panel { grid-template-columns: 1fr; }
-    .menu-board-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .notice-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .topics-grid,
+  .course-grid { gap: 14px; }
     .home-quick-grid { grid-template-columns: 1fr; }
     .route-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .route-link { min-height: 220px; }
     .points-grid { grid-template-columns: 1fr; }
-    .strength-grid { grid-template-columns: repeat(3, 1fr); }
     .instagram-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .flow-grid { grid-template-columns: repeat(3, 1fr); }
     .flow-card:not(:last-child)::after { display: none; }
@@ -2938,7 +2734,8 @@
     .brand-logo-img { width: 78px; }
     .brand-mascot-img { display: none; }
     .mascots { display: none; }
-    .brand-kicker, .brand-en { display: none; }
+    .brand-kicker,
+  .brand-en { display: none; }
     .brand-name { white-space: normal; font-size: 16px; line-height: 1.28; }
     .header-actions {
       display: flex;
@@ -2946,8 +2743,8 @@
       gap: 0;
     }
     .header-actions .tel,
-    .header-actions .btn-orange,
-    .header-actions .btn-outline { display: none; }
+  .header-actions .btn-orange,
+  .header-actions .btn-outline { display: none; }
     .header-actions .btn {
       min-height: 46px;
       padding: 0 14px;
@@ -2978,7 +2775,7 @@
       height: auto;
     }
     .nav-menu,
-    .nav-item:first-child .nav-menu {
+  .nav-item:first-child .nav-menu {
       position: static;
       display: none;
       width: auto;
@@ -2995,11 +2792,11 @@
       pointer-events: auto;
     }
     .nav-item.is-open .nav-menu,
-    .nav-item.is-open:first-child .nav-menu {
+  .nav-item.is-open:first-child .nav-menu {
       display: grid;
     }
     .nav > a,
-    .nav-trigger {
+  .nav-trigger {
       width: 100%;
       height: 34px;
       min-width: 0;
@@ -3034,7 +2831,7 @@
         linear-gradient(180deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,.02) 64%, rgba(255,255,255,.30) 100%);
     }
     .hero::after,
-    .home-quick { display: none; }
+  .home-quick { display: none; }
     .hero-picture img {
       aspect-ratio: auto;
       object-fit: cover;
@@ -3045,12 +2842,12 @@
     }
     section { padding: 30px 0; }
     .license-layout,
-    .routes-panel,
-    .bottom-grid,
-    .student-card,
-    .access-card,
-    .simulator,
-    .sim-content {
+  .routes-panel,
+  .bottom-grid,
+  .student-card,
+  .access-card,
+  .simulator,
+  .sim-content {
       grid-template-columns: 1fr;
     }
     .price-example-grid {
@@ -3068,8 +2865,8 @@
       animation-duration: 22s;
     }
     .notice-panel::before,
-    .price-preview::before,
-    .school-points::before {
+  .price-preview::before,
+  .school-points::before {
       display: block;
       font-size: 78px;
       animation: softTextMove 12s linear infinite;
@@ -3084,19 +2881,6 @@
     .topics .section-head::before {
       order: -1;
     }
-    .menu-board { padding-top: 24px; }
-    .menu-board-panel {
-      padding: 12px;
-      border-radius: 18px;
-    }
-    .menu-board-copy { padding: 16px; }
-    .menu-board-copy h2 { font-size: 26px; }
-    .menu-board-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .menu-tile {
-      min-height: 96px;
-      padding: 13px;
-    }
-    .menu-tile strong { font-size: 15px; }
     .notice-panel-head {
       align-items: flex-start;
       padding: 0 0 16px;
@@ -3113,7 +2897,7 @@
       border-radius: 10px;
     }
     .important-news-label,
-    .important-news-title {
+  .important-news-title {
       grid-column: 1 / -1;
     }
     .important-news-label {
@@ -3126,17 +2910,8 @@
       line-height: 1.55;
     }
     .important-news-date,
-    .important-news-more {
+  .important-news-more {
       font-size: 11px;
-    }
-    .notice-list { gap: 14px; }
-    .notice-tile-body { padding: 14px; }
-    .notice-tile h3 { font-size: 16px; }
-    .notice-tile-foot time { font-size: 11px; }
-    .notice-row {
-      grid-template-columns: 94px 76px 1fr 22px;
-      gap: 10px;
-      padding: 12px 16px;
     }
     .routes-panel { gap: 20px; padding: 26px 0; }
     .routes-title h2 { font-size: 32px; }
@@ -3161,7 +2936,7 @@
       background: transparent;
     }
     .license-main img,
-    .license-main::after {
+  .license-main::after {
       display: none;
     }
     .license-main h2 {
@@ -3422,15 +3197,11 @@
     .instagram-caption span {
       -webkit-line-clamp: 2;
     }
-    .strength-grid { grid-template-columns: repeat(2, 1fr); }
-    .strength-head h2 { font-size: 28px; }
-    .strength-head h2::before,
-    .strength-head h2::after { display: none; }
     .school-points { padding: 34px 0 42px; }
     .points-shell { border-radius: 22px; padding: 20px; }
     .points-grid { gap: 22px; }
     .point-card,
-    .point-card:nth-child(even) {
+  .point-card:nth-child(even) {
       grid-template-columns: 1fr;
       min-height: 0;
       gap: 14px;
@@ -3444,7 +3215,7 @@
     .flow-card { min-height: 112px; border-radius: 18px; padding: 12px 8px; }
     .flow-title { font-size: 13px; }
     .line-icon,
-    .line-icon svg { width: 30px; height: 30px; }
+  .line-icon svg { width: 30px; height: 30px; }
     .flow-head { display: grid; gap: 12px; }
     .flow-head .more { justify-self: start; min-width: 132px; min-height: 42px; padding: 0 16px; white-space: nowrap; }
     .info-card { padding: 22px; }
@@ -3458,7 +3229,8 @@
   }
 
   @media (max-width: 520px) {
-    .route-grid, .strength-grid, .footer-grid, .notice-list { grid-template-columns: 1fr; }
+    .route-grid,
+  .footer-grid { grid-template-columns: 1fr; }
     .fields { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .mobile-dock-panel { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
     .mobile-dock-card { min-height: 82px; padding: 12px; }
@@ -3472,23 +3244,9 @@
     .instagram-post { min-height: 0; }
     .topic-card { width: 164px; flex-basis: 164px; }
     .topic-card img { height: 74px; }
-    .notice-tile { aspect-ratio: 1 / .94; }
-    .notice-tile img { height: 100%; }
-    .strength-card img { height: 150px; }
     .section-title { font-size: 31px; }
     .notice-panel-head h2 { font-size: 20px; }
-    .notice-row {
-      grid-template-columns: 86px 1fr 22px;
-      grid-template-areas:
-        "date tag arrow"
-        "text text arrow";
-      align-items: center;
-      min-height: 74px;
-    }
-    .notice-row time { grid-area: date; }
     .notice-tag { grid-area: tag; justify-self: start; padding: 0 12px; }
-    .notice-row strong { grid-area: text; font-size: 14px; }
-    .notice-row .arrow { grid-area: arrow; }
     .price-plan-panel { padding: 20px 14px; }
     .price-example-main { font-size: 34px; }
     .price-example-tax { font-size: 12px; }
@@ -3518,8 +3276,8 @@
       <a class="rail-online" href="detail.html?page=application">仮申込・資料請求 ›</a>
     </div>
     <div class="rail-sns" aria-label="SNSリンク">
-      <a href="https://page.line.me/115cacad" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 LINE公式"><img class="sns-icon" src="images/icons/line.svg" alt=""></a>
-      <a href="https://www.instagram.com/chikushino_ds/" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 Instagram"><img class="sns-icon" src="images/icons/instagram.svg" alt=""></a>
+      <a href="https://page.line.me/115cacad" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 LINE公式"><img loading="lazy" decoding="async" class="sns-icon" src="images/icons/line.svg" alt=""></a>
+      <a href="https://www.instagram.com/chikushino_ds/" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 Instagram"><img loading="lazy" decoding="async" class="sns-icon" src="images/icons/instagram.svg" alt=""></a>
     </div>
   </aside>
 
@@ -3596,7 +3354,7 @@
     <a href="detail.html?page=application">資料請求<small>REQUEST</small></a>
     <a href="detail.html?page=application">仮申込<small>ENTRY</small></a>
     <a href="tel:0927102188">電話<small>CALL</small></a>
-    <a href="https://page.line.me/115cacad" target="_blank" rel="noopener"><img class="sns-icon" src="images/icons/line.svg" alt="">LINE<small>CHAT</small></a>
+    <a href="https://page.line.me/115cacad" target="_blank" rel="noopener"><img loading="lazy" decoding="async" class="sns-icon" src="images/icons/line.svg" alt="">LINE<small>CHAT</small></a>
   </nav>
 
 		  <main>
@@ -3657,84 +3415,84 @@
         <div class="topics-viewport" aria-label="横に流れるブログ・トピックス">
           <div class="topics-grid">
             <a class="topic-card" href="detail.html?page=topics">
-              <img src="images/current-site/news/news-2026-05-27-16595.jpg" alt="交通事故防止コンクールの表彰状">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2026-05-27-16595.jpg" alt="交通事故防止コンクールの表彰状">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-award">表彰</span><time>2026.05.27</time></div>
                 <h3 class="topic-title">交通事故防止コンクールにおいて金賞を受賞しました</h3>
               </div>
             </a>
             <a class="topic-card" href="detail.html?page=topics">
-              <img src="images/current-site/news/news-2026-05-13-16526.jpg" alt="福岡県指定自動車学校協会会長からの表彰状">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2026-05-13-16526.jpg" alt="福岡県指定自動車学校協会会長からの表彰状">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-award">表彰</span><time>2026.05.13</time></div>
                 <h3 class="topic-title">福岡県指定自動車学校協会会長から表彰状を頂きました。</h3>
               </div>
             </a>
             <a class="topic-card" href="detail.html?page=topics">
-              <img src="images/current-site/news/news-2026-02-09-16099.jpg" alt="福岡県警察本部交通部運転免許試験課長からの表彰状">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2026-02-09-16099.jpg" alt="福岡県警察本部交通部運転免許試験課長からの表彰状">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-award">表彰</span><time>2026.02.09</time></div>
                 <h3 class="topic-title">福岡県警察本部交通部運転免許試験課長から表彰状を頂きました。</h3>
               </div>
             </a>
             <a class="topic-card" href="detail.html?page=topics">
-              <img src="images/current-site/news/news-2025-06-25-14858.png" alt="6月25日無事故の日のお知らせ">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2025-06-25-14858.png" alt="6月25日無事故の日のお知らせ">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-safety">安全</span><time>2025.06.25</time></div>
                 <h3 class="topic-title">筑紫野自動車学校からのお知らせ</h3>
               </div>
             </a>
             <a class="topic-card" href="detail.html?page=topics">
-              <img src="images/current-site/news/news-2025-01-18-13019.png" alt="筑紫野自動車学校からのお知らせ画像">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2025-01-18-13019.png" alt="筑紫野自動車学校からのお知らせ画像">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-important">重要</span><time>2025.01.18</time></div>
                 <h3 class="topic-title">筑紫野自動車学校からのお知らせ</h3>
               </div>
             </a>
             <a class="topic-card" href="detail.html?page=topics">
-              <img src="images/current-site/news/news-2024-06-23-12025.jpg" alt="筑紫野市消防団からの感謝状">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2024-06-23-12025.jpg" alt="筑紫野市消防団からの感謝状">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-local">地域活動</span><time>2024.06.23</time></div>
                 <h3 class="topic-title">感謝状を頂きました！</h3>
               </div>
             </a>
             <a class="topic-card" href="detail.html?page=topics" aria-hidden="true" tabindex="-1">
-              <img src="images/current-site/news/news-2026-05-27-16595.jpg" alt="">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2026-05-27-16595.jpg" alt="">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-award">表彰</span><time>2026.05.27</time></div>
                 <h3 class="topic-title">交通事故防止コンクールにおいて金賞を受賞しました</h3>
               </div>
             </a>
             <a class="topic-card" href="detail.html?page=topics" aria-hidden="true" tabindex="-1">
-              <img src="images/current-site/news/news-2026-05-13-16526.jpg" alt="">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2026-05-13-16526.jpg" alt="">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-award">表彰</span><time>2026.05.13</time></div>
                 <h3 class="topic-title">福岡県指定自動車学校協会会長から表彰状を頂きました。</h3>
               </div>
             </a>
             <a class="topic-card" href="detail.html?page=topics" aria-hidden="true" tabindex="-1">
-              <img src="images/current-site/news/news-2026-02-09-16099.jpg" alt="">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2026-02-09-16099.jpg" alt="">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-award">表彰</span><time>2026.02.09</time></div>
                 <h3 class="topic-title">福岡県警察本部交通部運転免許試験課長から表彰状を頂きました。</h3>
               </div>
             </a>
             <a class="topic-card" href="detail.html?page=topics" aria-hidden="true" tabindex="-1">
-              <img src="images/current-site/news/news-2025-06-25-14858.png" alt="">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2025-06-25-14858.png" alt="">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-safety">安全</span><time>2025.06.25</time></div>
                 <h3 class="topic-title">筑紫野自動車学校からのお知らせ</h3>
               </div>
             </a>
             <a class="topic-card" href="detail.html?page=topics" aria-hidden="true" tabindex="-1">
-              <img src="images/current-site/news/news-2025-01-18-13019.png" alt="">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2025-01-18-13019.png" alt="">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-important">重要</span><time>2025.01.18</time></div>
                 <h3 class="topic-title">筑紫野自動車学校からのお知らせ</h3>
               </div>
             </a>
             <a class="topic-card" href="detail.html?page=topics" aria-hidden="true" tabindex="-1">
-              <img src="images/current-site/news/news-2024-06-23-12025.jpg" alt="">
+              <img loading="lazy" decoding="async" src="images/current-site/news/news-2024-06-23-12025.jpg" alt="">
               <div class="topic-body">
                 <div class="meta"><span class="pill is-local">地域活動</span><time>2024.06.23</time></div>
                 <h3 class="topic-title">感謝状を頂きました！</h3>
@@ -3748,28 +3506,23 @@
     <section id="license" class="reveal">
       <div class="wrap license-layout">
         <a class="license-main" href="detail.html?page=courses">
-          <img src="images/mobile-generated/mobile-license-courses.webp" alt="目的に合わせて免許を選ぶ">
           <h2>手に入れたい<br>免許に合わせて。</h2>
           <p class="license-lead">普通車から二輪・準中型・各種講習まで、目的に合わせて選べます。</p>
         </a>
         <div class="course-grid">
           <a class="course-card" href="detail.html?page=standard">
-            <img src="images/real/course-car-real.jpg" alt="普通自動車教習">
             <span class="course-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 13l2-5h10l2 5"/><path d="M3 13h18v5H3z"/><circle cx="7" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg></span>
             <span class="course-link"><span><strong>普通自動車</strong><small>ORDINARY VEHICLE</small></span><span class="arrow">›</span></span>
           </a>
           <a class="course-card" href="detail.html?page=bike">
-            <img src="images/real/motorcycle-yard-real.jpg" alt="自動二輪教習">
             <span class="course-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M8 17h4l2-5 3 5"/><path d="M11 12h4l2-3"/><path d="M14 9h3"/></svg></span>
             <span class="course-link"><span><strong>自動二輪</strong><small>MOTORCYCLE</small></span><span class="arrow">›</span></span>
           </a>
           <a class="course-card" href="detail.html?page=semi_medium">
-            <img src="images/real/course-truck-card-real.jpg" alt="準中型車教習">
             <span class="course-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8h11v9H3z"/><path d="M14 11h4l3 3v3h-7z"/><circle cx="7" cy="17" r="1.5"/><circle cx="18" cy="17" r="1.5"/></svg></span>
             <span class="course-link"><span><strong>準中型車</strong><small>SEMI-MEDIUM</small></span><span class="arrow">›</span></span>
           </a>
           <a class="course-card" href="detail.html?page=training">
-            <img src="images/real/first-aid-class-real.jpg" alt="その他の講習">
             <span class="course-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 4h8v4h4v12H4V8h4z"/><path d="M10 13h4M12 11v4"/></svg></span>
             <span class="course-link"><span><strong>その他の講習</strong><small>LESSONS</small></span><span class="arrow">›</span></span>
           </a>
@@ -3792,7 +3545,7 @@
               <span class="arrow">›</span>
             </span>
           </a>
-          <a class="route-link" href="detail.html?page=about" style="--route-img:url('images/site-parts/strength-corporate.webp')">
+          <a class="route-link" href="detail.html?page=why" style="--route-img:url('images/site-parts/strength-corporate.webp')">
             <span class="route-body">
               <span><span class="route-label">STRENGTH</span><strong>学校の強み</strong></span>
               <span class="arrow">›</span>
@@ -3868,15 +3621,15 @@
                     <label for="licenseType">免許の種類</label>
 	                    <select id="licenseType">
 	                      <option value="ordinary_at">普通自動車AT</option>
-	                      <option value="ordinary_mt">普通自動車MT</option>
+	                      <option value="ordinary_mt">普通自動車MT（AT取得後に移行）</option>
 	                      <option value="semi_medium">準中型車MT</option>
                       <option value="motorcycle_mt">普通二輪MT</option>
                       <option value="motorcycle_at">普通二輪AT</option>
                     </select>
                   </div>
                   <div class="field">
-                    <label for="transmission">現在の免許</label>
-                    <select id="transmission">
+                    <label for="heldLicense">現在の免許</label>
+                    <select id="heldLicense">
                       <option value="none">なし</option>
                     </select>
                   </div>
@@ -3888,8 +3641,8 @@
                     </select>
                   </div>
                   <div class="field">
-                    <label for="currentLicense">通い方</label>
-                    <select id="currentLicense">
+                    <label for="planType">通い方</label>
+                    <select id="planType">
                       <option value="day">デイプラン</option>
                       <option value="free">フリープラン</option>
                     </select>
@@ -3919,8 +3672,8 @@
         <div class="points-grid">
           <article class="point-card">
             <div class="point-visual">
-              <img src="images/real/course-wide-real.jpg" alt="広い教習コース">
-              <img class="mini-photo" src="images/generated-points/point-01-beginner-course.webp" alt="初心者マークと教習コース">
+              <img loading="lazy" decoding="async" src="images/real/course-wide-real.jpg" alt="広い教習コース">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-01-beginner-course.webp" alt="初心者マークと教習コース">
             </div>
             <div class="point-copy">
               <span class="point-no">01</span>
@@ -3930,8 +3683,8 @@
           </article>
           <article class="point-card">
             <div class="point-visual">
-              <img src="images/real/classroom-open-real.jpg" alt="明るい教室">
-              <img class="mini-photo" src="images/generated-points/point-02-consultation.webp" alt="インストラクターへの相談">
+              <img loading="lazy" decoding="async" src="images/real/classroom-open-real.jpg" alt="明るい教室">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-02-consultation.webp" alt="インストラクターへの相談">
             </div>
             <div class="point-copy">
               <span class="point-no">02</span>
@@ -3941,8 +3694,8 @@
           </article>
           <article class="point-card">
             <div class="point-visual">
-              <img src="images/real/bus-side-real.jpg" alt="無料送迎バス">
-              <img class="mini-photo" src="images/generated-points/point-03-route-map.webp" alt="送迎エリアのルートマップ">
+              <img loading="lazy" decoding="async" src="images/real/bus-side-real.jpg" alt="無料送迎バス">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-03-route-map.webp" alt="送迎エリアのルートマップ">
             </div>
             <div class="point-copy">
               <span class="point-no">03</span>
@@ -3952,8 +3705,8 @@
           </article>
           <article class="point-card">
             <div class="point-visual">
-              <img src="images/real/motorcycle-yard-real.jpg" alt="二輪教習">
-              <img class="mini-photo" src="images/generated-points/point-04-license-lineup.webp" alt="普通車・二輪・準中型の教習車両">
+              <img loading="lazy" decoding="async" src="images/real/motorcycle-yard-real.jpg" alt="二輪教習">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-04-license-lineup.webp" alt="普通車・二輪・準中型の教習車両">
             </div>
             <div class="point-copy">
               <span class="point-no">04</span>
@@ -3963,8 +3716,8 @@
           </article>
           <article class="point-card">
             <div class="point-visual">
-              <img src="images/real/childcare-room-real.jpg" alt="託児スペース">
-              <img class="mini-photo" src="images/generated-points/point-05-childcare.webp" alt="託児スペースのおもちゃ">
+              <img loading="lazy" decoding="async" src="images/real/childcare-room-real.jpg" alt="託児スペース">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-05-childcare.webp" alt="託児スペースのおもちゃ">
             </div>
             <div class="point-copy">
               <span class="point-no">05</span>
@@ -3983,24 +3736,24 @@
       </div>
       <div class="instructor-viewport" aria-label="インストラクター写真の横流れ">
         <div class="instructor-track">
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/haraguchi-miho.webp" alt="原口美穂 指導員"><span class="instructor-nameplate">原口 美穂<small>はらぐっちゃん☆</small><em>ずーっと探してます</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/sasaki-takako.webp" alt="佐々木貴子 指導員"><span class="instructor-nameplate">佐々木 貴子<small>きこ</small><em>スポーツ観戦</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/hatachi-erina.webp" alt="羽立衣莉奈 指導員"><span class="instructor-nameplate">羽立 衣莉奈<small>はたち</small><em>映画鑑賞</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/sumi-asami.webp" alt="角麻美 指導員"><span class="instructor-nameplate">角 麻美<small>すみちゃん</small><em>音楽・料理レシピ</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/goto-ryoko.webp" alt="後藤良子 指導員"><span class="instructor-nameplate">後藤 良子<small>りょうこ</small><em>ガーデニング</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/goto-keiko.webp" alt="後藤桂子 指導員"><span class="instructor-nameplate">後藤 桂子<small>けいこ</small><em>料理、ミシン</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/sawamizu-nobuo.webp" alt="澤水信雄 指導員"><span class="instructor-nameplate">澤水 信雄<small>久留米散策</small><em>市内散策・釣り</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/tanigawa-takuro.webp" alt="谷川拓郎 指導員"><span class="instructor-nameplate">谷川 拓郎<small>たっしゃん</small><em>読書</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/yamamoto-shosuke.webp" alt="山本勝介 指導員"><span class="instructor-nameplate">山本 勝介<small>山本 勝</small><em>動物園巡り</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/nakamura-masanobu.webp" alt="中村正信 指導員"><span class="instructor-nameplate">中村 正信<small>散歩ッポ</small><em>スポーツ観戦</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/shigeto-noriki.webp" alt="重藤憲紀 指導員"><span class="instructor-nameplate">重藤 憲紀<small>しげちゃん</small><em>安全運転サポート</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/uchino-shuhei.webp" alt="内野修平 指導員"><span class="instructor-nameplate">内野 修平<small>うちの先生</small><em>ゲーセン</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/seto-konosuke.webp" alt="瀬戸幸之助 指導員"><span class="instructor-nameplate">瀬戸 幸之助<small>せとさん</small><em>散歩</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/shimoda-shinichi.webp" alt="下田真一 指導員"><span class="instructor-nameplate">下田 真一<small>しっしい</small><em>占い</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/shirachi-sadaaki.webp" alt="白地貞昭 指導員"><span class="instructor-nameplate">白地 貞昭<small>重戦車</small><em>車・バイク・スイーツ</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/yamamoto-kazuhiro.webp" alt="山本一博 指導員"><span class="instructor-nameplate">山本 一博<small>山本2号</small><em>旅行</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/matsumoto-yoichi.webp" alt="松本洋一 指導員"><span class="instructor-nameplate">松本 洋一<small>シャッ君</small><em>釣り・キャンプ</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img src="images/instructors-anime/teshima-yukio.webp" alt="手嶋幸男 指導員"><span class="instructor-nameplate">手嶋 幸男<small>ユキオ</small><em>非常勤教習指導員</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/haraguchi-miho.webp" alt="原口美穂 指導員"><span class="instructor-nameplate">原口 美穂<small>はらぐっちゃん☆</small><em>ずーっと探してます</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/sasaki-takako.webp" alt="佐々木貴子 指導員"><span class="instructor-nameplate">佐々木 貴子<small>きこ</small><em>スポーツ観戦</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/hatachi-erina.webp" alt="羽立衣莉奈 指導員"><span class="instructor-nameplate">羽立 衣莉奈<small>はたち</small><em>映画鑑賞</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/sumi-asami.webp" alt="角麻美 指導員"><span class="instructor-nameplate">角 麻美<small>すみちゃん</small><em>音楽・料理レシピ</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/goto-ryoko.webp" alt="後藤良子 指導員"><span class="instructor-nameplate">後藤 良子<small>りょうこ</small><em>ガーデニング</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/goto-keiko.webp" alt="後藤桂子 指導員"><span class="instructor-nameplate">後藤 桂子<small>けいこ</small><em>料理、ミシン</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/sawamizu-nobuo.webp" alt="澤水信雄 指導員"><span class="instructor-nameplate">澤水 信雄<small>久留米散策</small><em>市内散策・釣り</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/tanigawa-takuro.webp" alt="谷川拓郎 指導員"><span class="instructor-nameplate">谷川 拓郎<small>たっしゃん</small><em>読書</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/yamamoto-shosuke.webp" alt="山本勝介 指導員"><span class="instructor-nameplate">山本 勝介<small>山本 勝</small><em>動物園巡り</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/nakamura-masanobu.webp" alt="中村正信 指導員"><span class="instructor-nameplate">中村 正信<small>散歩ッポ</small><em>スポーツ観戦</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/shigeto-noriki.webp" alt="重藤憲紀 指導員"><span class="instructor-nameplate">重藤 憲紀<small>しげちゃん</small><em>安全運転サポート</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/uchino-shuhei.webp" alt="内野修平 指導員"><span class="instructor-nameplate">内野 修平<small>うちの先生</small><em>ゲーセン</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/seto-konosuke.webp" alt="瀬戸幸之助 指導員"><span class="instructor-nameplate">瀬戸 幸之助<small>せとさん</small><em>散歩</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/shimoda-shinichi.webp" alt="下田真一 指導員"><span class="instructor-nameplate">下田 真一<small>しっしい</small><em>占い</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/shirachi-sadaaki.webp" alt="白地貞昭 指導員"><span class="instructor-nameplate">白地 貞昭<small>重戦車</small><em>車・バイク・スイーツ</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/yamamoto-kazuhiro.webp" alt="山本一博 指導員"><span class="instructor-nameplate">山本 一博<small>山本2号</small><em>旅行</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/matsumoto-yoichi.webp" alt="松本洋一 指導員"><span class="instructor-nameplate">松本 洋一<small>シャッ君</small><em>釣り・キャンプ</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/teshima-yukio.webp" alt="手嶋幸男 指導員"><span class="instructor-nameplate">手嶋 幸男<small>ユキオ</small><em>非常勤教習指導員</em></span></a>
         </div>
       </div>
       <div class="wrap instructor-cta">
@@ -4012,7 +3765,7 @@
 	    <section id="instagram-preview" class="instagram-section reveal">
       <div class="wrap instagram-panel">
         <div class="instagram-head">
-          <div class="instagram-title"><img src="images/icons/instagram.svg" alt="">Instagram</div>
+          <div class="instagram-title"><img loading="lazy" decoding="async" src="images/icons/instagram.svg" alt="">Instagram</div>
           <a class="instagram-account" href="https://www.instagram.com/chikushino_ds/" target="_blank" rel="noopener">@chikushino_ds</a>
         </div>
         <p class="instagram-fallback-title">Instagramで見る、学校の日常とお知らせ</p>
@@ -4023,7 +3776,7 @@
                 <span class="instagram-user"><span class="instagram-avatar"><img src="images/brand-assets/cds-symbol-logo.png" alt=""></span>chikushino_ds</span>
                 <span class="instagram-follow">フォロー</span>
               </span>
-              <img class="instagram-thumb" src="images/instagram/chikushino-instagram-01.webp" alt="筑紫野自動車学校のInstagram投稿">
+              <img loading="lazy" decoding="async" class="instagram-thumb" src="images/instagram/chikushino-instagram-01.webp" alt="筑紫野自動車学校のInstagram投稿">
               <span class="instagram-caption"><strong>chikushino_ds</strong><span>大学での免許相談会や、入校前に知っておきたい学校情報を発信しています。</span></span>
             </a>
           </div>
@@ -4033,7 +3786,7 @@
                 <span class="instagram-user"><span class="instagram-avatar"><img src="images/brand-assets/cds-symbol-logo.png" alt=""></span>chikushino_ds</span>
                 <span class="instagram-follow">フォロー</span>
               </span>
-              <img class="instagram-thumb" src="images/instagram/chikushino-instagram-02.webp" alt="筑紫野自動車学校のInstagram投稿">
+              <img loading="lazy" decoding="async" class="instagram-thumb" src="images/instagram/chikushino-instagram-02.webp" alt="筑紫野自動車学校のInstagram投稿">
               <span class="instagram-caption"><strong>chikushino_ds</strong><span>交通安全に関する案内も、季節ごとに分かりやすく届けています。</span></span>
             </a>
           </div>
@@ -4043,7 +3796,7 @@
                 <span class="instagram-user"><span class="instagram-avatar"><img src="images/brand-assets/cds-symbol-logo.png" alt=""></span>chikushino_ds</span>
                 <span class="instagram-follow">フォロー</span>
               </span>
-              <img class="instagram-thumb" src="images/instagram/chikushino-instagram-03.webp" alt="筑紫野自動車学校のInstagram投稿">
+              <img loading="lazy" decoding="async" class="instagram-thumb" src="images/instagram/chikushino-instagram-03.webp" alt="筑紫野自動車学校のInstagram投稿">
               <span class="instagram-caption"><strong>chikushino_ds</strong><span>学校や大学での説明会情報を、通いやすいタイミングで確認できます。</span></span>
             </a>
           </div>
@@ -4053,7 +3806,7 @@
                 <span class="instagram-user"><span class="instagram-avatar"><img src="images/brand-assets/cds-symbol-logo.png" alt=""></span>chikushino_ds</span>
                 <span class="instagram-follow">フォロー</span>
               </span>
-              <img class="instagram-thumb" src="images/instagram/chikushino-instagram-04.webp" alt="筑紫野自動車学校のInstagram投稿">
+              <img loading="lazy" decoding="async" class="instagram-thumb" src="images/instagram/chikushino-instagram-04.webp" alt="筑紫野自動車学校のInstagram投稿">
               <span class="instagram-caption"><strong>chikushino_ds</strong><span>学生生活の合間に相談できるよう、学内説明会の様子も紹介しています。</span></span>
             </a>
           </div>
@@ -4110,7 +3863,7 @@
             <a class="more" href="detail.html?page=students">詳しく見る <span>›</span></a>
           </div>
           <div class="student-photo">
-            <img src="images/real/classroom-wide.jpg" alt="在校生向けの確認場所">
+            <img loading="lazy" decoding="async" src="images/real/classroom-wide.jpg" alt="在校生向けの確認場所">
           </div>
         </article>
 
@@ -4120,15 +3873,14 @@
             <p>地図で場所をすぐ確認できます。</p>
           </div>
           <div class="access-visual">
-            <img src="images/real/bus-access-real.jpg" alt="送迎バス">
             <div class="google-map-embed" aria-label="筑紫野自動車学校のGoogleマップ">
-              <iframe title="CDS 筑紫野自動車学校 Googleマップ" src="https://www.google.com/maps?q=CDS%20%E7%AD%91%E7%B4%AB%E9%87%8E%E8%87%AA%E5%8B%95%E8%BB%8A%E5%AD%A6%E6%A0%A1&output=embed" loading="eager" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              <iframe title="CDS 筑紫野自動車学校 Googleマップ" src="https://www.google.com/maps?q=CDS%20%E7%AD%91%E7%B4%AB%E9%87%8E%E8%87%AA%E5%8B%95%E8%BB%8A%E5%AD%A6%E6%A0%A1&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
               <a class="map-overlay-link" href="https://www.google.com/maps/place/CDS+%E7%AD%91%E7%B4%AB%E9%87%8E%E8%87%AA%E5%8B%95%E8%BB%8A%E5%AD%A6%E6%A0%A1%EF%BC%88%E6%97%A7%E7%94%98%E6%9C%A8%E8%87%AA%E5%8B%95%E8%BB%8A%E5%AD%A6%E6%A0%A1%EF%BC%89/@33.4656493,130.5463389,17z/" target="_blank" rel="noopener">
                 <span>マップで開く</span><span>↗</span>
               </a>
             </div>
             <div class="access-address">
-              <span>〒818-0025 福岡県筑紫野市筑紫120-1</span>
+              <span>〒818-0025 福岡県筑紫野市筑紫120番地1</span>
               <span>TEL <a class="phone-link" href="tel:0927102188">092-710-2188</a></span>
             </div>
             <a class="more map-link" href="detail.html?page=access">アクセスを見る <span>›</span></a>
@@ -4141,7 +3893,7 @@
       <div class="wrap">
         <div class="cta-banner">
           <div>
-            <h2>まずは仮入校からスタート！</h2>
+            <h2>まずは仮申込からスタート！</h2>
             <p>料金確認も資料請求も同じ入口から。迷ったら、気軽に相談できます。</p>
             <div class="cta-actions">
               <a class="btn btn-white" href="detail.html?page=price">料金をシミュレーション <span class="circle">›</span></a>
@@ -4198,8 +3950,8 @@
           <a href="detail.html?page=faq">よくある質問</a>
           <a href="detail.html?page=recruit">採用情報</a>
           <div class="sns" aria-label="SNS">
-            <a class="line" href="https://page.line.me/115cacad" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 LINE公式"><img class="sns-icon" src="images/icons/line.svg" alt=""></a>
-            <a class="insta" href="https://www.instagram.com/chikushino_ds/" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 Instagram"><img class="sns-icon" src="images/icons/instagram.svg" alt=""></a>
+            <a class="line" href="https://page.line.me/115cacad" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 LINE公式"><img loading="lazy" decoding="async" class="sns-icon" src="images/icons/line.svg" alt=""></a>
+            <a class="insta" href="https://www.instagram.com/chikushino_ds/" target="_blank" rel="noopener" aria-label="筑紫野自動車学校 Instagram"><img loading="lazy" decoding="async" class="sns-icon" src="images/icons/instagram.svg" alt=""></a>
           </div>
         </div>
       </div>
@@ -4222,7 +3974,7 @@
       }
     },
     ordinary_mt: {
-      label: "普通自動車MT",
+      label: "普通自動車MT（AT取得後に移行）",
       licenses: {
         none: { label: "なし", phoneOnly: true }
       }
@@ -4253,9 +4005,9 @@
     }
   };
   const licenseType = document.querySelector("#licenseType");
-  const transmission = document.querySelector("#transmission");
+  const heldLicense = document.querySelector("#heldLicense");
   const course = document.querySelector("#course");
-  const currentLicense = document.querySelector("#currentLicense");
+  const planType = document.querySelector("#planType");
   const priceValue = document.querySelector("#priceValue");
   const priceUnit = document.querySelector("#priceUnit");
   const simulateButton = document.querySelector("#simulateButton");
@@ -4281,9 +4033,10 @@
     const title = post.title || "筑紫野自動車学校からのお知らせ";
     const date = post.date || "";
     const href = post.link || "detail.html?page=topics";
+    const isExternal = /^https?:\/\//.test(href);
     return `
-      <a class="topic-card" href="${escapeHtml(href)}" target="_blank" rel="noopener" ${duplicate ? 'aria-hidden="true" tabindex="-1"' : ""}>
-        <img src="${escapeHtml(image)}" alt="${duplicate ? "" : escapeHtml(title)}">
+      <a class="topic-card" href="${escapeHtml(href)}"${isExternal ? ' target="_blank" rel="noopener"' : ""} ${duplicate ? 'aria-hidden="true" tabindex="-1"' : ""}>
+        <img loading="lazy" decoding="async" src="${escapeHtml(image)}" alt="${duplicate ? "" : escapeHtml(title)}">
         <div class="topic-body">
           <div class="meta"><span class="pill ${topicPillClass(category)}">${escapeHtml(category)}</span><time>${escapeHtml(date)}</time></div>
           <h3 class="topic-title">${escapeHtml(title)}</h3>
@@ -4304,9 +4057,6 @@
 
       if (grid) {
         grid.innerHTML = posts.map((post) => renderTopicCard(post)).join("") + posts.map((post) => renderTopicCard(post, true)).join("");
-        grid.querySelectorAll(".topic-card").forEach((card, index) => {
-          card.style.transitionDelay = `${Math.min(index * 65, 420)}ms`;
-        });
       }
 
       const first = posts[0];
@@ -4323,22 +4073,41 @@
   }
   function syncLicenseChoices() {
     const selected = priceData[licenseType.value];
-    transmission.innerHTML = Object.entries(selected.licenses)
+    heldLicense.innerHTML = Object.entries(selected.licenses)
       .map(([key, item]) => `<option value="${key}">${item.label}</option>`)
       .join("");
     updatePrice();
   }
+  const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let priceCountUpFrame = null;
+  function animatePriceValue(total) {
+    if (priceCountUpFrame) cancelAnimationFrame(priceCountUpFrame);
+    const from = Number(String(priceValue.textContent).replace(/[^0-9]/g, "")) || 0;
+    if (reduceMotionQuery.matches || !from || from === total) {
+      priceValue.textContent = formatter.format(total);
+      return;
+    }
+    const duration = 380;
+    const start = performance.now();
+    const step = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      priceValue.textContent = formatter.format(Math.round(from + (total - from) * eased));
+      if (progress < 1) priceCountUpFrame = requestAnimationFrame(step);
+    };
+    priceCountUpFrame = requestAnimationFrame(step);
+  }
   function updatePrice() {
     const selected = priceData[licenseType.value];
-    const license = selected.licenses[transmission.value];
+    const license = selected.licenses[heldLicense.value];
     if (license.phoneOnly) {
       priceValue.textContent = "お電話で確認";
       if (priceUnit) priceUnit.textContent = "";
       updateSimulatorApplicationLink();
       return;
     }
-    const total = license[course.value][currentLicense.value];
-    priceValue.textContent = formatter.format(total);
+    const total = license[course.value][planType.value];
+    animatePriceValue(total);
     if (priceUnit) priceUnit.textContent = "円（税込）";
     updateSimulatorApplicationLink();
   }
@@ -4349,9 +4118,9 @@
       purpose: "仮入校申し込み",
       vehicle: priceData[licenseType.value]?.label || "",
       priceCourse: licenseType.value,
-      currentLicense: transmission.value,
+      currentLicense: heldLicense.value,
       userType: course.value,
-      pricePlan: currentLicense.value
+      pricePlan: planType.value
     });
     applyFromSimulator.href = `detail.html?${params.toString()}#applicationForm`;
   }
@@ -4365,7 +4134,7 @@
     ], { duration: 520, easing: "cubic-bezier(.16,1,.3,1)" });
   }
   licenseType.addEventListener("change", syncLicenseChoices);
-  [transmission, course, currentLicense].forEach((select) => select.addEventListener("change", updatePrice));
+  [heldLicense, course, planType].forEach((select) => select.addEventListener("change", updatePrice));
   simulateButton?.addEventListener("click", simulatePrice);
   syncLicenseChoices();
   setupWordPressTopics();
@@ -4396,20 +4165,6 @@
       menuToggle?.setAttribute("aria-label", "メニューを開く");
     });
   });
-  const revealItems = document.querySelectorAll(".reveal");
-  revealItems.forEach((item) => {
-    item.querySelectorAll(".topic-card, .notice-row, .notice-tile, .price-example-card, .menu-tile, .route-link, .course-card, .strength-card, .point-card, .flow-card, .info-card, .instagram-post").forEach((child, index) => {
-      child.style.transitionDelay = `${Math.min(index * 65, 420)}ms`;
-    });
-  });
-  function showVisibleRevealItems() {
-    revealItems.forEach((item) => {
-      const rect = item.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.96 && rect.bottom > 0) {
-        item.classList.add("is-visible");
-      }
-    });
-  }
   function scrollToHashTarget() {
     if (!location.hash) return;
     const id = decodeURIComponent(location.hash.slice(1));
@@ -4417,39 +4172,24 @@
     if (!target) return;
     requestAnimationFrame(() => {
       target.scrollIntoView({ block: "start" });
-      showVisibleRevealItems();
-      setTimeout(showVisibleRevealItems, 120);
     });
   }
-  let revealTicking = false;
-  function scheduleRevealCheck() {
-    if (revealTicking) return;
-    revealTicking = true;
-    requestAnimationFrame(() => {
-      showVisibleRevealItems();
-      revealTicking = false;
-    });
-  }
-  if ("IntersectionObserver" in window) {
-    const revealObserver = new IntersectionObserver((entries) => {
+  scrollToHashTarget();
+  window.addEventListener("hashchange", scrollToHashTarget);
+  // 料金プラン例カード：ビューポート進入時に1回だけフェード表示
+  const priceExampleCards = document.querySelectorAll(".price-example-card");
+  if (priceExampleCards.length && "IntersectionObserver" in window) {
+    const cardObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          revealObserver.unobserve(entry.target);
+          entry.target.classList.add("is-shown");
+          cardObserver.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.16, rootMargin: "0px 0px -8% 0px" });
-    revealItems.forEach((item) => revealObserver.observe(item));
-    showVisibleRevealItems();
-    scrollToHashTarget();
-    window.addEventListener("hashchange", scrollToHashTarget);
-    window.addEventListener("scroll", scheduleRevealCheck, { passive: true });
-    window.addEventListener("resize", scheduleRevealCheck);
-    setTimeout(showVisibleRevealItems, 160);
-    setTimeout(showVisibleRevealItems, 900);
+    }, { threshold: 0.25 });
+    priceExampleCards.forEach((card) => cardObserver.observe(card));
   } else {
-    revealItems.forEach((item) => item.classList.add("is-visible"));
-    scrollToHashTarget();
+    priceExampleCards.forEach((card) => card.classList.add("is-shown"));
   }
 </script>
 </body>
