@@ -73,7 +73,7 @@ function formatDate(dateValue) {
 
 function parseFeed(xml, limit) {
   const itemMatches = [...xml.matchAll(/<item\b[\s\S]*?<\/item>/gi)];
-  return itemMatches.slice(0, limit).map((match) => {
+  const posts = itemMatches.map((match) => {
     const item = match[0];
     const content = pickTag(item, "content:encoded");
     const pubDate = pickTag(item, "pubDate");
@@ -97,6 +97,8 @@ function parseFeed(xml, limit) {
       source: "wordpress-rss"
     };
   });
+  posts.sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0));
+  return posts.slice(0, limit);
 }
 
 function jsonResponse(payload, status = 200) {

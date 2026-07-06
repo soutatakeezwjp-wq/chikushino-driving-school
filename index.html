@@ -89,7 +89,7 @@
   }
 
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; overflow-x: hidden; }
+  html { scroll-behavior: smooth; overflow-x: hidden; scroll-padding-top: 140px; }
   body {
     margin: 0;
     color: var(--text);
@@ -2349,7 +2349,7 @@
     display: grid;
     grid-template-rows: auto auto 1fr;
     min-height: 100%;
-    color: var(--ink);
+    color: var(--purple-ink);
     text-decoration: none;
     background: #fff;
   }
@@ -2664,7 +2664,7 @@
     gap: 8px;
     padding: 18px 28px 0;
     text-align: center;
-    color: var(--ink);
+    color: var(--purple-ink);
     font-family: var(--latin);
     font-size: 18px;
     font-weight: 800;
@@ -3817,7 +3817,7 @@
               <span class="arrow">›</span>
             </span>
           </a>
-          <a class="route-link" href="detail.html?page=about" style="--route-img:url('images/site-parts/strength-corporate.webp')">
+          <a class="route-link" href="detail.html?page=why" style="--route-img:url('images/site-parts/strength-corporate.webp')">
             <span class="route-body">
               <span><span class="route-label">STRENGTH</span><strong>学校の強み</strong></span>
               <span class="arrow">›</span>
@@ -3900,8 +3900,8 @@
                     </select>
                   </div>
                   <div class="field">
-                    <label for="transmission">現在の免許</label>
-                    <select id="transmission">
+                    <label for="heldLicense">現在の免許</label>
+                    <select id="heldLicense">
                       <option value="none">なし</option>
                     </select>
                   </div>
@@ -3913,8 +3913,8 @@
                     </select>
                   </div>
                   <div class="field">
-                    <label for="currentLicense">通い方</label>
-                    <select id="currentLicense">
+                    <label for="planType">通い方</label>
+                    <select id="planType">
                       <option value="day">デイプラン</option>
                       <option value="free">フリープラン</option>
                     </select>
@@ -4152,7 +4152,7 @@
               </a>
             </div>
             <div class="access-address">
-              <span>〒818-0025 福岡県筑紫野市筑紫120-1</span>
+              <span>〒818-0025 福岡県筑紫野市筑紫120番地1</span>
               <span>TEL <a class="phone-link" href="tel:0927102188">092-710-2188</a></span>
             </div>
             <a class="more map-link" href="detail.html?page=access">アクセスを見る <span>›</span></a>
@@ -4165,7 +4165,7 @@
       <div class="wrap">
         <div class="cta-banner">
           <div>
-            <h2>まずは仮入校からスタート！</h2>
+            <h2>まずは仮申込からスタート！</h2>
             <p>料金確認も資料請求も同じ入口から。迷ったら、気軽に相談できます。</p>
             <div class="cta-actions">
               <a class="btn btn-white" href="detail.html?page=price">料金をシミュレーション <span class="circle">›</span></a>
@@ -4277,9 +4277,9 @@
     }
   };
   const licenseType = document.querySelector("#licenseType");
-  const transmission = document.querySelector("#transmission");
+  const heldLicense = document.querySelector("#heldLicense");
   const course = document.querySelector("#course");
-  const currentLicense = document.querySelector("#currentLicense");
+  const planType = document.querySelector("#planType");
   const priceValue = document.querySelector("#priceValue");
   const priceUnit = document.querySelector("#priceUnit");
   const simulateButton = document.querySelector("#simulateButton");
@@ -4305,8 +4305,9 @@
     const title = post.title || "筑紫野自動車学校からのお知らせ";
     const date = post.date || "";
     const href = post.link || "detail.html?page=topics";
+    const isExternal = /^https?:\/\//.test(href);
     return `
-      <a class="topic-card" href="${escapeHtml(href)}" target="_blank" rel="noopener" ${duplicate ? 'aria-hidden="true" tabindex="-1"' : ""}>
+      <a class="topic-card" href="${escapeHtml(href)}"${isExternal ? ' target="_blank" rel="noopener"' : ""} ${duplicate ? 'aria-hidden="true" tabindex="-1"' : ""}>
         <img loading="lazy" decoding="async" src="${escapeHtml(image)}" alt="${duplicate ? "" : escapeHtml(title)}">
         <div class="topic-body">
           <div class="meta"><span class="pill ${topicPillClass(category)}">${escapeHtml(category)}</span><time>${escapeHtml(date)}</time></div>
@@ -4344,7 +4345,7 @@
   }
   function syncLicenseChoices() {
     const selected = priceData[licenseType.value];
-    transmission.innerHTML = Object.entries(selected.licenses)
+    heldLicense.innerHTML = Object.entries(selected.licenses)
       .map(([key, item]) => `<option value="${key}">${item.label}</option>`)
       .join("");
     updatePrice();
@@ -4370,14 +4371,14 @@
   }
   function updatePrice() {
     const selected = priceData[licenseType.value];
-    const license = selected.licenses[transmission.value];
+    const license = selected.licenses[heldLicense.value];
     if (license.phoneOnly) {
       priceValue.textContent = "お電話で確認";
       if (priceUnit) priceUnit.textContent = "";
       updateSimulatorApplicationLink();
       return;
     }
-    const total = license[course.value][currentLicense.value];
+    const total = license[course.value][planType.value];
     animatePriceValue(total);
     if (priceUnit) priceUnit.textContent = "円（税込）";
     updateSimulatorApplicationLink();
@@ -4389,9 +4390,9 @@
       purpose: "仮入校申し込み",
       vehicle: priceData[licenseType.value]?.label || "",
       priceCourse: licenseType.value,
-      currentLicense: transmission.value,
+      currentLicense: heldLicense.value,
       userType: course.value,
-      pricePlan: currentLicense.value
+      pricePlan: planType.value
     });
     applyFromSimulator.href = `detail.html?${params.toString()}#applicationForm`;
   }
@@ -4405,7 +4406,7 @@
     ], { duration: 520, easing: "cubic-bezier(.16,1,.3,1)" });
   }
   licenseType.addEventListener("change", syncLicenseChoices);
-  [transmission, course, currentLicense].forEach((select) => select.addEventListener("change", updatePrice));
+  [heldLicense, course, planType].forEach((select) => select.addEventListener("change", updatePrice));
   simulateButton?.addEventListener("click", simulatePrice);
   syncLicenseChoices();
   setupWordPressTopics();

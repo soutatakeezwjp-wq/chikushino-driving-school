@@ -61,7 +61,7 @@
     --shadow: 0 14px 34px rgba(45, 27, 87, .10);
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 140px; }
   body {
     margin: 0;
     background: #fff;
@@ -2206,7 +2206,7 @@
     ["マニュアル（MT）免許を取りたいのですが、どうすればいいですか？", "当校の普通車教習はAT取得となります。MT免許をご希望の方は、AT卒業後に「MT移行（AT解除）」（技能4時限・一律36,300円）を受けることで取得できます。すでにAT限定免許をお持ちの方は、限定解除（普通自動車審査）で取得できます。"],
     ["修了検定、卒業検定とは何ですか？", "修了検定とは自動車学校内で身につけた運転技術を確認する試験です。修了検定（技能検定）と仮免許学科試験に合格することで仮免許証が取得でき、これにより路上教習が受けられるようになります。卒業検定とは、路上での運転技術と場内での方向変換、縦列駐車などの技術を確認する卒業前の試験です。"],
     ["修了検定、卒業検定はいつ行われていますか？", "修了検定、卒業検定の日時は、教習カレンダーや各検定ページで確認できます。最新の予定は受付にもお問い合わせください。"],
-    ["入校の申し込みをしに行きたいのですが、予約は必要ですか？", "入校申し込みの来校予約は必須ではありません。受付日時を確認のうえお越しください。事前に仮入校フォームから相談しておくと手続きがスムーズです。"],
+    ["入校の申し込みをしに行きたいのですが、予約は必要ですか？", "入校申し込みの来校予約は必須ではありません。受付日時を確認のうえお越しください。事前に仮申込フォームから相談しておくと手続きがスムーズです。"],
     ["1日で受けられる教習時間に限度はありますか？", "技能教習の場合、1段階では2時限、2段階では3時限まで受けられます。ただし2段階で連続して受けられるのは2時限までです。"],
     ["妊娠していても入校はできますか？", "入校前にご相談ください。体調に配慮した対応を心がけますが、教習内容などを詳しく相談したうえでご自身で判断いただく必要があります。"],
     ["「公安委員会指定」とはどういうことですか？", "公安委員会の基準を満たしている自動車学校のことです。公安委員会指定の自動車学校を卒業すると、運転免許試験場での技能試験は免除されます。筑紫野自動車学校は公安委員会指定校です。"]
@@ -2943,7 +2943,7 @@
         ${ordinaryPlansHtml()}
         <section class="reveal"><div class="wrap grid cols-3">
           <article class="card"><h3>普通車オプション</h3><p>ATコミコミプラン 11,000円、スケジュールプラン 55,000円〜77,000円。合宿風ハイスピードは時期・定員の確認が必要です。</p></article>
-          <article class="card"><h3>割引</h3><p>卒業生割、紹介割、ペア割、トリプル割などの制度があります。併用可否は受付で確認できます。</p></article>
+          <article class="card"><h3>割引</h3><p>卒業生割引（10,000〜20,000円）や、複数人での入校割引（2人・3人以上）などの制度があります。併用可否は受付で確認できます。</p></article>
           <article class="card"><h3>支払い</h3><p>現金、振込、ローンに対応。未成年・学生の方もローン相談ができます。</p></article>
         </div></section>`
     },
@@ -2954,7 +2954,7 @@
 	      lead: "無料送迎バス、バスキャッチ、最寄駅、駐車場の情報をひとつにまとめています。",
       image: "images/real/classroom-wide.jpg",
       visualCaption: "筑紫野市・朝倉市・太宰府市などから通学しやすく",
-      badges: ["無料送迎バス", "バスキャッチ", "筑紫野市筑紫120-1"],
+      badges: ["無料送迎バス", "バスキャッチ", "筑紫野市筑紫120番地1"],
       body: `
         <section class="reveal"><div class="wrap access-route-showcase">
           <div class="route-map-board" aria-label="無料送迎バスの対応エリア">
@@ -3012,7 +3012,7 @@
             </div>
           </div>
         </div></section>
-        <section class="band reveal"><div class="wrap">
+        <section class="band reveal" id="map"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">GOOGLE MAP</span><h2 class="section-title">学校所在地・Googleマップ</h2><p class="section-lead">〒818-0025 福岡県筑紫野市筑紫120番地1。Googleマップをサイト内で確認できます。</p></div></div>
           <iframe title="筑紫野自動車学校 地図" src="https://www.google.com/maps?q=%E7%AD%91%E7%B4%AB%E9%87%8E%E8%87%AA%E5%8B%95%E8%BB%8A%E5%AD%A6%E6%A0%A1&output=embed" loading="lazy" style="width:100%;height:440px;border:0;border-radius:8px;box-shadow:0 16px 44px rgba(45,27,87,.10);"></iframe>
           <div class="grid cols-2" style="margin-top:18px;">
@@ -3188,7 +3188,7 @@
       lead: "月別の教習カレンダーを、画像つきで確認できます。",
       image: "images/current-site/pages/teaching-02.png",
       visualCaption: "月ごとの教習予定を見落としにくく",
-      badges: ["5月", "6月", "学科予定", "休校日"],
+      badges: ["月別カレンダー", "学科予定", "休校日", "検定日"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">CALENDAR</span><strong>学科予定・休校日・検定日を月ごとに確認できます。</strong><p>教習カレンダーを月ごとに掲載しています。来校前や技能予約前に、最新月の予定を確認してください。</p></article>
@@ -3198,10 +3198,13 @@
             <a class="compact-row" href="detail.html?page=sotsugyoukentei"><small>TEST</small><strong>卒業検定について確認</strong><span>›</span></a>
           </div>
         </div></section>
+        <!-- ★更新運用メモ：毎月、下のカレンダー画像（teaching-01.png / teaching-02.png）を最新月のものに差し替え、
+             見出しの「〇月」も合わせて書き換えること。将来的にはmicroCMS等での自動更新に載せ替え予定。 -->
         <section class="reveal"><div class="wrap real-photo-grid">
           <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/teaching-01.png" alt="5月教習カレンダー"><div class="card-copy"><h3>5月教習カレンダー</h3><p>教習予定を月ごとに確認できます。</p></div></article>
           <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/teaching-02.png" alt="6月教習カレンダー"><div class="card-copy"><h3>6月教習カレンダー</h3><p>学科予定、休校日などを月ごとに確認できます。</p></div></article>
         </div></section>
+        <section class="reveal"><div class="wrap"><p class="subnote">※最新月のカレンダーが表示されていない場合は、お手数ですが受付またはお電話（<a class="phone-link" href="tel:0927102188">092-710-2188</a>）でご確認ください。</p></div></section>
         <section class="band reveal"><div class="wrap cta-strip"><div><strong>検定日程も合わせて確認できます。</strong><p>修了検定・卒業検定の案内を在校生メニューからすぐ見られます。</p></div><a class="btn btn-purple" href="detail.html?page=students">在校生メニューへ</a></div></section>`
     },
     syuryokentei: {
@@ -3250,7 +3253,7 @@
       lead: "免許の相談、料金確認、送迎の確認、資料請求、仮入校申し込みまで。迷ったら、まずここから相談できます。",
       image: "images/real/classroom-real.jpg",
       visualCaption: "料金・送迎・入校日の相談までまとめて",
-      badges: ["資料請求", "お問い合わせ", "仮入校", "郵送/デジタル選択"],
+      badges: ["資料請求", "お問い合わせ", "仮申込", "郵送/デジタル選択"],
       body: `
 	        <section class="reveal"><div class="wrap grid cols-3">
 	          <article class="card"><h3>資料請求</h3><p>パンフレットや入校案内を確認したい方へ。郵送・デジタル送付の希望も相談できます。</p></article>
@@ -3328,9 +3331,9 @@
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">TOPICS</span><strong>学校からのお知らせ・活動報告を写真付きで掲載。</strong><p>交通安全活動、表彰、学校からのお知らせなど、大切な情報を見やすく整理しています。</p></article>
           <div class="compact-list">
-            <a class="compact-row" href="detail.html?page=topics"><small>2026.05.27</small><strong>交通事故防止コンクールにおいて金賞を受賞しました</strong><span>›</span></a>
-            <a class="compact-row" href="detail.html?page=topics"><small>2026.05.13</small><strong>福岡県指定自動車学校協会会長から表彰状を頂きました。</strong><span>›</span></a>
-            <a class="compact-row" href="detail.html?page=topics"><small>2026.02.09</small><strong>福岡県警察本部交通部運転免許試験課長から表彰状を頂きました。</strong><span>›</span></a>
+            <div class="compact-row"><small>2026.05.27</small><strong>交通事故防止コンクールにおいて金賞を受賞しました</strong></div>
+            <div class="compact-row"><small>2026.05.13</small><strong>福岡県指定自動車学校協会会長から表彰状を頂きました。</strong></div>
+            <div class="compact-row"><small>2026.02.09</small><strong>福岡県警察本部交通部運転免許試験課長から表彰状を頂きました。</strong></div>
           </div>
         </div></section>
         <section class="reveal"><div class="wrap cta-strip"><div><strong>休校日や検定情報を見落としたくない方へ。</strong><p>在校生向けページに、カレンダー・検定・オンライン学科の入口をまとめています。</p></div><a class="btn btn-purple" href="detail.html?page=students">在校生メニューへ</a></div></section>`
@@ -3358,7 +3361,7 @@
               ["sumi-asami", "角 麻美", "すみちゃん", "音楽を聴く・美味しそうな料理のレシピを見る"],
               ["goto-ryoko", "後藤 良子", "りょうこ", "ガーデニング"],
               ["goto-keiko", "後藤 桂子", "けいこ", "料理、ミシン"],
-	              ["sawamizu-nobuo", "澤水 信雄", "久留米散策", "久留米の街歩き・釣り"],
+	              ["sawamizu-nobuo", "澤水 信雄", "", "久留米の街歩き・釣り"],
               ["tanigawa-takuro", "谷川 拓郎", "たっしゃん", "読書"],
               ["yamamoto-shosuke", "山本 勝介", "山本 勝", "動物園巡り"],
               ["nakamura-masanobu", "中村 正信", "散歩ッポ", "スポーツ観戦"],
@@ -3369,8 +3372,8 @@
               ["shirachi-sadaaki", "白地 貞昭", "重戦車", "スポーツカー、バイク、スイーツ巡り"],
               ["yamamoto-kazuhiro", "山本 一博", "山本2号", "旅行"],
               ["matsumoto-yoichi", "松本 洋一", "シャッ君", "釣り・キャンプ"],
-              ["teshima-yukio", "手嶋 幸男", "ユキオ", "非常勤教習指導員"]
-            ].map(([slug, name, nickname, hobby])=>`<article class="instructor-profile-card"><img loading="lazy" decoding="async" src="images/instructors-anime/${slug}.webp" alt="${name} 指導員"><div><h3>${name}</h3><dl><div><dt>ニックネーム</dt><dd>${nickname}</dd></div><div><dt>趣味</dt><dd>${hobby}</dd></div></dl></div></article>`).join("")}
+              ["teshima-yukio", "手嶋 幸男", "ユキオ", ""]
+            ].map(([slug, name, nickname, hobby])=>`<article class="instructor-profile-card"><img loading="lazy" decoding="async" src="images/instructors-anime/${slug}.webp" alt="${name} 指導員"><div><h3>${name}</h3><dl>${nickname ? `<div><dt>ニックネーム</dt><dd>${nickname}</dd></div>` : ""}${hobby ? `<div><dt>趣味</dt><dd>${hobby}</dd></div>` : ""}</dl></div></article>`).join("")}
           </div>
         </div></section>
         <section class="reveal"><div class="wrap cta-strip"><div><strong>不安なことは、申し込み前に相談できます。</strong><p>運転が苦手、通える日が限られる、送迎を使いたいなど、気になる点を先に確認しましょう。</p></div><a class="btn btn-orange" href="detail.html?page=application">相談してみる</a></div></section>`
@@ -3792,7 +3795,7 @@
 	      lead: "筑紫野自動車学校を運営する株式会社CDSの基本情報です。",
       image: "images/real/building-facade-real.jpg",
       visualCaption: "福岡県公安委員会指定・技能試験免除",
-      badges: ["株式会社CDS", "公安委員会指定校", "筑紫野市筑紫120-1"],
+      badges: ["株式会社CDS", "公安委員会指定校", "筑紫野市筑紫120番地1"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">PROFILE</span><strong>地域の交通安全を支える、公安委員会指定の自動車学校。</strong><p>筑紫野自動車学校は、普通自動車・準中型・自動二輪などの免許取得をサポートし、地域の交通安全教育センターとしての役割も担っています。</p></article>
