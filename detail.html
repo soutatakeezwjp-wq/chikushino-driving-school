@@ -1997,6 +1997,9 @@
     .subpage-main .band {
       padding: 24px 18px;
     }
+    .subpage-main .mobile-table-section {
+      display: none;
+    }
     .subpage-infographic img {
       width: 100%;
       border-radius: 8px;
@@ -3792,6 +3795,7 @@
     pamphlet: ["pamphlet-summary.webp", "パンフレット設置情報を整理した図解"],
     recruit: ["recruit-summary.webp", "採用情報を整理した図解"]
   };
+  const imageFirstPages = new Set(Object.keys(pageInfoVisuals));
 
   function infoVisualHtml(id) {
     const visual = pageInfoVisuals[id];
@@ -3973,7 +3977,7 @@
 	      <h1 class="visually-hidden">${page.title}</h1>
 	      <section class="subpage-shell">
 	        <div class="wrap subpage-layout">
-	          <article class="subpage-main">
+	          <article class="subpage-main" data-page="${id}">
             <p class="subpage-lead">${page.lead}</p>
             ${infoVisualHtml(id)}
             ${page.body}
@@ -3985,6 +3989,11 @@
 	    const siteDirectoryGrid = document.querySelector("#siteDirectoryGrid");
     if (siteDirectoryGrid) siteDirectoryGrid.innerHTML = directoryMenu();
 	    setupReveal();
+	    if (imageFirstPages.has(id)) {
+	      document.querySelectorAll(".subpage-main section").forEach((section) => {
+	        if (section.querySelector(".data-table")) section.classList.add("mobile-table-section");
+	      });
+	    }
 	    linkPhoneNumbers(document.body);
 	    setupPriceSimulator();
 	    setupApplicationForm();
