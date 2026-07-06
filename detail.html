@@ -844,26 +844,29 @@
     font-size: 20px;
     font-weight: 900;
   }
-  .data-table { width: 100%; border-collapse: separate; border-spacing: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
-  .data-table th, .data-table td { padding: 14px 16px; border-bottom: 1px solid #f0e8f8; text-align: left; vertical-align: top; white-space: nowrap; }
+  .data-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+  }
+  .data-table th,
+  .data-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f0e8f8;
+    text-align: left;
+    vertical-align: top;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    line-height: 1.65;
+  }
   .data-table th { background: var(--purple-soft); color: var(--purple-ink); font-family: var(--jp); font-weight: 800; }
   .data-table tr:last-child td { border-bottom: 0; }
-  .table-scroll {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    border-radius: 8px;
-  }
-  .table-scroll .data-table {
-    min-width: max-content;
-  }
-  .table-scroll-hint {
-    display: none;
-    margin: 8px 0 0;
-    color: var(--purple);
-    font-size: 12px;
-    font-weight: 800;
-  }
   .plan-nav {
     display: flex;
     flex-wrap: wrap;
@@ -1614,18 +1617,14 @@
       overflow: hidden;
     }
     .page-quick-grid {
-      display: flex;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 10px;
-      margin-inline: -16px;
-      padding-inline: 16px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
+      margin-inline: 0;
+      padding-inline: 0;
     }
     .page-quick-card {
-      flex: 0 0 160px;
       min-height: 92px;
-      scroll-snap-align: start;
     }
     .page-directory {
       padding-bottom: 28px;
@@ -1639,16 +1638,14 @@
       padding: 16px;
     }
     .directory-grid {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
+      display: grid;
+      grid-template-columns: 1fr;
     }
     .directory-group {
-      flex: 0 0 210px;
-      scroll-snap-align: start;
-      border-right: 1px solid #f0e8f8;
+      border-right: 0;
+      border-bottom: 1px solid #f0e8f8;
     }
+    .directory-group:last-child { border-bottom: 0; }
     .page-intro { padding: 36px 0 28px; }
     .page-copy h1 {
       max-width: 100%;
@@ -1924,6 +1921,19 @@
     box-shadow: 0 18px 42px rgba(50, 20, 95, .08);
     background: #fff;
   }
+  .detail-info-visual {
+    margin: 0 0 28px;
+  }
+  .detail-info-visual img {
+    display: block;
+    width: min(100%, 680px);
+    height: auto;
+    margin: 0 auto;
+    border: 1px solid rgba(92, 49, 155, .14);
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 18px 38px rgba(45, 27, 87, .10);
+  }
   .subpage-main .plan-panel {
     margin-top: 18px;
     padding: 26px;
@@ -2001,7 +2011,6 @@
     h1 { font-size: 32px; line-height: 1.18; }
     .lead { font-size: 15px; line-height: 1.75; }
     .hero-actions .btn { width: 100%; }
-    .table-scroll-hint { display: block; }
   }
 </style>
 </head>
@@ -3773,6 +3782,24 @@
     }
   };
 
+  const pageInfoVisuals = {
+    admission: ["admission-guide.webp", "入校日程と入校資格を整理した図解"],
+    price: ["price-summary.webp", "料金プランの主要金額と加算条件を整理した図解"],
+    bike: ["bike-summary.webp", "自動二輪教習の車種と料金を整理した図解"],
+    limited: ["limited-summary.webp", "各種限定解除の対象と料金を整理した図解"],
+    paper: ["paper-summary.webp", "ペーパードライバー講習の対象と料金を整理した図解"],
+    license: ["license-summary.webp", "免許取得の流れを整理した図解"],
+    pamphlet: ["pamphlet-summary.webp", "パンフレット設置情報を整理した図解"],
+    recruit: ["recruit-summary.webp", "採用情報を整理した図解"]
+  };
+
+  function infoVisualHtml(id) {
+    const visual = pageInfoVisuals[id];
+    if (!visual) return "";
+    const [file, alt] = visual;
+    return `<section class="reveal"><div class="wrap"><figure class="detail-info-visual"><img loading="lazy" decoding="async" src="images/detail-pages/infographics/${file}" alt="${alt}"></figure></div></section>`;
+  }
+
   function relatedCards(current) {
     const relatedMap = {
       admission: [["application", "資料請求・仮申込", "準備できたら、そのまま相談・申し込みへ進めます。"], ["price", "料金プラン", "必要な費用を先に確認して不安を減らします。"], ["access", "送迎バス", "通えるルートを確認して、通学イメージを固めます。"]],
@@ -3948,35 +3975,21 @@
 	        <div class="wrap subpage-layout">
 	          <article class="subpage-main">
             <p class="subpage-lead">${page.lead}</p>
+            ${infoVisualHtml(id)}
             ${page.body}
           </article>
         </div>
       </section>
       <section class="subpage-next reveal"><div class="wrap"><div class="section-head"><div><span class="eyebrow">NEXT</span><h2 class="section-title">次に見るページ</h2></div></div><div class="grid cols-3">${relatedCards(id)}</div></div></section>
     `;
-    const siteDirectoryGrid = document.querySelector("#siteDirectoryGrid");
+	    const siteDirectoryGrid = document.querySelector("#siteDirectoryGrid");
     if (siteDirectoryGrid) siteDirectoryGrid.innerHTML = directoryMenu();
 	    setupReveal();
-	    setupResponsiveTables(document.querySelector("#page"));
 	    linkPhoneNumbers(document.body);
 	    setupPriceSimulator();
 	    setupApplicationForm();
 	    setupMobileMenu();
 	    scrollToHashTarget();
-	  }
-
-	  function setupResponsiveTables(scope = document) {
-	    scope.querySelectorAll("table.data-table").forEach((table) => {
-	      if (table.closest(".table-scroll")) return;
-	      const wrapper = document.createElement("div");
-	      wrapper.className = "table-scroll";
-	      table.parentNode.insertBefore(wrapper, table);
-	      wrapper.appendChild(table);
-	      const hint = document.createElement("p");
-	      hint.className = "table-scroll-hint";
-	      hint.textContent = "→横にスワイプできます";
-	      wrapper.insertAdjacentElement("afterend", hint);
-	    });
 	  }
 
 	  function linkPhoneNumbers(scope = document) {

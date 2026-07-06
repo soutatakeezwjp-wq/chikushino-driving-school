@@ -1841,17 +1841,15 @@
   }
   .point-card {
     position: relative;
-    min-height: 260px;
+    min-height: 0;
     display: grid;
-    grid-template-columns: .96fr 1fr;
-    align-items: center;
-    gap: 22px;
-  }
-  .point-card:nth-child(even) {
-    grid-template-columns: 1fr .96fr;
-  }
-  .point-card:nth-child(even) .point-visual {
-    order: 2;
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 16px;
+    padding: 18px;
+    border-radius: 26px;
+    background: rgba(255,255,255,.72);
+    box-shadow: 0 16px 36px rgba(45, 27, 87, .08);
   }
   .point-card:last-child {
     grid-column: 1 / -1;
@@ -1860,7 +1858,7 @@
   }
   .point-visual {
     position: relative;
-    min-height: 230px;
+    min-height: 240px;
   }
   .point-visual::before,
   .point-visual::after {
@@ -1870,7 +1868,7 @@
     z-index: 0;
   }
   .point-visual::before {
-    inset: 18px 18px 18px 0;
+    inset: 20px 16px 10px 0;
     background: rgba(255, 122, 24, .16);
   }
   .point-visual::after {
@@ -1883,24 +1881,11 @@
   .point-visual img {
     position: relative;
     z-index: 1;
-    height: 230px;
+    width: 100%;
+    height: 250px;
     object-fit: cover;
     border-radius: 48% 52% 45% 55% / 54% 44% 56% 46%;
     box-shadow: 0 20px 42px rgba(45, 27, 87, .14);
-  }
-  .point-visual .mini-photo {
-    position: absolute;
-    right: -14px;
-    bottom: -2px;
-    z-index: 2;
-    width: 54%;
-    height: 122px;
-    border: 7px solid #fff;
-    border-radius: 34% 66% 42% 58% / 58% 38% 62% 42%;
-    object-fit: cover;
-    box-shadow:
-      0 22px 42px rgba(45, 27, 87, .22),
-      0 0 0 1px rgba(92, 49, 155, .08);
   }
   .point-copy {
     position: relative;
@@ -1931,6 +1916,7 @@
   .point-copy h3 span {
     color: var(--orange);
   }
+  .point-card > p,
   .point-copy p {
     margin: 0;
     color: #62586f;
@@ -3200,16 +3186,14 @@
     .school-points { padding: 34px 0 42px; }
     .points-shell { border-radius: 22px; padding: 20px; }
     .points-grid { gap: 22px; }
-    .point-card,
-  .point-card:nth-child(even) {
+    .point-card {
       grid-template-columns: 1fr;
       min-height: 0;
       gap: 14px;
+      padding: 14px;
     }
-    .point-card:nth-child(even) .point-visual { order: 0; }
     .point-visual { min-height: 220px; }
     .point-visual img { height: 220px; }
-    .point-visual .mini-photo { width: 50%; height: 108px; right: -2px; bottom: -4px; }
     .point-no { width: 52px; height: 52px; font-size: 25px; margin-bottom: 10px; }
     .flow-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .flow-card { min-height: 112px; border-radius: 18px; padding: 12px 8px; }
@@ -3671,59 +3655,54 @@
         </div>
         <div class="points-grid">
           <article class="point-card">
-            <div class="point-visual">
-              <img loading="lazy" decoding="async" src="images/real/course-wide-real.jpg" alt="広い教習コース">
-              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-01-beginner-course.webp" alt="初心者マークと教習コース">
-            </div>
             <div class="point-copy">
               <span class="point-no">01</span>
               <h3>広いコースで、<br><span>落ち着いて練習</span>できます。</h3>
-              <p>初めての運転でも焦らず練習できるよう、ゆとりのある教習環境を整えています。</p>
             </div>
+            <div class="point-visual">
+              <img loading="lazy" decoding="async" src="images/real/course-wide-real.jpg" alt="広い教習コース">
+            </div>
+            <p>初めての運転でも焦らず練習できるよう、ゆとりのある教習環境を整えています。</p>
           </article>
           <article class="point-card">
-            <div class="point-visual">
-              <img loading="lazy" decoding="async" src="images/real/classroom-open-real.jpg" alt="明るい教室">
-              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-02-consultation.webp" alt="インストラクターへの相談">
-            </div>
             <div class="point-copy">
               <span class="point-no">02</span>
               <h3>新しい校舎で、<br><span>学科も相談も</span>しやすく。</h3>
-              <p>明るい教室や受付まわりで、分からないことも相談しやすい雰囲気を大切にしています。</p>
             </div>
+            <div class="point-visual">
+              <img loading="lazy" decoding="async" src="images/real/classroom-open-real.jpg" alt="明るい教室">
+            </div>
+            <p>明るい教室や受付まわりで、分からないことも相談しやすい雰囲気を大切にしています。</p>
           </article>
           <article class="point-card">
-            <div class="point-visual">
-              <img loading="lazy" decoding="async" src="images/real/bus-side-real.jpg" alt="無料送迎バス">
-              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-03-route-map.webp" alt="送迎エリアのルートマップ">
-            </div>
             <div class="point-copy">
               <span class="point-no">03</span>
               <h3>無料送迎バスで、<br><span>通いやすさ</span>もサポート。</h3>
-              <p>筑紫野・朝倉・太宰府方面など、通いやすい乗降場所から学校へ向かえます。</p>
             </div>
+            <div class="point-visual">
+              <img loading="lazy" decoding="async" src="images/real/bus-side-real.jpg" alt="無料送迎バス">
+            </div>
+            <p>筑紫野・朝倉・太宰府方面など、通いやすい乗降場所から学校へ向かえます。</p>
           </article>
           <article class="point-card">
-            <div class="point-visual">
-              <img loading="lazy" decoding="async" src="images/real/motorcycle-yard-real.jpg" alt="二輪教習">
-              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-04-license-lineup.webp" alt="普通車・二輪・準中型の教習車両">
-            </div>
             <div class="point-copy">
               <span class="point-no">04</span>
               <h3>普通車から二輪、<br><span>準中型まで</span>対応。</h3>
-              <p>取りたい免許や目的に合わせて、必要なコースを選びやすく整理しています。</p>
             </div>
+            <div class="point-visual">
+              <img loading="lazy" decoding="async" src="images/real/motorcycle-yard-real.jpg" alt="二輪教習">
+            </div>
+            <p>取りたい免許や目的に合わせて、必要なコースを選びやすく整理しています。</p>
           </article>
           <article class="point-card">
-            <div class="point-visual">
-              <img loading="lazy" decoding="async" src="images/real/childcare-room-real.jpg" alt="託児スペース">
-              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-05-childcare.webp" alt="託児スペースのおもちゃ">
-            </div>
             <div class="point-copy">
               <span class="point-no">05</span>
               <h3>お子さまと一緒でも、<br><span>安心して通える</span>環境へ。</h3>
-              <p>託児設備も整えているので、子育て中の方も入校前に相談しやすい学校です。</p>
             </div>
+            <div class="point-visual">
+              <img loading="lazy" decoding="async" src="images/real/childcare-room-real.jpg" alt="託児スペース">
+            </div>
+            <p>託児設備も整えているので、子育て中の方も入校前に相談しやすい学校です。</p>
           </article>
         </div>
       </div>
