@@ -2865,46 +2865,6 @@
           </div>
           <div class="badge-row"><a class="btn btn-purple" href="#price-simulator">料金シミュレーションをしてみる</a><a class="btn btn-white" href="detail.html?page=camp_price">短期プランを見る</a></div>
         </div></section>
-        <section class="reveal"><div class="wrap">
-          <div class="price-wizard" id="price-simulator">
-            <div class="wizard-steps" aria-label="料金シミュレーションの手順">
-              <button class="wizard-step is-active" type="button" data-step="1"><small>STEP 01</small><strong>免許を選ぶ</strong></button>
-              <button class="wizard-step" type="button" data-step="2"><small>STEP 02</small><strong>現有免許</strong></button>
-              <button class="wizard-step" type="button" data-step="3"><small>STEP 03</small><strong>区分</strong></button>
-              <button class="wizard-step" type="button" data-step="4"><small>STEP 04</small><strong>通い方</strong></button>
-            </div>
-            <div class="wizard-main">
-              <span class="eyebrow">QUICK CHECK</span><h2 class="section-title">料金シミュレーター</h2>
-	              <p class="section-lead">4つの項目を選ぶと、その場で料金目安が表示されます。</p>
-              <div class="wizard-panel is-active" data-panel="1">
-                <div class="wizard-question"><h3>ご希望の免許をお選びください</h3></div>
-                <div class="field"><label for="simCourse">取りたい免許</label><select id="simCourse"></select></div>
-                <div class="wizard-actions"><button class="btn btn-purple" type="button" data-next-step="2">次へ進む</button></div>
-              </div>
-              <div class="wizard-panel" data-panel="2">
-                <div class="wizard-question"><h3>現在お持ちの免許を選んでください</h3></div>
-                <div class="field"><label for="simLicense">現在お持ちの免許</label><select id="simLicense"></select></div>
-                <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="1">戻る</button><button class="btn btn-purple" type="button" data-next-step="3">次へ進む</button></div>
-              </div>
-              <div class="wizard-panel" data-panel="3">
-                <div class="wizard-question"><h3>学生・一般の区分を選んでください</h3></div>
-                <div class="field"><label for="simUser">区分</label><select id="simUser"><option value="student">学生</option><option value="general">一般</option></select></div>
-                <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="2">戻る</button><button class="btn btn-purple" type="button" data-next-step="4">次へ進む</button></div>
-              </div>
-              <div class="wizard-panel" data-panel="4">
-                <div class="wizard-question"><h3>通い方を選んでください</h3></div>
-                <div class="field"><label for="simPlan">通い方</label><select id="simPlan"><option value="day">デイプラン</option><option value="free">フリープラン</option></select></div>
-	                <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="3">戻る</button><button class="btn btn-orange" type="button" id="simulateBtn">結果を見る</button></div>
-              </div>
-            </div>
-            <div class="sim-result is-muted" id="detailResult">
-              <span class="mini">料金目安（税込）</span>
-	              <div class="price" id="detailPrice">選択中</div>
-	              <p class="mini" id="detailPriceNote">条件を選ぶと料金目安が表示されます。</p>
-              <a class="btn btn-orange" href="detail.html?page=application">この内容で相談する</a>
-            </div>
-          </div>
-        </div></section>
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">PRICE TABLE</span><h2 class="section-title">主要料金表</h2><p class="section-lead">令和8年8月1日改定の税込料金を、主要コースごとに確認できます。</p></div></div>
 	          <table class="data-table"><thead><tr><th>車種</th><th>現有免許</th><th>技能</th><th>学科</th><th>デイ学生</th><th>デイ一般</th><th>フリー学生</th><th>フリー一般</th></tr></thead><tbody>${courseRows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>
@@ -3792,6 +3752,7 @@
     bike: ["motorcycle_mt", "二輪は、車種と現在お持ちの免許によって料金が変わります。条件を選んで確認できます。"],
     license: ["ordinary_at", "取得したい免許を選ぶ前に、料金の目安をシミュレーターで確認できます。"]
   };
+  const immediateSimulatorPages = new Set(["semi_medium", "standard", "bike", "price"]);
 
   function infoVisualHtml(id) {
     const visual = pageInfoVisuals[id];
@@ -3809,6 +3770,51 @@
       <div class="compact-list">
         <a class="compact-row" href="detail.html?page=price&simCourse=${course}#price-simulator"><small>SIM</small><strong>料金シミュレーターを開く</strong><span>›</span></a>
         <a class="compact-row" href="detail.html?page=application"><small>FORM</small><strong>条件を相談する</strong><span>›</span></a>
+      </div>
+    </div></section>`;
+  }
+
+  function priceSimulatorHtml(id) {
+    if (!immediateSimulatorPages.has(id)) return "";
+    const initialCourse = priceSimulatorLinks[id]?.[0] || "ordinary_at";
+    return `<section class="reveal"><div class="wrap">
+      <div class="price-wizard" id="price-simulator" data-initial-course="${initialCourse}">
+        <div class="wizard-steps" aria-label="料金シミュレーションの手順">
+          <button class="wizard-step is-active" type="button" data-step="1"><small>STEP 01</small><strong>免許を選ぶ</strong></button>
+          <button class="wizard-step" type="button" data-step="2"><small>STEP 02</small><strong>現有免許</strong></button>
+          <button class="wizard-step" type="button" data-step="3"><small>STEP 03</small><strong>区分</strong></button>
+          <button class="wizard-step" type="button" data-step="4"><small>STEP 04</small><strong>通い方</strong></button>
+        </div>
+        <div class="wizard-main">
+          <span class="eyebrow">QUICK CHECK</span><h2 class="section-title">料金シミュレーター</h2>
+          <p class="section-lead">4つの項目を選ぶと、その場で料金目安が表示されます。</p>
+          <div class="wizard-panel is-active" data-panel="1">
+            <div class="wizard-question"><h3>ご希望の免許をお選びください</h3></div>
+            <div class="field"><label for="simCourse">取りたい免許</label><select id="simCourse"></select></div>
+            <div class="wizard-actions"><button class="btn btn-purple" type="button" data-next-step="2">次へ進む</button></div>
+          </div>
+          <div class="wizard-panel" data-panel="2">
+            <div class="wizard-question"><h3>現在お持ちの免許を選んでください</h3></div>
+            <div class="field"><label for="simLicense">現在お持ちの免許</label><select id="simLicense"></select></div>
+            <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="1">戻る</button><button class="btn btn-purple" type="button" data-next-step="3">次へ進む</button></div>
+          </div>
+          <div class="wizard-panel" data-panel="3">
+            <div class="wizard-question"><h3>学生・一般の区分を選んでください</h3></div>
+            <div class="field"><label for="simUser">区分</label><select id="simUser"><option value="student">学生</option><option value="general">一般</option></select></div>
+            <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="2">戻る</button><button class="btn btn-purple" type="button" data-next-step="4">次へ進む</button></div>
+          </div>
+          <div class="wizard-panel" data-panel="4">
+            <div class="wizard-question"><h3>通い方を選んでください</h3></div>
+            <div class="field"><label for="simPlan">通い方</label><select id="simPlan"><option value="day">デイプラン</option><option value="free">フリープラン</option></select></div>
+            <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="3">戻る</button><button class="btn btn-orange" type="button" id="simulateBtn">結果を見る</button></div>
+          </div>
+        </div>
+        <div class="sim-result is-muted" id="detailResult">
+          <span class="mini">料金目安（税込）</span>
+          <div class="price" id="detailPrice">選択中</div>
+          <p class="mini" id="detailPriceNote">条件を選ぶと料金目安が表示されます。</p>
+          <a class="btn btn-orange" href="detail.html?page=application">この内容で相談する</a>
+        </div>
       </div>
     </div></section>`;
   }
@@ -3987,9 +3993,10 @@
 	      <section class="subpage-shell">
 	        <div class="wrap subpage-layout">
 	          <article class="subpage-main" data-page="${id}">
-            <p class="subpage-lead">${page.lead}</p>
             ${infoVisualHtml(id)}
-            ${priceSimulatorCtaHtml(id)}
+            ${priceSimulatorHtml(id)}
+            ${immediateSimulatorPages.has(id) ? "" : `<p class="subpage-lead">${page.lead}</p>`}
+            ${immediateSimulatorPages.has(id) ? "" : priceSimulatorCtaHtml(id)}
             ${page.body}
           </article>
         </div>
@@ -4121,7 +4128,7 @@
 	    }
 	    course.innerHTML = Object.entries(simOptions).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join("");
 	    const simulatorParams = new URLSearchParams(location.search);
-	    const initialCourse = simulatorParams.get("simCourse");
+	    const initialCourse = simulatorParams.get("simCourse") || course.closest(".price-wizard")?.dataset.initialCourse;
 	    if (initialCourse && simOptions[initialCourse]) course.value = initialCourse;
 	    function syncLicenses() {
 	      const selected = simOptions[course.value];
