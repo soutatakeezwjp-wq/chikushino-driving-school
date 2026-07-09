@@ -24,8 +24,8 @@
 /map/ /detail.html?page=access 301
 /motorcycle /detail.html?page=motorcycle 301
 /motorcycle/ /detail.html?page=motorcycle 301
-/pamphlet /detail.html?page=pamphlet 301
-/pamphlet/ /detail.html?page=pamphlet 301
+/pamphlet /detail.html?page=school 301
+/pamphlet/ /detail.html?page=school 301
 /paper /detail.html?page=paper 301
 /paper/ /detail.html?page=paper 301
 /price /detail.html?page=price 301

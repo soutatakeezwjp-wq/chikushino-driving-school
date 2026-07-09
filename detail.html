@@ -2078,7 +2078,6 @@
         <a class="nav-trigger" href="detail.html?page=courses">教習・講習</a>
         <div class="nav-menu" aria-label="教習・講習メニュー">
           <a href="detail.html?page=standard"><span>普通自動車教習</span><small>STANDARD</small></a>
-          <a href="detail.html?page=camp_price"><span>合宿風ハイスピードプラン</span><small>HIGH SPEED</small></a>
           <a href="detail.html?page=semi_medium"><span>準中型車教習</span><small>SEMI MEDIUM</small></a>
           <a href="detail.html?page=bike"><span>自動二輪車教習</span><small>BIKE</small></a>
           <a href="detail.html?page=limited"><span>各種限定解除</span><small>LIMITED</small></a>
@@ -2105,7 +2104,6 @@
           <a href="detail.html?page=why"><span>通う理由</span><small>WHY</small></a>
           <a href="detail.html?page=faq"><span>よくあるご質問</span><small>FAQ</small></a>
           <a href="detail.html?page=access"><span>送迎バス・アクセス</span><small>ACCESS</small></a>
-          <a href="detail.html?page=pamphlet"><span>パンフレット設置情報</span><small>PAMPHLET</small></a>
           <a href="detail.html?page=recruit"><span>採用情報</span><small>RECRUIT</small></a>
         </div>
       </div>
@@ -2137,7 +2135,7 @@
     <div class="wrap">
       <h2>迷ったら、まずは料金確認から。</h2>
       <div class="hero-actions">
-        <a class="btn btn-white" href="detail.html?page=price">料金シミュレーター</a>
+        <a class="btn btn-white" href="detail.html?page=price">料金シミュレーション</a>
         <a class="btn btn-orange" href="detail.html?page=application">仮申込・資料請求</a>
       </div>
     </div>
@@ -2208,9 +2206,14 @@
     ["AT普通自動車", "自動二輪", "29", "2", "249,150円", "254,150円", "271,150円", "276,150円"],
     ["MT準中型", "なし", "41", "27", "401,280円", "406,280円", "423,280円", "428,280円"],
     ["MT準中型", "AT普通車", "17", "1", "177,760円", "182,760円", "188,760円", "193,760円"],
+    ["MT準中型", "MT普通車", "13", "1", "152,240円", "157,240円", "163,240円", "168,240円"],
     ["MT普通二輪", "なし・原付", "19", "26", "181,390円", "186,390円", "192,390円", "197,390円"],
+    ["MT普通二輪", "普通車", "17", "1", "113,520円", "118,520円", "124,520円", "129,520円"],
     ["AT普通二輪", "なし・原付", "15", "26", "163,350円", "168,350円", "174,350円", "179,350円"],
-    ["MT大型二輪", "普通車", "31", "1", "206,910円", "211,910円", "228,910円", "233,910円"]
+    ["AT普通二輪", "普通車", "13", "1", "95,480円", "100,480円", "106,480円", "111,480円"],
+    ["MT大型二輪", "普通車", "31", "1", "206,910円", "211,910円", "228,910円", "233,910円"],
+    ["MT大型二輪", "AT普通二輪", "16", "ー", "128,810円", "133,810円", "139,810円", "144,810円"],
+    ["MT大型二輪", "MT普通二輪", "12", "ー", "108,570円", "113,570円", "119,570円", "124,570円"]
   ];
 
   const ordinaryNoticeItems = [
@@ -2218,13 +2221,14 @@
     "医師・看護師等の資格をお持ちの方は窓口へお申し出ください。学科3時限が免除となります。",
     "当校卒業の方は卒業生割引があります。",
     "割引や特典の併用はできない場合があります。",
-    "途中退校（転校）の場合は当校規定により残金の清算をいたします。",
-    "教習料金は改定する場合があります。"
+    "途中退校（転校）の場合は当校規定により残金の精算をいたします。",
+    "予告なく教習料金を改定する場合があります。",
+    "普通車・準中型車は、仮免試験手数料1,800円（非課税）・仮免交付手数料1,100円（非課税）が別途必要になります。"
   ];
 
   const faqItems = [
     ["オートマ（AT）と、マニュアル（MT）の違いは何ですか？", "オートマは自動でギアが変わるタイプ、マニュアルは手動でギアを変えるタイプの自動車です。オートマは自動でギアが変わり運転も楽なので、マニュアルよりもオートマを選ぶ人の方が多いようです。マニュアルはクラッチペダルを踏みながら、シフトレバーを操作してギアを変えます。このような運転自体を楽しみたい方にはおすすめします。"],
-    ["18歳の誕生日の前でも教習所に入れますか？", "はい。18歳の誕生日の約1か月前から入校はでき、教習も始められます。しかし仮免許試験を受けるには18歳の誕生日を迎えている必要があります。"],
+    ["18歳の誕生日の前でも教習所に入れますか？", "はい。普通車・準中型車は17歳6ヶ月から入校でき、教習も始められます。ただし修了検定・仮免許試験を受けるには18歳の誕生日を迎えている必要があります。"],
     ["住民票が他県でも入校できますか？", "はい、入校できます。しかし卒業した後、運転免許試験場での学科試験などは、住民票のある都道府県にて受ける必要があります。"],
     ["土日しか通えないのですが、それでも免許は取れますか？", "はい、土日のみでも免許は取得できます。予約状況や時期によって卒業までの期間は変わるため、早めの相談がおすすめです。"],
     ["運動や操作などが苦手なのですが、それでも免許は取れますか？", "はい、ご安心ください。筑紫野自動車学校の指導員が丁寧に指導いたします。不安なところやわからないところは、遠慮せずいつでも気軽にご質問ください。"],
@@ -2287,9 +2291,9 @@
 	        <p class="subnote">MT免許をご希望の方は、AT卒業後に「MT移行（AT解除）」（技能4時限・全プラン一律36,300円）で取得できます。</p>
 	        <p>◎ 自分の都合のよい時間に通って免許取得するプランです。◎ 自分のペースで通い免許を取りたい方にオススメ！！</p>
         <p>仮免試験手数料1,800円（非課税）・仮免交付手数料1,100円（非課税）が別途必要です。</p>
-        <p>【内訳】（消費税込） 入学金52,300円・技能教習料（1時限）6,050円・学科教習料1段階22,000円・学科教習料2段階35,200円。教科書代3,300円(免なし・原付持の方)・適性検査料3,300円・効果測定料3,300円・高速通行料1,100円・修了検定料5,500円。卒業検定料6,600円・原付講習料3,300円・証明写真代1,100円・証明書発行料3,300円・フリープラン料22,000円。</p>
-        <p>〇その他諸費用（消費税込） 延長・補習教習料（1時限）6,050円・修了検定再検定料（1回）5,500円・卒業検定再検定料（1回）6,600円・証明書再発行料3,300円・仮免試験再受験料（1回）1,800円（非課税）・技能教習／技能検定の無断キャンセル料（1回）各5,000円（非課税）。</p>
-        <p>※コミコミプランのお申込みの方でも仮免学科試験の再受験料、無断キャンセル料が必要となる場合があります。</p>
+        <p>【内訳】（消費税込） 入学金52,300円・技能教習料（1時限）6,050円・学科教習料1段階22,000円・学科教習料2段階35,200円・教科書代3,300円(免なし・原付持の方)・適性検査料3,300円・効果測定料3,300円・高速通行料1,100円・修了検定料5,500円・卒業検定料6,600円・原付講習料3,300円・証明写真代1,100円・証明書発行料3,300円・フリープラン料22,000円。</p>
+        <p>〇その他諸費用（消費税込） 延長・補習教習料（1時限）6,050円・修了検定再検定料（1回）5,500円・卒業検定再検定料（1回）6,600円・証明書再発行料3,300円・仮免試験再試験料（1回）1,800円（非課税）・技能教習／技能検定の無断キャンセル料（1回）各5,000円（非課税）。</p>
+        <p>※コミコミプランのお申込みの方でも仮免学科試験の再試験料、無断キャンセル料が必要となる場合があります。</p>
       </div>`;
   }
 
@@ -2513,8 +2517,7 @@
           <div class="section-head"><div><span class="eyebrow">COURSE MENU</span><h2 class="section-title">取扱免許・講習</h2><p class="section-lead">目的に合わせて、必要な免許・講習をすぐ選べるように整理しています。</p></div></div>
           <div class="grid cols-3">
             ${[
-              ["standard", "普通自動車", "ATを中心に、日常生活・就職・通学で使いやすい定番免許。スケジュールや合宿風ハイスピードにも対応。", "images/real/course-car-real.jpg", ""],
-              ["camp_price", "合宿風ハイスピード", "自宅から通いながら、当校作成スケジュールに合わせて短期取得を目指すプラン。", "images/current-site/pages/camp_price-01.jpg", ""],
+              ["standard", "普通自動車", "ATを中心に、日常生活・就職・通学で使いやすい定番免許。コミコミやスケジュールプランにも対応。", "images/real/course-car-real.jpg", ""],
               ["semi_medium", "準中型車", "仕事やキャリアアップに。普通車保有者向けの取得パターンも用意。", "images/real/course-truck-real.jpg", ""],
               ["bike", "普通二輪・大型二輪", "趣味にも通勤にも。普通二輪、小型限定、大型二輪まで対応。", "images/real/motorcycle-real.jpg", "object-position: 46% 62%;"],
               ["limited", "各種限定解除", "AT限定からMTへ、準中型5t限定、二輪の限定解除など。", "images/real/motorcycle-real.jpg", "object-position: 72% 58%;"],
@@ -2526,7 +2529,7 @@
           <div class="section-head"><div><span class="eyebrow">HOW TO CHOOSE</span><h2 class="section-title">迷ったときの選び方</h2></div></div>
           <div class="grid cols-4">
             <a class="card hoverable" href="detail.html?page=standard"><h3>はじめての免許</h3><p>AT普通車から確認。学生/一般、デイ/フリーで料金が変わります。</p></a>
-            <a class="card hoverable" href="detail.html?page=camp_price"><h3>早く取りたい</h3><p>合宿風ハイスピードまたはスケジュールプランを確認。</p></a>
+            <a class="card hoverable" href="detail.html?page=standard"><h3>早く取りたい</h3><p>スケジュールプランで短期取得を確認。</p></a>
             <a class="card hoverable" href="detail.html?page=semi_medium"><h3>仕事で必要</h3><p>準中型車、企業講習、ペーパー講習が候補です。</p></a>
             <a class="card hoverable" href="detail.html?page=bike"><h3>バイクに乗りたい</h3><p>普通二輪AT/MT、小型限定、大型二輪を比較できます。</p></a>
           </div>
@@ -2544,7 +2547,7 @@
           <article class="summary-card"><span class="eyebrow">BASIC PLAN</span><strong>自分のペースで通いたい方に。</strong><p>普通自動車基本プランは、自分の都合のよい時間に通って免許取得するプランです。オプション選択で最短スケジュール作成も可能です。</p></article>
           <div class="compact-list">
             <a class="compact-row" href="detail.html?page=camp_price"><small>SHORT</small><strong>合宿風ハイスピードプランを見る</strong><span>›</span></a>
-            <a class="compact-row" href="detail.html?page=price"><small>SIM</small><strong>料金シミュレーターで目安を確認</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=price"><small>SIM</small><strong>料金シミュレーションで目安を確認</strong><span>›</span></a>
             <a class="compact-row" href="detail.html?page=application"><small>FORM</small><strong>普通車教習について相談</strong><span>›</span></a>
           </div>
         </div></section>
@@ -2619,8 +2622,8 @@
             <p>◎ 自分の都合のよい時間に通って免許取得するプランです。◎ 自分のペースで通い免許を取りたい方にオススメ！！</p>
             <p>仮免試験手数料1,800円（非課税）・仮免交付手数料1,100円（非課税）が別途必要です。</p>
             <p>【内訳】（消費税込） 入学金54,500円・技能教習料（1時限）6,380円・学科教習料1段階22,000円・学科教習料2段階37,400円・教科書代3,300円・適性検査料3,300円・効果測定料3,300円・高速通行料1,100円・証明写真代1,100円・原付講習料3,300円・修了検定料5,500円・卒業検定料6,600円・フリープラン料22,000円。</p>
-            <p>〇その他諸費用（消費税込） 延長・補習教習料（1時限）6,380円・修了検定再検定料（1回）5,500円・卒業検定再検定料（1回）6,600円・証明書再発行料3,300円・仮免試験再受験料（1回）1,800円（非課税）・技能教習／技能検定の無断キャンセル料（1回）各5,000円（非課税）。</p>
-            <p>高速教習は原則実車で行います。医師・看護師等の資格をお持ちの方は窓口へお申し出ください（学科3時限免除）。当校卒業の方は卒業生割引があります。割引や特典の併用はできない場合があります。途中退校・転校の場合は当校規定により残金を清算します。教習料金は改定する場合があります。</p>
+            <p>〇その他諸費用（消費税込） 延長・補習教習料（1時限）6,380円・修了検定再検定料（1回）5,500円・卒業検定再検定料（1回）6,600円・証明書再発行料3,300円・仮免試験再試験料（1回）1,800円（非課税）・技能教習／技能検定の無断キャンセル料（1回）各5,000円（非課税）。</p>
+            <p>高速教習は原則実車で行います。医師・看護師等の資格をお持ちの方は窓口へお申し出ください（学科3時限免除）。当校卒業の方は卒業生割引があります。割引や特典の併用はできない場合があります。途中退校・転校の場合は当校規定により残金を精算します。予告なく教習料金を改定する場合があります。</p>
           </div>
           <div class="discount-panel">
             <h3>割引</h3>
@@ -2643,7 +2646,7 @@
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">NOTICE</span><strong>夏季の二輪技能教習時間に注意。</strong><p>7月〜8月の二輪技能教習は、熱中症予防のため8:30〜11:30、16:30〜20:30の間で行います。</p></article>
           <div class="compact-list">
-            <a class="compact-row" href="detail.html?page=price"><small>SIM</small><strong>二輪料金をシミュレーターで確認</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=price"><small>SIM</small><strong>二輪料金をシミュレーションで確認</strong><span>›</span></a>
             <a class="compact-row" href="detail.html?page=application"><small>FORM</small><strong>二輪教習について相談</strong><span>›</span></a>
           </div>
         </div></section>
@@ -2679,7 +2682,7 @@
             <p>※7月〜8月の二輪技能教習は熱中症予防のため、8:30〜11:30、16:30〜20:30の間で行います。</p>
             <p>【内訳】（消費税込） 入学金38,000円・技能教習料（1時限：大型二輪5,060円／普通・小型二輪4,510円）・学科教習料1段階22,000円・学科教習料2段階35,200円・教科書代3,300円（免なし・原付持の方）／1,100円（免有の方）・適性検査料3,300円・効果測定料1,650円・卒業検定料6,050円・証明写真代1,100円・証明書発行料3,300円・フリープラン料22,000円。</p>
             <p>〇その他諸費用（消費税込） 延長・補習教習料（1時限：大型5,060円／普通・小型4,510円）・卒業検定再検定料（1回）6,050円・証明書再発行料3,300円・技能教習／技能検定の無断キャンセル料（1回）各5,000円（非課税）。</p>
-            <p>医師・看護師等の資格をお持ちの方は窓口へお申し出ください（学科3時限免除）。当校卒業の方は卒業生割引があります。割引や特典の併用はできない場合があります。途中退校・転校の場合は当校規定により残金を清算します。教習料金は改定する場合があります。</p>
+            <p>医師・看護師等の資格をお持ちの方は窓口へお申し出ください（学科3時限免除）。当校卒業の方は卒業生割引があります。割引や特典の併用はできない場合があります。途中退校・転校の場合は当校規定により残金を精算します。予告なく教習料金を改定する場合があります。</p>
           </div>
           <div class="discount-panel">
             <h3>割引</h3>
@@ -2723,7 +2726,7 @@
             <p><strong>準中型車5t限定審査の内訳（税込）</strong>：入学金35,140円、技能教習料（1時限）6,380円、適性検査料3,300円、証明写真代1,100円、卒業検定料6,600円、証明書発行料3,300円、フリープラン料5,500円。</p>
             <p><strong>二輪審査の内訳（税込）</strong>：入学金29,200円、技能教習料（1時限）4,510円、適性検査料3,300円、証明写真代1,100円、卒業検定料6,050円、証明書発行料3,300円、フリープラン料5,500円。</p>
             <p><strong>その他諸費用（税込）</strong>：延長・補習教習料（技能教習料と同額／1時限）、卒業検定再検定料、証明書再発行料3,300円、技能教習／技能検定の無断キャンセル料（1回）各5,000円（非課税）。</p>
-            <p>デイプランは8:30〜18:30、フリープランは8:30〜20:30です。割引や特典の併用ができない場合があります。途中退校・転校の場合は当校規定により残金を清算します。教習料金は改定する場合があります。</p>
+            <p>デイプランは8:30〜18:30、フリープランは8:30〜20:30です。割引や特典の併用ができない場合があります。途中退校・転校の場合は当校規定により残金を精算します。予告なく教習料金を改定する場合があります。</p>
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap page-summary">
@@ -2859,7 +2862,7 @@
       badges: ["税込表記", "学生/一般", "デイ/フリー", "主要コース対応"],
       body: `
         <section class="reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">PLAN EXAMPLE</span><h2 class="section-title">料金プラン例</h2><p class="section-lead">まずはよく選ばれる料金例を確認できます。詳しい金額は下のシミュレーターで条件を選んでください。</p></div></div>
+          <div class="section-head"><div><span class="eyebrow">PLAN EXAMPLE</span><h2 class="section-title">料金プラン例</h2><p class="section-lead">まずはよく選ばれる料金例を確認できます。詳しい金額は下のシミュレーションで条件を選んでください。</p></div></div>
           <div class="grid cols-3">
 	            <article class="card"><h3>AT普通車</h3><p>免許なし・学生・デイの主要料金目安です。</p><div class="price">322,850円〜</div><p class="mini">基本プラン料金の目安です。免許なしの方は、別途、仮免手数料2,900円が必要です。</p></article>
 	            <article class="card"><h3>MT普通二輪</h3><p>普通車免許所持・学生・デイの料金目安です。</p><div class="price">113,520円〜</div><p class="mini">一般区分は118,520円〜です。条件により料金が変わります。</p></article>
@@ -2961,7 +2964,7 @@
       body: `
         <section class="reveal"><div class="wrap">
           <p>「筑紫野自動車学校」は、普通自動車免許、準中型自動車免許、自動二輪車免許まで取得できるスクールで、取得後に別の免許を取得したい場合にも卒業割引を受けて免許取得ができます。</p>
-          <p>刻々と変わる交通状況や複雑な道路環境に対応できるように「運転シミュレーター」等を使用しての教習も行っております。わかりやすい教習で事故を起こさない、事故に合わない指導を目指しています。</p>
+          <p>刻々と変わる交通状況や複雑な道路環境に対応できるように「運転シミュレーション」等を使用しての教習も行っております。わかりやすい教習で事故を起こさない、事故に合わない指導を目指しています。</p>
         </div></section>
         <section class="band reveal"><div class="wrap">
           <div class="school-statement">筑紫野自動車学校は福岡県公安委員会指定校・技能試験免除</div>
@@ -2972,7 +2975,7 @@
           <div class="story-text">
             <h2 class="accent-heading">令和2年設立の新しい自動車学校で教習が受けられます！</h2>
             <p>大人数収容の教室で、プロジェクターを使用した授業なども受けられます。</p>
-            <p>シミュレーターも完備していますので、実車では体験できない勉強ができます。また広いコースもあり夜間設備も整っています。</p>
+            <p>シミュレーションも完備していますので、実車では体験できない勉強ができます。また広いコースもあり夜間設備も整っています。</p>
           </div>
         </div></section>
         <section class="reveal"><div class="wrap photo-story reverse">
@@ -3263,9 +3266,7 @@
               ["seto-konosuke", "瀬戸 幸之助", "せとさん", "散歩"],
               ["shimoda-shinichi", "下田 真一", "しっしい", "占い"],
               ["shirachi-sadaaki", "白地 貞昭", "重戦車", "スポーツカー、バイク、スイーツ巡り"],
-              ["yamamoto-kazuhiro", "山本 一博", "山本2号", "旅行"],
-              ["matsumoto-yoichi", "松本 洋一", "シャッ君", "釣り・キャンプ"],
-              ["teshima-yukio", "手嶋 幸男", "ユキオ", ""]
+              ["yamamoto-kazuhiro", "山本 一博", "山本2号", "旅行"]
             ].map(([slug, name, nickname, hobby])=>`<article class="instructor-profile-card"><img loading="lazy" decoding="async" src="images/instructors-anime/${slug}.webp" alt="指導員"><div><h3>${nickname || "指導員"}</h3><dl>${hobby ? `<div><dt>趣味</dt><dd>${hobby}</dd></div>` : ""}</dl></div></article>`).join("")}
           </div>
         </div></section>
@@ -3274,7 +3275,7 @@
     facilities: {
       eyebrow: "FACILITIES",
       title: "校舎・コース・託児まで、写真で確認。",
-      lead: "受付、待合室、教室、運転シミュレーター、託児室、教習コース、送迎バスを写真付きで紹介します。",
+      lead: "受付、待合室、教室、運転シミュレーション、託児室、教習コース、送迎バスを写真付きで紹介します。",
       image: "images/real/building-real.jpg",
       visualCaption: "実際の施設写真で通うイメージを確認",
       badges: ["受付", "託児", "教室", "教習コース"],
@@ -3315,143 +3316,8 @@
           <article class="summary-card"><span class="eyebrow">NEXT ACTION</span><strong>理由が見えたら、料金と通い方を確認。</strong><p>必要な免許、通える曜日、送迎の有無、費用の目安までを一気に確認できる導線にしています。</p></article>
           <div class="compact-list">
             <a class="compact-row" href="detail.html?page=courses"><small>COURSE</small><strong>目的に合う免許を選ぶ</strong><span>›</span></a>
-            <a class="compact-row" href="detail.html?page=price"><small>PRICE</small><strong>料金シミュレーターで確認する</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=price"><small>PRICE</small><strong>料金シミュレーションで確認する</strong><span>›</span></a>
             <a class="compact-row" href="detail.html?page=access"><small>ACCESS</small><strong>通える送迎エリアを見る</strong><span>›</span></a>
-          </div>
-        </div></section>`
-    },
-    pamphlet: {
-      eyebrow: "PAMPHLET SPOTS",
-      title: "パンフレット設置情報",
-	      lead: "朝倉郡、朝倉市、筑紫野市など、パンフレット設置先を地域ごとに確認できます。",
-      image: "images/current-site/pages/pamphlet-01.jpg",
-      visualCaption: "パンフレットを手に取れる場所を確認",
-      badges: ["朝倉郡", "朝倉市", "筑紫野市", "設置先一覧"],
-      body: `
-        <section class="reveal"><div class="wrap photo-story">
-          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/current-site/pages/pamphlet-01.jpg" alt="パンフレット設置情報"></figure>
-          <div class="story-text">
-            <h2 class="accent-heading">近くの設置先でパンフレットを確認できます。</h2>
-            <p>朝倉郡、朝倉市、筑紫野市などの案内所名、所在地、電話番号を地域ごとに探しやすく整理しています。</p>
-            <p>資料請求フォームからもパンフレット送付やデジタル案内を相談できます。</p>
-            <div class="hero-actions"><a class="btn btn-orange" href="detail.html?page=application">資料請求する</a></div>
-          </div>
-        </div></section>
-        <section class="reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">SPOT LIST</span><h2 class="section-title">パンフレット設置案内所</h2><p class="section-lead">案内所名、所在地、電話番号を地域別に掲載しています。</p></div></div>
-          <div class="plan-panel">
-            <h3>朝倉郡</h3>
-            <table class="data-table"><thead><tr><th>案内所名</th><th>所在地</th><th>電話番号</th></tr></thead><tbody>
-              <tr><td>(有)健製作所</td><td>朝倉郡筑前町下髙場字市沼1623-1</td><td>-</td></tr>
-              <tr><td>つくし整骨院</td><td>朝倉郡筑前町依井498-1</td><td>0946-55-1021</td></tr>
-              <tr><td>モスバーガー福岡三輪店</td><td>朝倉郡筑前町森山291-1</td><td>0946-24-6644</td></tr>
-              <tr><td>クリーニング ホワイト急便 アスタラビスタ大刀洗店</td><td>朝倉郡筑前町高田字下田2538-2</td><td>0946-21-2739</td></tr>
-              <tr><td>(有)ユーエーオフィス</td><td>朝倉郡筑前町東小田340-1</td><td>0946-42-5531</td></tr>
-              <tr><td>ミネ装工</td><td>朝倉郡筑前町依井527</td><td>0946-22-0519</td></tr>
-              <tr><td>中華料理 永徳酒家</td><td>朝倉郡筑前町二224-2</td><td>092-710-2007</td></tr>
-            </tbody></table>
-          </div>
-          <div class="plan-panel">
-            <h3>朝倉市</h3>
-            <table class="data-table"><thead><tr><th>案内所名</th><th>所在地</th><th>電話番号</th></tr></thead><tbody>
-              <tr><td>コインズ甘木インター店</td><td>朝倉市一木1148-1</td><td>0946-24-8381</td></tr>
-              <tr><td>かどやクリーニング甘木店</td><td>朝倉市小田鳩胸1131-2</td><td>0946-24-8484</td></tr>
-              <tr><td>居酒屋 あかちょうちん</td><td>朝倉市甘木2334 ホテルアベニュー1階</td><td>0946-22-1218</td></tr>
-              <tr><td>からあげ専門店鶏笑</td><td>朝倉市甘木字七日町868-6</td><td>0946-23-8829</td></tr>
-              <tr><td>(株)エルゼ</td><td>朝倉市甘木神田2340</td><td>0946-22-1005</td></tr>
-              <tr><td>(株)カジワラ商事</td><td>朝倉市甘木187-2</td><td>0946-22-3646</td></tr>
-              <tr><td>マイカーセンター ナカムラ</td><td>朝倉市馬田3337</td><td>0946-24-4551</td></tr>
-              <tr><td>有限会社 甘木自動車</td><td>朝倉市来春36-1</td><td>0946-22-2391</td></tr>
-              <tr><td>KTI.JAPAN</td><td>朝倉市大庭589-1</td><td>0946-52-3338</td></tr>
-              <tr><td>昭和テクノス</td><td>朝倉市甘木421-1</td><td>0946-22-0128</td></tr>
-              <tr><td>昭和モータース株式会社</td><td>朝倉市甘木418-1</td><td>0946-22-2226</td></tr>
-              <tr><td>福岡トヨペット株式会社 甘木店</td><td>朝倉市来春129-1</td><td>0946-22-3145</td></tr>
-              <tr><td>福岡日産自動車株式会社 甘木店</td><td>朝倉市甘木433-1</td><td>0946-22-2519</td></tr>
-              <tr><td>徳田クリーニング店</td><td>朝倉市甘木1181-2</td><td>0946-22-2486</td></tr>
-              <tr><td>リフレッシュサロン ローズ・ミー</td><td>朝倉市菩提寺777-3</td><td>080-8584-6038</td></tr>
-            </tbody></table>
-          </div>
-          <div class="plan-panel">
-            <h3>小郡市・久留米市・太宰府市</h3>
-            <table class="data-table"><thead><tr><th>エリア</th><th>案内所名</th><th>所在地</th><th>電話番号</th></tr></thead><tbody>
-              <tr><td>小郡市</td><td>てて整骨院 小郡店</td><td>小郡市小郡385-1 コスモス小郡店</td><td>0942-48-1206</td></tr>
-              <tr><td>小郡市</td><td>メンズ ヘアー アント</td><td>小郡市三国が丘4-46</td><td>0942-80-3791</td></tr>
-              <tr><td>小郡市</td><td>ダイネン株式会社 福岡南営業所</td><td>小郡市小郡62-1</td><td>0942-72-4136</td></tr>
-              <tr><td>久留米市</td><td>セブンイレブン北野中央店</td><td>久留米市北野町中3240-1</td><td>0942-78-5990</td></tr>
-              <tr><td>太宰府市</td><td>(株)山和金属工業</td><td>太宰府市高雄1丁目3694-1</td><td>092-408-6500</td></tr>
-              <tr><td>太宰府市</td><td>(有)エフアール</td><td>太宰府市大字北谷408-4</td><td>092-924-8825</td></tr>
-              <tr><td>太宰府市</td><td>かくだ商店</td><td>太宰府市太宰府3-2-65</td><td>092-922-4059</td></tr>
-              <tr><td>太宰府市</td><td>有限会社 萬屋</td><td>太宰府市宰府2-6-11</td><td>092-922-4155</td></tr>
-              <tr><td>太宰府市</td><td>セブンイレブン梅香苑一丁目店</td><td>太宰府市梅香苑1-1-49</td><td>092-922-3400</td></tr>
-              <tr><td>太宰府市</td><td>セブンイレブン太宰府都府楼前駅店</td><td>太宰府市通古賀3-84</td><td>092-921-2247</td></tr>
-              <tr><td>太宰府市</td><td>(有)今泉不動産</td><td>太宰府市高雄1-3694-1</td><td>092-925-4123</td></tr>
-              <tr><td>太宰府市</td><td>博多王将</td><td>太宰府市高雄1-3699-1</td><td>092-555-7882</td></tr>
-              <tr><td>太宰府市</td><td>もり整骨院</td><td>太宰府市五条2-6-8</td><td>092-408-7188</td></tr>
-              <tr><td>太宰府市</td><td>ファミリーマート太宰府梅ケ丘店</td><td>太宰府市梅ヶ丘2-14-5</td><td>092-918-4677</td></tr>
-              <tr><td>太宰府市</td><td>ローソン太宰府天満宮前店</td><td>太宰府市宰府1-14-22</td><td>092-929-5048</td></tr>
-              <tr><td>太宰府市</td><td>セブンイレブン太宰府梅ケ丘店</td><td>太宰府市梅ヶ丘1-2-1</td><td>092-924-0600</td></tr>
-              <tr><td>太宰府市</td><td>自遊空間 太宰府店</td><td>太宰府市高雄1丁目3675-1</td><td>092-918-5552</td></tr>
-              <tr><td>太宰府市</td><td>大ばけ小ばけ</td><td>太宰府市五条2-2-33</td><td>092-929-4556</td></tr>
-              <tr><td>太宰府市</td><td>株式会社喜信</td><td>太宰府市内山941-1</td><td>092-925-8939</td></tr>
-              <tr><td>太宰府市</td><td>カラオケビックエコー 太宰府向佐野店</td><td>太宰府市向佐野3-2-1 2F</td><td>092-917-6330</td></tr>
-              <tr><td>太宰府市</td><td>福岡日産自動車株式会社 二日市店</td><td>太宰府市通古賀2丁目3-1</td><td>092-925-0411</td></tr>
-            </tbody></table>
-          </div>
-          <div class="plan-panel">
-            <h3>福岡市・三井郡・春日市</h3>
-            <table class="data-table"><thead><tr><th>エリア</th><th>案内所名</th><th>所在地</th><th>電話番号</th></tr></thead><tbody>
-              <tr><td>福岡市</td><td>㈱ヒューマン＆アソシエイツ</td><td>福岡市中央区天神2-3-10 天神パインクレスト1F</td><td>092-723-0030</td></tr>
-              <tr><td>福岡市</td><td>株式会社 福岡K企画</td><td>福岡市早良区城西3-1-11 コスモハイツ西新203号</td><td>092-407-1515</td></tr>
-              <tr><td>三井郡</td><td>あずみうどん</td><td>三井郡大刀洗町山隈412-6</td><td>0942-77-3846</td></tr>
-              <tr><td>春日市</td><td>春日光龍会</td><td>春日市須玖北4-10-108</td><td>090-6290-1937</td></tr>
-              <tr><td>春日市</td><td>株式会社オクゼン不動産</td><td>春日市春日原北町2-20-7</td><td>092-591-8668</td></tr>
-            </tbody></table>
-          </div>
-          <div class="plan-panel">
-            <h3>筑紫野市</h3>
-            <table class="data-table"><thead><tr><th>案内所名</th><th>所在地</th><th>電話番号</th></tr></thead><tbody>
-              <tr><td>(有)サンクチュアリー</td><td>筑紫野市二日市南3-10-1</td><td>092-924-1553</td></tr>
-              <tr><td>安西たばこ店</td><td>筑紫野市大字筑紫17-3</td><td>092-926-0856</td></tr>
-              <tr><td>筑紫野オート</td><td>筑紫野市筑紫975-5</td><td>092-926-3488</td></tr>
-              <tr><td>地酒の川原</td><td>筑紫野市原田7-4-9</td><td>092-926-2908</td></tr>
-              <tr><td>(有)大野自動車整備工場</td><td>筑紫野市大字筑紫592</td><td>092-926-0311</td></tr>
-              <tr><td>パティスリー テテ</td><td>筑紫野市筑紫駅前通り1丁目15</td><td>092-555-7274</td></tr>
-              <tr><td>ベーカリーアルブル</td><td>筑紫野市筑紫548-1</td><td>092-929-1231</td></tr>
-              <tr><td>風雅堂原田店</td><td>筑紫野市原田4丁目14-7</td><td>092-920-8155</td></tr>
-              <tr><td>山城商会</td><td>筑紫野市大字永岡703-4</td><td>092-925-0400</td></tr>
-              <tr><td>飯笑 かつやま</td><td>筑紫野市筑紫18-6</td><td>092-555-7881</td></tr>
-              <tr><td>からあげ 力</td><td>筑紫野市筑紫18-6</td><td>092-927-1327</td></tr>
-              <tr><td>いけだ屋</td><td>筑紫野市二日市中央3-6-3</td><td>092-922-5920</td></tr>
-              <tr><td>ちくしの米屋</td><td>筑紫野市筑紫550</td><td>092-926-2907</td></tr>
-              <tr><td>セブンイレブン筑紫野筑紫店</td><td>筑紫野市大字筑紫613-1</td><td>092-926-7870</td></tr>
-              <tr><td>じん整骨院</td><td>筑紫野市美しが丘北4-1-3</td><td>092-926-7256</td></tr>
-              <tr><td>筑紫武道具</td><td>筑紫野市大字若江53-1</td><td>092-927-0353</td></tr>
-              <tr><td>食処 つつみ</td><td>筑紫野市武蔵5-2-6</td><td>092-922-0940</td></tr>
-              <tr><td>大石鍼灸整骨院</td><td>筑紫野市若江146-1</td><td>092-404-2022</td></tr>
-              <tr><td>波多江祐介レンタカー</td><td>筑紫野市大字永岡543</td><td>080-1539-1515</td></tr>
-              <tr><td>セブンイレブン筑紫野岡田店</td><td>筑紫野市岡田2-46-1</td><td>092-926-7170</td></tr>
-              <tr><td>たこやき 回転焼き たまちゃん</td><td>筑紫野市大字筑紫8-7</td><td>092-776-7613</td></tr>
-              <tr><td>居酒屋 一</td><td>筑紫野市二日市北1-2-3 2F</td><td>092-408-7294</td></tr>
-              <tr><td>Motorimoda福岡</td><td>筑紫野市原田6-5-10</td><td>090-7947-0657</td></tr>
-              <tr><td>西日本新聞 エリアセンター筑紫</td><td>筑紫野市大字筑紫647</td><td>092-926-2905</td></tr>
-              <tr><td>はっぱねっこベーカリー</td><td>筑紫野市大字原837-9</td><td>092-924-6584</td></tr>
-              <tr><td>有限会社 萩尾モータース</td><td>筑紫野市針摺西1-3-1</td><td>092-922-2506</td></tr>
-              <tr><td>セブンイレブン筑紫野杉塚店</td><td>筑紫野市杉塚2-13-12</td><td>092-921-7076</td></tr>
-              <tr><td>ファミリーマート筑紫野店</td><td>筑紫野市紫3-79-1</td><td>092-917-8118</td></tr>
-              <tr><td>セブンイレブン筑紫野紫4丁目店</td><td>筑紫野市紫4-1-14</td><td>092-928-2557</td></tr>
-              <tr><td>福岡トヨペット株式会社 筑紫野店</td><td>筑紫野市永岡1033-1</td><td>092-925-0567</td></tr>
-              <tr><td>Atelier Pink plum</td><td>筑紫野市岡田1-25-18 エコシスII101</td><td>090-7455-4981</td></tr>
-              <tr><td>lea mahalo Hair Salon</td><td>筑紫野市筑紫駅前通1-130-1-102</td><td>092-927-2639</td></tr>
-              <tr><td>有限会社 上野総合保険（アイエフカンパニー）</td><td>筑紫野市下見303-1-1F</td><td>092-926-0807</td></tr>
-              <tr><td>有限会社 エモーション</td><td>筑紫野市筑紫345</td><td>092-926-0001</td></tr>
-              <tr><td>サニー設備株式会社</td><td>筑紫野市大字隈249</td><td>092-919-7132</td></tr>
-              <tr><td>蘭王たまご販売店産直の店スマイル</td><td>筑紫野市阿志岐2467-2</td><td>-</td></tr>
-              <tr><td>二日市エルゼ水田店</td><td>筑紫野市二日市南2丁目-10</td><td>092-923-0261</td></tr>
-              <tr><td>モスバーガー筑紫野 ヴィレッジ店</td><td>筑紫野市筑紫116</td><td>092-926-8870</td></tr>
-              <tr><td>セブンイレブン二日市店</td><td>筑紫野市二日市中央6-633-15</td><td>092-921-5138</td></tr>
-              <tr><td>居酒屋 海亀</td><td>筑紫野市筑紫駅前通1-1-1筑紫駅前ビル1F右側</td><td>080-3978-2588</td></tr>
-              <tr><td>創作料理 季楽</td><td>筑紫野市原田6-5-9吉松ビル1F</td><td>092-926-1155</td></tr>
-            </tbody></table>
           </div>
         </div></section>`
     },
@@ -3554,7 +3420,7 @@
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">REQUIRED HOURS</span><h2 class="section-title">主な必要時限</h2><p class="section-lead">現有免許により必要な技能・学科時限が変わります。料金シミュレーターと合わせて確認できます。</p></div></div>
+          <div class="section-head"><div><span class="eyebrow">REQUIRED HOURS</span><h2 class="section-title">主な必要時限</h2><p class="section-lead">現有免許により必要な技能・学科時限が変わります。料金シミュレーションと合わせて確認できます。</p></div></div>
           <table class="data-table"><thead><tr><th>車種</th><th>現有免許</th><th>技能教習 規定時限数</th><th>学科教習 規定時限数</th></tr></thead><tbody>
             <tr><td>AT普通自動車</td><td>なし・原付</td><td>31時限</td><td>26時限</td></tr>
             <tr><td>AT普通自動車</td><td>自動二輪</td><td>29時限</td><td>2時限</td></tr>
@@ -3608,7 +3474,7 @@
           <article class="summary-card"><span class="eyebrow">SAFETY TRAINING</span><strong>地域と企業の安全運転を支える講習。</strong><p>業務上の交通事故は企業様にとって、最も身近で深刻なリスクです。企業ドライバーとして初めて従事される方のプロ意識育成、現在従事されている方の慣れや過信による事故防止、企業のCSRにもつながる講習としてご利用いただけます。</p></article>
           <div class="compact-list">
             <a class="compact-row" href="detail.html?page=application"><small>PRIVATE</small><strong>ペーパードライバー講習を相談</strong><span>›</span></a>
-            <a class="compact-row" href="detail.html?page=application"><small>SENIOR</small><strong>高齢者講習の予約・確認</strong><span>›</span></a>
+            <a class="compact-row" href="tel:0927102188"><small>SENIOR</small><strong>高齢者講習の予約はお電話で（092-710-2188）</strong><span>›</span></a>
             <a class="compact-row" href="detail.html?page=application"><small>COMPANY</small><strong>企業向け安全講習を相談</strong><span>›</span></a>
           </div>
         </div></section>
@@ -3754,15 +3620,14 @@
     limited: ["limited-summary.webp", "各種限定解除の対象と料金を整理した図解"],
     paper: ["paper-summary.webp", "ペーパードライバー講習の対象と料金を整理した図解"],
     license: ["license-summary.webp", "免許取得の流れを整理した図解"],
-    pamphlet: ["pamphlet-summary.webp", "パンフレット設置情報を整理した図解"],
     recruit: ["recruit-summary.webp", "採用情報を整理した図解"]
   };
   const priceSimulatorLinks = {
     standard: ["ordinary_at", "普通車の料金は、免許の有無や通い方で変わります。表ではなく、条件を選んで確認できます。"],
-    camp_price: ["ordinary_at", "短期プランを検討する前に、AT普通車の基本条件をシミュレーターで確認できます。"],
+    camp_price: ["ordinary_at", "短期プランを検討する前に、AT普通車の基本条件をシミュレーションで確認できます。"],
     semi_medium: ["semi_medium", "準中型は、現在お持ちの免許によって料金が大きく変わります。条件を選んで確認できます。"],
     bike: ["motorcycle_mt", "二輪は、車種と現在お持ちの免許によって料金が変わります。条件を選んで確認できます。"],
-    license: ["ordinary_at", "取得したい免許を選ぶ前に、料金の目安をシミュレーターで確認できます。"]
+    license: ["ordinary_at", "取得したい免許を選ぶ前に、料金の目安をシミュレーションで確認できます。"]
   };
   const immediateSimulatorPages = new Set(["semi_medium", "standard", "bike", "price"]);
 
@@ -3783,9 +3648,9 @@
     if (!item) return "";
     const [course, lead] = item;
     return `<section class="reveal price-simulator-cta"><div class="wrap page-summary">
-      <article class="summary-card"><span class="eyebrow">PRICE SIMULATOR</span><strong>料金はシミュレーターで確認。</strong><p>${lead}</p></article>
+      <article class="summary-card"><span class="eyebrow">PRICE SIMULATOR</span><strong>料金はシミュレーションで確認。</strong><p>${lead}</p></article>
       <div class="compact-list">
-        <a class="compact-row" href="detail.html?page=price&simCourse=${course}#price-simulator"><small>SIM</small><strong>料金シミュレーターを開く</strong><span>›</span></a>
+        <a class="compact-row" href="detail.html?page=price&simCourse=${course}#price-simulator"><small>SIM</small><strong>料金シミュレーションを開く</strong><span>›</span></a>
         <a class="compact-row" href="detail.html?page=application"><small>FORM</small><strong>条件を相談する</strong><span>›</span></a>
       </div>
     </div></section>`;
@@ -3803,7 +3668,7 @@
           <button class="wizard-step" type="button" data-step="4"><small>STEP 04</small><strong>通い方</strong></button>
         </div>
         <div class="wizard-main">
-          <span class="eyebrow">QUICK CHECK</span><h2 class="section-title">料金シミュレーター</h2>
+          <span class="eyebrow">QUICK CHECK</span><h2 class="section-title">料金シミュレーション</h2>
           <p class="section-lead">4つの項目を選ぶと、その場で料金目安が表示されます。</p>
           <div class="wizard-panel is-active" data-panel="1">
             <div class="wizard-question"><h3>ご希望の免許をお選びください</h3></div>
@@ -3840,13 +3705,13 @@
     const relatedMap = {
       admission: [["application", "資料請求・仮申込", "準備できたら、そのまま相談・申し込みへ進めます。"], ["price", "料金プラン", "必要な費用を先に確認して不安を減らします。"], ["access", "送迎バス", "通えるルートを確認して、通学イメージを固めます。"]],
       courses: [["price", "料金プラン", "選んだ免許の費用目安を確認できます。"], ["license", "免許交付まで", "卒業までの流れと必要時限を整理しています。"], ["application", "仮入校申し込み", "取りたい免許が決まったら相談へ進めます。"]],
-      standard: [["camp_price", "合宿風ハイスピード", "短期取得を目指すAT普通車プランへ。"], ["price", "料金シミュレーター", "普通車料金の目安を確認できます。"], ["application", "普通車教習を相談", "入校日や必要書類も確認できます。"]],
+      standard: [["camp_price", "合宿風ハイスピード", "短期取得を目指すAT普通車プランへ。"], ["price", "料金シミュレーション", "普通車料金の目安を確認できます。"], ["application", "普通車教習を相談", "入校日や必要書類も確認できます。"]],
       camp_price: [["standard", "普通自動車教習", "基本プランと比較できます。"], ["application", "空き状況を相談", "短期プランの受付可否を確認。"], ["access", "通学方法を確認", "短期取得に必要な通いやすさを確認。"]],
       semi_medium: [["price", "料金プラン", "準中型の料金目安を確認。"], ["license", "免許交付まで", "必要時限と卒業までの流れを確認。"], ["application", "準中型を相談", "仕事や取得時期に合わせて相談。"]],
       bike: [["motorcycle", "原付講習", "二輪と原付の違いも確認できます。"], ["limited", "限定解除", "二輪AT・小型限定解除を確認。"], ["application", "二輪教習を相談", "希望車種と時期を相談できます。"]],
       limited: [["bike", "自動二輪車教習", "二輪免許の全体を確認。"], ["standard", "普通自動車教習", "AT/MTの違いも確認。"], ["application", "限定解除を相談", "必要な審査を確認できます。"]],
       paper: [["training", "各種講習", "企業・高齢者・原付講習も確認。"], ["access", "アクセス", "講習当日の来校方法を確認。"], ["application", "ペーパー講習を相談", "回数や内容を相談できます。"]],
-      senior: [["training", "各種講習", "講習メニュー全体を確認。"], ["access", "アクセス", "講習日の来校方法を確認。"], ["application", "高齢者講習を相談", "予約前の確認へ進めます。"]],
+      senior: [["training", "各種講習", "講習メニュー全体を確認。"], ["faq", "よくあるご質問", "講習についての疑問を確認できます。"]],
       motorcycle: [["bike", "自動二輪車教習", "二輪免許の取得も確認できます。"], ["training", "各種講習", "講習メニュー全体へ。"], ["application", "原付講習を相談", "実施日程を確認できます。"]],
       price: [["courses", "免許を取る", "料金の前提になる免許種別を確認します。"], ["application", "この内容で相談", "見積もりに近い形で問い合わせできます。"], ["faq", "よくある質問", "ローンや支払いの不安を先に解消します。"]],
       access: [["application", "資料請求・相談", "送迎の相談も含めて問い合わせできます。"], ["students", "在校生の方へ", "バス予約や学科受講の入口を確認できます。"], ["school", "学校紹介", "施設や学校の雰囲気も合わせて見られます。"]],
@@ -3858,7 +3723,6 @@
       instructors: [["school", "学校紹介", "校舎やサポート体制を確認。"], ["facilities", "施設・設備", "教室やコースの雰囲気も確認。"], ["application", "相談してみる", "不安な点を申し込み前に確認できます。"]],
       facilities: [["school", "学校紹介", "学校全体の安心感を確認できます。"], ["access", "アクセス", "通いやすさも合わせて見られます。"], ["application", "見学・相談", "気になる施設があれば相談へ。"]],
       why: [["courses", "免許を取る", "理由に合う免許を選べます。"], ["price", "料金プラン", "費用の目安をすぐ確認できます。"], ["access", "送迎バス", "通える場所か確認できます。"]],
-      pamphlet: [["application", "資料請求", "パンフレット送付を相談できます。"], ["school", "学校紹介", "学校の雰囲気も確認できます。"], ["access", "アクセス", "来校方法を確認できます。"]],
       faq: [["application", "問い合わせ", "解決しない質問はそのまま相談できます。"], ["price", "料金プラン", "費用・支払いの確認へ。"], ["admission", "入校案内", "手続きと必要書類を確認できます。"]],
       recruit: [["school", "学校紹介", "学校の雰囲気や理念を確認できます。"], ["instructors", "教官紹介", "仕事のイメージを掴めます。"], ["application", "問い合わせ", "採用に関する相談にも対応します。"]],
       introduction: [["application", "紹介フォーム", "紹介者・入校希望者の情報を入力できます。"], ["courses", "免許を取る", "紹介相手に合う免許を確認。"], ["price", "料金プラン", "紹介後の費用目安を確認できます。"]],
@@ -3882,8 +3746,8 @@
 
   const directoryGroups = [
     ["入校案内", [["admission", "入校の流れ"], ["application", "資料請求・仮申込"], ["license", "免許交付まで"], ["introduction", "友人・知人紹介"]]],
-    ["教習・講習", [["standard", "普通自動車教習"], ["camp_price", "合宿風ハイスピード"], ["semi_medium", "準中型車教習"], ["bike", "自動二輪車教習"], ["limited", "各種限定解除"], ["paper", "ペーパー講習"], ["senior", "高齢者講習"], ["motorcycle", "原付講習"], ["training", "企業講習"]]],
-    ["料金・アクセス", [["price", "料金プラン"], ["access", "送迎バス・アクセス"], ["pamphlet", "パンフレット設置情報"], ["faq", "よくあるご質問"]]],
+    ["教習・講習", [["standard", "普通自動車教習"], ["semi_medium", "準中型車教習"], ["bike", "自動二輪車教習"], ["limited", "各種限定解除"], ["paper", "ペーパー講習"], ["senior", "高齢者講習"], ["motorcycle", "原付講習"], ["training", "企業講習"]]],
+    ["料金・アクセス", [["price", "料金プラン"], ["access", "送迎バス・アクセス"], ["faq", "よくあるご質問"]]],
     ["学校紹介", [["school", "学校紹介"], ["company", "会社概要"], ["why", "通う理由"], ["facilities", "施設・設備"], ["instructors", "教官紹介"], ["topics", "TOPICS"], ["recruit", "採用情報"]]],
     ["在校生の方へ", [["students", "在校生の方へ"], ["teaching", "教習カレンダー"], ["syuryokentei", "修了検定について"], ["sotsugyoukentei", "卒業検定について"], ["students#online-class", "オンライン学科教習"], ["students#musasi", "効果測定MUSASI"], ["access#buscatch", "スクールバス予約"]]],
     ["サイト情報", [["sitemap", "サイトマップ"], ["privacy", "個人情報保護方針"]]],
@@ -3955,7 +3819,7 @@
         <div class="compact-list">
           <a class="compact-row" href="index.html"><small>TOP</small><strong>トップページへ戻る</strong><span>›</span></a>
           <a class="compact-row" href="detail.html?page=admission"><small>GUIDE</small><strong>入校案内を見る</strong><span>›</span></a>
-          <a class="compact-row" href="detail.html?page=price"><small>PRICE</small><strong>料金・シミュレーター</strong><span>›</span></a>
+          <a class="compact-row" href="detail.html?page=price"><small>PRICE</small><strong>料金・シミュレーション</strong><span>›</span></a>
         </div>
       </div></section>`
   };
