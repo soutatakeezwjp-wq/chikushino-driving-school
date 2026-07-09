@@ -3594,7 +3594,8 @@
               <span><b>1</b>免許を選ぶ</span>
               <span><b>2</b>現有免許を選ぶ</span>
               <span><b>3</b>区分と通い方</span>
-              <span><b>4</b>結果を見る</span>
+              <span><b>4</b>オプションプラン</span>
+              <span><b>5</b>結果を見る</span>
             </div>
             <div class="sim-content">
               <div class="mascot-pair" aria-hidden="true">
@@ -3632,8 +3633,14 @@
                       <option value="free">フリープラン</option>
                     </select>
                   </div>
+                  <div class="field">
+                    <label for="optionPlan">オプションプラン</label>
+                    <select id="optionPlan">
+                      <option value="none">オプションなし</option>
+                    </select>
+                  </div>
                 </div>
-                <p class="sim-note">※令和8年8月1日改定料金表（税込）をもとにした主要コースの目安です。仮免手数料・オプション等は別途確認してください。</p>
+                <p class="sim-note">※令和8年8月1日改定料金表（税込）をもとにした主要コースの目安です。普通車・準中型の免許なしの方は、仮免試験手数料1,800円・仮免交付手数料1,100円（非課税）が別途必要です。</p>
               </div>
             </div>
           </div>
@@ -3982,10 +3989,27 @@
       }
     }
   };
+  const optionExtras = {
+    ordinary_at: [
+      { value: "none", label: "オプションなし", add: 0 },
+      { value: "komikomi", label: "ATコミコミプラン（+11,000円）", add: 11000, lesson: "コミコミプラン" },
+      { value: "schedule", label: "スケジュールプラン 4〜11月開始（+55,000円）", add: 55000, lesson: "スケジュールプラン" },
+      { value: "schedule_winter", label: "スケジュールプラン 12〜3月開始（+77,000円）", add: 77000, lesson: "スケジュールプラン" }
+    ],
+    semi_medium: [
+      { value: "none", label: "オプションなし", add: 0 },
+      { value: "komikomi", label: "準中型コミコミプラン（+22,000円）", add: 22000, lesson: "コミコミプラン" },
+      { value: "schedule", label: "スケジュールプラン 4〜11月開始（+55,000円）", add: 55000, lesson: "スケジュールプラン" },
+      { value: "schedule_winter", label: "スケジュールプラン 12〜3月開始（+77,000円）", add: 77000, lesson: "スケジュールプラン" }
+    ]
+  };
+  const optionExtrasDefault = [{ value: "none", label: "オプションなし", add: 0 }];
+
   const licenseType = document.querySelector("#licenseType");
   const heldLicense = document.querySelector("#heldLicense");
   const course = document.querySelector("#course");
   const planType = document.querySelector("#planType");
+  const optionPlan = document.querySelector("#optionPlan");
   const priceValue = document.querySelector("#priceValue");
   const priceUnit = document.querySelector("#priceUnit");
   const simulateButton = document.querySelector("#simulateButton");
@@ -4054,7 +4078,17 @@
     heldLicense.innerHTML = Object.entries(selected.licenses)
       .map(([key, item]) => `<option value="${key}">${item.label}</option>`)
       .join("");
+    syncOptionChoices();
     updatePrice();
+  }
+  function syncOptionChoices() {
+    if (!optionPlan) return;
+    const extras = optionExtras[licenseType.value] || optionExtrasDefault;
+    optionPlan.innerHTML = extras.map((item) => `<option value="${item.value}">${item.label}</option>`).join("");
+  }
+  function currentOptionExtra() {
+    const extras = optionExtras[licenseType.value] || optionExtrasDefault;
+    return extras.find((item) => item.value === optionPlan?.value) || extras[0];
   }
   const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let priceCountUpFrame = null;
@@ -4084,7 +4118,7 @@
       updateSimulatorApplicationLink();
       return;
     }
-    const total = license[course.value][planType.value];
+    const total = license[course.value][planType.value] + currentOptionExtra().add;
     animatePriceValue(total);
     if (priceUnit) priceUnit.textContent = "円（税込）";
     updateSimulatorApplicationLink();
@@ -4100,6 +4134,8 @@
       userType: course.value,
       pricePlan: planType.value
     });
+    const extra = currentOptionExtra();
+    if (extra.lesson) params.set("lessonPlan", extra.lesson);
     applyFromSimulator.href = `detail.html?${params.toString()}#applicationForm`;
   }
   function simulatePrice() {
@@ -4112,7 +4148,7 @@
     ], { duration: 520, easing: "cubic-bezier(.16,1,.3,1)" });
   }
   licenseType.addEventListener("change", syncLicenseChoices);
-  [heldLicense, course, planType].forEach((select) => select.addEventListener("change", updatePrice));
+  [heldLicense, course, planType, optionPlan].forEach((select) => select?.addEventListener("change", updatePrice));
   simulateButton?.addEventListener("click", simulatePrice);
   syncLicenseChoices();
   setupWordPressTopics();

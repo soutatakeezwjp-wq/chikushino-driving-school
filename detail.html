@@ -1043,6 +1043,8 @@
     transition: transform .8s ease;
   }
   .story-photo:hover img { transform: scale(1.045); }
+  .story-photo.story-photo-full img { aspect-ratio: auto; height: auto; object-fit: contain; background: #fff; }
+  .story-photo.story-photo-full:hover img { transform: none; }
   .accent-heading {
     display: inline-flex;
     align-items: center;
@@ -1679,7 +1681,7 @@
       min-height: 0;
     }
     .buscatch-status { grid-column: 2; justify-self: start; }
-    .wizard-steps { position: static; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+    .wizard-steps { position: static; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
     .wizard-step { min-height: 50px; padding: 8px; text-align: center; }
     .wizard-step strong { display: none; }
     .wizard-step.is-active { transform: none; }
@@ -1985,6 +1987,10 @@
     max-height: 360px;
     object-fit: contain;
     background: #fff;
+  }
+  .subpage-main .story-photo.story-photo-full,
+  .subpage-main .story-photo.story-photo-full img {
+    max-height: none;
   }
   .subpage-next {
     padding: 34px 0 76px;
@@ -2786,7 +2792,7 @@
       badges: ["70歳以上", "事前予約", "通知ハガキ", "実車指導"],
       body: `
         <section class="reveal"><div class="wrap photo-story">
-          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/current-site/pages/senior-02.gif" alt="高齢者講習の案内"></figure>
+          <figure class="story-photo story-photo-full"><img loading="lazy" decoding="async" src="images/current-site/pages/senior-02.gif" alt="高齢者講習の案内"></figure>
           <div class="story-text"><h2 class="accent-heading">高齢者講習通知書が届いたらご予約ください。</h2><p>運転免許有効期間満了日6ヶ月以内に、公安委員会指定の自動車学校で受講しなければ更新できません。筑紫野自動車学校へお電話で予約してください。</p><p>予約電話番号：092-710-2188</p></div>
         </div></section>
         <section class="band reveal"><div class="wrap grid cols-3">
@@ -3170,25 +3176,25 @@
 	            <div class="field"><label for="purpose">お問い合わせ種別</label><select id="purpose" name="purpose" required><option value="" selected>選択してください</option><option>仮入校申し込み</option><option>資料請求</option><option>お問い合わせ</option><option>料金について相談</option><option>友人・知人紹介</option></select></div>
 	            <div class="field"><label for="vehicle">入校車種</label><select id="vehicle" name="vehicle" required><option value="" selected>選択してください</option><option>普通自動車（AT）</option><option>普通自動車（MT）</option><option>準中型車</option><option>大型自動二輪車（MT）</option><option>普通自動二輪車（AT）</option><option>普通自動二輪車（MT）</option><option>小型自動二輪車（AT）</option><option>小型自動二輪車（MT）</option><option>限定解除</option><option>ペーパードライバー</option></select></div>
 	            <div class="field"><label for="name">お名前（漢字）</label><input id="name" name="name" autocomplete="name" placeholder="筑紫野 花子" required></div>
-	            <div class="field"><label for="kana">お名前（カタカナ）</label><input id="kana" name="kana" pattern="[ァ-ヶー\\s]+" title="全角カタカナで入力してください" placeholder="チクシノ ハナコ" required></div>
-	            <div class="field"><label for="gender">性別</label><select id="gender" name="gender"><option value="" selected>選択してください</option><option>男性</option><option>女性</option><option>回答しない</option></select></div>
-	            <div class="field"><label for="birthdate">生年月日</label><input id="birthdate" name="birthdate" type="date"></div>
-	            <div class="field"><label for="postalCode">郵便番号</label><input id="postalCode" name="postalCode" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{3}-?[0-9]{4}" placeholder="818-0000"></div>
-	            <div class="field"><label for="address">ご住所</label><input id="address" name="address" autocomplete="street-address" placeholder="福岡県筑紫野市..."></div>
+	            <div class="field"><label for="kana">お名前（カタカナ）</label><input id="kana" name="kana" pattern="[ァ-ヶー\\s]+" title="全角カタカナで入力してください" placeholder="チクシノ ハナコ"></div>
+	            <div class="field"><label for="gender">性別</label><select id="gender" name="gender" required><option value="" selected>選択してください</option><option>男性</option><option>女性</option><option>回答しない</option></select></div>
+	            <div class="field"><label for="birthdate">生年月日</label><input id="birthdate" name="birthdate" type="date" required></div>
+	            <div class="field"><label for="postalCode">郵便番号</label><input id="postalCode" name="postalCode" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{3}-?[0-9]{4}" placeholder="818-0000" required></div>
+	            <div class="field"><label for="address">ご住所</label><input id="address" name="address" autocomplete="street-address" placeholder="福岡県筑紫野市..." required></div>
 	            <div class="field"><label for="email">メールアドレス</label><input id="email" name="email" type="email" autocomplete="email" placeholder="example@example.com" required></div>
 	            <div class="field"><label for="phone">電話番号</label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="090-0000-0000" required></div>
-	            <div class="field"><label for="occupation">職業</label><select id="occupation" name="occupation"><option value="" selected>選択してください</option><option>大学生</option><option>短大生</option><option>専門学生</option><option>高校生</option><option>予備校生</option><option>会社員</option><option>自営業</option><option>主婦</option><option>パート・アルバイト</option><option>その他</option></select></div>
+	            <div class="field"><label for="occupation">職業</label><select id="occupation" name="occupation" required><option value="" selected>選択してください</option><option>大学生</option><option>短大生</option><option>専門学生</option><option>高校生</option><option>予備校生</option><option>会社員</option><option>自営業</option><option>主婦</option><option>パート・アルバイト</option><option>その他</option></select></div>
 	            <div class="field"><label for="organization">お勤め先（学校・会社）名</label><input id="organization" name="organization" placeholder="学校名・会社名"></div>
 	            <div class="field"><label for="introducer">紹介者名</label><input id="introducer" name="introducer" placeholder="紹介者がいる場合"></div>
 	            <div class="field"><label for="desiredEntryDate">入校希望日</label><input id="desiredEntryDate" name="desiredEntryDate" placeholder="木曜日・土曜日など"></div>
 	            <div class="field" data-entry-field><label for="priceCourse">料金コース</label><select id="priceCourse" name="priceCourse"><option value="" selected>選択してください</option><option value="ordinary_at">AT普通自動車</option><option value="ordinary_mt">MT普通自動車（AT取得後に移行）</option><option value="semi_medium">MT準中型</option><option value="motorcycle_mt">MT普通二輪</option><option value="motorcycle_at">AT普通二輪</option></select></div>
-	            <div class="field" data-entry-field><label for="currentLicense">現在の免許証</label><select id="currentLicense" name="currentLicense"><option value="" selected>選択してください</option></select></div>
+	            <div class="field" data-entry-field><label for="currentLicense">現在の免許証</label><select id="currentLicense" name="currentLicense" required><option value="" selected>選択してください</option></select></div>
 	            <div class="field" data-entry-field><label for="userType">区分</label><select id="userType" name="userType"><option value="" selected>選択してください</option><option value="student">学生</option><option value="general">一般</option></select></div>
 	            <div class="field" data-entry-field><label for="pricePlan">料金プラン</label><select id="pricePlan" name="pricePlan"><option value="" selected>選択してください</option><option value="day">デイプラン</option><option value="free">フリープラン</option></select></div>
-	            <div class="field" data-entry-field><label for="lessonPlan">技能教習プラン</label><select id="lessonPlan" name="lessonPlan"><option value="" selected>選択してください</option><option>デイプラン</option><option>フリープラン</option><option>コミコミプラン</option><option>スケジュールプラン</option><option>合宿風ハイスピードプラン</option><option>未定・相談したい</option></select></div>
-	            <div class="field" data-entry-field><label for="paymentMethod">お支払い方法</label><select id="paymentMethod" name="paymentMethod"><option value="" selected>選択してください</option><option>現金</option><option>クレジットカード</option><option>QRコード決済</option><option>ローン</option><option>振込み</option><option>未定</option></select></div>
+	            <div class="field" data-entry-field><label for="lessonPlan">技能教習プラン</label><select id="lessonPlan" name="lessonPlan" required><option value="" selected>選択してください</option><option>デイプラン</option><option>フリープラン</option><option>コミコミプラン</option><option>スケジュールプラン</option><option>合宿風ハイスピードプラン</option><option>未定・相談したい</option></select></div>
+	            <div class="field" data-entry-field><label for="paymentMethod">お支払い方法</label><select id="paymentMethod" name="paymentMethod" required><option value="" selected>選択してください</option><option>現金</option><option>クレジットカード</option><option>QRコード決済</option><option>ローン</option><option>振込み</option><option>未定</option></select></div>
 	            <div class="field"><label for="materialDelivery">資料の受け取り</label><select id="materialDelivery" name="materialDelivery"><option value="" selected>選択してください</option><option>デジタル送付を希望</option><option>郵送を希望</option><option>相談したい</option></select></div>
-	            <div class="field"><label for="howKnown">どこで知りましたか？</label><select id="howKnown" name="howKnown" required><option value="" selected>選択してください</option><option>Instagram</option><option>LINE</option><option>ネット検索</option><option>チラシ・DM</option><option>知人・家族の紹介</option><option>学校・職場のパンフレット</option><option>看板・通りがかり</option><option>その他</option></select></div>
+	            <div class="field"><label for="howKnown">どこで知りましたか？</label><select id="howKnown" name="howKnown"><option value="" selected>選択してください</option><option>Instagram</option><option>LINE</option><option>ネット検索</option><option>チラシ・DM</option><option>知人・家族の紹介</option><option>学校・職場のパンフレット</option><option>看板・通りがかり</option><option>その他</option></select></div>
             <div class="field wide"><label for="notes">ご質問・備考</label><textarea id="notes" name="notes" placeholder="希望入校日、送迎バスの相談、料金の確認など"></textarea></div>
             <label class="privacy-check wide"><input type="checkbox" name="privacyConsent" value="同意済み" required><span>個人情報保護方針を確認し、送信に同意します。</span></label>
             <input class="honeypot" type="text" name="honeypot" tabindex="-1" autocomplete="off">
@@ -3290,7 +3296,7 @@
     },
     why: {
       eyebrow: "WHY LICENSE",
-      title: "私が通う理由",
+      title: "私が自動車学校に通う理由",
 	      lead: "就職、子育て、通学、転勤、遊び、暮らし。免許を取る理由は人それぞれだから、今の自分に近いきっかけから考えられます。",
       image: "images/real/course-car-real.jpg",
       visualCaption: "免許を取った先の暮らしまで想像できるように",
@@ -3300,15 +3306,15 @@
           <div class="section-head"><div><span class="eyebrow">REASONS</span><h2 class="section-title">免許を取りたい理由から、次の一歩を選ぶ。</h2><p class="section-lead">通学、就職、子育て、送迎など、自分に近いきっかけから通い方を考えられます。</p></div></div>
           <div class="grid cols-3">
             ${[
-              ["01", "まるで合宿！？短期間で免許を取得したいから。", "通学型でも予定を組み合わせれば、集中して免許取得を目指せます。学校へ通いながら短期取得を考えたい方に向いています。", "images/real/course-wide-real.jpg"],
-              ["02", "通学に便利な無料送迎バスが便利だから。", "筑紫野市、朝倉市、太宰府市など、通いやすい場所から学校へ。送迎エリアを確認して通学イメージを固められます。", "images/real/bus-access-real.jpg"],
-              ["03", "忙しくてもスケジュールを立ててくれるから。", "学校や仕事、アルバイトと両立しやすいように、通える日程を相談しながら進められます。", "images/real/classroom-open-real.jpg"],
-              ["04", "仕事や自分磨きのために免許が欲しいから。", "就職、転職、仕事の幅を広げるために。免許取得後の暮らしや働き方まで見据えて選べます。", "images/real/classroom-desks-real.jpg"],
-              ["05", "大学や専門学校に進学して、学生の時間があるうちに免許が取りたいから。", "時間の調整がしやすい学生のうちに、将来必要になりやすい免許を取っておくという選択です。", "images/real/classroom-board-real.jpg"],
-              ["06", "だって近いから。アフターフォローも安心だから。", "家や学校、生活圏から近いと通いやすく、卒業後の講習や相談もしやすい安心感があります。", "images/real/building-sign-real.jpg"],
-              ["07", "学校の帰りに通えるから。大学生協の提携校だから。", "大学帰りに通える距離感と、学生向けの相談しやすさ。日常の延長で免許取得を進められます。", "images/real/course-car-card-real.jpg"],
-              ["08", "ママの免許取得でも、お子様と一緒でも安心だから。", "託児施設を備えているので、お子様連れでも相談しながら通えます。子育て中の免許取得を支えます。", "images/real/childcare-room-real.jpg"],
-              ["09", "無料送迎バスで自宅近くやバイト先から学校に通いたいから。", "自宅近く、学校、勤務先など、生活の動線に合わせて送迎を確認できます。無理なく通えるかを先に見られます。", "images/real/bus-front-real.jpg"]
+              ["01", "就職活動を有利に進めたい", "要運転免許の職種や業種もまだまだありますよね。就職後も運転免許があれば仕事の幅も広がります。", "images/real/classroom-desks-real.jpg"],
+              ["02", "将来、車を使った子育てを想定", "小さなお子様とお出かけする時に、運転免許の本当のありがたみがわかるのかもしれませんね。", "images/real/childcare-room-real.jpg"],
+              ["03", "自分のペースで学びたい", "通学型の自動車学校であれば、卒業までの期間を気にせずじっくり通うことも可能ですよ。", "images/real/classroom-open-real.jpg"],
+              ["04", "急な転勤に備えたい", "社会に出ると突然運転免許が必要になることも。先を見越して自動車学校に通ってみてはいかがですか？", "images/real/building-sign-real.jpg"],
+              ["05", "夏休みを有効活用したい", "コツコツ時間を作って免許を取り、長期のお休みに車を使ってしっかり遊ぶ…賢い作戦かもしれません。", "images/real/course-wide-real.jpg"],
+              ["06", "利便性とアフターフォロー", "家から近いと気軽に通えるので、ペーパードライバー向けの講習や限定解除などの際にも安心ですよね。", "images/real/bus-access-real.jpg"],
+              ["07", "短期間で免許取得可能", "通学型の自動車学校でもスケジュールをうまく調整すれば合宿校と同程度の期間で免許取得可能です。", "images/real/course-car-card-real.jpg"],
+              ["08", "生活を充実させたい", "自動車のある生活はドライブや旅行など楽しいイベントも増えますよね。めざせバラ色の生活!!", "images/real/course-car-real.jpg"],
+              ["09", "時間的余裕がある", "時間に余裕のある方は今が通い時かも。生活が忙しくなる前に免許を取ってしまいましょう。", "images/real/classroom-board-real.jpg"]
             ].map(([no,h,p,img])=>`<article class="card hoverable reason-card"><img loading="lazy" decoding="async" src="${img}" alt="${h}"><div class="reason-copy"><span class="reason-no">${no}</span><h3>${h}</h3><p>${p}</p></div></article>`).join("")}
           </div>
         </div></section>
@@ -3666,10 +3672,11 @@
           <button class="wizard-step" type="button" data-step="2"><small>STEP 02</small><strong>現有免許</strong></button>
           <button class="wizard-step" type="button" data-step="3"><small>STEP 03</small><strong>区分</strong></button>
           <button class="wizard-step" type="button" data-step="4"><small>STEP 04</small><strong>通い方</strong></button>
+          <button class="wizard-step" type="button" data-step="5"><small>STEP 05</small><strong>オプション</strong></button>
         </div>
         <div class="wizard-main">
           <span class="eyebrow">QUICK CHECK</span><h2 class="section-title">料金シミュレーション</h2>
-          <p class="section-lead">4つの項目を選ぶと、その場で料金目安が表示されます。</p>
+          <p class="section-lead">5つの項目を選ぶと、その場で料金目安が表示されます。</p>
           <div class="wizard-panel is-active" data-panel="1">
             <div class="wizard-question"><h3>ご希望の免許をお選びください</h3></div>
             <div class="field"><label for="simCourse">取りたい免許</label><select id="simCourse"></select></div>
@@ -3688,7 +3695,12 @@
           <div class="wizard-panel" data-panel="4">
             <div class="wizard-question"><h3>通い方を選んでください</h3></div>
             <div class="field"><label for="simPlan">通い方</label><select id="simPlan"><option value="day">デイプラン</option><option value="free">フリープラン</option></select></div>
-            <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="3">戻る</button><button class="btn btn-orange" type="button" id="simulateBtn">結果を見る</button></div>
+            <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="3">戻る</button><button class="btn btn-purple" type="button" data-next-step="5">次へ進む</button></div>
+          </div>
+          <div class="wizard-panel" data-panel="5">
+            <div class="wizard-question"><h3>オプションプランを選んでください</h3></div>
+            <div class="field"><label for="simOption">オプションプラン</label><select id="simOption"></select></div>
+            <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="4">戻る</button><button class="btn btn-orange" type="button" id="simulateBtn">結果を見る</button></div>
           </div>
         </div>
         <div class="sim-result is-muted" id="detailResult">
@@ -3977,8 +3989,25 @@
     }
   };
 
+  const simPlanExtras = {
+    ordinary_at: [
+      { value: "none", label: "オプションなし", add: 0 },
+      { value: "komikomi", label: "ATコミコミプラン（+11,000円）", add: 11000, lesson: "コミコミプラン" },
+      { value: "schedule", label: "スケジュールプラン 4〜11月開始（+55,000円）", add: 55000, lesson: "スケジュールプラン" },
+      { value: "schedule_winter", label: "スケジュールプラン 12〜3月開始（+77,000円）", add: 77000, lesson: "スケジュールプラン" }
+    ],
+    semi_medium: [
+      { value: "none", label: "オプションなし", add: 0 },
+      { value: "komikomi", label: "準中型コミコミプラン（+22,000円）", add: 22000, lesson: "コミコミプラン" },
+      { value: "schedule", label: "スケジュールプラン 4〜11月開始（+55,000円）", add: 55000, lesson: "スケジュールプラン" },
+      { value: "schedule_winter", label: "スケジュールプラン 12〜3月開始（+77,000円）", add: 77000, lesson: "スケジュールプラン" }
+    ]
+  };
+  const simPlanExtrasDefault = [{ value: "none", label: "オプションなし", add: 0 }];
+
 	  function setupPriceSimulator() {
 	    const course = document.querySelector("#simCourse");
+	    const option = document.querySelector("#simOption");
 	    if (!course) return;
 	    const license = document.querySelector("#simLicense");
 	    const user = document.querySelector("#simUser");
@@ -4014,7 +4043,17 @@
 	    function syncLicenses() {
 	      const selected = simOptions[course.value];
 	      license.innerHTML = Object.entries(selected.licenses).map(([k, v]) => `<option value="${k}">${v.label}</option>`).join("");
+	      syncExtras();
 	      update();
+	    }
+	    function syncExtras() {
+	      if (!option) return;
+	      const extras = simPlanExtras[course.value] || simPlanExtrasDefault;
+	      option.innerHTML = extras.map((item) => `<option value="${item.value}">${item.label}</option>`).join("");
+	    }
+	    function currentExtra() {
+	      const extras = simPlanExtras[course.value] || simPlanExtrasDefault;
+	      return extras.find((item) => item.value === option?.value) || extras[0];
 	    }
 	    function update() {
 	      const selected = simOptions[course.value];
@@ -4025,9 +4064,10 @@
 	        out.textContent = "お電話で確認";
 	        note.innerHTML = `MT免許は、AT卒業後の「MT移行（AT解除）」（技能4時限・一律36,300円）で取得できます。詳しくは<a class="phone-link" href="tel:0927102188">092-710-2188</a>へお問い合わせください。`;
 	      } else {
-	        const value = lic[user.value][plan.value];
+	        const extra = currentExtra();
+	        const value = lic[user.value][plan.value] + extra.add;
 	        animateAmount(value);
-	        note.textContent = `${selected.label} / ${lic.label} / ${userLabel} / ${planLabel}`;
+	        note.textContent = `${selected.label} / ${lic.label} / ${userLabel} / ${planLabel}${extra.add ? ` / ${extra.label}` : ""}`;
 	      }
 	      const params = new URLSearchParams({
 	        page: "application",
@@ -4038,6 +4078,8 @@
 	        userType: user.value,
 	        pricePlan: plan.value
 	      });
+	      const linkExtra = currentExtra();
+	      if (linkExtra.lesson) params.set("lessonPlan", linkExtra.lesson);
 	      if (applyLink) applyLink.href = `detail.html?${params.toString()}#applicationForm`;
 	      if (result) {
 	        result.classList.remove("is-muted");
@@ -4045,7 +4087,7 @@
 	      }
 	    }
 	    course.addEventListener("change", syncLicenses);
-	    [license, user, plan].forEach((el) => el.addEventListener("change", update));
+	    [license, user, plan, option].forEach((el) => el?.addEventListener("change", update));
 	    syncLicenses();
 	  }
 
@@ -4065,7 +4107,7 @@
 	    const lessonPlan = form.querySelector("[name='lessonPlan']");
 	    const postalCode = form.querySelector("[name='postalCode']");
 	    const address = form.querySelector("[name='address']");
-	    const requiredFields = new Set(["purpose", "vehicle", "name", "kana", "email", "phone", "howKnown"]);
+	    const requiredFields = new Set(["purpose", "vehicle", "name", "gender", "birthdate", "postalCode", "address", "email", "phone", "occupation", "currentLicense", "lessonPlan", "paymentMethod"]);
 	    const entryFields = form.querySelectorAll("[data-entry-field]");
 	    const fallbackMessage = "送信できませんでした。お手数ですがお電話（092-710-2188）にてご連絡ください。";
 	
@@ -4079,12 +4121,15 @@
 	      form.querySelectorAll(".field").forEach((field) => {
 	        const control = field.querySelector("[name]");
 	        const label = field.querySelector("label");
-	        if (!control || !label || label.querySelector(".required-badge, .optional-badge")) return;
-	        const badge = document.createElement("span");
-	        const isRequired = requiredFields.has(control.name) || control.required;
+	        if (!control || !label) return;
+	        let badge = label.querySelector(".required-badge, .optional-badge");
+	        if (!badge) {
+	          badge = document.createElement("span");
+	          label.appendChild(badge);
+	        }
+	        const isRequired = control.required || requiredFields.has(control.name);
 	        badge.className = isRequired ? "required-badge" : "optional-badge";
 	        badge.textContent = isRequired ? "必須" : "任意";
-	        label.appendChild(badge);
 	      });
 	      const privacy = form.querySelector(".privacy-check");
 	      if (privacy && !privacy.querySelector(".required-badge")) {
@@ -4142,6 +4187,9 @@
 	          control.disabled = isMaterialOnly;
 	        });
 	      });
+	      const desiredEntryDateField = form.querySelector("[name='desiredEntryDate']");
+	      if (desiredEntryDateField) desiredEntryDateField.required = purpose?.value === "仮入校申し込み";
+	      decorateLabels();
 	    }
 
 	    function applyQueryParams() {
@@ -4154,6 +4202,7 @@
 	      setSelectValue(userType, params.get("userType"));
 	      setSelectValue(pricePlan, params.get("pricePlan"));
 	      syncLessonPlan();
+	      setSelectValue(lessonPlan, params.get("lessonPlan"));
 	      toggleEntryFields();
 	    }
 	
