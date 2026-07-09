@@ -2020,9 +2020,12 @@
     font-weight: 800;
     line-height: 1.45;
   }
-  .instructor-card .instructor-nameplate small,
   .instructor-card .instructor-nameplate em {
     display: none;
+  }
+  .instructor-card .instructor-nameplate small {
+    font-size: 15px;
+    color: var(--school-purple-deep);
   }
   .instructor-cta {
     text-align: center;
@@ -3558,7 +3561,7 @@
               <span class="price-example-icon" aria-hidden="true">
                 <svg viewBox="0 0 64 64"><path d="M12 34l5-14h30l5 14"/><path d="M9 34h46v15H9z"/><path d="M18 49v6M46 49v6"/><circle cx="20" cy="42" r="4"/><circle cx="44" cy="42" r="4"/><path d="M22 20l3-7h14l3 7"/></svg>
               </span>
-              <div class="price-example-name">普通車AT<br>所持免許なし / 学生</div>
+              <div class="price-example-name">AT普通車<br>所持免許なし / 学生</div>
               <div class="price-example-main"><span>¥</span>322,850〜</div>
               <div class="price-example-tax">税込・デイプラン目安</div>
             </article>
@@ -3566,7 +3569,7 @@
               <span class="price-example-icon" aria-hidden="true">
                 <svg viewBox="0 0 64 64"><circle cx="18" cy="45" r="8"/><circle cx="48" cy="45" r="8"/><path d="M26 45h9l6-18 7 18"/><path d="M34 27h11l5-9"/><path d="M20 45l7-17h8"/><path d="M42 18h9"/></svg>
               </span>
-              <div class="price-example-name">普通二輪MT<br>普通車免許あり / 一般</div>
+              <div class="price-example-name">MT普通二輪<br>普通車免許あり / 一般</div>
               <div class="price-example-main"><span>¥</span>118,520〜</div>
               <div class="price-example-tax">税込・デイプラン目安</div>
             </article>
@@ -3574,7 +3577,7 @@
               <span class="price-example-icon" aria-hidden="true">
                 <svg viewBox="0 0 64 64"><path d="M8 26h30v22H8z"/><path d="M38 32h11l7 8v8H38z"/><circle cx="20" cy="49" r="5"/><circle cx="48" cy="49" r="5"/><path d="M15 21h18"/><path d="M14 34h13"/></svg>
               </span>
-              <div class="price-example-name">準中型車MT<br>普通車MT所持 / 学生</div>
+              <div class="price-example-name">MT準中型車<br>MT普通車所持 / 学生</div>
               <div class="price-example-main"><span>¥</span>152,240〜</div>
               <div class="price-example-tax">税込・デイプラン目安</div>
             </article>
@@ -3604,11 +3607,11 @@
                   <div class="field">
                     <label for="licenseType">免許の種類</label>
 	                    <select id="licenseType">
-	                      <option value="ordinary_at">普通自動車AT</option>
-	                      <option value="ordinary_mt">普通自動車MT（AT取得後に移行）</option>
-	                      <option value="semi_medium">準中型車MT</option>
-                      <option value="motorcycle_mt">普通二輪MT</option>
-                      <option value="motorcycle_at">普通二輪AT</option>
+	                      <option value="ordinary_at">AT普通自動車</option>
+	                      <option value="ordinary_mt">MT普通自動車（AT取得後に移行）</option>
+	                      <option value="semi_medium">MT準中型車</option>
+                      <option value="motorcycle_mt">MT普通二輪</option>
+                      <option value="motorcycle_at">AT普通二輪</option>
                     </select>
                   </div>
                   <div class="field">
@@ -3715,24 +3718,24 @@
       </div>
       <div class="instructor-viewport" aria-label="インストラクター写真の横流れ">
         <div class="instructor-track">
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/haraguchi-miho.webp" alt="原口美穂 指導員"><span class="instructor-nameplate">原口 美穂<small>はらぐっちゃん☆</small><em>ずーっと探してます</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/sasaki-takako.webp" alt="佐々木貴子 指導員"><span class="instructor-nameplate">佐々木 貴子<small>きこ</small><em>スポーツ観戦</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/hatachi-erina.webp" alt="羽立衣莉奈 指導員"><span class="instructor-nameplate">羽立 衣莉奈<small>はたち</small><em>映画鑑賞</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/sumi-asami.webp" alt="角麻美 指導員"><span class="instructor-nameplate">角 麻美<small>すみちゃん</small><em>音楽・料理レシピ</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/goto-ryoko.webp" alt="後藤良子 指導員"><span class="instructor-nameplate">後藤 良子<small>りょうこ</small><em>ガーデニング</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/goto-keiko.webp" alt="後藤桂子 指導員"><span class="instructor-nameplate">後藤 桂子<small>けいこ</small><em>料理、ミシン</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/sawamizu-nobuo.webp" alt="澤水信雄 指導員"><span class="instructor-nameplate">澤水 信雄<small>久留米散策</small><em>市内散策・釣り</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/tanigawa-takuro.webp" alt="谷川拓郎 指導員"><span class="instructor-nameplate">谷川 拓郎<small>たっしゃん</small><em>読書</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/yamamoto-shosuke.webp" alt="山本勝介 指導員"><span class="instructor-nameplate">山本 勝介<small>山本 勝</small><em>動物園巡り</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/nakamura-masanobu.webp" alt="中村正信 指導員"><span class="instructor-nameplate">中村 正信<small>散歩ッポ</small><em>スポーツ観戦</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/shigeto-noriki.webp" alt="重藤憲紀 指導員"><span class="instructor-nameplate">重藤 憲紀<small>しげちゃん</small><em>安全運転サポート</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/uchino-shuhei.webp" alt="内野修平 指導員"><span class="instructor-nameplate">内野 修平<small>うちの先生</small><em>ゲーセン</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/seto-konosuke.webp" alt="瀬戸幸之助 指導員"><span class="instructor-nameplate">瀬戸 幸之助<small>せとさん</small><em>散歩</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/shimoda-shinichi.webp" alt="下田真一 指導員"><span class="instructor-nameplate">下田 真一<small>しっしい</small><em>占い</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/shirachi-sadaaki.webp" alt="白地貞昭 指導員"><span class="instructor-nameplate">白地 貞昭<small>重戦車</small><em>車・バイク・スイーツ</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/yamamoto-kazuhiro.webp" alt="山本一博 指導員"><span class="instructor-nameplate">山本 一博<small>山本2号</small><em>旅行</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/matsumoto-yoichi.webp" alt="松本洋一 指導員"><span class="instructor-nameplate">松本 洋一<small>シャッ君</small><em>釣り・キャンプ</em></span></a>
-          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/teshima-yukio.webp" alt="手嶋幸男 指導員"><span class="instructor-nameplate">手嶋 幸男<small>ユキオ</small><em>非常勤教習指導員</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/haraguchi-miho.webp" alt="指導員"><span class="instructor-nameplate"><small>はらぐっちゃん☆</small><em>ずーっと探してます</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/sasaki-takako.webp" alt="指導員"><span class="instructor-nameplate"><small>きこ</small><em>スポーツ観戦</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/hatachi-erina.webp" alt="指導員"><span class="instructor-nameplate"><small>はたち</small><em>映画鑑賞</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/sumi-asami.webp" alt="指導員"><span class="instructor-nameplate"><small>すみちゃん</small><em>音楽・料理レシピ</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/goto-ryoko.webp" alt="指導員"><span class="instructor-nameplate"><small>りょうこ</small><em>ガーデニング</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/goto-keiko.webp" alt="指導員"><span class="instructor-nameplate"><small>けいこ</small><em>料理、ミシン</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/sawamizu-nobuo.webp" alt="指導員"><span class="instructor-nameplate"><small>久留米散策</small><em>市内散策・釣り</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/tanigawa-takuro.webp" alt="指導員"><span class="instructor-nameplate"><small>たっしゃん</small><em>読書</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/yamamoto-shosuke.webp" alt="指導員"><span class="instructor-nameplate"><small>山本 勝</small><em>動物園巡り</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/nakamura-masanobu.webp" alt="指導員"><span class="instructor-nameplate"><small>散歩ッポ</small><em>スポーツ観戦</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/shigeto-noriki.webp" alt="指導員"><span class="instructor-nameplate"><small>しげちゃん</small><em>安全運転サポート</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/uchino-shuhei.webp" alt="指導員"><span class="instructor-nameplate"><small>うちの先生</small><em>ゲーセン</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/seto-konosuke.webp" alt="指導員"><span class="instructor-nameplate"><small>せとさん</small><em>散歩</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/shimoda-shinichi.webp" alt="指導員"><span class="instructor-nameplate"><small>しっしい</small><em>占い</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/shirachi-sadaaki.webp" alt="指導員"><span class="instructor-nameplate"><small>重戦車</small><em>車・バイク・スイーツ</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/yamamoto-kazuhiro.webp" alt="指導員"><span class="instructor-nameplate"><small>山本2号</small><em>旅行</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/matsumoto-yoichi.webp" alt="指導員"><span class="instructor-nameplate"><small>シャッ君</small><em>釣り・キャンプ</em></span></a>
+          <a class="instructor-card" href="detail.html?page=instructors"><img loading="lazy" decoding="async" src="images/instructors-anime/teshima-yukio.webp" alt="指導員"><span class="instructor-nameplate"><small>ユキオ</small><em>非常勤教習指導員</em></span></a>
         </div>
       </div>
       <div class="wrap instructor-cta">
@@ -3945,7 +3948,7 @@
   const formatter = new Intl.NumberFormat("ja-JP");
   const priceData = {
     ordinary_at: {
-      label: "普通自動車AT",
+      label: "AT普通自動車",
       licenses: {
         none: { label: "なし", student: { day: 322850, free: 344850 }, general: { day: 327850, free: 349850 } },
         moped: { label: "原付", student: { day: 319550, free: 341550 }, general: { day: 324550, free: 346550 } },
@@ -3953,13 +3956,13 @@
       }
     },
     ordinary_mt: {
-      label: "普通自動車MT（AT取得後に移行）",
+      label: "MT普通自動車（AT取得後に移行）",
       licenses: {
         none: { label: "なし", phoneOnly: true }
       }
     },
     semi_medium: {
-      label: "準中型車MT",
+      label: "MT準中型車",
       licenses: {
         none: { label: "なし", student: { day: 401280, free: 423280 }, general: { day: 406280, free: 428280 } },
         moped: { label: "原付", student: { day: 397980, free: 419980 }, general: { day: 402980, free: 424980 } },
@@ -3969,14 +3972,14 @@
       }
     },
     motorcycle_mt: {
-      label: "普通二輪MT",
+      label: "MT普通二輪",
       licenses: {
         none: { label: "なし・原付", student: { day: 181390, free: 192390 }, general: { day: 186390, free: 197390 } },
         car: { label: "普通車", student: { day: 113520, free: 124520 }, general: { day: 118520, free: 129520 } }
       }
     },
     motorcycle_at: {
-      label: "普通二輪AT",
+      label: "AT普通二輪",
       licenses: {
         none: { label: "なし・原付", student: { day: 163350, free: 174350 }, general: { day: 168350, free: 179350 } },
         car: { label: "普通車", student: { day: 95480, free: 106480 }, general: { day: 100480, free: 111480 } }

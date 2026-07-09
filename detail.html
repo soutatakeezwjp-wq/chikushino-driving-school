@@ -1833,6 +1833,16 @@
     gap: 6px;
     padding: 10px 14px 0;
   }
+  .subpage-heading {
+    padding: 48px 0 8px;
+  }
+  .subpage-heading .eyebrow {
+    display: block;
+    margin-bottom: 8px;
+  }
+  .subpage-heading .section-title {
+    margin: 0;
+  }
   .subpage-main {
     min-width: 0;
   }
@@ -2193,14 +2203,14 @@
   ];
 
   const courseRows = [
-    ["普通自動車AT", "なし", "31", "26", "322,850円", "327,850円", "344,850円", "349,850円"],
-    ["普通自動車AT", "原付", "31", "26", "319,550円", "324,550円", "341,550円", "346,550円"],
-    ["普通自動車AT", "自動二輪", "29", "2", "249,150円", "254,150円", "271,150円", "276,150円"],
-    ["準中型MT", "なし", "41", "27", "401,280円", "406,280円", "423,280円", "428,280円"],
-    ["準中型MT", "AT普通車", "17", "1", "177,760円", "182,760円", "188,760円", "193,760円"],
-    ["普通二輪MT", "なし・原付", "19", "26", "181,390円", "186,390円", "192,390円", "197,390円"],
-    ["普通二輪AT", "なし・原付", "15", "26", "163,350円", "168,350円", "174,350円", "179,350円"],
-    ["大型二輪MT", "普通車", "31", "1", "206,910円", "211,910円", "228,910円", "233,910円"]
+    ["AT普通自動車", "なし", "31", "26", "322,850円", "327,850円", "344,850円", "349,850円"],
+    ["AT普通自動車", "原付", "31", "26", "319,550円", "324,550円", "341,550円", "346,550円"],
+    ["AT普通自動車", "自動二輪", "29", "2", "249,150円", "254,150円", "271,150円", "276,150円"],
+    ["MT準中型", "なし", "41", "27", "401,280円", "406,280円", "423,280円", "428,280円"],
+    ["MT準中型", "AT普通車", "17", "1", "177,760円", "182,760円", "188,760円", "193,760円"],
+    ["MT普通二輪", "なし・原付", "19", "26", "181,390円", "186,390円", "192,390円", "197,390円"],
+    ["AT普通二輪", "なし・原付", "15", "26", "163,350円", "168,350円", "174,350円", "179,350円"],
+    ["MT大型二輪", "普通車", "31", "1", "206,910円", "211,910円", "228,910円", "233,910円"]
   ];
 
   const ordinaryNoticeItems = [
@@ -2391,20 +2401,21 @@
             <li>入校申込書：必要事項を記入・捺印したもの。必要事項を記入、捺印したもの。</li>
             <li>学生証：学生の方のみ。（学生の方のみ）</li>
             <li>運転免許証がある方：入校時に免許証内ICチップに記録されている本籍地情報が必要になります。（入校時に免許証内ICチップに記録されている本籍地情報が必要になります。）①県内住所の方：運転免許証（4桁又は8桁の暗証番号）をご準備ください。</li>
-            <li>②マイナ免許証の方：本籍地が確認ができるようにご準備ください（マイナポータル連携等）。</li>
+            <li>②免許証（マイナ免許証）：本籍地が確認ができるようにご準備ください（マイナポータル連携等）。</li>
             <li>運転免許証がない方：①住民票（6ヶ月以内・本籍地記載で本人のもの。個人番号（マイナンバー）の記載がないもの）と、②本人確認書類（例：学生証・健康保険証等）が必要です。</li>
             <li>外国籍の方：※外国籍の方は、 国籍地などを記載した住民票。外国人登録証明書又は在留カード、特別永住者証明書をご準備ください。</li>
           </ul>
           <h4>教習料金のお支払い方法</h4>
           <ul class="info-list">
-            <li>現金・振り込み：入校申込手続き後にお振込みください。入校日前日までにお近くの銀行、郵便局、その他金融機関にてお支払いください。振込手数料を差引いた金額をご入金ください。お振込手数料は当校が負担いたします。</li>
+            <li>現金・振り込み：入校申込手続き後にお振込みください。入校日前日までにお近くの銀行、郵便局、その他金融機関にてお支払いください。</li>
+            <li>クレジットカード・QRコード決済：各種クレジットカード、QRコード決済にも対応しています。</li>
             <li>ローン：お支払い開始が最長6ヵ月後まで据置ができるスキップローンもあります。</li>
             <li>2〜60回の分割払いが可能です。ローンは未成年の方も学生の方もご利用いただけます。</li>
             <li>ローンをご希望の方は、入校日の2〜3日前までにローン申込手続きと審査が必要です。</li>
           </ul>
           <div class="notice-box">
             <p>※外国籍の方は、外国人登録証明書又は在留カード、特別永住者証明書もご準備ください。</p>
-            <p><strong>振り込み（入校申込手続き後にお振込みください）</strong>：入校日前日までにお近くの銀行・郵便局・その他金融機関にてお支払下さい。振込手数料を差引いた金額をご入金下さい。※お振込手数料は、当校が負担いたします。</p>
+            <p><strong>振り込み（入校申込手続き後にお振込みください）</strong>：入校日前日までにお近くの銀行・郵便局・その他金融機関にてお支払下さい。</p>
             <p>お支払い開始が、最長6ヵ月後まで据置ができる「スキップローン」もあります。ローンは未成年の方もご利用いただけます。ローンは学生の方もご利用いただけます。ローンをご希望の方は入校日の２、３日前までにローン申込手続き（審査）が必要となります。</p>
           </div>
         </div>
@@ -2426,7 +2437,7 @@
         <div class="plan-panel">
           <h3>入校の資格</h3>
           <table class="data-table"><tbody>
-            <tr><th>年齢</th><td>普通車・準中型車・大型二輪車は18歳以上、普通二輪車・小型二輪車は16歳以上です。</td></tr>
+            <tr><th>年齢</th><td>普通車・準中型車は17歳6ヶ月以上、大型二輪車は18歳以上、普通二輪車・小型二輪車は16歳以上です。</td></tr>
             <tr><th>視力</th><td>普通車・二輪は片眼0.3以上かつ両眼0.7以上、準中型車は片眼0.5以上かつ両眼0.8以上が目安です。眼鏡・コンタクト使用の方は着用して確認します。</td></tr>
             <tr><th>視野</th><td>普通車・自動二輪車で片眼が0.3未満の場合は、他眼の視力が0.7以上で、視野が150度以上必要です。</td></tr>
             <tr><th>深視力</th><td>準中型車は、遠近感や立体感の検査で3回のズレの合計が6cm以下であることが必要です。</td></tr>
@@ -2453,7 +2464,7 @@
       lead: "必要書類、支払い、入校日、資格をひとつのページに整理。スマホで確認しながら準備できます。",
       image: "images/real/classroom-real.jpg",
       visualCaption: "受付スタッフが手続きまで丁寧に案内します",
-      badges: ["木曜・土曜に入校日", "支払いは現金・振込・ローン", "必要書類を事前確認"],
+      badges: ["木曜・土曜に入校日", "現金・カード・QR・振込・ローン", "必要書類を事前確認"],
       body: `
         <section class="reveal">
           <div class="wrap">
@@ -2470,15 +2481,15 @@
         </section>
         <section class="band reveal"><div class="wrap grid cols-2">
           <article class="card"><h3>必要なもの</h3><p>入校申込書、学生証、運転免許証、または本籍地記載の住民票と本人確認書類。マイナ免許証の場合は本籍地確認の準備が必要です。</p></article>
-          <article class="card"><h3>支払い方法</h3><p>現金、銀行振込、ローンに対応。分割払いは2〜60回、支払い開始を遅らせられるスキップローンも相談できます。</p></article>
+          <article class="card"><h3>支払い方法</h3><p>現金、銀行振込、クレジットカード、QRコード決済、ローンに対応。分割払いは2〜60回、支払い開始を遅らせられるスキップローンも相談できます。</p></article>
           <article class="card"><h3>入校日</h3><p>新規入校は毎週木曜・土曜。普通車、準中型、自動二輪の入校説明、運転適性検査、学科第1教程の流れを分かりやすく案内します。</p></article>
-          <article class="card"><h3>入校資格</h3><p>普通車・準中型・大型二輪は18歳以上、普通二輪・小型二輪は16歳以上。視力、色彩識別、聴力、運動能力の基準があります。</p></article>
+          <article class="card"><h3>入校資格</h3><p>普通車・準中型は17歳6ヶ月以上、大型二輪は18歳以上、普通二輪・小型二輪は16歳以上。視力、色彩識別、聴力、運動能力の基準があります。</p></article>
         </div></section>
         ${admissionDetailsHtml()}
         <section class="reveal"><div class="wrap">
           <div class="notice-box">
             <p><strong>書類準備の補足</strong>：入校申込書は必要事項を記入、捺印したものをご用意ください。学生の方のみ学生証が必要です。運転免許証をお持ちの方は、入校時に免許証内ICチップに記録されている本籍地情報が必要になります。県内住所の方は運転免許証（4桁又は8桁の暗証番号）をご準備ください。マイナ免許証の方は、本籍地が確認ができるようにご準備ください（マイナポータル連携等）。</p>
-            <p><strong>お支払いの補足</strong>：お振込みの場合は入校日前日までにお近くの銀行、郵便局、その他金融機関にてお支払いください。振込手数料を差引いた金額をご入金ください。お振込手数料は当校が負担いたします。ローンはお支払い開始が最長6ヶ月先まで選べるスキップローンもあり、未成年の方や学生の方もご利用いただけます。</p>
+            <p><strong>お支払いの補足</strong>：お振込みの場合は入校日前日までにお近くの銀行、郵便局、その他金融機関にてお支払いください。クレジットカードやQRコード決済にも対応しています。ローンはお支払い開始が最長6ヶ月先まで選べるスキップローンもあり、未成年の方や学生の方もご利用いただけます。</p>
           </div>
         </div></section>
         <section class="reveal"><div class="wrap">
@@ -2514,7 +2525,7 @@
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">HOW TO CHOOSE</span><h2 class="section-title">迷ったときの選び方</h2></div></div>
           <div class="grid cols-4">
-            <a class="card hoverable" href="detail.html?page=standard"><h3>はじめての免許</h3><p>普通車ATから確認。学生/一般、デイ/フリーで料金が変わります。</p></a>
+            <a class="card hoverable" href="detail.html?page=standard"><h3>はじめての免許</h3><p>AT普通車から確認。学生/一般、デイ/フリーで料金が変わります。</p></a>
             <a class="card hoverable" href="detail.html?page=camp_price"><h3>早く取りたい</h3><p>合宿風ハイスピードまたはスケジュールプランを確認。</p></a>
             <a class="card hoverable" href="detail.html?page=semi_medium"><h3>仕事で必要</h3><p>準中型車、企業講習、ペーパー講習が候補です。</p></a>
             <a class="card hoverable" href="detail.html?page=bike"><h3>バイクに乗りたい</h3><p>普通二輪AT/MT、小型限定、大型二輪を比較できます。</p></a>
@@ -2526,8 +2537,8 @@
       title: "普通自動車教習",
       lead: "自分の都合のよい時間に通って免許取得する基本プランを中心に、コミコミ、合宿風、スケジュールまで比較できます。",
       image: "images/current-site/pages/standard-01.jpg",
-      visualCaption: "普通自動車ATを中心に、通いやすいプランを選択",
-      badges: ["普通車AT", "基本プラン", "コミコミ", "短期取得"],
+      visualCaption: "AT普通自動車を中心に、通いやすいプランを選択",
+      badges: ["AT普通車", "基本プラン", "コミコミ", "短期取得"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">BASIC PLAN</span><strong>自分のペースで通いたい方に。</strong><p>普通自動車基本プランは、自分の都合のよい時間に通って免許取得するプランです。オプション選択で最短スケジュール作成も可能です。</p></article>
@@ -2542,10 +2553,10 @@
     camp_price: {
       eyebrow: "HIGH SPEED PLAN",
       title: "合宿風ハイスピードプラン",
-      lead: "自宅から通いながら、合宿とほぼ同じ期間で免許取得を目指す普通車AT向けの短期プランです。",
+      lead: "自宅から通いながら、合宿とほぼ同じ期間で免許取得を目指すAT普通車向けの短期プランです。",
       image: "images/current-site/pages/camp_price-01.jpg",
       visualCaption: "最短17日を目安に、短期取得を目指す",
-      badges: ["普通車AT対象", "最短17日目安", "各入校日先着1名"],
+      badges: ["AT普通車対象", "最短17日目安", "各入校日先着1名"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">ABOUT</span><strong>とにかく早く免許が取りたい方へ。</strong><p>当校の作成したスケジュールどおりに教習を進めていくプランです。最短日数は目安であり、個人差等により延びる場合があります。</p></article>
@@ -2579,7 +2590,7 @@
       lead: "仕事で必要になって取得される方や、キャリアアップのために取得される方に向けた準中型車免許ページです。",
       image: "images/current-site/pages/semi_medium-01.jpg",
       visualCaption: "準中型車は仕事・キャリアアップにも対応",
-      badges: ["準中型MT", "基本プラン", "コミコミ", "スケジュール"],
+      badges: ["MT準中型", "基本プラン", "コミコミ", "スケジュール"],
       body: `
         <section class="reveal"><div class="wrap grid cols-3">
           <article class="card"><h3>準中型自動車基本プラン</h3><p>自分の都合のよい時間に通って取得するプラン。自分のペースで通いたい方に向いています。</p></article>
@@ -2593,8 +2604,8 @@
             <tr><td>なし</td><td>401,280円</td><td>+5,000円</td><td>+22,000円</td></tr>
             <tr><td>原付</td><td>397,980円</td><td>+5,000円</td><td>+22,000円</td></tr>
             <tr><td>自動二輪車</td><td>326,920円</td><td>+5,000円</td><td>+22,000円</td></tr>
-            <tr><td>普通車AT</td><td>177,760円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>普通車MT</td><td>152,240円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>AT普通車</td><td>177,760円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>MT普通車</td><td>152,240円</td><td>+5,000円</td><td>+11,000円</td></tr>
           </tbody></table>
           <div class="grid cols-2" style="margin-top:18px;">
             <article class="card"><h3>準中型コミコミプラン</h3><p>卒業までに教習料金がどのくらいかかるか不安な方におすすめです。補習・延長教習料、技能検定再検定料がかからないプランです。</p></article>
@@ -2640,14 +2651,14 @@
           <div class="section-head"><div><span class="eyebrow">LARGE MOTORCYCLE</span><h2 class="section-title">大型自動二輪車</h2><p class="section-lead">大型自動二輪車の基本プラン料金です。現有免許により料金が変わります。</p></div></div>
           <table class="data-table"><thead><tr><th>大型二輪 現有免許</th><th>デイ学生</th><th>一般</th><th>フリー</th></tr></thead><tbody>
             <tr><td>普通車</td><td>206,910円</td><td>+5,000円</td><td>+22,000円</td></tr>
-            <tr><td>小型二輪AT</td><td>169,290円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>小型二輪MT</td><td>149,050円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>普通二輪AT</td><td>128,810円</td><td>+5,000円</td><td>+11,000円</td></tr>
-            <tr><td>普通二輪MT</td><td>108,570円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>AT小型二輪</td><td>169,290円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>MT小型二輪</td><td>149,050円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>AT普通二輪</td><td>128,810円</td><td>+5,000円</td><td>+11,000円</td></tr>
+            <tr><td>MT普通二輪</td><td>108,570円</td><td>+5,000円</td><td>+11,000円</td></tr>
           </tbody></table>
           <div class="grid cols-2" style="margin-top:18px;">
             <article class="card"><h3>普通自動二輪車</h3><p>MTはなし・原付181,390円、普通車113,520円。ATはなし・原付163,350円、普通車95,480円が目安です。一般区分、フリープランは別途加算があります。</p></article>
-            <article class="card"><h3>小型自動二輪</h3><p>通勤や近距離移動に使いやすい小型二輪も対応しています。小型二輪車AT、小型二輪車MT、普通二輪車AT、普通二輪車MTなど、AT/MTと現有免許に応じて必要時限と料金が変わります。</p></article>
+            <article class="card"><h3>小型自動二輪</h3><p>通勤や近距離移動に使いやすい小型二輪も対応しています。AT小型二輪車、MT小型二輪車、AT普通二輪車、MT普通二輪車など、AT/MTと現有免許に応じて必要時限と料金が変わります。</p></article>
           </div>
           <h3 style="margin-top:24px;">普通自動二輪車 料金</h3>
           <table class="data-table"><thead><tr><th>車種</th><th>現有免許</th><th>デイ学生</th><th>一般</th><th>フリー</th></tr></thead><tbody>
@@ -2689,7 +2700,7 @@
         <section class="reveal"><div class="wrap grid cols-4">
           <article class="card"><h3>普通自動車審査</h3><p>AT免許からMT免許へ。デイ学生料金の目安は62,150円です。当校のAT卒業直後の方は「MT移行（AT解除）」一律36,300円で取得できます。</p></article>
           <article class="card"><h3>準中型5t限定審査</h3><p>準中型車5t限定から準中型車へ。仕事で必要な方にも。</p></article>
-          <article class="card"><h3>普通二輪AT審査</h3><p>AT限定からMTへ。乗りたいバイクに合わせて解除できます。</p></article>
+          <article class="card"><h3>AT普通二輪審査</h3><p>AT限定からMTへ。乗りたいバイクに合わせて解除できます。</p></article>
           <article class="card"><h3>小型二輪審査</h3><p>MT小型自動二輪車審査、AT小型限定二輪車からMT小型限定二輪車への審査にも対応します。</p></article>
         </div></section>
         <section class="band reveal"><div class="wrap">
@@ -2850,17 +2861,18 @@
         <section class="reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">PLAN EXAMPLE</span><h2 class="section-title">料金プラン例</h2><p class="section-lead">まずはよく選ばれる料金例を確認できます。詳しい金額は下のシミュレーターで条件を選んでください。</p></div></div>
           <div class="grid cols-3">
-	            <article class="card"><h3>普通車AT</h3><p>免許なし・学生・デイの主要料金目安です。</p><div class="price">322,850円〜</div><p class="mini">基本プラン料金に、仮免手数料・証明写真代などの諸費用を含めた目安です。</p></article>
-	            <article class="card"><h3>普通二輪MT</h3><p>普通車免許所持・学生・デイの料金目安です。</p><div class="price">113,520円〜</div><p class="mini">一般区分は118,520円〜です。条件により料金が変わります。</p></article>
+	            <article class="card"><h3>AT普通車</h3><p>免許なし・学生・デイの主要料金目安です。</p><div class="price">322,850円〜</div><p class="mini">基本プラン料金の目安です。免許なしの方は、別途、仮免手数料2,900円が必要です。</p></article>
+	            <article class="card"><h3>MT普通二輪</h3><p>普通車免許所持・学生・デイの料金目安です。</p><div class="price">113,520円〜</div><p class="mini">一般区分は118,520円〜です。条件により料金が変わります。</p></article>
             <article class="card"><h3>準中型車</h3><p>お仕事やキャリアアップで必要な方へ。</p><div class="price">401,280円〜</div><p class="mini">仕事で必要になって取得される方や、キャリアアップのために取得される方も多い免許です。</p></article>
           </div>
+          <p class="mini" style="margin-top:14px;">※普通車・準中型の免許なしの方は、別途、仮免試験手数料1,800円・仮免交付手数料1,100円（計2,900円・いずれも非課税）が必要です。</p>
           <div class="grid cols-3" style="margin-top:18px;">
             <article class="card"><h3>普通自動車教習</h3><p>多くの人が持っている普通自動車免許。普通車AT/MT、基本プラン、コミコミプラン、スケジュールプランを確認できます。</p></article>
-            <article class="card"><h3>合宿風ハイスピードプラン</h3><p>とにかく早く免許を必要とされている方におすすめの料金プランです。普通車ATのみ対象で、定員となり次第締め切りとなります。</p></article>
+            <article class="card"><h3>合宿風ハイスピードプラン</h3><p>とにかく早く免許を必要とされている方におすすめの料金プランです。AT普通車のみ対象で、定員となり次第締め切りとなります。</p></article>
             <article class="card"><h3>限定解除・講習</h3><p>やっぱりAT車よりMT車に乗りたいという方など、免許の限定条件を解除するための教習や、ペーパードライバー教習も確認できます。</p></article>
           </div>
           <div class="notice-box">
-            <p>合宿風 ハイスピードプランは、短期間で普通車ATを取得したい方向けのプランです。※普通車ATのみ対象 ※定員となり次第、締め切りとなります。</p>
+            <p>合宿風 ハイスピードプランは、短期間でAT普通車を取得したい方向けのプランです。※AT普通車のみ対象 ※定員となり次第、締め切りとなります。</p>
             <p>お仕事で必要になって取得される方や、キャリアアップのために取得される方も多いです。やっぱりAT車よりMT車に乗りたい！という方は限定解除も確認できます。</p>
           </div>
           <div class="badge-row"><a class="btn btn-purple" href="#price-simulator">料金シミュレーションをしてみる</a><a class="btn btn-white" href="detail.html?page=camp_price">短期プランを見る</a></div>
@@ -2868,7 +2880,7 @@
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">PRICE TABLE</span><h2 class="section-title">主要料金表</h2><p class="section-lead">令和8年8月1日改定の税込料金を、主要コースごとに確認できます。</p></div></div>
 	          <table class="data-table"><thead><tr><th>車種</th><th>現有免許</th><th>技能</th><th>学科</th><th>デイ学生</th><th>デイ一般</th><th>フリー学生</th><th>フリー一般</th></tr></thead><tbody>${courseRows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>
-	          <p class="subnote">普通車MT免許は、AT卒業後の「MT移行（AT解除）」（技能4時限・全プラン一律36,300円）で取得できます。詳しくはお電話でご確認ください（092-710-2188）。</p>
+	          <p class="subnote">MT普通車免許は、AT卒業後の「MT移行（AT解除）」（技能4時限・全プラン一律36,300円）で取得できます。詳しくはお電話でご確認ください（092-710-2188）。</p>
           <div class="badge-row"><span class="badge orange">仮免試験手数料等は別途</span><span class="badge green">普通車フリープラン +22,000円</span><span class="badge">一般区分 +5,000円</span></div>
         </div></section>
         <section class="reveal"><div class="wrap">
@@ -2887,7 +2899,7 @@
         <section class="reveal"><div class="wrap grid cols-3">
           <article class="card"><h3>普通車オプション</h3><p>ATコミコミプラン 11,000円、スケジュールプラン 55,000円〜77,000円。合宿風ハイスピードは時期・定員の確認が必要です。</p></article>
           <article class="card"><h3>割引</h3><p>卒業生割引（10,000〜20,000円）や、複数人での入校割引（2人・3人以上）などの制度があります。併用可否は受付で確認できます。</p></article>
-          <article class="card"><h3>支払い</h3><p>現金、振込、ローンに対応。未成年・学生の方もローン相談ができます。</p></article>
+          <article class="card"><h3>支払い</h3><p>現金、振込、クレジットカード、QRコード決済、ローンに対応。未成年・学生の方もローン相談ができます。</p></article>
         </div></section>`
     },
     access: {
@@ -3166,12 +3178,12 @@
 	            <div class="field"><label for="organization">お勤め先（学校・会社）名</label><input id="organization" name="organization" placeholder="学校名・会社名"></div>
 	            <div class="field"><label for="introducer">紹介者名</label><input id="introducer" name="introducer" placeholder="紹介者がいる場合"></div>
 	            <div class="field"><label for="desiredEntryDate">入校希望日</label><input id="desiredEntryDate" name="desiredEntryDate" placeholder="木曜日・土曜日など"></div>
-	            <div class="field" data-entry-field><label for="priceCourse">料金コース</label><select id="priceCourse" name="priceCourse"><option value="" selected>選択してください</option><option value="ordinary_at">普通自動車AT</option><option value="ordinary_mt">普通自動車MT（AT取得後に移行）</option><option value="semi_medium">準中型MT</option><option value="motorcycle_mt">普通二輪MT</option><option value="motorcycle_at">普通二輪AT</option></select></div>
+	            <div class="field" data-entry-field><label for="priceCourse">料金コース</label><select id="priceCourse" name="priceCourse"><option value="" selected>選択してください</option><option value="ordinary_at">AT普通自動車</option><option value="ordinary_mt">MT普通自動車（AT取得後に移行）</option><option value="semi_medium">MT準中型</option><option value="motorcycle_mt">MT普通二輪</option><option value="motorcycle_at">AT普通二輪</option></select></div>
 	            <div class="field" data-entry-field><label for="currentLicense">現在の免許証</label><select id="currentLicense" name="currentLicense"><option value="" selected>選択してください</option></select></div>
 	            <div class="field" data-entry-field><label for="userType">区分</label><select id="userType" name="userType"><option value="" selected>選択してください</option><option value="student">学生</option><option value="general">一般</option></select></div>
 	            <div class="field" data-entry-field><label for="pricePlan">料金プラン</label><select id="pricePlan" name="pricePlan"><option value="" selected>選択してください</option><option value="day">デイプラン</option><option value="free">フリープラン</option></select></div>
 	            <div class="field" data-entry-field><label for="lessonPlan">技能教習プラン</label><select id="lessonPlan" name="lessonPlan"><option value="" selected>選択してください</option><option>デイプラン</option><option>フリープラン</option><option>コミコミプラン</option><option>スケジュールプラン</option><option>合宿風ハイスピードプラン</option><option>未定・相談したい</option></select></div>
-	            <div class="field" data-entry-field><label for="paymentMethod">お支払い方法</label><select id="paymentMethod" name="paymentMethod"><option value="" selected>選択してください</option><option>現金</option><option>ローン</option><option>振込み</option><option>未定</option></select></div>
+	            <div class="field" data-entry-field><label for="paymentMethod">お支払い方法</label><select id="paymentMethod" name="paymentMethod"><option value="" selected>選択してください</option><option>現金</option><option>クレジットカード</option><option>QRコード決済</option><option>ローン</option><option>振込み</option><option>未定</option></select></div>
 	            <div class="field"><label for="materialDelivery">資料の受け取り</label><select id="materialDelivery" name="materialDelivery"><option value="" selected>選択してください</option><option>デジタル送付を希望</option><option>郵送を希望</option><option>相談したい</option></select></div>
 	            <div class="field"><label for="howKnown">どこで知りましたか？</label><select id="howKnown" name="howKnown" required><option value="" selected>選択してください</option><option>Instagram</option><option>LINE</option><option>ネット検索</option><option>チラシ・DM</option><option>知人・家族の紹介</option><option>学校・職場のパンフレット</option><option>看板・通りがかり</option><option>その他</option></select></div>
             <div class="field wide"><label for="notes">ご質問・備考</label><textarea id="notes" name="notes" placeholder="希望入校日、送迎バスの相談、料金の確認など"></textarea></div>
@@ -3254,7 +3266,7 @@
               ["yamamoto-kazuhiro", "山本 一博", "山本2号", "旅行"],
               ["matsumoto-yoichi", "松本 洋一", "シャッ君", "釣り・キャンプ"],
               ["teshima-yukio", "手嶋 幸男", "ユキオ", ""]
-            ].map(([slug, name, nickname, hobby])=>`<article class="instructor-profile-card"><img loading="lazy" decoding="async" src="images/instructors-anime/${slug}.webp" alt="${name} 指導員"><div><h3>${name}</h3><dl>${nickname ? `<div><dt>ニックネーム</dt><dd>${nickname}</dd></div>` : ""}${hobby ? `<div><dt>趣味</dt><dd>${hobby}</dd></div>` : ""}</dl></div></article>`).join("")}
+            ].map(([slug, name, nickname, hobby])=>`<article class="instructor-profile-card"><img loading="lazy" decoding="async" src="images/instructors-anime/${slug}.webp" alt="指導員"><div><h3>${nickname || "指導員"}</h3><dl>${hobby ? `<div><dt>趣味</dt><dd>${hobby}</dd></div>` : ""}</dl></div></article>`).join("")}
           </div>
         </div></section>
         <section class="reveal"><div class="wrap cta-strip"><div><strong>不安なことは、申し込み前に相談できます。</strong><p>運転が苦手、通える日が限られる、送迎を使いたいなど、気になる点を先に確認しましょう。</p></div><a class="btn btn-orange" href="detail.html?page=application">相談してみる</a></div></section>`
@@ -3532,7 +3544,7 @@
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">LICENSE FLOW</span><h2 class="section-title">免許交付までの流れ</h2><p class="section-lead">普通車・準中型・二輪など、免許ごとの流れを確認できます。</p></div></div>
           <div class="grid cols-3">
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-01.png" alt="普通車AT 免許交付の流れ"><div class="card-copy"><h3>普通車AT</h3><p>入校から卒業、免許センターでの交付までの流れ。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-01.png" alt="AT普通車 免許交付の流れ"><div class="card-copy"><h3>AT普通車</h3><p>入校から卒業、免許センターでの交付までの流れ。</p></div></article>
             <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-03.png" alt="普通車AT/MT 免許交付の流れ"><div class="card-copy"><h3>普通車AT/MT</h3><p>普通車取得時の段階を現行図版で確認できます。</p></div></article>
             <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-04.png" alt="準中型 免許交付の流れ"><div class="card-copy"><h3>準中型</h3><p>現有免許に応じた流れを確認しやすくします。</p></div></article>
             <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-05.png" alt="普通二輪 免許交付の流れ"><div class="card-copy"><h3>普通二輪</h3><p>二輪免許の取得ステップを現行画像で掲載。</p></div></article>
@@ -3544,35 +3556,35 @@
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">REQUIRED HOURS</span><h2 class="section-title">主な必要時限</h2><p class="section-lead">現有免許により必要な技能・学科時限が変わります。料金シミュレーターと合わせて確認できます。</p></div></div>
           <table class="data-table"><thead><tr><th>車種</th><th>現有免許</th><th>技能教習 規定時限数</th><th>学科教習 規定時限数</th></tr></thead><tbody>
-            <tr><td>普通自動車AT</td><td>なし・原付</td><td>31時限</td><td>26時限</td></tr>
-            <tr><td>普通自動車AT</td><td>自動二輪</td><td>29時限</td><td>2時限</td></tr>
+            <tr><td>AT普通自動車</td><td>なし・原付</td><td>31時限</td><td>26時限</td></tr>
+            <tr><td>AT普通自動車</td><td>自動二輪</td><td>29時限</td><td>2時限</td></tr>
             <tr><td>AT車卒業後MT車取得</td><td>なし・原付</td><td>35時限</td><td>26時限</td></tr>
             <tr><td>AT車卒業後MT車取得</td><td>自動二輪</td><td>33時限</td><td>2時限</td></tr>
             <tr><td>準中型車</td><td>なし・原付</td><td>41時限</td><td>27時限</td></tr>
             <tr><td>準中型車</td><td>自動二輪</td><td>39時限</td><td>3時限</td></tr>
-            <tr><td>準中型車</td><td>普通車MT</td><td>13時限</td><td>1時限</td></tr>
-            <tr><td>準中型車</td><td>普通車AT</td><td>17時限</td><td>1時限</td></tr>
-            <tr><td>普通自動二輪AT</td><td>なし・原付</td><td>15時限</td><td>26時限</td></tr>
-            <tr><td>普通自動二輪AT</td><td>普通車</td><td>13時限</td><td>1時限</td></tr>
-            <tr><td>普通自動二輪MT</td><td>なし・原付</td><td>19時限</td><td>26時限</td></tr>
-            <tr><td>普通自動二輪MT</td><td>普通車</td><td>17時限</td><td>1時限</td></tr>
-            <tr><td>大型自動二輪MT</td><td>普通車</td><td>31時限</td><td>1時限</td></tr>
-            <tr><td>大型自動二輪MT</td><td>小型二輪AT</td><td>24時限</td><td>-</td></tr>
-            <tr><td>大型自動二輪MT</td><td>小型二輪MT</td><td>20時限</td><td>-</td></tr>
-            <tr><td>大型自動二輪MT</td><td>普通二輪AT</td><td>16時限</td><td>-</td></tr>
-            <tr><td>大型自動二輪MT</td><td>普通二輪MT</td><td>12時限</td><td>-</td></tr>
-            <tr><td>小型限定普通二輪AT</td><td>なし・原付</td><td>9時限</td><td>26時限</td></tr>
-            <tr><td>小型限定普通二輪AT</td><td>普通車</td><td>8時限</td><td>1時限</td></tr>
-            <tr><td>小型限定普通二輪MT</td><td>なし・原付</td><td>12時限</td><td>26時限</td></tr>
-            <tr><td>小型限定普通二輪MT</td><td>普通車</td><td>10時限</td><td>1時限</td></tr>
-            <tr><td>普通自動車MT限定解除</td><td>AT限定</td><td>4時限</td><td>-</td></tr>
+            <tr><td>準中型車</td><td>MT普通車</td><td>13時限</td><td>1時限</td></tr>
+            <tr><td>準中型車</td><td>AT普通車</td><td>17時限</td><td>1時限</td></tr>
+            <tr><td>AT普通自動二輪</td><td>なし・原付</td><td>15時限</td><td>26時限</td></tr>
+            <tr><td>AT普通自動二輪</td><td>普通車</td><td>13時限</td><td>1時限</td></tr>
+            <tr><td>MT普通自動二輪</td><td>なし・原付</td><td>19時限</td><td>26時限</td></tr>
+            <tr><td>MT普通自動二輪</td><td>普通車</td><td>17時限</td><td>1時限</td></tr>
+            <tr><td>MT大型自動二輪</td><td>普通車</td><td>31時限</td><td>1時限</td></tr>
+            <tr><td>MT大型自動二輪</td><td>AT小型二輪</td><td>24時限</td><td>-</td></tr>
+            <tr><td>MT大型自動二輪</td><td>MT小型二輪</td><td>20時限</td><td>-</td></tr>
+            <tr><td>MT大型自動二輪</td><td>AT普通二輪</td><td>16時限</td><td>-</td></tr>
+            <tr><td>MT大型自動二輪</td><td>MT普通二輪</td><td>12時限</td><td>-</td></tr>
+            <tr><td>小型限定AT普通二輪</td><td>なし・原付</td><td>9時限</td><td>26時限</td></tr>
+            <tr><td>小型限定AT普通二輪</td><td>普通車</td><td>8時限</td><td>1時限</td></tr>
+            <tr><td>小型限定MT普通二輪</td><td>なし・原付</td><td>12時限</td><td>26時限</td></tr>
+            <tr><td>小型限定MT普通二輪</td><td>普通車</td><td>10時限</td><td>1時限</td></tr>
+            <tr><td>MT普通自動車限定解除</td><td>AT限定</td><td>4時限</td><td>-</td></tr>
             <tr><td>準中型限定解除</td><td>準中型AT5t限定</td><td>8時限</td><td>-</td></tr>
             <tr><td>準中型限定解除</td><td>準中型5t限定</td><td>4時限</td><td>-</td></tr>
           </tbody></table>
           <p class="subnote">自動二輪免許をお持ちの方は、学科試験が免除になる場合があります。詳しくは受付でご確認ください。</p>
           <div class="grid cols-4">
-            <article class="card"><h3>普通車AT</h3><p>なし・原付は技能31時限、学科26時限。初めての免許取得に最も選ばれやすいコースです。</p></article>
-            <article class="card"><h3>自動二輪所持</h3><p>普通車ATは技能29時限、学科2時限が目安。所持免許により学科負担が少なくなります。</p></article>
+            <article class="card"><h3>AT普通車</h3><p>なし・原付は技能31時限、学科26時限。初めての免許取得に最も選ばれやすいコースです。</p></article>
+            <article class="card"><h3>自動二輪所持</h3><p>AT普通車は技能29時限、学科2時限が目安。所持免許により学科負担が少なくなります。</p></article>
             <article class="card"><h3>準中型車</h3><p>なし・原付は技能41時限、学科27時限。仕事で使う方は早めの相談がおすすめです。</p></article>
             <article class="card"><h3>二輪・限定解除</h3><p>普通二輪、大型二輪、小型限定、AT/MT限定解除まで、目的に合わせて選べます。</p></article>
           </div>
@@ -3747,7 +3759,7 @@
   };
   const priceSimulatorLinks = {
     standard: ["ordinary_at", "普通車の料金は、免許の有無や通い方で変わります。表ではなく、条件を選んで確認できます。"],
-    camp_price: ["ordinary_at", "短期プランを検討する前に、普通車ATの基本条件をシミュレーターで確認できます。"],
+    camp_price: ["ordinary_at", "短期プランを検討する前に、AT普通車の基本条件をシミュレーターで確認できます。"],
     semi_medium: ["semi_medium", "準中型は、現在お持ちの免許によって料金が大きく変わります。条件を選んで確認できます。"],
     bike: ["motorcycle_mt", "二輪は、車種と現在お持ちの免許によって料金が変わります。条件を選んで確認できます。"],
     license: ["ordinary_at", "取得したい免許を選ぶ前に、料金の目安をシミュレーターで確認できます。"]
@@ -3755,6 +3767,11 @@
   const immediateSimulatorPages = new Set(["semi_medium", "standard", "bike", "price"]);
 
   function infoVisualHtml(id) {
+    // 【一時無効化 2026-07-09】図解画像（infographics/*.webp）に旧料金・旧表記（普通車AT）・
+    // 旧入校資格（18歳）が焼き込まれており、社長の修正依頼（AT/MT頭出し・17歳6ヶ月等）が
+    // 画像には反映できないため、画像表示を一旦停止。テキスト版のコンテンツで正しい情報を表示する。
+    // メンバーが図解画像を最新情報で作り直したら、下の return ""; を削除すれば復活できる。
+    return "";
     const visual = pageInfoVisuals[id];
     if (!visual) return "";
     const [file, alt] = visual;
@@ -3823,7 +3840,7 @@
     const relatedMap = {
       admission: [["application", "資料請求・仮申込", "準備できたら、そのまま相談・申し込みへ進めます。"], ["price", "料金プラン", "必要な費用を先に確認して不安を減らします。"], ["access", "送迎バス", "通えるルートを確認して、通学イメージを固めます。"]],
       courses: [["price", "料金プラン", "選んだ免許の費用目安を確認できます。"], ["license", "免許交付まで", "卒業までの流れと必要時限を整理しています。"], ["application", "仮入校申し込み", "取りたい免許が決まったら相談へ進めます。"]],
-      standard: [["camp_price", "合宿風ハイスピード", "短期取得を目指す普通車ATプランへ。"], ["price", "料金シミュレーター", "普通車料金の目安を確認できます。"], ["application", "普通車教習を相談", "入校日や必要書類も確認できます。"]],
+      standard: [["camp_price", "合宿風ハイスピード", "短期取得を目指すAT普通車プランへ。"], ["price", "料金シミュレーター", "普通車料金の目安を確認できます。"], ["application", "普通車教習を相談", "入校日や必要書類も確認できます。"]],
       camp_price: [["standard", "普通自動車教習", "基本プランと比較できます。"], ["application", "空き状況を相談", "短期プランの受付可否を確認。"], ["access", "通学方法を確認", "短期取得に必要な通いやすさを確認。"]],
       semi_medium: [["price", "料金プラン", "準中型の料金目安を確認。"], ["license", "免許交付まで", "必要時限と卒業までの流れを確認。"], ["application", "準中型を相談", "仕事や取得時期に合わせて相談。"]],
       bike: [["motorcycle", "原付講習", "二輪と原付の違いも確認できます。"], ["limited", "限定解除", "二輪AT・小型限定解除を確認。"], ["application", "二輪教習を相談", "希望車種と時期を相談できます。"]],
@@ -3981,12 +3998,12 @@
       mobile: `images/detail-pages/visuals/${id}-mobile.webp`,
       alt: `${page.title}の情報を整理した図`
     };
-    const topVisual = isNotFound ? "" : `<section class="subpage-infographic"><div class="wrap">
-      <picture>
-        <source media="(max-width: 767px)" srcset="${visual.mobile || visual.src}">
-        <img src="${visual.desktop || visual.src}" alt="${visual.alt}" loading="eager" decoding="async">
-      </picture>
-    </div></section>`;
+    // 【一時変更 2026-07-09】各ページ上部のヒーロー図解（visuals/*.webp）にも旧料金・間違った金額
+    // （例: price は 111,650円/424,370円）や旧表記（普通車AT）が焼き込まれており、社長の修正依頼
+    // （AT/MT頭出し・17歳6ヶ月・正しい料金）が画像に反映できないため、画像の代わりにページ見出し
+    // （eyebrow＋タイトル）を表示する。メンバーがヒーロー図解を最新情報で作り直したら、下の
+    // topVisual を元の picture 版（visual.desktop/mobile を使う形）に戻せば復活できる。
+    const topVisual = isNotFound ? "" : `<section class="subpage-heading"><div class="wrap"><span class="eyebrow">${page.eyebrow || ""}</span><h2 class="section-title">${page.title}</h2></div></section>`;
 	    document.querySelector("#page").innerHTML = `
 	      ${topVisual}
 	      <h1 class="visually-hidden">${page.title}</h1>
@@ -4057,7 +4074,7 @@
 
   const simOptions = {
 	    ordinary_at: {
-	      label: "普通自動車AT",
+	      label: "AT普通自動車",
 	      licenses: {
 	        none: { label: "なし", student: { day: 322850, free: 344850 }, general: { day: 327850, free: 349850 } },
 	        moped: { label: "原付", student: { day: 319550, free: 341550 }, general: { day: 324550, free: 346550 } },
@@ -4065,13 +4082,13 @@
 	      }
 	    },
 	    ordinary_mt: {
-	      label: "普通自動車MT（AT取得後に移行）",
+	      label: "MT普通自動車（AT取得後に移行）",
 	      licenses: {
 	        phone: { label: "免許なし・原付など", phoneOnly: true }
 	      }
 	    },
 	    semi_medium: {
-      label: "準中型MT",
+      label: "MT準中型",
       licenses: {
         none: { label: "なし", student: { day: 401280, free: 423280 }, general: { day: 406280, free: 428280 } },
         moped: { label: "原付", student: { day: 397980, free: 419980 }, general: { day: 402980, free: 424980 } },
@@ -4081,14 +4098,14 @@
       }
     },
     motorcycle_mt: {
-      label: "普通二輪MT",
+      label: "MT普通二輪",
       licenses: {
         none: { label: "なし・原付", student: { day: 181390, free: 192390 }, general: { day: 186390, free: 197390 } },
         car: { label: "普通車", student: { day: 113520, free: 124520 }, general: { day: 118520, free: 129520 } }
       }
     },
     motorcycle_at: {
-      label: "普通二輪AT",
+      label: "AT普通二輪",
       licenses: {
         none: { label: "なし・原付", student: { day: 163350, free: 174350 }, general: { day: 168350, free: 179350 } },
         car: { label: "普通車", student: { day: 95480, free: 106480 }, general: { day: 100480, free: 111480 } }
