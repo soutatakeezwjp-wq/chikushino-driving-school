@@ -1887,6 +1887,20 @@
     border-radius: 48% 52% 45% 55% / 54% 44% 56% 46%;
     box-shadow: 0 20px 42px rgba(45, 27, 87, .14);
   }
+  .point-visual .mini-photo {
+    position: absolute;
+    right: -14px;
+    bottom: -2px;
+    z-index: 2;
+    width: 54%;
+    height: 122px;
+    border: 7px solid #fff;
+    border-radius: 34% 66% 42% 58% / 58% 38% 62% 42%;
+    object-fit: cover;
+    box-shadow:
+      0 22px 42px rgba(45, 27, 87, .22),
+      0 0 0 1px rgba(92, 49, 155, .08);
+  }
   .point-copy {
     position: relative;
     z-index: 2;
@@ -3197,6 +3211,7 @@
     }
     .point-visual { min-height: 220px; }
     .point-visual img { height: 220px; }
+    .point-visual .mini-photo { width: 50%; height: 108px; right: -2px; bottom: -4px; }
     .point-no { width: 52px; height: 52px; font-size: 25px; margin-bottom: 10px; }
     .flow-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .flow-card { min-height: 112px; border-radius: 18px; padding: 12px 8px; }
@@ -3669,6 +3684,7 @@
             </div>
             <div class="point-visual">
               <img loading="lazy" decoding="async" src="images/real/course-wide-real.jpg" alt="広い教習コース">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-01-beginner-course.webp" alt="初心者マークと教習コース">
             </div>
             <p>初めての運転でも焦らず練習できるよう、ゆとりのある教習環境を整えています。</p>
           </article>
@@ -3679,6 +3695,7 @@
             </div>
             <div class="point-visual">
               <img loading="lazy" decoding="async" src="images/real/classroom-open-real.jpg" alt="明るい教室">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-02-consultation.webp" alt="インストラクターへの相談">
             </div>
             <p>明るい教室や受付まわりで、分からないことも相談しやすい雰囲気を大切にしています。</p>
           </article>
@@ -3689,6 +3706,7 @@
             </div>
             <div class="point-visual">
               <img loading="lazy" decoding="async" src="images/real/bus-side-real.jpg" alt="無料送迎バス">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-03-route-map.webp" alt="送迎エリアのルートマップ">
             </div>
             <p>筑紫野・朝倉・太宰府方面など、通いやすい乗降場所から学校へ向かえます。</p>
           </article>
@@ -3699,6 +3717,7 @@
             </div>
             <div class="point-visual">
               <img loading="lazy" decoding="async" src="images/real/motorcycle-yard-real.jpg" alt="二輪教習">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-04-license-lineup.webp" alt="普通車・二輪・準中型の教習車両">
             </div>
             <p>取りたい免許や目的に合わせて、必要なコースを選びやすく整理しています。</p>
           </article>
@@ -3709,6 +3728,7 @@
             </div>
             <div class="point-visual">
               <img loading="lazy" decoding="async" src="images/real/childcare-room-real.jpg" alt="託児スペース">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-05-childcare.webp" alt="託児スペースのおもちゃ">
             </div>
             <p>託児設備も整えているので、子育て中の方も入校前に相談しやすい学校です。</p>
           </article>
