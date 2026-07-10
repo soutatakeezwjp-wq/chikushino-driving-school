@@ -2025,7 +2025,12 @@
       padding: 24px 18px;
     }
     .subpage-main .mobile-table-section {
-      display: none;
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .subpage-main .mobile-table-section .data-table {
+      min-width: 640px;
     }
     .subpage-infographic img {
       width: 100%;
@@ -2246,7 +2251,7 @@
     ["技能教習の予約変更やキャンセルの方法を教えてください。", "筑紫野自動車学校内の予約機、またはパソコンやスマートフォンでも予約変更・キャンセルが可能です。教習開始時間10分程前までであれば、無料でキャンセルを承ります。それ以降は技能教習キャンセル料がかかりますのでご注意ください。"],
     ["教習にはどのような服装で行けばいいでしょうか？", "運転しやすい服装であれば、どのようなものでも構いません。履物は靴底の低いものが良いです。露出が極端に多い服装や、かかとの高い履物は避けてください。"],
     ["眼鏡やコンタクトを忘れた場合でも教習は受けられますか？", "いいえ。眼鏡やコンタクトが必要な方は、教習時には必ず着用していただく必要があります。"],
-    ["マニュアル（MT）免許を取りたいのですが、どうすればいいですか？", "当校の普通車教習はAT取得となります。MT免許をご希望の方は、AT卒業後に「MT移行（AT解除）」（技能4時限・一律36,300円）を受けることで取得できます。すでにAT限定免許をお持ちの方は、限定解除（普通自動車審査）で取得できます。"],
+    ["マニュアル（MT）免許を取りたいのですが、どうすればいいですか？", "当校の普通車教習はAT取得となります。MT免許をご希望の方は、AT卒業後に「MT移行（AT解除）」を受けることで取得できます。料金や条件は受付までお問い合わせください。すでにAT限定免許をお持ちの方は、限定解除（普通自動車審査）で取得できます。"],
     ["修了検定、卒業検定とは何ですか？", "修了検定とは自動車学校内で身につけた運転技術を確認する試験です。修了検定（技能検定）と仮免許学科試験に合格することで仮免許証が取得でき、これにより路上教習が受けられるようになります。卒業検定とは、路上での運転技術と場内での方向変換、縦列駐車などの技術を確認する卒業前の試験です。"],
     ["修了検定、卒業検定はいつ行われていますか？", "修了検定、卒業検定の日時は、教習カレンダーや各検定ページで確認できます。最新の予定は受付にもお問い合わせください。"],
     ["入校の申し込みをしに行きたいのですが、予約は必要ですか？", "入校申し込みの来校予約は必須ではありません。受付日時を確認のうえお越しください。事前に仮申込フォームから相談しておくと手続きがスムーズです。"],
@@ -2294,7 +2299,7 @@
         </tbody>
       </table>
 	      <div class="fee-list">
-	        <p class="subnote">MT免許をご希望の方は、AT卒業後に「MT移行（AT解除）」（技能4時限・全プラン一律36,300円）で取得できます。</p>
+	        <p class="subnote">MT免許をご希望の方は、AT卒業後に「MT移行（AT解除）」で取得できます。料金や条件は受付までお問い合わせください。</p>
 	        <p>◎ 自分の都合のよい時間に通って免許取得するプランです。◎ 自分のペースで通い免許を取りたい方にオススメ！！</p>
         <p>仮免試験手数料1,800円（非課税）・仮免交付手数料1,100円（非課税）が別途必要です。</p>
         <p>【内訳】（消費税込） 入学金52,300円・技能教習料（1時限）6,050円・学科教習料1段階22,000円・学科教習料2段階35,200円・教科書代3,300円(免なし・原付持の方)・適性検査料3,300円・効果測定料3,300円・高速通行料1,100円・修了検定料5,500円・卒業検定料6,600円・原付講習料3,300円・証明写真代1,100円・証明書発行料3,300円・フリープラン料22,000円。</p>
@@ -2362,7 +2367,7 @@
           </ul>
           <h4>オプションプラン（税込）</h4>
           ${ordinaryOptionTableHtml("komikomi")}
-          <p class="subnote">MT免許をご希望の方は、AT卒業後の「MT移行（AT解除）」（一律36,300円）で取得できます。</p>
+          <p class="subnote">MT免許をご希望の方は、AT卒業後の「MT移行（AT解除）」で取得できます。料金や条件は受付までお問い合わせください。</p>
           ${ordinaryNoticeHtml()}
           ${ordinaryDiscountHtml()}
         </article>
@@ -2418,7 +2423,7 @@
           <h4>教習料金のお支払い方法</h4>
           <ul class="info-list">
             <li>現金・振り込み：入校申込手続き後にお振込みください。入校日前日までにお近くの銀行、郵便局、その他金融機関にてお支払いください。</li>
-            <li>クレジットカード・QRコード決済：各種クレジットカード、QRコード決済にも対応しています。</li>
+            <li>クレジットカード・QRコード決済：各種クレジットカード、QRコード決済にも対応しています。※一回払いに限ります。</li>
             <li>ローン：お支払い開始が最長6ヵ月後まで据置ができるスキップローンもあります。</li>
             <li>2〜60回の分割払いが可能です。ローンは未成年の方も学生の方もご利用いただけます。</li>
             <li>ローンをご希望の方は、入校日の2〜3日前までにローン申込手続きと審査が必要です。</li>
@@ -2491,7 +2496,7 @@
         </section>
         <section class="band reveal"><div class="wrap grid cols-2">
           <article class="card"><h3>必要なもの</h3><p>入校申込書、学生証、運転免許証、または本籍地記載の住民票と本人確認書類。マイナ免許証の場合は本籍地確認の準備が必要です。</p></article>
-          <article class="card"><h3>支払い方法</h3><p>現金、銀行振込、クレジットカード、QRコード決済、ローンに対応。分割払いは2〜60回、支払い開始を遅らせられるスキップローンも相談できます。</p></article>
+          <article class="card"><h3>支払い方法</h3><p>現金、銀行振込、クレジットカード、QRコード決済、ローンに対応。クレジットカード・QRコード決済は一回払いに限ります。分割払いは2〜60回、支払い開始を遅らせられるスキップローンも相談できます。</p></article>
           <article class="card"><h3>入校日</h3><p>新規入校は毎週木曜・土曜。普通車、準中型、自動二輪の入校説明、運転適性検査、学科第1教程の流れを分かりやすく案内します。</p></article>
           <article class="card"><h3>入校資格</h3><p>普通車・準中型は17歳6ヶ月以上、大型二輪は18歳以上、普通二輪・小型二輪は16歳以上。視力、色彩識別、聴力、運動能力の基準があります。</p></article>
         </div></section>
@@ -2499,7 +2504,7 @@
         <section class="reveal"><div class="wrap">
           <div class="notice-box">
             <p><strong>書類準備の補足</strong>：入校申込書は必要事項を記入、捺印したものをご用意ください。学生の方のみ学生証が必要です。運転免許証をお持ちの方は、入校時に免許証内ICチップに記録されている本籍地情報が必要になります。県内住所の方は運転免許証（4桁又は8桁の暗証番号）をご準備ください。マイナ免許証の方は、本籍地が確認ができるようにご準備ください（マイナポータル連携等）。</p>
-            <p><strong>お支払いの補足</strong>：お振込みの場合は入校日前日までにお近くの銀行、郵便局、その他金融機関にてお支払いください。クレジットカードやQRコード決済にも対応しています。ローンはお支払い開始が最長6ヶ月先まで選べるスキップローンもあり、未成年の方や学生の方もご利用いただけます。</p>
+            <p><strong>お支払いの補足</strong>：お振込みの場合は入校日前日までにお近くの銀行、郵便局、その他金融機関にてお支払いください。クレジットカードやQRコード決済にも対応しています（いずれも一回払いに限ります）。ローンはお支払い開始が最長6ヶ月先まで選べるスキップローンもあり、未成年の方や学生の方もご利用いただけます。</p>
           </div>
         </div></section>
         <section class="reveal"><div class="wrap">
@@ -2710,25 +2715,25 @@
       badges: ["普通車審査", "準中型5t", "AT限定二輪", "小型限定"],
       body: `
         <section class="reveal"><div class="wrap grid cols-4">
-          <article class="card"><h3>普通自動車審査</h3><p>AT免許からMT免許へ。デイ学生料金の目安は62,150円です。当校のAT卒業直後の方は「MT移行（AT解除）」一律36,300円で取得できます。</p></article>
+          <article class="card"><h3>普通自動車審査</h3><p>AT免許からMT免許へ。デイ学生料金の目安は62,150円です。当校のAT卒業直後の方は「MT移行（AT解除）」について受付で確認できます。</p></article>
           <article class="card"><h3>準中型5t限定審査</h3><p>準中型車5t限定から準中型車へ。仕事で必要な方にも。</p></article>
           <article class="card"><h3>AT普通二輪審査</h3><p>AT限定からMTへ。乗りたいバイクに合わせて解除できます。</p></article>
           <article class="card"><h3>小型二輪審査</h3><p>MT小型自動二輪車審査、AT小型限定二輪車からMT小型限定二輪車への審査にも対応します。</p></article>
         </div></section>
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">PRICE</span><h2 class="section-title">限定解除料金表</h2><p class="section-lead">お持ちの免許に合わせて、必要な限定解除の料金を確認できます。</p></div></div>
-          <table class="data-table"><thead><tr><th>審査内容</th><th>対象</th><th>デイ学生</th><th>一般</th><th>フリー</th></tr></thead><tbody>
-            <tr><td>普通自動車審査</td><td>AT免許 → MT免許</td><td>62,150円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>準中型車5t限定審査</td><td>AT5t限定 → 準中型車</td><td>95,480円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>準中型車5t限定審査</td><td>MT5t限定 → 準中型車</td><td>69,960円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>AT普通自動二輪車審査</td><td>AT小型二輪車 → AT普通二輪車</td><td>60,500円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>AT普通自動二輪車審査</td><td>MT小型二輪車 → AT普通二輪車</td><td>51,480円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>MT普通自動二輪車審査</td><td>AT小型二輪車 → MT普通二輪車</td><td>74,030円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>MT普通自動二輪車審査</td><td>MT小型二輪車 → MT普通二輪車</td><td>60,500円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>MT普通自動二輪車審査</td><td>AT普通二輪車 → MT普通二輪車</td><td>60,500円</td><td>+5,000円</td><td>+5,500円</td></tr>
-            <tr><td>MT小型自動二輪車審査</td><td>AT小型限定二輪車 → MT小型限定二輪車</td><td>55,990円</td><td>+5,000円</td><td>+5,500円</td></tr>
+          <table class="data-table"><thead><tr><th>区分</th><th>車種</th><th>現有免許</th><th>デイ学生</th><th>一般</th><th>フリー</th></tr></thead><tbody>
+            <tr><td>普通車</td><td>MT普通自動車審査</td><td>AT限定</td><td>62,150円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>準中型</td><td>準中型車5t限定審査</td><td>AT5t限定</td><td>95,480円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>準中型</td><td>準中型車5t限定審査</td><td>MT5t限定</td><td>69,960円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>二輪車</td><td>AT普通自動二輪車審査</td><td>AT小型二輪車</td><td>60,500円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>二輪車</td><td>AT普通自動二輪車審査</td><td>MT小型二輪車</td><td>51,480円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>二輪車</td><td>MT普通自動二輪車審査</td><td>AT小型二輪車</td><td>74,030円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>二輪車</td><td>MT普通自動二輪車審査</td><td>MT小型二輪車</td><td>60,500円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>二輪車</td><td>MT普通自動二輪車審査</td><td>AT普通二輪車</td><td>60,500円</td><td>+5,000円</td><td>+5,500円</td></tr>
+            <tr><td>二輪車</td><td>MT小型自動二輪車審査</td><td>AT小型限定二輪車</td><td>55,990円</td><td>+5,000円</td><td>+5,500円</td></tr>
           </tbody></table>
-          <p class="subnote">当校のAT教習を卒業した直後の方（AT卒業証明書をお持ちの方）は、審査ではなく「MT移行（AT解除）」（技能4時限・全プラン一律36,300円）でMT免許を取得できます。こちらは新規入校生でMT普通車をご希望の方の料金のため、当校の卒業生割引10,000円となります。</p>
+          <p class="subnote">当校のAT教習を卒業した直後の方（AT卒業証明書をお持ちの方）は、審査ではなく「MT移行（AT解除）」でMT免許を取得できます。2行目は新規入校生でMT普通車をご希望の方の料金のため、当校の卒業生割引10,000円となります。</p>
           <div class="notice-box">
             <p>◎ AT免許→MT免許。◎ 準中型車（5t）限定→準中型車。◎ AT・MT小型二輪車免許→AT普通二輪車免許。◎ AT二輪車・MT小型二輪車免許→MT普通二輪車免許。◎ AT小型限定二輪車免許→MT小型限定二輪車免許。</p>
             <p><strong>普通自動車審査の内訳（税込）</strong>：入学金28,650円、技能教習料（1時限）6,050円、適性検査料3,300円、証明写真代1,100円、卒業検定料6,600円、証明書発行料3,300円、フリープラン料5,500円。</p>
@@ -2759,6 +2764,12 @@
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap">
+          <div class="grid cols-4" style="margin-bottom:18px;">
+            <article class="card"><h3>ペーパードライバー講習</h3><p>普通車など、久しぶりの運転再開や運転への不安解消をサポートします。</p></article>
+            <article class="card"><h3>ペーパーライダー講習</h3><p>二輪車の運転感覚を取り戻したい方へ、所持免許に合わせて講習します。</p></article>
+            <article class="card"><h3>運転免許試験の受験講習</h3><p>運転免許試験場で一般の技能試験を受験される方の練習に対応します。</p></article>
+            <article class="card"><h3>外国免許からの切替講習</h3><p>外国免許から日本の免許へ切替を申請される方の講習に対応します。</p></article>
+          </div>
           <table class="data-table"><thead><tr><th>講習コース</th><th>料金（税込）</th></tr></thead><tbody>
             <tr><td>1回（50分）講習</td><td>7,000円</td></tr>
             <tr><td>2回コース</td><td>13,500円</td></tr>
@@ -2891,7 +2902,7 @@
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">PRICE TABLE</span><h2 class="section-title">主要料金表</h2><p class="section-lead">令和8年8月1日改定の税込料金を、主要コースごとに確認できます。</p></div></div>
 	          <table class="data-table"><thead><tr><th>車種</th><th>現有免許</th><th>技能</th><th>学科</th><th>デイ学生</th><th>デイ一般</th><th>フリー学生</th><th>フリー一般</th></tr></thead><tbody>${courseRows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>
-	          <p class="subnote">MT普通車免許は、AT卒業後の「MT移行（AT解除）」（技能4時限・全プラン一律36,300円）で取得できます。詳しくはお電話でご確認ください（092-710-2188）。</p>
+	          <p class="subnote">MT普通車免許は、AT卒業後の「MT移行（AT解除）」で取得できます。料金や条件はお電話でご確認ください（092-710-2188）。</p>
           <div class="badge-row"><span class="badge orange">仮免試験手数料等は別途</span><span class="badge green">普通車フリープラン +22,000円</span><span class="badge">一般区分 +5,000円</span></div>
         </div></section>
         <section class="reveal"><div class="wrap">
@@ -2909,7 +2920,7 @@
         <section class="reveal"><div class="wrap grid cols-3">
           <article class="card"><h3>普通車オプション</h3><p>ATコミコミプラン 11,000円、スケジュールプラン 55,000円〜77,000円。合宿風ハイスピードプラン 55,000円（12〜3月開始は77,000円）。</p></article>
           <article class="card"><h3>割引</h3><p>卒業生割引（10,000〜20,000円）や、複数人での入校割引（2人・3人以上）などの制度があります。併用可否は受付で確認できます。</p></article>
-          <article class="card"><h3>支払い</h3><p>現金、振込、クレジットカード、QRコード決済、ローンに対応。未成年・学生の方もローン相談ができます。</p></article>
+          <article class="card"><h3>支払い</h3><p>現金、振込、クレジットカード、QRコード決済、ローンに対応。クレジットカード・QRコード決済は一回払いに限ります。未成年・学生の方もローン相談ができます。</p></article>
         </div></section>`
     },
     access: {
@@ -4065,7 +4076,7 @@
 	      const planLabel = plan.options[plan.selectedIndex]?.textContent || "";
 	      if (lic.phoneOnly) {
 	        out.textContent = "お電話で確認";
-	        note.innerHTML = `MT免許は、AT卒業後の「MT移行（AT解除）」（技能4時限・一律36,300円）で取得できます。詳しくは<a class="phone-link" href="tel:0927102188">092-710-2188</a>へお問い合わせください。`;
+	        note.innerHTML = `MT免許は、AT卒業後の「MT移行（AT解除）」で取得できます。料金や条件は<a class="phone-link" href="tel:0927102188">092-710-2188</a>へお問い合わせください。`;
 	      } else {
 	        const extra = currentExtra();
 	        const value = lic[user.value][plan.value] + extra.add;
