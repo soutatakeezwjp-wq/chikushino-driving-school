@@ -1728,180 +1728,250 @@
     .form-grid, .sim-controls { grid-template-columns: 1fr; }
     .footer-bottom { flex-direction: column; }
   }
-  /*
-    Subpage retrofit:
-    Keep the current top page expressive, but make detail pages closer to the
-    existing site: simple title bar, left local menu, article content, and
-    purple versions of the old blue headings.
-  */
+  /* Subpage information architecture */
   .subpage-hero {
-    padding: 36px 0 0;
+    padding: 26px 0 0;
     background: #fff;
   }
-  .subpage-titlebar {
-    min-height: 112px;
-    display: grid;
+  .subpage-breadcrumb {
+    display: flex;
     align-items: center;
-    padding: 24px 28px;
-    border-radius: 8px;
-    background: linear-gradient(90deg, var(--purple-deep), var(--purple));
-    color: #fff;
-    box-shadow: 0 14px 34px rgba(45, 27, 87, .12);
+    gap: 8px;
+    min-height: 34px;
+    margin-bottom: 14px;
+    color: #746b82;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
-  .subpage-titlebar .eyebrow {
-    color: #e7d9ff;
+  .subpage-breadcrumb::-webkit-scrollbar { display: none; }
+  .subpage-breadcrumb a { color: var(--purple); }
+  .subpage-breadcrumb span[aria-hidden="true"] { color: #b8afc5; }
+  .subpage-hero-frame {
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(340px, .88fr);
+    min-height: 360px;
+    background: #f7f5fa;
+    border-block: 1px solid #e9e3ee;
   }
-  .subpage-titlebar h1 {
+  .subpage-hero-media {
+    position: relative;
+    min-height: 360px;
+    margin: 0;
+    overflow: hidden;
+    background: #ece9ef;
+  }
+  .subpage-hero-media img {
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+    object-fit: cover;
+    transition: transform .7s ease;
+  }
+  .subpage-hero-media.is-illustration,
+  .subpage-hero-media.is-illustration img {
+    background: #fff;
+  }
+  .subpage-hero-media.is-illustration img { object-fit: contain; }
+  .subpage-hero-frame:hover .subpage-hero-media img { transform: scale(1.025); }
+  .subpage-hero-copy {
+    display: grid;
+    align-content: center;
+    padding: clamp(30px, 4vw, 54px);
+  }
+  .subpage-hero-copy .eyebrow {
+    display: block;
+    margin-bottom: 12px;
+  }
+  .subpage-hero-copy h1 {
     max-width: none;
-    margin: 6px 0 0;
-    color: #fff;
-    font-size: clamp(28px, 4vw, 44px);
-    line-height: 1.28;
+    margin: 0;
+    color: var(--purple-ink);
+    font-size: clamp(34px, 3.15vw, 48px);
+    line-height: 1.2;
+    text-wrap: balance;
   }
+  .subpage-hero-lead {
+    margin: 18px 0 0;
+    color: #544c63;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.85;
+  }
+  .subpage-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 18px;
+  }
+  .subpage-badges .badge {
+    min-height: 27px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #ddd3e8;
+    color: #54416d;
+    font-size: 11px;
+  }
+  .subpage-hero-caption {
+    margin: 14px 0 0;
+    padding-left: 12px;
+    border-left: 3px solid var(--green);
+    color: #6c6478;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.65;
+  }
+  .subpage-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+  .subpage-hero-actions .btn {
+    min-height: 42px;
+    padding-inline: 17px;
+    font-size: 13px;
+  }
+  .subpage-shell { background: #fff; }
   .subpage-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
+    grid-template-columns: 224px minmax(0, 1fr);
+    gap: clamp(30px, 4vw, 52px);
     align-items: start;
-    padding-top: 24px;
+    padding-top: 46px;
+    padding-bottom: 62px;
   }
+  .subpage-layout.is-single { grid-template-columns: minmax(0, 1fr); }
   .subpage-side {
-    display: none;
-  }
-  .subpage-actions,
-  .subpage-localnav,
-  .subpage-summary {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #fff;
-    box-shadow: 0 8px 22px rgba(45, 27, 87, .04);
-    overflow: hidden;
+    position: sticky;
+    top: 142px;
+    display: grid;
+    gap: 18px;
   }
   .subpage-actions {
-    padding: 14px;
-    gap: 10px;
     display: grid;
+    gap: 9px;
+    padding: 0 0 18px;
+    border-bottom: 1px solid #e9e3ee;
   }
   .subpage-actions .btn {
     width: 100%;
     min-height: 42px;
     border-radius: 6px;
-    font-size: 14px;
+    font-size: 13px;
+  }
+  .subpage-localnav,
+  .subpage-summary {
+    overflow: hidden;
+    border: 1px solid #e7e1eb;
+    border-radius: 6px;
+    background: #fff;
   }
   .subpage-localnav h2,
   .subpage-summary h2 {
     margin: 0;
     padding: 12px 14px;
-    background: var(--purple-soft);
+    border-bottom: 1px solid #e7e1eb;
+    background: #f7f5fa;
     color: var(--purple-ink);
-    font-size: 15px;
-    line-height: 1.45;
+    font-size: 14px;
+    line-height: 1.5;
   }
   .subpage-localnav a {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 10px;
     min-height: 42px;
-    padding: 9px 14px;
-    border-top: 1px solid #f0e8f8;
-    color: #4d4560;
-    font-size: 13px;
+    padding: 9px 13px;
+    border-bottom: 1px solid #f0ebf3;
+    color: #544c63;
+    font-size: 12px;
     font-weight: 700;
     line-height: 1.45;
   }
+  .subpage-localnav a:last-child { border-bottom: 0; }
   .subpage-localnav a::after {
     content: "›";
-    color: var(--purple);
-    font-weight: 900;
+    flex: 0 0 auto;
+    color: #9a8da8;
+    font-size: 16px;
   }
+  .subpage-localnav a:hover,
   .subpage-localnav a.is-current {
     color: var(--purple);
-    background: #fbf8ff;
+    background: #fbf9fd;
   }
-  .subpage-summary {
-    padding-bottom: 14px;
+  .subpage-localnav a.is-current {
+    box-shadow: inset 3px 0 var(--orange);
   }
+  .subpage-summary { padding-bottom: 13px; }
   .subpage-summary p {
     margin: 0;
     padding: 12px 14px 0;
-    color: #5f566f;
-    font-size: 13px;
+    color: #62596f;
+    font-size: 12px;
     font-weight: 600;
     line-height: 1.8;
   }
-  .subpage-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 10px 14px 0;
+  .subpage-summary .subpage-badges {
+    gap: 5px;
+    margin: 10px 13px 0;
   }
-  .subpage-heading {
-    padding: 48px 0 8px;
+  .subpage-summary .badge {
+    min-height: 25px;
+    font-size: 10px;
   }
-  .subpage-heading .eyebrow {
-    display: block;
-    margin-bottom: 8px;
-  }
-  .subpage-heading .section-title {
-    margin: 0;
-  }
-  .subpage-main {
-    min-width: 0;
-  }
-  .subpage-main > .subpage-lead {
-    margin: 0 0 22px;
-    padding: 22px 24px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #fff;
-    color: #433a55;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1.9;
-  }
-  .subpage-main section {
-    padding: 34px 0;
-  }
-  .subpage-main .wrap {
-    width: 100%;
-  }
+  .subpage-mobile-nav { display: none; }
+  .subpage-main { min-width: 0; }
+  .subpage-main > section:first-of-type { padding-top: 0; }
+  .subpage-main section { padding: 30px 0; }
+  .subpage-main .wrap { width: 100%; }
   .subpage-main .band {
     margin-inline: 0;
-    padding: 28px 0;
-    border: 0;
-    border-radius: 8px;
-    background: #fff;
+    padding: 28px 24px;
+    border-block: 1px solid #ece7ef;
+    background: #faf9fb;
   }
   .subpage-main .band + .band,
-  .subpage-main section + section {
-    margin-top: 12px;
-  }
+  .subpage-main section + section { margin-top: 8px; }
   .subpage-main .section-head {
     display: block;
     margin-bottom: 18px;
   }
+  .subpage-main .section-head .eyebrow {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+  }
   .subpage-main .section-title {
     position: relative;
-    padding: 11px 16px 11px 48px;
-    border-radius: 6px;
-    background: var(--purple);
-    color: #fff;
-    font-size: clamp(21px, 2.4vw, 28px);
-    line-height: 1.35;
+    margin: 0;
+    padding: 0 0 0 18px;
+    color: var(--purple-ink);
+    font-size: clamp(22px, 2.5vw, 30px);
+    line-height: 1.4;
   }
   .subpage-main .section-title::before {
-    content: "✓";
+    content: "";
     position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fff;
-    font-weight: 900;
+    left: 0;
+    top: .24em;
+    width: 5px;
+    height: 1.05em;
+    background: var(--orange);
   }
   .subpage-main .section-lead {
-    margin-top: 14px;
-    font-size: 15px;
+    max-width: 720px;
+    margin-top: 10px;
+    color: #655c72;
+    font-size: 14px;
+    line-height: 1.85;
   }
+  .subpage-main .grid { gap: 14px; }
   .subpage-main .card,
   .subpage-main .summary-card,
   .subpage-main .plan-panel,
@@ -1911,132 +1981,242 @@
     border-radius: 6px;
     box-shadow: none;
   }
+  .subpage-main .card,
+  .subpage-main .summary-card,
+  .subpage-main .feature-mini {
+    padding: 20px;
+    border-color: #e8e2ec;
+  }
+  .subpage-main .card h3,
+  .subpage-main .feature-mini h3 {
+    font-size: 18px;
+  }
+  .subpage-main .card p,
+  .subpage-main .feature-mini p {
+    font-size: 13px;
+    line-height: 1.8;
+  }
   .subpage-main .card:hover,
   .subpage-main .card.hoverable:hover {
-    transform: none;
-    box-shadow: none;
-  }
-  .subpage-infographic {
-    padding: 18px 0 4px;
-    background: linear-gradient(180deg, #fff 0%, #fbf8ff 100%);
-  }
-  .subpage-infographic picture,
-  .subpage-infographic img {
-    display: block;
-  }
-  .subpage-infographic img {
-    width: min(100%, 1120px);
-    height: auto;
-    margin: 0 auto;
-    border: 1px solid rgba(105, 60, 184, .14);
-    border-radius: 10px;
-    box-shadow: 0 18px 42px rgba(50, 20, 95, .08);
-    background: #fff;
-  }
-  .detail-info-visual {
-    margin: 0 0 28px;
-  }
-  .detail-info-visual img {
-    display: block;
-    width: min(100%, 680px);
-    height: auto;
-    margin: 0 auto;
-    border: 1px solid rgba(92, 49, 155, .14);
-    border-radius: 14px;
-    background: #fff;
-    box-shadow: 0 18px 38px rgba(45, 27, 87, .10);
-  }
-  .price-simulator-cta .page-summary {
-    align-items: stretch;
-  }
-  .price-simulator-cta .summary-card {
-    border-color: rgba(92, 49, 155, .18);
-    background: linear-gradient(135deg, #fbf8ff 0%, #fff 58%, #f6fff2 100%);
-  }
-  .price-simulator-cta .compact-row {
-    border-color: rgba(92, 49, 155, .2);
-    background: #fff;
-  }
-  .subpage-main .plan-panel {
-    margin-top: 18px;
-    padding: 26px;
-    border-color: #e6d9f3;
-  }
-  .subpage-main .plan-panel h3 {
-    padding: 10px 14px;
-    border-left: 5px solid var(--purple);
-    background: #fbf8ff;
-    font-size: clamp(20px, 2.1vw, 26px);
-  }
-  .subpage-main .data-table th {
-    background: var(--purple);
-    color: #fff;
-  }
-  .subpage-main .price-matrix .amount,
-  .subpage-main .discount-amount {
-    color: #d94f62;
+    transform: translateY(-2px);
+    border-color: rgba(92, 49, 155, .28);
+    box-shadow: 0 10px 24px rgba(45, 27, 87, .06);
   }
   .subpage-main .page-summary,
   .subpage-main .photo-story,
   .subpage-main .photo-story.reverse {
     grid-template-columns: 1fr;
   }
+  .subpage-main .summary-card strong {
+    font-size: clamp(22px, 2.6vw, 32px);
+  }
+  .subpage-main .compact-row {
+    grid-template-columns: 72px 1fr 18px;
+    min-height: 52px;
+    padding: 10px 14px;
+  }
   .subpage-main .story-photo,
   .subpage-main .real-photo-card img,
   .subpage-main .card img {
-    max-height: 360px;
-    object-fit: contain;
-    background: #fff;
+    max-height: 340px;
+    object-fit: cover;
+    background: #f4f2f5;
   }
   .subpage-main .story-photo.story-photo-full,
-  .subpage-main .story-photo.story-photo-full img {
-    max-height: none;
+  .subpage-main .story-photo.story-photo-full img { max-height: none; }
+  .subpage-main .plan-panel {
+    margin-top: 16px;
+    padding: 24px;
+    border-color: #e6dfea;
+  }
+  .subpage-main .plan-panel h3 {
+    padding: 0 0 0 12px;
+    border-left: 4px solid var(--green);
+    background: transparent;
+    font-size: clamp(19px, 2vw, 24px);
+  }
+  .subpage-main .data-table th {
+    background: #f1edf5;
+    color: var(--purple-ink);
+  }
+  .subpage-main .price-matrix .amount,
+  .subpage-main .discount-amount { color: #c9475b; }
+  .subpage-infographic { padding: 0 0 26px; background: #fff; }
+  .subpage-infographic picture,
+  .subpage-infographic img { display: block; }
+  .subpage-infographic img,
+  .detail-info-visual img {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border: 1px solid #e6dfea;
+    border-radius: 6px;
+    background: #fff;
+  }
+  .detail-info-visual { margin: 0 0 26px; }
+  .detail-info-visual img { width: min(100%, 680px); }
+  .price-simulator-cta .summary-card {
+    border-color: rgba(92, 49, 155, .16);
+    background: #fbf9fd;
+  }
+  .subpage-simulator-section { padding-bottom: 30px !important; }
+  .subpage-main .price-wizard {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 250px;
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid #dcd3e5;
+    border-radius: 6px;
+    background: #fff;
+  }
+  .subpage-main .wizard-main {
+    padding: clamp(24px, 3.6vw, 38px);
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+    box-shadow: none;
+  }
+  .simulator-heading { margin-bottom: 24px; }
+  .simulator-heading .section-title { font-size: clamp(24px, 3vw, 34px); }
+  .simulator-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+  }
+  .simulator-fields .field.is-wide { grid-column: 1 / -1; }
+  .simulator-fields .field {
+    padding: 12px;
+    border: 1px solid #ece6f0;
+    border-radius: 6px;
+    background: #faf9fb;
+  }
+  .simulator-fields .field label { margin-bottom: 5px; }
+  .subpage-main .price-wizard .field select {
+    min-height: 48px;
+    border-color: #d9d0e2;
+    background: #fff;
+    font-size: 14px;
+  }
+  .subpage-main .sim-result {
+    min-width: 0;
+    padding: 30px 24px;
+    border: 0;
+    background: var(--purple-deep);
+    color: #fff;
+  }
+  .subpage-main .sim-result .mini,
+  .subpage-main .sim-result .price { color: #fff; }
+  .subpage-main .sim-result .price {
+    font-size: clamp(27px, 3vw, 36px);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  .subpage-main .sim-result .btn {
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+  .subpage-main .sim-result.is-muted { opacity: 1; filter: none; }
+  .simulator-note {
+    margin: 14px 0 0;
+    color: #766d80;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.75;
   }
   .subpage-next {
-    padding: 34px 0 76px;
+    padding: 54px 0 72px;
+    background: #f8f7f9;
+    border-top: 1px solid #ece7ef;
   }
   .subpage-next .section-title {
     font-size: clamp(24px, 3vw, 34px);
   }
   .subpage-next .card {
-    min-height: 150px;
+    min-height: 136px;
+    box-shadow: none;
+  }
+  @media (max-width: 1080px) {
+    .subpage-layout {
+      grid-template-columns: 204px minmax(0, 1fr);
+      gap: 28px;
+    }
+    .subpage-main .price-wizard { grid-template-columns: 1fr; }
+    .subpage-main .sim-result {
+      border-top: 1px solid rgba(255,255,255,.2);
+    }
   }
   @media (max-width: 900px) {
+    .subpage-hero { padding-top: 16px; }
+    .subpage-hero-frame { grid-template-columns: 1fr; }
+    .subpage-hero-media,
+    .subpage-hero-media img {
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+    }
+    .subpage-hero-copy { padding: 24px 20px 28px; }
+    .subpage-hero-copy h1 { font-size: clamp(30px, 8vw, 40px); }
+    .subpage-hero-lead { margin-top: 12px; font-size: 14px; }
+    .subpage-hero-actions { margin-top: 18px; }
     .subpage-layout {
       grid-template-columns: 1fr;
-      gap: 22px;
+      gap: 0;
+      padding-top: 24px;
+      padding-bottom: 42px;
     }
-    .subpage-side {
-      display: none;
+    .subpage-side { display: none; }
+    .subpage-mobile-nav {
+      display: block;
+      margin: 0 0 24px;
+      border: 1px solid #e6dfea;
+      border-radius: 6px;
+      background: #fff;
     }
-    .subpage-main {
-      order: 1;
+    .subpage-mobile-nav summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 48px;
+      padding: 10px 14px;
+      color: var(--purple-ink);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      list-style: none;
     }
-    .subpage-actions {
-      grid-template-columns: 1fr 1fr;
+    .subpage-mobile-nav summary::-webkit-details-marker { display: none; }
+    .subpage-mobile-nav summary::after { content: "+"; color: var(--orange); font-size: 20px; }
+    .subpage-mobile-nav[open] summary::after { content: "−"; }
+    .subpage-mobile-nav .subpage-localnav {
+      border: 0;
+      border-top: 1px solid #e6dfea;
+      border-radius: 0;
     }
-    .subpage-actions .btn:first-child {
-      grid-column: 1 / -1;
-    }
-    .subpage-localnav {
-      display: none;
-    }
-    .subpage-main .band {
-      padding: 24px 18px;
-    }
+    .subpage-mobile-nav .subpage-localnav h2 { display: none; }
+    .subpage-main .band { padding: 24px 18px; }
     .subpage-main .mobile-table-section {
       display: block;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
-    .subpage-main .mobile-table-section .data-table {
-      min-width: 640px;
-    }
-    .subpage-infographic img {
-      width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 10px 26px rgba(50, 20, 95, .08);
-    }
+    .subpage-main .mobile-table-section .data-table { min-width: 640px; }
+  }
+  @media (max-width: 520px) {
+    .subpage-breadcrumb { font-size: 11px; }
+    .subpage-hero-copy { padding: 21px 16px 24px; }
+    .subpage-hero-copy h1 { font-size: 30px; }
+    .subpage-badges { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
+    .subpage-badges .badge { flex: 0 0 auto; }
+    .subpage-hero-actions { display: grid; grid-template-columns: 1fr 1fr; }
+    .subpage-hero-actions .btn { width: 100%; padding-inline: 10px; }
+    .simulator-fields { grid-template-columns: 1fr; }
+    .simulator-fields .field.is-wide { grid-column: auto; }
+    .subpage-main .wizard-main { padding: 22px 16px; }
+    .subpage-main .sim-result { padding: 24px 18px; }
+    .subpage-main .sim-result .price { font-size: 28px; }
+    .subpage-main section { padding: 24px 0; }
+    .subpage-main .section-title { font-size: 22px; }
+    .subpage-main .compact-row { grid-template-columns: 54px 1fr 16px; }
   }
 
   @media (max-width: 520px) {
@@ -2549,20 +2729,27 @@
     standard: {
       eyebrow: "STANDARD CAR",
       title: "普通自動車教習",
-      lead: "自分の都合のよい時間に通って免許取得する基本プランを中心に、コミコミ、合宿風、スケジュールまで比較できます。",
-      image: "images/current-site/pages/standard-01.jpg",
-      visualCaption: "AT普通自動車を中心に、通いやすいプランを選択",
-      badges: ["AT普通車", "基本プラン", "コミコミ", "短期取得"],
+      lead: "初めて免許を取る方も、仕事や生活に合わせて取りたい方も。条件に合う通い方と料金目安を、順番に確認できます。",
+      image: "images/real/course-car-real.jpg",
+      visualCaption: "実際の教習車で、基本操作から落ち着いて練習できます",
+      badges: ["AT普通車", "MT移行", "自分のペース", "短期取得"],
       body: `
-        <section class="reveal"><div class="wrap page-summary">
-          <article class="summary-card"><span class="eyebrow">BASIC PLAN</span><strong>自分のペースで通いたい方に。</strong><p>普通自動車基本プランは、自分の都合のよい時間に通って免許取得するプランです。オプション選択で最短スケジュール作成も可能です。</p></article>
-          <div class="compact-list">
-            <a class="compact-row" href="detail.html?page=camp_price"><small>SHORT</small><strong>合宿風ハイスピードプランを見る</strong><span>›</span></a>
-            <a class="compact-row" href="detail.html?page=price"><small>SIM</small><strong>料金シミュレーションで目安を確認</strong><span>›</span></a>
-            <a class="compact-row" href="detail.html?page=application"><small>FORM</small><strong>普通車教習について相談</strong><span>›</span></a>
+        <section class="reveal"><div class="wrap">
+          <div class="section-head"><div><span class="eyebrow">HOW TO CHOOSE</span><h2 class="section-title">自分に合う通い方を選ぶ</h2><p class="section-lead">料金は上のシミュレーターで確認し、ここでは通い方の違いだけを短く整理しています。</p></div></div>
+          <div class="grid cols-3">
+            <article class="card"><h3>自分のペースで通う</h3><p>学校や仕事の予定に合わせ、空いている時間を選びながら進めたい方向けです。</p></article>
+            <article class="card"><h3>追加費用の不安を減らす</h3><p>補習や再検定が心配な方は、コミコミプランを含めて相談できます。</p></article>
+            <article class="card"><h3>卒業までを早めたい</h3><p>通える曜日や時間帯を確認し、短期・スケジュール型の進め方を提案します。</p></article>
           </div>
         </div></section>
-        ${ordinaryPlansHtml()}`
+        <section class="band reveal"><div class="wrap page-summary">
+          <article class="summary-card"><span class="eyebrow">AT / MT</span><strong>MTはAT卒業後の移行で取得できます。</strong><p>まずAT普通車を卒業し、その後にMT移行（AT解除）へ進む流れです。必要な条件や時期は受付で確認できます。</p></article>
+          <div class="compact-list">
+            <a class="compact-row" href="detail.html?page=camp_price"><small>SHORT</small><strong>短期取得の進め方を見る</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=admission"><small>FLOW</small><strong>入校までの流れを確認</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=application"><small>FORM</small><strong>通える日程を相談する</strong><span>›</span></a>
+          </div>
+        </div></section>`
     },
     camp_price: {
       eyebrow: "HIGH SPEED PLAN",
@@ -2602,8 +2789,8 @@
       eyebrow: "SEMI MEDIUM",
       title: "準中型車教習",
       lead: "仕事で必要になって取得される方や、キャリアアップのために取得される方に向けた準中型車免許ページです。",
-      image: "images/current-site/pages/semi_medium-01.jpg",
-      visualCaption: "準中型車は仕事・キャリアアップにも対応",
+      image: "images/real/course-truck-real.jpg",
+      visualCaption: "普通車と準中型車の違いを、実際の教習車で確認できます",
       badges: ["MT準中型", "基本プラン", "コミコミ", "スケジュール"],
       body: `
         <section class="reveal"><div class="wrap grid cols-3">
@@ -2650,6 +2837,23 @@
               <article class="card"><h3>複数人での入校割引</h3><p>免許なしや原付免許のみお持ちの方は、3人以上でお1人様15,000円、2人でお1人様10,000円割引。普通車や自動二輪免許をお持ちの方は、2人以上でお1人様5,000円割引です。</p></article>
             </div>
             <p class="subnote">同月内に入校が必要です。その他の割引や特典等との併用はできません。一緒に入校する車種は組み合わせ可能です。</p>
+          </div>
+        </div></section>`,
+      focusedBody: `
+        <section class="reveal"><div class="wrap">
+          <div class="section-head"><div><span class="eyebrow">PLAN GUIDE</span><h2 class="section-title">準中型の通い方を選ぶ</h2><p class="section-lead">現在お持ちの免許で必要な教習と料金が変わるため、金額は上のシミュレーターで確認できます。</p></div></div>
+          <div class="grid cols-3">
+            <article class="card"><h3>基本プラン</h3><p>仕事や学校の予定に合わせ、自分で通える日時を選びながら進めたい方向けです。</p></article>
+            <article class="card"><h3>コミコミプラン</h3><p>補習・延長教習や技能検定の再検定など、追加費用の不安を減らしたい方向けです。</p></article>
+            <article class="card"><h3>スケジュールプラン</h3><p>通える日時を先に共有し、卒業までの予定を組んで計画的に進めたい方向けです。</p></article>
+          </div>
+        </div></section>
+        <section class="band reveal"><div class="wrap page-summary">
+          <article class="summary-card"><span class="eyebrow">FOR WORK</span><strong>仕事で使う車の選択肢を広げたい方へ。</strong><p>準中型免許は、配送・建設・設備など幅広い仕事で活用されています。取得時期や仕事の予定に合わせた通い方を相談できます。</p></article>
+          <div class="compact-list">
+            <a class="compact-row" href="detail.html?page=license"><small>FLOW</small><strong>取得までの流れを見る</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=admission"><small>ENTRY</small><strong>入校に必要なものを確認</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=application"><small>FORM</small><strong>仕事との両立を相談する</strong><span>›</span></a>
           </div>
         </div></section>`
     },
@@ -2704,6 +2908,23 @@
             <p class="subnote">割引の併用はできません。同月内に入校が必要です。一緒に入校する車種は組み合わせ可能です。</p>
           </div>
           <p class="subnote">デイプランは8:30〜18:30、フリープランは8:30〜20:30です。二輪技能教習は夏季の熱中症予防により時間帯が変わる場合があります。</p>
+        </div></section>`,
+      focusedBody: `
+        <section class="reveal"><div class="wrap">
+          <div class="section-head"><div><span class="eyebrow">LICENSE TYPE</span><h2 class="section-title">乗りたいバイクから選ぶ</h2><p class="section-lead">料金は上のシミュレーターで確認し、ここでは免許ごとの違いを簡潔に整理しています。</p></div></div>
+          <div class="grid cols-3">
+            <article class="card"><h3>普通自動二輪</h3><p>通勤からツーリングまで幅広く使いやすい免許です。AT・MTから選べます。</p></article>
+            <article class="card"><h3>小型限定二輪</h3><p>近距離の移動や通勤を中心に、125cc以下のバイクを検討する方向けです。</p></article>
+            <article class="card"><h3>大型自動二輪</h3><p>排気量の制限なく、さまざまなバイクを楽しみたい方向けです。</p></article>
+          </div>
+        </div></section>
+        <section class="band reveal"><div class="wrap page-summary">
+          <article class="summary-card"><span class="eyebrow">SUMMER NOTICE</span><strong>7月〜8月は技能教習の時間帯が変わります。</strong><p>熱中症予防のため、二輪技能教習は8:30〜11:30、16:30〜20:30の間で行います。希望時期がある方は早めにご相談ください。</p></article>
+          <div class="compact-list">
+            <a class="compact-row" href="detail.html?page=limited"><small>LIMIT</small><strong>二輪の限定解除を見る</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=admission"><small>ENTRY</small><strong>入校条件と必要書類を確認</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=application"><small>FORM</small><strong>希望車種と時期を相談する</strong><span>›</span></a>
+          </div>
         </div></section>`
     },
     limited: {
@@ -2921,6 +3142,23 @@
           <article class="card"><h3>普通車オプション</h3><p>ATコミコミプラン 11,000円、スケジュールプラン 55,000円〜77,000円。合宿風ハイスピードプラン 55,000円（12〜3月開始は77,000円）。</p></article>
           <article class="card"><h3>割引</h3><p>卒業生割引（10,000〜20,000円）や、複数人での入校割引（2人・3人以上）などの制度があります。併用可否は受付で確認できます。</p></article>
           <article class="card"><h3>支払い</h3><p>現金、振込、クレジットカード、QRコード決済、ローンに対応。クレジットカード・QRコード決済は一回払いに限ります。未成年・学生の方もローン相談ができます。</p></article>
+        </div></section>`,
+      focusedBody: `
+        <section class="reveal"><div class="wrap">
+          <div class="section-head"><div><span class="eyebrow">CHECK POINT</span><h2 class="section-title">料金確認で知っておきたいこと</h2><p class="section-lead">詳しい金額を何度も探さなくてよいよう、確認先をシミュレーターに一本化しています。</p></div></div>
+          <div class="grid cols-3">
+            <article class="card"><h3>表示は税込の目安</h3><p>希望免許、現在の免許、学生・一般、通い方、オプションの条件から目安を表示します。</p></article>
+            <article class="card"><h3>一部費用は別途</h3><p>仮免許に関する手数料など、選んだ免許や条件により別途必要になる費用があります。</p></article>
+            <article class="card"><h3>支払い方法も相談可能</h3><p>現金、振込、クレジットカード、QRコード決済、ローンについて受付で確認できます。</p></article>
+          </div>
+        </div></section>
+        <section class="band reveal"><div class="wrap page-summary">
+          <article class="summary-card"><span class="eyebrow">NEED HELP?</span><strong>条件に迷ったら、そのまま相談できます。</strong><p>シミュレーターの選び方が分からない場合や、表示されない免許・条件は、現在の状況を聞いたうえで受付が案内します。</p></article>
+          <div class="compact-list">
+            <a class="compact-row" href="detail.html?page=faq"><small>FAQ</small><strong>料金・支払いの質問を見る</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=admission"><small>ENTRY</small><strong>入校手続きの流れを確認</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=application"><small>FORM</small><strong>この条件で相談する</strong><span>›</span></a>
+          </div>
         </div></section>`
     },
     access: {
@@ -3678,50 +3916,29 @@
   function priceSimulatorHtml(id) {
     if (!immediateSimulatorPages.has(id)) return "";
     const initialCourse = priceSimulatorLinks[id]?.[0] || "ordinary_at";
-    return `<section class="reveal"><div class="wrap">
+    return `<section class="reveal subpage-simulator-section"><div class="wrap">
       <div class="price-wizard" id="price-simulator" data-initial-course="${initialCourse}">
-        <div class="wizard-steps" aria-label="料金シミュレーションの手順">
-          <button class="wizard-step is-active" type="button" data-step="1"><small>STEP 01</small><strong>免許を選ぶ</strong></button>
-          <button class="wizard-step" type="button" data-step="2"><small>STEP 02</small><strong>現有免許</strong></button>
-          <button class="wizard-step" type="button" data-step="3"><small>STEP 03</small><strong>区分</strong></button>
-          <button class="wizard-step" type="button" data-step="4"><small>STEP 04</small><strong>通い方</strong></button>
-          <button class="wizard-step" type="button" data-step="5"><small>STEP 05</small><strong>オプション</strong></button>
-        </div>
         <div class="wizard-main">
-          <span class="eyebrow">QUICK CHECK</span><h2 class="section-title">料金シミュレーション</h2>
-          <p class="section-lead">5つの項目を選ぶと、その場で料金目安が表示されます。</p>
-          <div class="wizard-panel is-active" data-panel="1">
-            <div class="wizard-question"><h3>ご希望の免許をお選びください</h3></div>
+          <div class="simulator-heading">
+            <span class="eyebrow">PRICE SIMULATOR</span>
+            <h2 class="section-title">料金シミュレーション</h2>
+            <p class="section-lead">条件を選び直すたび、右側の料金目安がすぐ更新されます。</p>
+          </div>
+          <div class="simulator-fields">
             <div class="field"><label for="simCourse">取りたい免許</label><select id="simCourse"></select></div>
-            <div class="wizard-actions"><button class="btn btn-purple" type="button" data-next-step="2">次へ進む</button></div>
-          </div>
-          <div class="wizard-panel" data-panel="2">
-            <div class="wizard-question"><h3>現在お持ちの免許を選んでください</h3></div>
             <div class="field"><label for="simLicense">現在お持ちの免許</label><select id="simLicense"></select></div>
-            <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="1">戻る</button><button class="btn btn-purple" type="button" data-next-step="3">次へ進む</button></div>
-          </div>
-          <div class="wizard-panel" data-panel="3">
-            <div class="wizard-question"><h3>学生・一般の区分を選んでください</h3></div>
             <div class="field"><label for="simUser">区分</label><select id="simUser"><option value="student">学生</option><option value="general">一般</option></select></div>
-            <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="2">戻る</button><button class="btn btn-purple" type="button" data-next-step="4">次へ進む</button></div>
-          </div>
-          <div class="wizard-panel" data-panel="4">
-            <div class="wizard-question"><h3>通い方を選んでください</h3></div>
             <div class="field"><label for="simPlan">通い方</label><select id="simPlan"><option value="day">デイプラン</option><option value="free">フリープラン</option></select></div>
-            <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="3">戻る</button><button class="btn btn-purple" type="button" data-next-step="5">次へ進む</button></div>
+            <div class="field is-wide"><label for="simOption">オプションプラン</label><select id="simOption"></select></div>
           </div>
-          <div class="wizard-panel" data-panel="5">
-            <div class="wizard-question"><h3>オプションプランを選んでください</h3></div>
-            <div class="field"><label for="simOption">オプションプラン</label><select id="simOption"></select></div>
-            <div class="wizard-actions"><button class="btn btn-white" type="button" data-prev-step="4">戻る</button><button class="btn btn-orange" type="button" id="simulateBtn">結果を見る</button></div>
-          </div>
+          <p class="simulator-note">表示金額は税込の目安です。仮免許に関する手数料など、条件により別途費用が必要になる場合があります。</p>
         </div>
-        <div class="sim-result is-muted" id="detailResult">
+        <aside class="sim-result is-muted" id="detailResult" aria-live="polite">
           <span class="mini">料金目安（税込）</span>
           <div class="price" id="detailPrice">選択中</div>
           <p class="mini" id="detailPriceNote">条件を選ぶと料金目安が表示されます。</p>
           <a class="btn btn-orange" href="detail.html?page=application">この内容で相談する</a>
-        </div>
+        </aside>
       </div>
     </div></section>`;
   }
@@ -3786,6 +4003,110 @@
         ${links.map(([id, label]) => `<a href="detail.html?page=${id}">${label}</a>`).join("")}
       </div>
     `).join("");
+  }
+
+  const subpageNavigationGroups = [
+    ["入校案内", [["admission", "入校の流れ"], ["application", "資料請求・仮申込"], ["license", "免許交付まで"], ["introduction", "友人・知人紹介"]]],
+    ["教習・講習", [["courses", "教習・講習一覧"], ["standard", "普通自動車教習"], ["camp_price", "合宿風ハイスピード"], ["semi_medium", "準中型車教習"], ["bike", "自動二輪車教習"], ["limited", "各種限定解除"], ["paper", "ペーパー講習"], ["senior", "高齢者講習"], ["motorcycle", "原付講習"], ["training", "企業講習"]]],
+    ["料金・アクセス", [["price", "料金シミュレーション"], ["access", "送迎バス・アクセス"], ["faq", "よくあるご質問"]]],
+    ["学校紹介", [["school", "学校紹介"], ["company", "会社概要"], ["why", "通う理由"], ["facilities", "施設・設備"], ["instructors", "指導員紹介"], ["topics", "TOPICS"], ["recruit", "採用情報"]]],
+    ["在校生の方へ", [["students", "在校生メニュー"], ["teaching", "教習カレンダー"], ["syuryokentei", "修了検定"], ["sotsugyoukentei", "卒業検定"]]],
+    ["サイト情報", [["sitemap", "サイトマップ"], ["privacy", "個人情報保護方針"]]]
+  ];
+
+  function subpageNavigationGroup(current) {
+    return subpageNavigationGroups.find(([, links]) => links.some(([pageId]) => pageId === current)) || subpageNavigationGroups[0];
+  }
+
+  function subpageLocalNavHtml(current) {
+    const [title, links] = subpageNavigationGroup(current);
+    return `<nav class="subpage-localnav" aria-label="${title}">
+      <h2>${title}</h2>
+      ${links.map(([pageId, label]) => `<a class="${pageId === current ? "is-current" : ""}" href="detail.html?page=${pageId}"${pageId === current ? ' aria-current="page"' : ""}>${label}</a>`).join("")}
+    </nav>`;
+  }
+
+  function subpageAsideHtml(id, page) {
+    const priceHref = immediateSimulatorPages.has(id) ? "#price-simulator" : "detail.html?page=price";
+    return `<aside class="subpage-side" aria-label="このページの案内">
+      <div class="subpage-actions">
+        <a class="btn btn-purple" href="${priceHref}">料金を確認する</a>
+        <a class="btn btn-orange" href="detail.html?page=application">仮申込・相談</a>
+      </div>
+      ${subpageLocalNavHtml(id)}
+      <div class="subpage-summary">
+        <h2>このページの要点</h2>
+        <p>${page.lead || "必要な情報を分かりやすくまとめています。"}</p>
+        <div class="subpage-badges">${(page.badges || []).map((badge) => `<span class="badge">${badge}</span>`).join("")}</div>
+      </div>
+    </aside>`;
+  }
+
+  function subpageMobileNavHtml(id) {
+    const [title] = subpageNavigationGroup(id);
+    return `<details class="subpage-mobile-nav"><summary>${title}のメニュー</summary>${subpageLocalNavHtml(id)}</details>`;
+  }
+
+  const subpageHeroImageOverrides = {
+    admission: "images/generated-subpages/admission-support.webp",
+    courses: "images/generated-subpages/course-selection.webp",
+    standard: "images/generated-subpages/car-learning.webp",
+    camp_price: "images/generated-subpages/car-learning.webp",
+    semi_medium: "images/generated-subpages/truck-learning.webp",
+    bike: "images/generated-subpages/motorcycle-learning.webp",
+    limited: "images/generated-subpages/course-selection.webp",
+    paper: "images/generated-subpages/safety-support.webp",
+    senior: "images/generated-subpages/safety-support.webp",
+    motorcycle: "images/generated-subpages/motorcycle-learning.webp",
+    price: "images/generated-subpages/price-simulator.webp",
+    access: "images/generated-subpages/bus-access.webp",
+    school: "images/generated-subpages/school-campus.webp",
+    students: "images/generated-subpages/student-learning.webp",
+    teaching: "images/generated-subpages/student-learning.webp",
+    syuryokentei: "images/generated-subpages/student-learning.webp",
+    sotsugyoukentei: "images/generated-subpages/student-learning.webp",
+    application: "images/generated-subpages/admission-support.webp",
+    topics: "images/generated-subpages/information-guide.webp",
+    instructors: "images/generated-subpages/instructor-team.webp",
+    facilities: "images/generated-subpages/school-campus.webp",
+    why: "images/generated-subpages/car-learning.webp",
+    faq: "images/generated-subpages/information-guide.webp",
+    recruit: "images/generated-subpages/instructor-team.webp",
+    introduction: "images/generated-subpages/admission-support.webp",
+    license: "images/generated-subpages/student-learning.webp",
+    training: "images/generated-subpages/safety-support.webp",
+    company: "images/generated-subpages/school-campus.webp",
+    privacy: "images/generated-subpages/information-guide.webp",
+    sitemap: "images/generated-subpages/information-guide.webp"
+  };
+
+  function subpageHeroHtml(id, page, visual) {
+    const [groupTitle] = subpageNavigationGroup(id);
+    const generatedHero = subpageHeroImageOverrides[id];
+    const image = generatedHero || page.image || visual.desktop || "images/real/building-real.jpg";
+    const imageAlt = generatedHero ? `${page.title}の内容をイメージしたイラスト` : (page.visualCaption || `${page.title}の案内`);
+    const priceHref = immediateSimulatorPages.has(id) ? "#price-simulator" : "detail.html?page=price";
+    return `<section class="subpage-hero">
+      <div class="wrap">
+        <nav class="subpage-breadcrumb" aria-label="パンくずリスト">
+          <a href="index.html">ホーム</a><span aria-hidden="true">/</span><span>${groupTitle}</span><span aria-hidden="true">/</span><span aria-current="page">${page.title}</span>
+        </nav>
+        <div class="subpage-hero-frame">
+          <figure class="subpage-hero-media${generatedHero ? " is-illustration" : ""}"><img src="${image}" alt="${imageAlt}" fetchpriority="high" decoding="async"></figure>
+          <div class="subpage-hero-copy">
+            <span class="eyebrow">${page.eyebrow || "GUIDE"}</span>
+            <h1>${page.title}</h1>
+            <p class="subpage-hero-lead">${page.lead || "必要な情報を分かりやすくまとめています。"}</p>
+            <div class="subpage-badges">${(page.badges || []).map((badge) => `<span class="badge">${badge}</span>`).join("")}</div>
+            ${!generatedHero && page.visualCaption ? `<p class="subpage-hero-caption">${page.visualCaption}</p>` : ""}
+            <div class="subpage-hero-actions">
+              <a class="btn btn-purple" href="${priceHref}">料金を確認する</a>
+              <a class="btn btn-orange" href="detail.html?page=application">仮申込・相談</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>`;
   }
 
   function updatePageMeta(id, page, isNotFound) {
@@ -3887,23 +4208,22 @@
       mobile: `images/detail-pages/visuals/${id}-mobile.webp`,
       alt: `${page.title}の情報を整理した図`
     };
-    // 【一時変更 2026-07-09】各ページ上部のヒーロー図解（visuals/*.webp）にも旧料金・間違った金額
-    // （例: price は 111,650円/424,370円）や旧表記（普通車AT）が焼き込まれており、社長の修正依頼
-    // （AT/MT頭出し・17歳6ヶ月・正しい料金）が画像に反映できないため、画像の代わりにページ見出し
-    // （eyebrow＋タイトル）を表示する。メンバーがヒーロー図解を最新情報で作り直したら、下の
-    // topVisual を元の picture 版（visual.desktop/mobile を使う形）に戻せば復活できる。
-    const topVisual = isNotFound ? "" : `<section class="subpage-heading"><div class="wrap"><span class="eyebrow">${page.eyebrow || ""}</span><h2 class="section-title">${page.title}</h2></div></section>`;
+    const topVisual = isNotFound
+      ? `<section class="subpage-hero"><div class="wrap"><div class="subpage-hero-copy"><span class="eyebrow">404</span><h1>${page.title}</h1><p class="subpage-hero-lead">${page.lead}</p></div></div></section>`
+      : subpageHeroHtml(id, page, visual);
+    const pageBody = page.focusedBody || page.body;
 	    document.querySelector("#page").innerHTML = `
 	      ${topVisual}
-	      <h1 class="visually-hidden">${page.title}</h1>
 	      <section class="subpage-shell">
-	        <div class="wrap subpage-layout">
+	        <div class="wrap subpage-layout ${isNotFound ? "is-single" : ""}">
+            ${isNotFound ? "" : subpageAsideHtml(id, page)}
 	          <article class="subpage-main" data-page="${id}">
-            ${infoVisualHtml(id)}
-            ${priceSimulatorHtml(id)}
-            ${immediateSimulatorPages.has(id) ? "" : `<p class="subpage-lead">${page.lead}</p>`}
-            ${immediateSimulatorPages.has(id) ? "" : priceSimulatorCtaHtml(id)}
-            ${page.body}
+            ${isNotFound || immediateSimulatorPages.has(id) ? "" : subpageMobileNavHtml(id)}
+            ${isNotFound ? "" : infoVisualHtml(id)}
+            ${isNotFound ? "" : priceSimulatorHtml(id)}
+            ${isNotFound || !immediateSimulatorPages.has(id) ? "" : subpageMobileNavHtml(id)}
+            ${isNotFound || immediateSimulatorPages.has(id) ? "" : priceSimulatorCtaHtml(id)}
+            ${pageBody}
           </article>
         </div>
       </section>
