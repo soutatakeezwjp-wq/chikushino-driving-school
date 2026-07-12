@@ -3459,13 +3459,7 @@
       visualCaption: "明るく相談しやすい指導員紹介",
       badges: ["指導員のみ", "ニックネーム", "趣味"],
       body: `
-        <section class="reveal"><div class="wrap feature-strip">
-          <article class="feature-mini"><span>PROFILE</span><h3>名前とニックネーム</h3><p>教習前に少しでも親しみを持てるよう、呼びやすい情報を添えています。</p></article>
-          <article class="feature-mini"><span>HOBBY</span><h3>趣味で人柄が見える</h3><p>話しかけるきっかけになる趣味も掲載し、相談しやすい雰囲気をつくります。</p></article>
-          <article class="feature-mini"><span>MEMBER</span><h3>指導員のみ掲載</h3><p>受付スタッフや別区分を混ぜず、教習で関わる指導員を中心に整理しています。</p></article>
-        </div></section>
         <section class="band reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">INSTRUCTOR PROFILE</span><h2 class="section-title">筑紫野の指導員紹介</h2><p class="section-lead">イラスト風のプロフィール画像で、指導員の雰囲気を親しみやすくご紹介します。</p></div></div>
           <div class="instructor-profile-grid">
             ${[
               ["haraguchi-miho", "原口 美穂", "はらぐっちゃん☆", "ずーっと探してます"],
@@ -4169,21 +4163,22 @@
       mobile: `images/detail-pages/visuals/${id}-mobile.webp`,
       alt: `${page.title}の情報を整理した図`
     };
+    const isInstructorDirectory = id === "instructors";
     const topVisual = isNotFound
       ? `<section class="subpage-hero"><div class="wrap"><div class="subpage-hero-copy"><span class="eyebrow">404</span><h1>${page.title}</h1><p class="subpage-hero-lead">${page.lead}</p></div></div></section>`
-      : subpageHeroHtml(id, page, visual);
+      : isInstructorDirectory ? "" : subpageHeroHtml(id, page, visual);
     const pageBody = page.focusedBody || page.body;
 	    document.querySelector("#page").innerHTML = `
 	      ${topVisual}
 	      <section class="subpage-shell">
-	        <div class="wrap subpage-layout ${isNotFound ? "is-single" : ""}">
-            ${isNotFound ? "" : subpageAsideHtml(id, page)}
+	        <div class="wrap subpage-layout ${isNotFound || isInstructorDirectory ? "is-single" : ""}">
+            ${isNotFound || isInstructorDirectory ? "" : subpageAsideHtml(id, page)}
 	          <article class="subpage-main" data-page="${id}">
-            ${isNotFound || immediateSimulatorPages.has(id) ? "" : subpageMobileNavHtml(id)}
-            ${isNotFound ? "" : infoVisualHtml(id)}
-            ${isNotFound ? "" : priceSimulatorHtml(id)}
-            ${isNotFound || !immediateSimulatorPages.has(id) ? "" : subpageMobileNavHtml(id)}
-            ${isNotFound || immediateSimulatorPages.has(id) ? "" : priceSimulatorCtaHtml(id)}
+            ${isNotFound || isInstructorDirectory || immediateSimulatorPages.has(id) ? "" : subpageMobileNavHtml(id)}
+            ${isNotFound || isInstructorDirectory ? "" : infoVisualHtml(id)}
+            ${isNotFound || isInstructorDirectory ? "" : priceSimulatorHtml(id)}
+            ${isNotFound || isInstructorDirectory || !immediateSimulatorPages.has(id) ? "" : subpageMobileNavHtml(id)}
+            ${isNotFound || isInstructorDirectory || immediateSimulatorPages.has(id) ? "" : priceSimulatorCtaHtml(id)}
             ${pageBody}
           </article>
         </div>
