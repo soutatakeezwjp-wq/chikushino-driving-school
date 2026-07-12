@@ -1441,10 +1441,12 @@
   .footer-cta .wrap { display: flex; align-items: center; justify-content: space-between; gap: 22px; }
   .footer-cta h2 { margin: 0; font-family: var(--jp); font-size: clamp(26px, 3vw, 42px); line-height: 1.25; }
   footer { padding: 54px 0 26px; background: #fff; border-top: 1px solid #f0e8f8; }
-  .footer-grid { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 22px; }
+  .footer-grid { display: grid; grid-template-columns: minmax(260px, 1.4fr) repeat(2, minmax(105px, 1fr)) minmax(190px, 1fr) minmax(105px, 1fr); gap: 22px; }
   .foot-col h4 { margin: 0 0 12px; color: var(--purple-ink); font-family: var(--jp); }
   .foot-col a { display: block; margin: 8px 0; color: var(--muted); font-size: 13px; font-weight: 700; transition: color .2s ease; }
   .foot-col a:hover { color: var(--green-deep); }
+  .foot-col .why-banner-link { width: 190px; max-width: 100%; margin-top: 12px; }
+  .foot-col .why-banner-link img { width: 190px; max-width: 100%; height: auto; border: 1px solid #ddd; }
   .footer-bottom { margin-top: 36px; padding-top: 18px; border-top: 1px solid #f0e8f8; display: flex; justify-content: space-between; gap: 20px; color: #8a8199; font-size: 12px; }
 
   .reveal { opacity: 1; transform: none; }
@@ -2292,7 +2294,7 @@
         <a class="nav-trigger" href="detail.html?page=school">学校紹介</a>
         <div class="nav-menu" aria-label="学校紹介メニュー">
           <a href="detail.html?page=school"><span>学校紹介</span><small>SCHOOL</small></a>
-          <a href="detail.html?page=why"><span>通う理由</span><small>WHY</small></a>
+          <a href="why/" target="_blank" rel="noopener"><span>通う理由</span><small>WHY</small></a>
           <a href="detail.html?page=faq"><span>よくあるご質問</span><small>FAQ</small></a>
           <a href="detail.html?page=access"><span>送迎バス・アクセス</span><small>ACCESS</small></a>
           <a href="detail.html?page=recruit"><span>採用情報</span><small>RECRUIT</small></a>
@@ -2362,7 +2364,9 @@
         <div class="foot-col">
           <h4>学校を知る</h4>
           <a href="detail.html?page=school">学校紹介</a>
-          <a href="detail.html?page=why">通う理由</a>
+          <a class="why-banner-link" href="why/" target="_blank" rel="noopener" aria-label="私が自動車学校に通う理由">
+            <img src="images/site-parts/why-banner.gif" alt="私が自動車学校に通う理由">
+          </a>
           <a href="detail.html?page=facilities">設備紹介</a>
           <a href="detail.html?page=instructors">教官紹介</a>
           <a href="detail.html?page=company">会社概要</a>
@@ -3928,12 +3932,20 @@
     };
     const fallback = navCards.filter(([id]) => id !== current).slice(0, 3);
     const source = relatedMap[current] || fallback;
-    return source.map(([id, title, text]) => `<a class="card hoverable" href="detail.html?page=${id}"><h3>${title}</h3><p>${text}</p></a>`).join("");
+    return source.map(([id, title, text]) => `<a class="card hoverable" href="${pageHref(id)}"${externalPageAttrs(id)}><h3>${title}</h3><p>${text}</p></a>`).join("");
+  }
+
+  function pageHref(id) {
+    return id === "why" ? "why/" : `detail.html?page=${id}`;
+  }
+
+  function externalPageAttrs(id) {
+    return id === "why" ? ' target="_blank" rel="noopener"' : "";
   }
 
   function quickMenu(current) {
     return navCards.map(([id, title, text]) => `
-      <a class="page-quick-card ${id === current ? "is-current" : ""}" href="detail.html?page=${id}">
+      <a class="page-quick-card ${id === current ? "is-current" : ""}" href="${pageHref(id)}"${externalPageAttrs(id)}>
         <small>${id.toUpperCase()}</small>
         <strong>${title}</strong>
         <span>${text}</span>
@@ -3955,7 +3967,7 @@
     return directoryGroups.map(([title, links]) => `
       <div class="directory-group">
         <h3>${title}</h3>
-        ${links.map(([id, label]) => `<a href="detail.html?page=${id}">${label}</a>`).join("")}
+        ${links.map(([id, label]) => `<a href="${pageHref(id)}"${externalPageAttrs(id)}>${label}</a>`).join("")}
       </div>
     `).join("");
   }
@@ -3977,7 +3989,7 @@
     const [title, links] = subpageNavigationGroup(current);
     return `<nav class="subpage-localnav" aria-label="${title}">
       <h2>${title}</h2>
-      ${links.map(([pageId, label]) => `<a class="${pageId === current ? "is-current" : ""}" href="detail.html?page=${pageId}"${pageId === current ? ' aria-current="page"' : ""}>${label}</a>`).join("")}
+      ${links.map(([pageId, label]) => `<a class="${pageId === current ? "is-current" : ""}" href="${pageHref(pageId)}"${externalPageAttrs(pageId)}${pageId === current ? ' aria-current="page"' : ""}>${label}</a>`).join("")}
     </nav>`;
   }
 
@@ -4144,6 +4156,10 @@
       "sitemap.html": "sitemap"
     };
     const requested = params.get("page");
+    if (requested === "why") {
+      location.replace("why/");
+      return;
+    }
     const resolved = aliases[requested] || requested;
     const isNotFound = Boolean(requested) && !pages[resolved];
     const id = !isNotFound && pages[resolved] ? resolved : "admission";

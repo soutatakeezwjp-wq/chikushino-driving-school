@@ -1,0 +1,153 @@
+* { box-sizing: border-box; }
+
+html { background: #fff; }
+
+body {
+  margin: 0;
+  background: #fff url("img/back.png") repeat;
+  color: #000;
+  font-family: "MS Gothic", "Yu Gothic", Osaka, sans-serif;
+}
+
+img { display: block; max-width: 100%; }
+
+.reasons-page {
+  width: 950px;
+  margin: 0 auto;
+  padding: 0 0 40px;
+  background: #fff;
+}
+
+.reasons-header {
+  position: relative;
+  width: 950px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.reasons-header h1 {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  width: 531px;
+  height: 55px;
+  margin: 0;
+}
+
+.header-illustration {
+  position: absolute;
+  top: 5px;
+  right: 30px;
+  width: 132px;
+  height: 135px;
+}
+
+.reason-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 270px);
+  gap: 30px;
+  width: 870px;
+  margin: 0 0 0 40px;
+}
+
+.reason-card {
+  width: 270px;
+  height: 355px;
+  margin: 0;
+  padding: 43px 20px 18px;
+  background: url("img/paper.png") no-repeat 0 0 / 270px 355px;
+}
+
+.reason-illustration {
+  width: 230px;
+  height: 160px;
+}
+
+.reason-copy {
+  width: 226px;
+  height: 48px;
+  margin-top: 10px;
+}
+
+.reason-card p {
+  width: 225px;
+  margin: 5px 0 0;
+  font-size: 14px;
+  line-height: 22px;
+  text-align: justify;
+}
+
+.close-button {
+  margin: 40px auto 0;
+  text-align: center;
+}
+
+.close-button a,
+.close-button img {
+  display: inline-block;
+  width: 135px;
+  height: 26px;
+}
+
+.close-button a:hover img { content: url("img/b_close_on.png"); }
+
+@media (max-width: 949px) {
+  .reasons-page,
+  .reasons-header {
+    width: 100%;
+  }
+
+  .reasons-page { min-height: 100vh; }
+
+  .reasons-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    height: auto;
+    padding: 28px 20px;
+  }
+
+  .reasons-header h1 {
+    position: static;
+    width: min(531px, calc(100vw - 150px));
+    height: auto;
+  }
+
+  .header-illustration {
+    position: static;
+    flex: 0 0 92px;
+    width: 92px;
+    height: auto;
+    margin-left: 16px;
+  }
+
+  .reason-grid {
+    grid-template-columns: repeat(2, 270px);
+    justify-content: center;
+    width: 100%;
+    margin: 0;
+  }
+}
+
+@media (max-width: 639px) {
+  .reasons-header {
+    min-height: 126px;
+    padding: 24px 14px 20px;
+  }
+
+  .reasons-header h1 { width: calc(100vw - 112px); }
+
+  .header-illustration {
+    flex-basis: 76px;
+    width: 76px;
+    margin-left: 8px;
+  }
+
+  .reason-grid {
+    grid-template-columns: 270px;
+    gap: 24px;
+  }
+
+  .close-button { margin-top: 32px; }
+}

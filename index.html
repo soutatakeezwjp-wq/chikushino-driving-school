@@ -2577,7 +2577,7 @@
   }
   .footer-grid {
     display: grid;
-    grid-template-columns: 1.35fr repeat(5, 1fr);
+    grid-template-columns: minmax(260px, 1.35fr) repeat(2, minmax(105px, 1fr)) minmax(190px, 1fr) minmax(105px, 1fr);
     gap: 24px;
     align-items: start;
   }
@@ -2607,6 +2607,17 @@
     font-size: 12px;
     font-weight: 700;
     line-height: 1.9;
+  }
+  .foot-col .why-banner-link {
+    width: 190px;
+    max-width: 100%;
+    margin-top: 12px;
+  }
+  .foot-col .why-banner-link img {
+    width: 190px;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
   }
   .footer-bottom {
     margin-top: 22px;
@@ -3329,7 +3340,7 @@
         <a class="nav-trigger" href="detail.html?page=school">学校紹介</a>
         <div class="nav-menu" aria-label="学校紹介メニュー">
           <a href="detail.html?page=school"><span>学校紹介</span><small>SCHOOL</small></a>
-          <a href="detail.html?page=why"><span>通う理由</span><small>WHY</small></a>
+          <a href="why/" target="_blank" rel="noopener"><span>通う理由</span><small>WHY</small></a>
           <a href="detail.html?page=faq"><span>よくあるご質問</span><small>FAQ</small></a>
           <a href="detail.html?page=access"><span>送迎バス・アクセス</span><small>ACCESS</small></a>
           <a href="detail.html?page=recruit"><span>採用情報</span><small>RECRUIT</small></a>
@@ -3545,7 +3556,7 @@
               <span class="arrow">›</span>
             </span>
           </a>
-          <a class="route-link" href="detail.html?page=why" style="--route-img:url('images/site-parts/strength-corporate.webp')">
+          <a class="route-link" href="why/" target="_blank" rel="noopener" style="--route-img:url('images/site-parts/strength-corporate.webp')">
             <span class="route-body">
               <span><span class="route-label">STRENGTH</span><strong>学校の強み</strong></span>
               <span class="arrow">›</span>
@@ -3944,7 +3955,9 @@
         <div class="foot-col">
           <h4>学校を知る</h4>
           <a href="detail.html?page=school">学校紹介</a>
-          <a href="detail.html?page=why">通う理由</a>
+          <a class="why-banner-link" href="why/" target="_blank" rel="noopener" aria-label="私が自動車学校に通う理由">
+            <img src="images/site-parts/why-banner.gif" alt="私が自動車学校に通う理由">
+          </a>
           <a href="detail.html?page=facilities">設備紹介</a>
           <a href="detail.html?page=instructors">教官紹介</a>
           <a href="detail.html?page=company">会社概要</a>
