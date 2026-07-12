@@ -2294,7 +2294,7 @@
         <a class="nav-trigger" href="detail.html?page=school">学校紹介</a>
         <div class="nav-menu" aria-label="学校紹介メニュー">
           <a href="detail.html?page=school"><span>学校紹介</span><small>SCHOOL</small></a>
-          <a href="why/" target="_blank" rel="noopener"><span>通う理由</span><small>WHY</small></a>
+          <a href="reasons/" target="_blank" rel="noopener"><span>通う理由</span><small>WHY</small></a>
           <a href="detail.html?page=faq"><span>よくあるご質問</span><small>FAQ</small></a>
           <a href="detail.html?page=access"><span>送迎バス・アクセス</span><small>ACCESS</small></a>
           <a href="detail.html?page=recruit"><span>採用情報</span><small>RECRUIT</small></a>
@@ -2364,7 +2364,7 @@
         <div class="foot-col">
           <h4>学校を知る</h4>
           <a href="detail.html?page=school">学校紹介</a>
-          <a class="why-banner-link" href="why/" target="_blank" rel="noopener" aria-label="私が自動車学校に通う理由">
+          <a class="why-banner-link" href="reasons/" target="_blank" rel="noopener" aria-label="私が自動車学校に通う理由">
             <img src="images/site-parts/why-banner.gif" alt="私が自動車学校に通う理由">
           </a>
           <a href="detail.html?page=facilities">設備紹介</a>
@@ -3936,7 +3936,7 @@
   }
 
   function pageHref(id) {
-    return id === "why" ? "why/" : `detail.html?page=${id}`;
+    return id === "why" ? "reasons/" : `detail.html?page=${id}`;
   }
 
   function externalPageAttrs(id) {
@@ -4157,7 +4157,7 @@
     };
     const requested = params.get("page");
     if (requested === "why") {
-      location.replace("why/");
+      location.replace("reasons/");
       return;
     }
     const resolved = aliases[requested] || requested;

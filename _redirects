@@ -1,5 +1,7 @@
 # 旧サイトURL → 新ページへの301リダイレクト（Cloudflare Pages）
 # meta refresh の殻ページより先にこのファイルが評価される（検索評価の移転も確実）
+/why /reasons/ 302
+/why/ /reasons/ 302
 /about /detail.html?page=company 301
 /about/ /detail.html?page=company 301
 /bike /detail.html?page=bike 301
