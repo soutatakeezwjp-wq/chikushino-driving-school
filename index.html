@@ -2581,7 +2581,9 @@
     gap: 24px;
     align-items: start;
   }
-  .footer-brand .brand { align-items: flex-start; margin-bottom: 14px; }
+  .footer-brand .brand { display: block; margin-bottom: 14px; }
+  .footer-brand .brand-copy { display: none; }
+  .footer-brand .brand-logo-img { width: min(240px, 100%); }
   .footer-brand p {
     margin: 6px 0;
     color: #665b77;
@@ -2596,22 +2598,24 @@
     margin-top: 6px;
   }
   .foot-col h4 {
-    margin: 0 0 10px;
+    margin: 0 0 4px;
     color: var(--purple-ink);
     font-size: 13px;
     font-weight: 900;
+    line-height: 1.6;
   }
+  .foot-col { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   .foot-col a {
     display: block;
     color: #6d627e;
     font-size: 12px;
     font-weight: 700;
-    line-height: 1.9;
+    line-height: 1.6;
   }
   .foot-col .why-banner-link {
     width: 190px;
     max-width: 100%;
-    margin-top: 12px;
+    margin: 4px 0 2px;
   }
   .foot-col .why-banner-link img {
     width: 190px;

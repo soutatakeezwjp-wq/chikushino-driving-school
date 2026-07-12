@@ -1442,10 +1442,15 @@
   .footer-cta h2 { margin: 0; font-family: var(--jp); font-size: clamp(26px, 3vw, 42px); line-height: 1.25; }
   footer { padding: 54px 0 26px; background: #fff; border-top: 1px solid #f0e8f8; }
   .footer-grid { display: grid; grid-template-columns: minmax(260px, 1.4fr) repeat(2, minmax(105px, 1fr)) minmax(190px, 1fr) minmax(105px, 1fr); gap: 22px; }
-  .foot-col h4 { margin: 0 0 12px; color: var(--purple-ink); font-family: var(--jp); }
-  .foot-col a { display: block; margin: 8px 0; color: var(--muted); font-size: 13px; font-weight: 700; transition: color .2s ease; }
+  .footer-brand .brand { display: block; margin-bottom: 14px; }
+  .footer-brand .brand-copy { display: none; }
+  .footer-brand .brand-logo-img { width: min(240px, 100%); }
+  .footer-brand p { margin: 6px 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+  .foot-col { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+  .foot-col h4 { margin: 0 0 4px; color: var(--purple-ink); font-family: var(--jp); font-size: 13px; line-height: 1.6; }
+  .foot-col a { display: block; margin: 0; color: var(--muted); font-size: 13px; font-weight: 700; line-height: 1.6; transition: color .2s ease; }
   .foot-col a:hover { color: var(--green-deep); }
-  .foot-col .why-banner-link { width: 190px; max-width: 100%; margin-top: 12px; }
+  .foot-col .why-banner-link { width: 190px; max-width: 100%; margin: 4px 0 2px; }
   .foot-col .why-banner-link img { width: 190px; max-width: 100%; height: auto; border: 1px solid #ddd; }
   .footer-bottom { margin-top: 36px; padding-top: 18px; border-top: 1px solid #f0e8f8; display: flex; justify-content: space-between; gap: 20px; color: #8a8199; font-size: 12px; }
 
@@ -2337,7 +2342,7 @@
   <footer>
     <div class="wrap">
       <div class="footer-grid">
-        <div>
+        <div class="footer-brand">
           <a class="brand" href="index.html">
             <img class="brand-logo-img" src="images/brand-assets/cds-horizontal-logo.png" alt="C-D-S CHIKUSHINO DRIVING SCHOOL">
             <span class="brand-copy">
