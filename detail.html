@@ -3197,7 +3197,7 @@
           <p>福岡県公安委員会指定校ですので、すべての免許について試験場では技能試験が免除です。届出校と違い、いつも使っている学校のコースで検定を受けられるため、不安なく検定に臨めます。</p>
         </div></section>
         <section class="reveal"><div class="wrap photo-story">
-          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/real/classroom-real.jpg" alt="広い教室と受付"></figure>
+          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/real-20260714/bright-classroom.webp" alt="明るく広い学科教室"></figure>
           <div class="story-text">
             <h2 class="accent-heading">令和2年設立の新しい自動車学校で教習が受けられます！</h2>
             <p>大人数収容の教室で、プロジェクターを使用した授業なども受けられます。</p>
@@ -3205,7 +3205,7 @@
           </div>
         </div></section>
         <section class="reveal"><div class="wrap photo-story reverse">
-          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/real/classroom-wide.jpg" alt="フロント・待合室"></figure>
+          <figure class="story-photo"><img loading="lazy" decoding="async" src="images/real-20260714/bright-lobby.webp" alt="明るいフロント・待合室"></figure>
           <div class="story-text">
             <h2 class="accent-heading">フロント・待合室も新しくなり、過ごしやすい環境です。</h2>
             <p>広くて明るい受付。広々としたフロントだから待ち時間も快適にお過ごしいただけます。</p>
@@ -3501,12 +3501,14 @@
       visualCaption: "実際の施設写真で通うイメージを確認",
       badges: ["受付", "託児", "教室", "教習コース"],
       body: `<section class="reveal"><div class="wrap real-photo-grid">${[
-        ["明るい受付・待合室","入校手続きや相談がしやすい、広くて明るいフロント。","images/real/classroom-wide.jpg"],
-        ["大人数収容の教室","プロジェクターを使用した授業なども受けられます。","images/real/classroom-real.jpg"],
+        ["明るい学科教室","大きなモニターとゆとりのある座席で、落ち着いて学べます。","images/real-20260714/bright-classroom.webp"],
+        ["効果測定MUSASI","学科試験に向けた問題練習と復習を、自分のペースで進められます。","images/real-20260714/musasi-study-space.webp"],
+        ["運転シミュレーター","実車だけでは確認しにくい状況も、映像と操作で練習できます。","images/real-20260714/driving-simulator-in-use.webp"],
+        ["応急救護教室","万が一の場面に備え、心肺蘇生などの実技を学べる環境です。","images/real-20260714/first-aid-training-room.webp"],
         ["託児施設","お子さま連れの方も安心して教習に集中できます。","images/real/childcare-real.jpg"],
-        ["広い教習コース","広いコースと夜間設備で、のびのび練習できます。","images/real/course-vehicles.jpg"],
-        ["送迎バス","広いエリアをカバーし、通学を支えます。","images/real/bus-real.jpg"],
-        ["二輪・各種講習","普通二輪、限定解除、講習メニューにも対応しています。","images/real/motorcycle-real.jpg"]
+        ["広い教習コース","広く見通しの良いコースで、基本操作から落ち着いて練習できます。","images/real-20260714/wide-training-course.webp"],
+        ["無料送迎車","筑紫野・朝倉・太宰府方面などからの通学をサポートします。","images/real-20260714/shuttle-bus-campus.webp"],
+        ["二輪教習","普通二輪・大型二輪など、広いコースで実践的に練習できます。","images/real-20260714/motorcycle-lesson.webp"]
       ].map(([h,p,img])=>`<article class="card hoverable real-photo-card"><img loading="lazy" decoding="async" src="${img}" alt="${h}"><div class="card-copy"><h3>${h}</h3><p>${p}</p></div></article>`).join("")}</div></section>`
     },
     why: {
@@ -4052,10 +4054,23 @@
     sitemap: "images/generated-subpages/information-guide.webp"
   };
 
+  const subpagePhotoHeroOverrides = {
+    standard: "images/real-20260714/ordinary-training-car.webp",
+    semi_medium: "images/real-20260714/semi-medium-truck-lineup.webp",
+    bike: "images/real-20260714/motorcycle-lesson.webp",
+    motorcycle: "images/real-20260714/motorcycle-lesson.webp",
+    access: "images/real-20260714/shuttle-bus-campus.webp",
+    school: "images/real-20260714/school-building-course.webp",
+    students: "images/real-20260714/musasi-study-space.webp",
+    facilities: "images/real-20260714/driving-simulator-in-use.webp",
+    company: "images/real-20260714/school-building-course.webp"
+  };
+
   function subpageHeroHtml(id, page, visual) {
     const [groupTitle] = subpageNavigationGroup(id);
-    const generatedHero = subpageHeroImageOverrides[id];
-    const image = generatedHero || page.image || visual.desktop || "images/real/building-real.jpg";
+    const photoHero = subpagePhotoHeroOverrides[id];
+    const generatedHero = photoHero ? "" : subpageHeroImageOverrides[id];
+    const image = photoHero || generatedHero || page.image || visual.desktop || "images/real/building-real.jpg";
     const imageAlt = generatedHero ? `${page.title}の内容をイメージしたイラスト` : (page.visualCaption || `${page.title}の案内`);
     const priceHref = immediateSimulatorPages.has(id) ? "#price-simulator" : "detail.html?page=price";
     return `<section class="subpage-hero">

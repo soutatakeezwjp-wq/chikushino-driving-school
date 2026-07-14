@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>筑紫野自動車学校｜Drive open new world. 新しい車界へ</title>
+<title>筑紫野自動車学校｜ここから、運転が好きになる。</title>
 <meta name="description" content="筑紫野自動車学校。福岡県公安委員会指定・技能試験免除。入校案内、料金シミュレーション、スクールバス、在校生向け情報をスマホから見やすく確認できます。" />
-<meta property="og:title" content="筑紫野自動車学校｜Drive open new world. 新しい車界へ" />
+<meta property="og:title" content="筑紫野自動車学校｜ここから、運転が好きになる。" />
 <meta property="og:description" content="筑紫野自動車学校の入校案内、料金、無料送迎、仮申込・資料請求をスマホから見やすく確認できます。" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://chikushino-driving-school.pages.dev/" />
@@ -49,8 +49,8 @@
   "image": "https://chikushi-ds.com/images/ogp/chikushino-ogp.webp"
 }
 </script>
-<link rel="preload" as="image" href="images/generated-hero/chikushino-hero-drive-open-2026-07-10.webp" media="(min-width: 769px)" fetchpriority="high">
-<link rel="preload" as="image" href="images/generated-hero/chikushino-hero-drive-open-mobile-2026-07-10.webp" media="(max-width: 768px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/generated-hero/chikushino-hero-real-photo-2026-07-14.webp" media="(min-width: 769px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/generated-hero/chikushino-hero-real-photo-mobile-2026-07-14.webp" media="(max-width: 768px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -617,15 +617,15 @@
   .hero {
     position: relative;
     padding: 0;
-    height: clamp(430px, 43.945vw, 900px);
-    min-height: 430px;
+    height: clamp(520px, 42vw, 760px);
+    min-height: 520px;
     overflow: hidden;
     border-bottom: 1px solid var(--line-soft);
-    background: #fff url("images/generated-hero/chikushino-hero-drive-open-2026-07-10.webp") center / cover no-repeat;
+    background: #dff0fb url("images/generated-hero/chikushino-hero-real-photo-2026-07-14.webp") center / cover no-repeat;
   }
   @media (min-width: 1180px) {
     .hero {
-      height: clamp(430px, calc((100vw - var(--rail)) * .43945), 900px);
+      height: clamp(520px, calc((100vw - var(--rail)) * .42), 760px);
     }
   }
   .hero img {
@@ -641,16 +641,78 @@
     position: absolute;
     inset: 0;
     display: block;
+    z-index: 0;
   }
   .hero::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.02));
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.91) 25%, rgba(255,255,255,.54) 43%, rgba(255,255,255,.04) 66%),
+      linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
     z-index: 1;
   }
   .hero::after {
     display: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+  .hero-copy {
+    width: min(560px, 48%);
+    padding: 26px 0 52px;
+  }
+  .hero-eyebrow {
+    margin: 0 0 16px;
+    color: var(--green-deep);
+    font-family: var(--latin);
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: .08em;
+  }
+  .hero-copy h1 {
+    margin: 0;
+    color: #18112a;
+    font-size: clamp(44px, 4.8vw, 76px);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: 0;
+  }
+  .hero-copy h1 span {
+    position: relative;
+    color: var(--purple);
+  }
+  .hero-copy h1 span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -5px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--orange);
+    transform: rotate(-1.5deg);
+  }
+  .hero-lead {
+    margin: 24px 0 0;
+    color: #31283f;
+    font-size: clamp(16px, 1.35vw, 20px);
+    font-weight: 800;
+    line-height: 1.8;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 26px;
+  }
+  .hero-actions .btn {
+    min-width: 178px;
+    min-height: 48px;
   }
 
   .mobile-home-dock {
@@ -2839,21 +2901,60 @@
     .mobile-cta-bar { display: grid; }
     .mobile-home-dock { display: block; }
     .hero {
-      height: min(211.24vw, 840px);
+      height: min(142vw, 680px);
       min-height: 0;
-      background: #fbf8ff url("images/generated-hero/chikushino-hero-drive-open-mobile-2026-07-10.webp") center top / cover no-repeat;
+      background: #dff0fb url("images/generated-hero/chikushino-hero-real-photo-mobile-2026-07-14.webp") center / cover no-repeat;
     }
     .hero::before {
       display: block;
       background:
-        linear-gradient(180deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,.02) 64%, rgba(255,255,255,.30) 100%);
+        linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.88) 31%, rgba(255,255,255,.34) 50%, rgba(255,255,255,.02) 72%);
     }
     .hero::after,
   .home-quick { display: none; }
     .hero-picture img {
       aspect-ratio: auto;
       object-fit: cover;
-      object-position: center top;
+      object-position: center;
+    }
+    .hero-content {
+      align-items: flex-start;
+      padding-top: 34px;
+    }
+    .hero-copy {
+      width: 100%;
+      padding: 0;
+    }
+    .hero-eyebrow {
+      margin-bottom: 10px;
+      font-size: 10px;
+    }
+    .hero-copy h1 {
+      max-width: 360px;
+      font-size: clamp(35px, 10.2vw, 48px);
+      line-height: 1.16;
+    }
+    .hero-copy h1 span::after {
+      bottom: -3px;
+      height: 4px;
+    }
+    .hero-lead {
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .hero-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: 360px;
+      gap: 8px;
+      margin-top: 17px;
+    }
+    .hero-actions .btn {
+      min-width: 0;
+      min-height: 42px;
+      padding-inline: 10px;
+      font-size: 12px;
     }
     .mobile-home-dock {
       margin-top: -1px;
@@ -3374,11 +3475,21 @@
 
 		  <main>
 		    <section class="hero" aria-label="メインビジュアル">
-          <h1 class="visually-hidden">Drive open new world. 新しい車界へ</h1>
 		      <picture class="hero-picture">
-	        <source media="(max-width: 768px)" srcset="images/generated-hero/chikushino-hero-drive-open-mobile-2026-07-10.webp">
-	        <img class="hero-main-img" src="images/generated-hero/chikushino-hero-drive-open-2026-07-10.webp" alt="Drive open new world. 新しい車界へ" fetchpriority="high" decoding="async">
+	        <source media="(max-width: 768px)" srcset="images/generated-hero/chikushino-hero-real-photo-mobile-2026-07-14.webp">
+	        <img class="hero-main-img" src="images/generated-hero/chikushino-hero-real-photo-2026-07-14.webp" alt="筑紫野自動車学校の送迎車と教習コース" fetchpriority="high" decoding="async">
 	      </picture>
+          <div class="wrap hero-content">
+            <div class="hero-copy">
+              <p class="hero-eyebrow">CHIKUSHINO DRIVING SCHOOL</p>
+              <h1>ここから、<br><span>運転</span>が<br>好きになる。</h1>
+              <p class="hero-lead">楽しく通える教習所で、<br>自信をつけて未来へ走り出そう！</p>
+              <div class="hero-actions">
+                <a class="btn btn-purple" href="#price-simulator">料金を調べる</a>
+                <a class="btn btn-orange" href="detail.html?page=application">仮申込・資料請求</a>
+              </div>
+            </div>
+          </div>
     </section>
 
     <section class="home-quick reveal" aria-label="主要メニュー">
@@ -3698,8 +3809,8 @@
               <h3>広いコースで、<br><span>落ち着いて練習</span>できます。</h3>
             </div>
             <div class="point-visual">
-              <img loading="lazy" decoding="async" src="images/real/course-wide-real.jpg" alt="広い教習コース">
-              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-01-beginner-course.webp" alt="初心者マークと教習コース">
+              <img loading="lazy" decoding="async" src="images/real-20260714/wide-training-course.webp" alt="晴れた日の広い教習コース">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/real-20260714/ordinary-training-car.webp" alt="筑紫野自動車学校の普通車教習車">
             </div>
             <p>初めての運転でも焦らず練習できるよう、ゆとりのある教習環境を整えています。</p>
           </article>
@@ -3709,8 +3820,8 @@
               <h3>新しい校舎で、<br><span>学科も相談も</span>しやすく。</h3>
             </div>
             <div class="point-visual">
-              <img loading="lazy" decoding="async" src="images/real/classroom-open-real.jpg" alt="明るい教室">
-              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-02-consultation.webp" alt="インストラクターへの相談">
+              <img loading="lazy" decoding="async" src="images/real-20260714/bright-classroom.webp" alt="明るく清潔な学科教室">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/real-20260714/classroom-hallway.webp" alt="教室が並ぶ明るい校舎内の廊下">
             </div>
             <p>明るい教室や受付まわりで、分からないことも相談しやすい雰囲気を大切にしています。</p>
           </article>
@@ -3720,7 +3831,7 @@
               <h3>無料送迎バスで、<br><span>通いやすさ</span>もサポート。</h3>
             </div>
             <div class="point-visual">
-              <img loading="lazy" decoding="async" src="images/real/bus-side-real.jpg" alt="無料送迎バス">
+              <img loading="lazy" decoding="async" src="images/real-20260714/shuttle-bus-campus.webp" alt="教習コースを走る無料送迎車">
               <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-03-route-map.webp" alt="送迎エリアのルートマップ">
             </div>
             <p>筑紫野・朝倉・太宰府方面など、通いやすい乗降場所から学校へ向かえます。</p>
@@ -3731,8 +3842,8 @@
               <h3>普通車から二輪、<br><span>準中型まで</span>対応。</h3>
             </div>
             <div class="point-visual">
-              <img loading="lazy" decoding="async" src="images/real/motorcycle-yard-real.jpg" alt="二輪教習">
-              <img loading="lazy" decoding="async" class="mini-photo" src="images/generated-points/point-04-license-lineup.webp" alt="普通車・二輪・準中型の教習車両">
+              <img loading="lazy" decoding="async" src="images/real-20260714/motorcycle-lesson.webp" alt="教習コースで行われている二輪教習">
+              <img loading="lazy" decoding="async" class="mini-photo" src="images/real-20260714/semi-medium-truck-lineup.webp" alt="筑紫野自動車学校の準中型教習車">
             </div>
             <p>取りたい免許や目的に合わせて、必要なコースを選びやすく整理しています。</p>
           </article>
