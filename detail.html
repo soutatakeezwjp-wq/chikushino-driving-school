@@ -4,9 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>筑紫野自動車学校｜詳細案内</title>
-<meta name="description" content="筑紫野自動車学校の入校案内、料金、免許、送迎バス、在校生向け情報、学校紹介を見やすく整理した詳細ページです。" />
+<meta name="description" content="筑紫野自動車学校の入校案内、料金、免許、送迎バス、在校生向け情報、学校紹介をご案内します。" />
 <meta property="og:title" content="筑紫野自動車学校｜詳細案内" />
-<meta property="og:description" content="筑紫野自動車学校の入校案内、料金、無料送迎、仮申込・資料請求を見やすく整理しています。" />
+<meta property="og:description" content="筑紫野自動車学校の入校案内、料金、無料送迎、仮申込・資料請求をご案内します。" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://chikushino-driving-school.pages.dev/detail.html" />
 <meta property="og:image" content="https://chikushino-driving-school.pages.dev/images/ogp/chikushino-ogp.webp" />
@@ -1807,21 +1807,6 @@
     font-weight: 600;
     line-height: 1.85;
   }
-  .subpage-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    margin-top: 18px;
-  }
-  .subpage-badges .badge {
-    min-height: 27px;
-    padding: 0 10px;
-    border-radius: 999px;
-    background: #fff;
-    border: 1px solid #ddd3e8;
-    color: #54416d;
-    font-size: 11px;
-  }
   .subpage-hero-caption {
     margin: 14px 0 0;
     padding-left: 12px;
@@ -1870,15 +1855,13 @@
     border-radius: 6px;
     font-size: 13px;
   }
-  .subpage-localnav,
-  .subpage-summary {
+  .subpage-localnav {
     overflow: hidden;
     border: 1px solid #e7e1eb;
     border-radius: 6px;
     background: #fff;
   }
-  .subpage-localnav h2,
-  .subpage-summary h2 {
+  .subpage-localnav h2 {
     margin: 0;
     padding: 12px 14px;
     border-bottom: 1px solid #e7e1eb;
@@ -1914,23 +1897,6 @@
   }
   .subpage-localnav a.is-current {
     box-shadow: inset 3px 0 var(--orange);
-  }
-  .subpage-summary { padding-bottom: 13px; }
-  .subpage-summary p {
-    margin: 0;
-    padding: 12px 14px 0;
-    color: #62596f;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1.8;
-  }
-  .subpage-summary .subpage-badges {
-    gap: 5px;
-    margin: 10px 13px 0;
-  }
-  .subpage-summary .badge {
-    min-height: 25px;
-    font-size: 10px;
   }
   .subpage-mobile-nav { display: none; }
   .subpage-main { min-width: 0; }
@@ -2155,6 +2121,16 @@
   }
   @media (max-width: 900px) {
     .subpage-hero { padding-top: 16px; }
+    .subpage-breadcrumb {
+      flex-wrap: wrap;
+      white-space: normal;
+      overflow-x: visible;
+      row-gap: 4px;
+    }
+    .subpage-breadcrumb span[aria-current="page"] {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
     .subpage-hero-frame { grid-template-columns: 1fr; }
     .subpage-hero-media,
     .subpage-hero-media img {
@@ -2203,17 +2179,90 @@
     .subpage-main .band { padding: 24px 18px; }
     .subpage-main .mobile-table-section {
       display: block;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+      overflow-x: visible;
     }
-    .subpage-main .mobile-table-section .data-table { min-width: 640px; }
+    .subpage-main .mobile-table-section .data-table {
+      width: 100%;
+      min-width: 0;
+      table-layout: auto;
+    }
+    .subpage-main .data-table.is-key-value-table,
+    .subpage-main .data-table.is-key-value-table tbody {
+      display: block;
+      width: 100%;
+    }
+    .subpage-main .data-table.is-key-value-table tr {
+      display: grid;
+      grid-template-columns: minmax(96px, 32%) minmax(0, 1fr);
+      width: 100%;
+    }
+    .subpage-main .data-table.is-key-value-table th,
+    .subpage-main .data-table.is-key-value-table td {
+      display: block;
+      width: auto;
+      min-width: 0;
+      padding: 13px 14px;
+      overflow-wrap: anywhere;
+    }
+    .subpage-main .data-table.is-key-value-table td {
+      background: #fff;
+    }
+    .subpage-main .data-table.is-matrix-table {
+      display: block;
+      overflow: visible;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+    .subpage-main .data-table.is-matrix-table thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    .subpage-main .data-table.is-matrix-table tbody {
+      display: grid;
+      gap: 12px;
+      width: 100%;
+    }
+    .subpage-main .data-table.is-matrix-table tr {
+      display: block;
+      overflow: hidden;
+      border: 1px solid #e6dfea;
+      border-radius: 6px;
+      background: #fff;
+    }
+    .subpage-main .data-table.is-matrix-table td {
+      display: grid;
+      grid-template-columns: minmax(100px, 34%) minmax(0, 1fr);
+      gap: 12px;
+      width: 100%;
+      min-width: 0;
+      padding: 11px 13px;
+      overflow-wrap: anywhere;
+      border-bottom: 1px solid #eee8f2;
+    }
+    .subpage-main .data-table.is-matrix-table td::before {
+      content: attr(data-label);
+      color: var(--purple-ink);
+      font-family: var(--jp);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.55;
+    }
+    .subpage-main .data-table.is-matrix-table td:last-child {
+      border-bottom: 0;
+    }
   }
   @media (max-width: 520px) {
     .subpage-breadcrumb { font-size: 11px; }
     .subpage-hero-copy { padding: 21px 16px 24px; }
     .subpage-hero-copy h1 { font-size: 30px; }
-    .subpage-badges { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
-    .subpage-badges .badge { flex: 0 0 auto; }
     .subpage-hero-actions { display: grid; grid-template-columns: 1fr 1fr; }
     .subpage-hero-actions .btn { width: 100%; padding-inline: 10px; }
     .simulator-fields { grid-template-columns: 1fr; }
@@ -2223,7 +2272,17 @@
     .subpage-main .sim-result .price { font-size: 28px; }
     .subpage-main section { padding: 24px 0; }
     .subpage-main .section-title { font-size: 22px; }
-    .subpage-main .compact-row { grid-template-columns: 54px 1fr 16px; }
+    .subpage-main .compact-row { grid-template-columns: minmax(64px, auto) minmax(0, 1fr) 16px; }
+    .subpage-main .compact-row small {
+      min-width: 0;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+    .subpage-main .data-table.is-matrix-table td {
+      grid-template-columns: minmax(88px, 34%) minmax(0, 1fr);
+      gap: 10px;
+      padding: 10px 11px;
+    }
   }
 
   @media (max-width: 520px) {
@@ -2394,7 +2453,7 @@
   const navCards = [
     ["admission", "入校案内", "必要書類、支払い、入校日、資格をまとめて確認。"],
     ["courses", "免許を取る", "普通車、二輪、準中型、講習まで迷わず選べます。"],
-    ["price", "料金プラン", "令和8年8月1日改定の税込料金を見やすく整理。"],
+    ["price", "料金プラン", "令和8年8月1日改定の税込料金をご確認いただけます。"],
     ["access", "送迎バス・アクセス", "無料送迎、バスキャッチ、学校所在地を確認。"],
     ["students", "在校生の方へ", "カレンダー、検定、オンライン学科、MUSASIへ。"],
     ["application", "資料請求・仮申込", "問い合わせ、資料請求、仮入校をひとつの入口に。"]
@@ -2645,10 +2704,9 @@
     admission: {
       eyebrow: "ADMISSION GUIDE",
       title: "はじめてでも、入校までスムーズに。",
-      lead: "必要書類、支払い、入校日の流れをひとつのページに整理。スマホで確認しながら準備できます。",
+      lead: "入校時に必要な書類、支払い方法、入校日の流れをご案内します。",
       image: "images/real/classroom-real.jpg",
       visualCaption: "受付スタッフが手続きまで丁寧に案内します",
-      badges: ["木曜・土曜に入校日", "現金・カード・QR・振込・ローン", "必要書類を事前確認"],
       body: `
         <section class="reveal">
           <div class="wrap">
@@ -2668,14 +2726,13 @@
     courses: {
       eyebrow: "LICENSE COURSES",
       title: "目的に合わせて、ぴったりの免許を選ぶ。",
-      lead: "取扱免許と講習を目的別に整理。はじめての免許、仕事で必要な免許、バイク免許まで迷わず選べます。",
+      lead: "普通車、準中型車、自動二輪、各種講習から目的に合うコースを選べます。",
       image: "images/real/course-vehicles.jpg",
       visualCaption: "普通車・二輪・準中型まで幅広く対応",
       mobileImage: "images/real/course-vehicles.jpg",
-      badges: ["普通車", "自動二輪", "準中型", "各種講習"],
       body: `
         <section class="reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">COURSE MENU</span><h2 class="section-title">取扱免許・講習</h2><p class="section-lead">目的に合わせて、必要な免許・講習をすぐ選べるように整理しています。</p></div></div>
+          <div class="section-head"><div><span class="eyebrow">COURSE MENU</span><h2 class="section-title">取扱免許・講習</h2><p class="section-lead">普通車、準中型車、自動二輪、各種講習からお選びいただけます。</p></div></div>
           <div class="grid cols-3">
             ${[
               ["standard", "普通自動車", "ATを中心に、日常生活・就職・通学で使いやすい定番免許。コミコミやスケジュールプランにも対応。", "images/real/course-car-real.jpg", ""],
@@ -2702,10 +2759,9 @@
       lead: "初めて免許を取る方も、仕事や生活に合わせて取りたい方も。条件に合う通い方と料金目安を、順番に確認できます。",
       image: "images/real/course-car-real.jpg",
       visualCaption: "実際の教習車で、基本操作から落ち着いて練習できます",
-      badges: ["AT普通車", "MT移行", "自分のペース", "短期取得"],
       body: `
         <section class="reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">HOW TO CHOOSE</span><h2 class="section-title">自分に合う通い方を選ぶ</h2><p class="section-lead">料金は上のシミュレーターで確認し、ここでは通い方の違いだけを短く整理しています。</p></div></div>
+          <div class="section-head"><div><span class="eyebrow">HOW TO CHOOSE</span><h2 class="section-title">自分に合う通い方を選ぶ</h2><p class="section-lead">基本・コミコミ・短期など、希望に合う通い方をご確認ください。</p></div></div>
           <div class="grid cols-3">
             <article class="card"><h3>自分のペースで通う</h3><p>学校や仕事の予定に合わせ、空いている時間を選びながら進めたい方向けです。</p></article>
             <article class="card"><h3>追加費用の不安を減らす</h3><p>補習や再検定が心配な方は、コミコミプランを含めて相談できます。</p></article>
@@ -2727,7 +2783,6 @@
       lead: "自宅から通いながら、合宿とほぼ同じ期間で免許取得を目指すAT普通車向けの短期プランです。",
       image: "images/current-site/pages/camp_price-01.jpg",
       visualCaption: "最短17日を目安に、短期取得を目指す",
-      badges: ["AT普通車対象", "最短17日目安", "各入校日先着1名"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">ABOUT</span><strong>とにかく早く免許が取りたい方へ。</strong><p>当校の作成したスケジュールどおりに教習を進めていくプランです。最短日数は目安であり、個人差等により延びる場合があります。</p></article>
@@ -2761,7 +2816,6 @@
       lead: "仕事で必要になって取得される方や、キャリアアップのために取得される方に向けた準中型車免許ページです。",
       image: "images/real/course-truck-real.jpg",
       visualCaption: "普通車と準中型車の違いを、実際の教習車で確認できます",
-      badges: ["MT準中型", "基本プラン", "コミコミ", "スケジュール"],
       body: `
         <section class="reveal"><div class="wrap grid cols-3">
           <article class="card"><h3>準中型自動車基本プラン</h3><p>自分の都合のよい時間に通って取得するプラン。自分のペースで通いたい方に向いています。</p></article>
@@ -2833,7 +2887,6 @@
       lead: "普通自動二輪、小型自動二輪、大型自動二輪まで。趣味・通勤・ツーリングに合わせて選べます。",
       image: "images/real/motorcycle-real.jpg",
       visualCaption: "二輪ならではの不安も実技中心でサポート",
-      badges: ["大型二輪", "普通二輪", "小型二輪", "AT/MT"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">NOTICE</span><strong>夏季の二輪技能教習時間に注意。</strong><p>7月〜8月の二輪技能教習は、熱中症予防のため8:30〜11:30、16:30〜20:30の間で行います。</p></article>
@@ -2881,7 +2934,7 @@
         </div></section>`,
       focusedBody: `
         <section class="reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">LICENSE TYPE</span><h2 class="section-title">乗りたいバイクから選ぶ</h2><p class="section-lead">料金は上のシミュレーターで確認し、ここでは免許ごとの違いを簡潔に整理しています。</p></div></div>
+          <div class="section-head"><div><span class="eyebrow">LICENSE TYPE</span><h2 class="section-title">乗りたいバイクから選ぶ</h2><p class="section-lead">普通二輪、小型限定二輪、大型二輪の違いをご確認ください。</p></div></div>
           <div class="grid cols-3">
             <article class="card"><h3>普通自動二輪</h3><p>通勤からツーリングまで幅広く使いやすい免許です。AT・MTから選べます。</p></article>
             <article class="card"><h3>小型限定二輪</h3><p>近距離の移動や通勤を中心に、125cc以下のバイクを検討する方向けです。</p></article>
@@ -2903,7 +2956,6 @@
       lead: "AT限定からMTへ、準中型5t限定、AT限定二輪、小型限定など、免許の限定条件を解除するための教習です。",
       image: "images/real/course-car-real.jpg",
       visualCaption: "必要な限定解除を、料金と条件から確認",
-      badges: ["普通車審査", "準中型5t", "AT限定二輪", "小型限定"],
       body: `
         <section class="reveal"><div class="wrap grid cols-4">
           <article class="card"><h3>普通自動車審査</h3><p>AT免許からMT免許へ。デイ学生料金の目安は62,150円です。当校のAT卒業直後の方は「MT移行（AT解除）」について受付で確認できます。</p></article>
@@ -2945,7 +2997,6 @@
       lead: "運転をしない期間が長くて不安な方、免許取得後ほとんど運転していない方へ。技量に応じてプランを組み立てます。",
       image: "images/real/course-car-card-real.jpg",
       visualCaption: "学校周辺の公道を利用した講習にも対応",
-      badges: ["普通車", "二輪", "外国免許切替", "試験受験講習"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">SUPPORT</span><strong>不安解消やご要望にベテランスタッフが対応。</strong><p>ペーパードライバー講習、ペーパーライダー講習、運転免許試験の受験講習、外国免許からの切替講習に対応。初回に運転技量をチェックし、技量に応じてプランを組み立てます。学校周辺の公道や高速道路での講習にも対応します（高速通行料は別途）。</p></article>
@@ -2994,7 +3045,6 @@
       lead: "70歳以上の方が免許更新をする際に必要な、身体機能の検査等と実車による運転指導を行う講習です。",
       image: "images/current-site/pages/senior-01.gif",
       visualCaption: "通知ハガキが届いたら、まず電話予約",
-      badges: ["70歳以上", "事前予約", "通知ハガキ", "実車指導"],
       body: `
         <section class="reveal"><div class="wrap photo-story">
           <figure class="story-photo story-photo-full"><img loading="lazy" decoding="async" src="images/current-site/pages/senior-02.gif" alt="高齢者講習の案内"></figure>
@@ -3038,7 +3088,6 @@
       lead: "16歳から取得できる原付免許は、取得時に自動車教習所で原付講習を受講します。事前予約が必要です。",
       image: "images/real/motorcycle-yard-real.jpg",
       visualCaption: "基本操作・基本走行・応用走行を実車で確認",
-      badges: ["16歳から", "3時間講習", "事前予約", "実車指導"],
       body: `
         <section class="reveal"><div class="wrap grid cols-3">
 	            <article class="card"><h3>予約</h3><p>受講には事前予約が必要です。まずは電話 092-710-2188 で予約手続きを行ってください。</p></article>
@@ -3070,7 +3119,6 @@
       lead: "免許の種類、現在お持ちの免許、区分、通い方を順番に選ぶと、税込料金の目安を確認できます。",
       image: "images/real/course-vehicles.jpg",
       visualCaption: "ひとつずつ選ぶ料金シミュレーション",
-      badges: ["税込表記", "学生/一般", "デイ/フリー", "主要コース対応"],
       body: `
         <section class="reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">PLAN EXAMPLE</span><h2 class="section-title">料金プラン例</h2><p class="section-lead">まずはよく選ばれる料金例を確認できます。詳しい金額は下のシミュレーションで条件を選んでください。</p></div></div>
@@ -3115,7 +3163,7 @@
         </div></section>`,
       focusedBody: `
         <section class="reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">CHECK POINT</span><h2 class="section-title">料金確認で知っておきたいこと</h2><p class="section-lead">詳しい金額を何度も探さなくてよいよう、確認先をシミュレーターに一本化しています。</p></div></div>
+          <div class="section-head"><div><span class="eyebrow">CHECK POINT</span><h2 class="section-title">料金確認で知っておきたいこと</h2><p class="section-lead">免許種別と現在お持ちの免許を選び、税込料金の目安をご確認ください。</p></div></div>
           <div class="grid cols-3">
             <article class="card"><h3>表示は税込の目安</h3><p>希望免許、現在の免許、学生・一般、通い方、オプションの条件から目安を表示します。</p></article>
             <article class="card"><h3>一部費用は別途</h3><p>仮免許に関する手数料など、選んだ免許や条件により別途必要になる費用があります。</p></article>
@@ -3135,10 +3183,9 @@
       eyebrow: "SCHOOL BUS / ACCESS",
       title: "スクールバス・アクセス",
       displayTitle: "スクールバス・アクセス",
-	      lead: "無料送迎バス、バスキャッチ、最寄駅、駐車場の情報をひとつにまとめています。",
+	      lead: "無料送迎バスの運行エリア、バスキャッチ、最寄駅、駐車場をご案内します。",
       image: "images/real/classroom-wide.jpg",
       visualCaption: "筑紫野市・朝倉市・太宰府市などから通学しやすく",
-      badges: ["無料送迎バス", "バスキャッチ", "筑紫野市筑紫120番地1"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">SCHOOL BUS</span><strong>通学に便利な無料送迎バス。</strong><p>筑紫野市、朝倉市、太宰府市などに乗降場所があり、勤務先や学校・自宅近くの乗降場所からご利用いただけます。乗降場所は下のボタンからご確認ください。</p></article>
@@ -3183,10 +3230,10 @@
     school: {
       eyebrow: "ABOUT SCHOOL",
       title: "新しい校舎と、安心して学べる環境。",
-      lead: "公安委員会指定校としての安心感と、移転後の新しい施設、託児、地域交通安全への取り組みを見やすく伝えます。",
+      lead: "",
+      metaDescription: "筑紫野自動車学校の校舎、教習環境、託児施設、地域交通安全への取り組みをご紹介します。",
       image: "images/real/building-real.jpg",
       visualCaption: "令和2年に筑紫野市へ移転した新しい校舎",
-      badges: ["公安委員会指定校", "技能試験免除", "託児施設", "新しい校舎"],
       body: `
         <section class="reveal"><div class="wrap">
           <p>「筑紫野自動車学校」は、普通自動車免許、準中型自動車免許、自動二輪車免許まで取得できるスクールで、取得後に別の免許を取得したい場合にも卒業割引を受けて免許取得ができます。</p>
@@ -3228,10 +3275,10 @@
           <p class="subnote">筑紫野自動車学校　校長 中村 典子</p>
         </div></section>
         <section class="reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">FACILITY PHOTOS</span><h2 class="section-title">施設の様子</h2><p class="section-lead">受付、教室、託児室など、学校の実際の雰囲気が分かる写真をまとめています。</p></div></div>
+          <div class="section-head"><div><span class="eyebrow">FACILITY PHOTOS</span><h2 class="section-title">施設の様子</h2><p class="section-lead">受付、教室、託児室など、実際の施設をご覧いただけます。</p></div></div>
           <div class="grid cols-3">
             <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/school-01.jpg" alt="筑紫野自動車学校の施設写真1"><div class="card-copy"><h3>学校の雰囲気</h3><p>実際の学校の様子を写真で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/school-02.jpg" alt="筑紫野自動車学校の施設写真2"><div class="card-copy"><h3>教習環境</h3><p>校舎・教室・コースなどの実物写真を補完します。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/school-02.jpg" alt="筑紫野自動車学校の施設写真2"><div class="card-copy"><h3>教習環境</h3><p>校舎・教室・コースなど、実際の教習環境をご覧いただけます。</p></div></article>
             <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/school-03.jpg" alt="筑紫野自動車学校の施設写真3"><div class="card-copy"><h3>安心できる施設</h3><p>受付、教室、託児室など、通う前に雰囲気を確認できます。</p></div></article>
           </div>
         </div></section>
@@ -3249,13 +3296,12 @@
     students: {
       eyebrow: "CURRENT STUDENTS",
       title: "在校生の方へ",
-      lead: "教習カレンダー、検定案内、オンライン学科、効果測定MUSASI、送迎バス予約など、在校中によく使う入口をまとめています。",
+      lead: "教習カレンダー、検定案内、オンライン学科、効果測定MUSASI、送迎バス予約はこちらから利用できます。",
       image: "images/real/classroom-wide.jpg",
       visualCaption: "教習・検定・学科の確認をまとめて",
-      badges: ["教習カレンダー", "オンライン学科", "MUSASI", "検定情報"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
-          <article class="summary-card"><span class="eyebrow">STUDENT MENU</span><strong>教習中によく使う確認先を、ひとつにまとめました。</strong><p>教習中は、休校日・学科予定・検定日・オンライン学科・効果測定・スクールバス予約など、確認するものが多くなります。必要なページへすぐ進めるよう、入口を整理しています。</p></article>
+          <article class="summary-card"><span class="eyebrow">STUDENT MENU</span><strong>教習中によく使うメニュー</strong><p>休校日・学科予定・検定日・オンライン学科・効果測定・スクールバス予約から、必要なメニューを選んでください。</p></article>
           <div class="compact-list">
             <a class="compact-row" href="detail.html?page=teaching"><small>CALENDAR</small><strong>教習カレンダー</strong><span>›</span></a>
             <a class="compact-row" href="detail.html?page=syuryokentei"><small>CHECK</small><strong>修了検定</strong><span>›</span></a>
@@ -3288,14 +3334,14 @@
           </article>
         </div></section>
         <section class="band reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">ONLINE / TEST</span><h2 class="section-title">オンライン学科・効果測定</h2><p class="section-lead">スマホやPCから使うサービスも、在校生ページの中で迷わないように整理しています。</p></div></div>
+          <div class="section-head"><div><span class="eyebrow">ONLINE / TEST</span><h2 class="section-title">オンライン学科・効果測定</h2><p class="section-lead">オンライン学科と効果測定MUSASIをスマホやPCから利用できます。</p></div></div>
           <div class="grid cols-2">
             <article id="online-class" class="card"><h3>オンライン学科受講はこちらから（登録が必要です）</h3><p>オンラインで受講できる学科教習の入口です。受講期限や視聴状況を確認しながら、計画的に進めてください。受講には登録が必要です。小テスト問題や回答ボタン等は、視聴画面の大きさによりスクロールが必要になる場合があります。</p><div class="hero-actions"><a class="btn btn-purple" href="https://dondora.online/chikushi/students/sign_in" target="_blank" rel="noopener">オンライン学科を受講する</a></div></article>
             <article id="musasi" class="card"><h3>効果測定MUSASI</h3><p>学科試験対策に使う効果測定システムです。仮免前・卒検前の確認に活用してください。ログインして利用し、苦手な問題を繰り返し練習できます。</p><div class="hero-actions"><a class="btn btn-purple" href="https://www.musasi.jp/amagi/" target="_blank" rel="noopener">学科練習をする</a></div></article>
           </div>
         </div></section>
         <section class="reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">CHECK LIST</span><h2 class="section-title">教習前に確認すること</h2><p class="section-lead">服装、予約変更、検定前の確認など、在校中によくある不安を短く整理しています。</p></div></div>
+          <div class="section-head"><div><span class="eyebrow">CHECK LIST</span><h2 class="section-title">教習前に確認すること</h2><p class="section-lead">服装、予約変更、検定前の確認事項をご案内します。</p></div></div>
           <div class="grid cols-2">
           <article class="card"><h3>教習時の服装</h3><p>運転しやすい服装でお越しください。かかとの高い履物やサンダルは避け、靴底が低く安定したものをおすすめします。眼鏡やコンタクトが必要な方は必ず着用してください。</p></article>
           <article class="card"><h3>予約変更・キャンセル</h3><p>校内予約機、パソコン、スマートフォンから予約変更やキャンセルが可能です。教習開始時間10分前までであれば無料でキャンセルできます。それ以降は技能教習キャンセル料がかかります。</p></article>
@@ -3307,10 +3353,9 @@
     teaching: {
       eyebrow: "LESSON CALENDAR",
       title: "教習カレンダー",
-      lead: "月別の教習カレンダーを、画像つきで確認できます。",
+      lead: "月別の教習予定、休校日、検定日をご確認いただけます。",
       image: "images/current-site/pages/teaching-02.png",
       visualCaption: "月ごとの教習予定を見落としにくく",
-      badges: ["月別カレンダー", "学科予定", "休校日", "検定日"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">CALENDAR</span><strong>学科予定・休校日・検定日を月ごとに確認できます。</strong><p>教習カレンダーを月ごとに掲載しています。来校前や技能予約前に、最新月の予定を確認してください。</p></article>
@@ -3332,10 +3377,9 @@
     syuryokentei: {
       eyebrow: "PROVISIONAL TEST",
       title: "修了検定について",
-      lead: "仮免許へ進むための修了検定情報を、画像つきで分かりやすく掲載します。",
+      lead: "修了検定の受付、受検条件、当日の注意事項をご案内します。",
       image: "images/current-site/pages/syuryokentei-01.png",
       visualCaption: "修了検定の受付・注意事項を確認",
-      badges: ["修了検定", "仮免許", "受付確認"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">PROVISIONAL TEST</span><strong>仮免許へ進む前の大切な検定です。</strong><p>修了検定は、路上教習へ進む前に必要な技能確認です。検定日、集合時間、持ち物、受検条件を事前に確認し、当日は余裕を持ってお越しください。</p></article>
@@ -3352,10 +3396,9 @@
     sotsugyoukentei: {
       eyebrow: "GRADUATION TEST",
       title: "卒業検定について",
-      lead: "卒業前の技能検定に関する案内を、画像つきで分かりやすく掲載します。",
+      lead: "卒業検定の受付、受検条件、当日の注意事項をご案内します。",
       image: "images/current-site/pages/sotsugyoukentei-01.png",
       visualCaption: "卒業検定の受付・注意事項を確認",
-      badges: ["卒業検定", "技能検定", "受付確認"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">GRADUATION TEST</span><strong>卒業前の技能検定について確認できます。</strong><p>卒業検定は、教習の最終段階となる大切な検定です。集合時間、検定の流れ、卒業後の免許センターでの手続きまで見通しを持って準備してください。</p></article>
@@ -3375,7 +3418,6 @@
       lead: "免許の相談、料金確認、送迎の確認、資料請求、仮入校申し込みまで。迷ったら、まずここから相談できます。",
       image: "images/real/classroom-real.jpg",
       visualCaption: "料金・送迎・入校日の相談までまとめて",
-      badges: ["資料請求", "お問い合わせ", "仮申込", "郵送/デジタル選択"],
       body: `
 	        <section class="reveal"><div class="wrap grid cols-3">
 	          <article class="card"><h3>資料請求</h3><p>パンフレットや入校案内を確認したい方へ。郵送・デジタル送付の希望も相談できます。</p></article>
@@ -3387,7 +3429,7 @@
 	          <div class="section-head"><div><span class="eyebrow">ENTRY FLOW</span><h2 class="section-title">仮入校申し込みの流れ</h2><p class="section-lead">PC・スマホどちらでも、入力から送信までの流れを確認できます。</p></div></div>
           <div class="grid cols-2">
             <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/entry-01.gif" alt="仮入校申し込み PC用ステップ"><div class="card-copy"><h3>PCでの申し込み手順</h3><p>入力から送信までの流れを、図解で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/entry-02.gif" alt="仮入校申し込み スマホ用ステップ"><div class="card-copy"><h3>スマホでの申し込み手順</h3><p>スマホ閲覧時にも、どの順番で進めるかが分かるように掲載します。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/entry-02.gif" alt="仮入校申し込み スマホ用ステップ"><div class="card-copy"><h3>スマホでの申し込み手順</h3><p>スマホでの入力手順を順番に確認できます。</p></div></article>
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap">
@@ -3447,11 +3489,10 @@
       title: "キャンペーンも、お知らせも、探しやすく。",
 	      lead: "読み物はTOPICS、休校日・検定日程はお知らせでご確認ください。",
       image: "images/real/classroom-wide.jpg",
-      visualCaption: "学校からの大切なお知らせを見やすく",
-      badges: ["キャンペーン", "お知らせ", "ブログ", "重要なお知らせ"],
+      visualCaption: "学校からの大切なお知らせ",
       body: `
         <section class="reveal"><div class="wrap page-summary">
-          <article class="summary-card"><span class="eyebrow">TOPICS</span><strong>学校からのお知らせ・活動報告を写真付きで掲載。</strong><p>交通安全活動、表彰、学校からのお知らせなど、大切な情報を見やすく整理しています。</p></article>
+          <article class="summary-card"><span class="eyebrow">TOPICS</span><strong>学校からのお知らせ・活動報告</strong><p>交通安全活動、表彰、休校日、検定日程などをお知らせします。</p></article>
           <div class="compact-list">
             <div class="compact-row"><small>2026.05.27</small><strong>交通事故防止コンクールにおいて金賞を受賞しました</strong></div>
             <div class="compact-row"><small>2026.05.13</small><strong>福岡県指定自動車学校協会会長から表彰状を頂きました。</strong></div>
@@ -3466,7 +3507,6 @@
       lead: "教習を担当する指導員だけを掲載。ニックネームや趣味も見えるので、初めての方も少し身近に感じられます。",
       image: "images/instructors-anime/sawamizu-nobuo.webp",
       visualCaption: "明るく相談しやすい指導員紹介",
-      badges: ["指導員のみ", "ニックネーム", "趣味"],
       body: `
         <section class="band reveal"><div class="wrap">
           <div class="instructor-profile-grid">
@@ -3496,10 +3536,9 @@
     facilities: {
       eyebrow: "FACILITIES",
       title: "校舎・コース・託児まで、写真で確認。",
-      lead: "受付、待合室、教室、運転シミュレーション、託児室、教習コース、送迎バスを写真付きで紹介します。",
+      lead: "受付、待合室、教室、運転シミュレーション、託児室、教習コース、送迎バスの様子をご覧いただけます。",
       image: "images/real/building-real.jpg",
       visualCaption: "実際の施設写真で通うイメージを確認",
-      badges: ["受付", "託児", "教室", "教習コース"],
       body: `<section class="reveal"><div class="wrap real-photo-grid">${[
         ["明るい学科教室","大きなモニターとゆとりのある座席で、落ち着いて学べます。","images/real-20260714/bright-classroom.webp"],
         ["効果測定MUSASI","学科試験に向けた問題練習と復習を、自分のペースで進められます。","images/real-20260714/musasi-study-space.webp"],
@@ -3517,7 +3556,6 @@
 	      lead: "就職、子育て、通学、転勤、遊び、暮らし。免許を取る理由は人それぞれだから、今の自分に近いきっかけから考えられます。",
       image: "images/real/course-car-real.jpg",
       visualCaption: "免許を取った先の暮らしまで想像できるように",
-      badges: ["就職", "子育て", "通学", "暮らし"],
       body: `
         <section class="reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">REASONS</span><h2 class="section-title">免許を取りたい理由から、次の一歩を選ぶ。</h2><p class="section-lead">通学、就職、子育て、送迎など、自分に近いきっかけから通い方を考えられます。</p></div></div>
@@ -3550,7 +3588,6 @@
       lead: "入校前の準備、料金・支払い、在校中の通い方。問い合わせの多い内容を、カテゴリごとに確認できます。",
       image: "images/real/classroom-wide.jpg",
       visualCaption: "よくある疑問を先に解消",
-      badges: ["入校前", "在校中", "料金", "検定"],
       body: `
         <section class="reveal"><div class="wrap feature-strip">
           <article class="feature-mini"><span>BEFORE</span><h3>入校前</h3><p>必要書類、入校資格、住民票、入校日を確認できます。</p></article>
@@ -3563,10 +3600,9 @@
     recruit: {
       eyebrow: "RECRUIT",
       title: "地域の安全を支える仲間を募集。",
-      lead: "運転を教える仕事は、地域の暮らしを支える仕事です。経験者はもちろん、指導員を目指したい方にも分かりやすく募集情報を整理しています。",
+      lead: "教習指導員の仕事内容、応募条件、待遇、資格取得支援をご案内します。",
       image: "images/real/classroom-real.jpg",
       visualCaption: "地域の安全を支える仕事",
-      badges: ["教習指導員", "正社員", "資格取得支援"],
       body: `
         <section class="reveal"><div class="wrap feature-strip">
           <article class="feature-mini"><span>WORK</span><h3>教える仕事</h3><p>運転技術だけでなく、安全確認や判断力を伝える仕事です。</p></article>
@@ -3585,8 +3621,7 @@
       title: "友人・知人紹介を、分かりやすい入口に。",
 	      lead: "紹介する方と入校を検討している方、それぞれが迷わず手続きできるように、必要な情報と流れを確認できます。",
       image: "images/real/course-vehicles.jpg",
-      visualCaption: "友人・知人紹介も分かりやすく",
-      badges: ["紹介謝礼", "入校費用割引", "紹介フォーム"],
+      visualCaption: "友人・知人紹介制度のご案内",
       body: `
         <section class="reveal"><div class="wrap grid cols-3 steps">
           <article class="card step-card"><h3>紹介したい方を入力</h3><p>紹介者のお名前・連絡先を入力します。確認が必要な場合は学校から連絡します。</p></article>
@@ -3615,10 +3650,9 @@
     license: {
       eyebrow: "LICENSE FLOW",
       title: "免許を取る",
-      lead: "入校説明、学科、技能、検定、卒業後の免許センター手続きまで。今どの段階にいるか分かるように整理しています。",
+      lead: "入校から卒業、免許センターでの手続きまでの流れをご案内します。",
       image: "images/real/course-vehicles.jpg",
       visualCaption: "入校から卒業検定まで段階的に",
-      badges: ["技能時限", "学科時限", "修了検定", "卒業検定"],
       body: `
         <section class="reveal"><div class="wrap grid cols-3 steps">
           ${[
@@ -3635,10 +3669,10 @@
           <div class="grid cols-3">
             <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-01.png" alt="AT普通車 免許交付の流れ"><div class="card-copy"><h3>AT普通車</h3><p>入校から卒業、免許センターでの交付までの流れ。</p></div></article>
             <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-03.png" alt="AT/MT普通車 免許交付の流れ"><div class="card-copy"><h3>AT/MT普通車</h3><p>普通車取得時の段階を現行図版で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-04.png" alt="準中型 免許交付の流れ"><div class="card-copy"><h3>準中型</h3><p>現有免許に応じた流れを確認しやすくします。</p></div></article>
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-05.png" alt="普通二輪 免許交付の流れ"><div class="card-copy"><h3>普通二輪</h3><p>二輪免許の取得ステップを現行画像で掲載。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-04.png" alt="準中型 免許交付の流れ"><div class="card-copy"><h3>準中型</h3><p>現有免許に応じた取得の流れを図で確認できます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-05.png" alt="普通二輪 免許交付の流れ"><div class="card-copy"><h3>普通二輪</h3><p>二輪免許の取得ステップを図で確認できます。</p></div></article>
             <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-06.png" alt="自動二輪 免許交付の流れ"><div class="card-copy"><h3>自動二輪</h3><p>二輪系の取得ステップも、図版で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-07.png" alt="二輪 免許交付の流れ"><div class="card-copy"><h3>二輪各種</h3><p>普通二輪・大型二輪の流れ確認に使えます。</p></div></article>
+            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-07.png" alt="二輪 免許交付の流れ"><div class="card-copy"><h3>二輪各種</h3><p>普通二輪・大型二輪の取得の流れを確認できます。</p></div></article>
             <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-08.png" alt="限定解除 免許交付の流れ"><div class="card-copy"><h3>限定解除</h3><p>限定解除の受講から審査までを確認できます。</p></div></article>
           </div>
         </div></section>
@@ -3686,7 +3720,6 @@
 	      lead: "ペーパードライバー、高齢者、原付、企業向け安全講習まで。目的に合わせて相談しやすい入口があります。",
       image: "images/real/motorcycle-real.jpg",
       visualCaption: "免許取得後の運転再開・安全運転も支援",
-      badges: ["企業講習", "高齢者講習", "原付講習", "ペーパー講習"],
       topVisual: {
         desktop: "images/detail-pages/visuals/training-desktop.webp",
         mobile: "images/detail-pages/visuals/training-mobile.webp",
@@ -3737,7 +3770,6 @@
 	      lead: "筑紫野自動車学校を運営する株式会社CDSの基本情報です。",
       image: "images/real/building-facade-real.jpg",
       visualCaption: "福岡県公安委員会指定・技能試験免除",
-      badges: ["株式会社CDS", "公安委員会指定校", "筑紫野市筑紫120番地1"],
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">PROFILE</span><strong>地域の交通安全を支える、公安委員会指定の自動車学校。</strong><p>筑紫野自動車学校は、普通自動車・準中型・自動二輪などの免許取得をサポートし、地域の交通安全教育センターとしての役割も担っています。</p></article>
@@ -3748,7 +3780,7 @@
           </div>
         </div></section>
         <section class="band reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">COMPANY</span><h2 class="section-title">会社概要</h2><p class="section-lead">学校の基本情報を、読みやすい表に整理しています。</p></div></div>
+          <div class="section-head"><div><span class="eyebrow">COMPANY</span><h2 class="section-title">会社概要</h2><p class="section-lead">株式会社CDSと筑紫野自動車学校の基本情報です。</p></div></div>
           <table class="data-table"><tbody>
             <tr><th>商号</th><td>株式会社CDS</td></tr>
             <tr><th>学校所在地</th><td>〒818-0025 福岡県筑紫野市筑紫120番地1</td></tr>
@@ -3768,16 +3800,15 @@
         </div></section>
         <section class="reveal"><div class="wrap photo-story">
           <figure class="story-photo"><img loading="lazy" decoding="async" src="images/real/building-sign-real.jpg" alt="筑紫野自動車学校の校舎サイン"></figure>
-          <div class="story-text"><h2 class="accent-heading">交通事故のない安全安心な地域社会の実現を目指して。</h2><p>地域における交通安全教育センターとして、学校や企業の交通安全教育活動、児童の保護誘導活動などにも取り組んでいます。</p><p>入校を検討する方だけでなく、地域や企業との関わりも見えるように、会社概要ページとして独立させました。</p></div>
+          <div class="story-text"><h2 class="accent-heading">交通事故のない安全安心な地域社会の実現を目指して。</h2><p>地域における交通安全教育センターとして、学校や企業の交通安全教育活動、児童の保護誘導活動などにも取り組んでいます。</p></div>
         </div></section>`
     },
     privacy: {
       eyebrow: "PRIVACY POLICY",
       title: "個人情報保護方針",
-      lead: "資料請求、仮入校申し込み、お問い合わせでお預かりする個人情報の取扱いについてまとめています。",
+      lead: "お問い合わせ、資料請求、仮入校申し込みでお預かりする個人情報の取扱方針です。",
       image: "images/real/classroom-wide.jpg",
-      visualCaption: "個人情報の取扱いを分かりやすく掲載",
-      badges: ["利用規約", "個人情報の取扱い", "安全管理"],
+      visualCaption: "個人情報の取扱方針",
       body: `
         <section class="reveal"><div class="wrap page-summary">
           <article class="summary-card"><span class="eyebrow">POLICY</span><strong>安心してお問い合わせいただくための基本方針です。</strong><p>当校へ入校いただくには利用規約を承諾していただく必要があります。筑紫野自動車学校では、資料請求・お問い合わせ・仮入校申し込みなどで取得した個人情報を、適切な目的の範囲内で利用し、安全に管理します。</p></article>
@@ -3827,10 +3858,9 @@
       lead: "入校案内、免許・料金、学校紹介、在校生向け情報まで、必要なページへすぐ移動できます。",
       image: "images/real/building-real.jpg",
       visualCaption: "必要な情報へ迷わず移動",
-      badges: ["入校案内", "教習・講習", "料金・アクセス", "在校生"],
       body: `
         <section id="site-directory" class="reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">DIRECTORY</span><h2 class="section-title">ページ一覧</h2><p class="section-lead">既存サイトと同じように、主要な情報をカテゴリごとに整理しています。</p></div></div>
+          <div class="section-head"><div><span class="eyebrow">DIRECTORY</span><h2 class="section-title">ページ一覧</h2><p class="section-lead">目的別にページを探せます。</p></div></div>
           <div class="directory-panel"><div class="directory-grid" id="siteDirectoryGrid"></div></div>
         </div></section>`
     }
@@ -3912,7 +3942,7 @@
   function relatedCards(current) {
     const relatedMap = {
       admission: [["application", "資料請求・仮申込", "準備できたら、そのまま相談・申し込みへ進めます。"], ["price", "料金プラン", "必要な費用を先に確認して不安を減らします。"], ["access", "送迎バス", "通えるルートを確認して、通学イメージを固めます。"]],
-      courses: [["price", "料金プラン", "選んだ免許の費用目安を確認できます。"], ["license", "免許交付まで", "卒業までの流れと必要時限を整理しています。"], ["application", "仮入校申し込み", "取りたい免許が決まったら相談へ進めます。"]],
+      courses: [["price", "料金プラン", "選んだ免許の費用目安を確認できます。"], ["license", "免許交付まで", "卒業までの流れと必要時限を確認できます。"], ["application", "仮入校申し込み", "取りたい免許が決まったら相談へ進めます。"]],
       standard: [["camp_price", "合宿風ハイスピード", "短期取得を目指すAT普通車プランへ。"], ["price", "料金シミュレーション", "普通車料金の目安を確認できます。"], ["application", "普通車教習を相談", "入校日や必要書類も確認できます。"]],
       camp_price: [["standard", "普通自動車教習", "基本プランと比較できます。"], ["application", "空き状況を相談", "短期プランの受付可否を確認。"], ["access", "通学方法を確認", "短期取得に必要な通いやすさを確認。"]],
       semi_medium: [["price", "料金プラン", "準中型の料金目安を確認。"], ["license", "免許交付まで", "必要時限と卒業までの流れを確認。"], ["application", "準中型を相談", "仕事や取得時期に合わせて相談。"]],
@@ -4008,11 +4038,6 @@
         <a class="btn btn-orange" href="detail.html?page=application">仮申込・相談</a>
       </div>
       ${subpageLocalNavHtml(id)}
-      <div class="subpage-summary">
-        <h2>このページの要点</h2>
-        <p>${page.lead || "必要な情報を分かりやすくまとめています。"}</p>
-        <div class="subpage-badges">${(page.badges || []).map((badge) => `<span class="badge">${badge}</span>`).join("")}</div>
-      </div>
     </aside>`;
   }
 
@@ -4083,8 +4108,7 @@
           <div class="subpage-hero-copy">
             <span class="eyebrow">${page.eyebrow || "GUIDE"}</span>
             <h1>${page.title}</h1>
-            <p class="subpage-hero-lead">${page.lead || "必要な情報を分かりやすくまとめています。"}</p>
-            <div class="subpage-badges">${(page.badges || []).map((badge) => `<span class="badge">${badge}</span>`).join("")}</div>
+            ${page.lead ? `<p class="subpage-hero-lead">${page.lead}</p>` : ""}
             ${!generatedHero && page.visualCaption ? `<p class="subpage-hero-caption">${page.visualCaption}</p>` : ""}
             <div class="subpage-hero-actions">
               <a class="btn btn-purple" href="${priceHref}">料金を確認する</a>
@@ -4105,7 +4129,7 @@
       document.head.appendChild(canonical);
     }
     canonical.href = canonicalUrl;
-    const description = (page.lead || "").replace(/\s+/g, " ").trim().slice(0, 120) || "筑紫野自動車学校の詳細案内ページです。";
+    const description = (page.metaDescription || page.lead || "").replace(/\s+/g, " ").trim().slice(0, 120) || "筑紫野自動車学校の詳細案内ページです。";
     const setContent = (selector, value) => {
       const el = document.querySelector(selector);
       if (el) el.setAttribute("content", value);
@@ -4142,6 +4166,23 @@
       }))
     });
     document.head.appendChild(script);
+  }
+
+  function prepareResponsiveTables(scope) {
+    if (!scope) return;
+    scope.querySelectorAll(".data-table").forEach((table) => {
+      const headers = Array.from(table.querySelectorAll("thead th"))
+        .map((header) => header.innerText.replace(/\s+/g, " ").trim());
+      const isMatrix = headers.length > 0;
+      table.classList.toggle("is-matrix-table", isMatrix);
+      table.classList.toggle("is-key-value-table", !isMatrix);
+      if (!isMatrix) return;
+      table.querySelectorAll("tbody tr").forEach((row) => {
+        Array.from(row.cells).forEach((cell, index) => {
+          cell.dataset.label = headers[index] || `項目${index + 1}`;
+        });
+      });
+    });
   }
 
   const notFoundPage = {
@@ -4223,6 +4264,7 @@
     `;
 	    const siteDirectoryGrid = document.querySelector("#siteDirectoryGrid");
     if (siteDirectoryGrid) siteDirectoryGrid.innerHTML = directoryMenu();
+	    prepareResponsiveTables(document.querySelector(".subpage-main"));
 	    setupReveal();
 	    document.querySelectorAll(".subpage-main section").forEach((section) => {
 	      if (section.querySelector(".data-table")) section.classList.add("mobile-table-section");
