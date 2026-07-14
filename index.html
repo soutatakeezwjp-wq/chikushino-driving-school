@@ -49,8 +49,8 @@
   "image": "https://chikushi-ds.com/images/ogp/chikushino-ogp.webp"
 }
 </script>
-<link rel="preload" as="image" href="images/generated-hero/chikushino-hero-real-photo-2026-07-14.webp" media="(min-width: 769px)" fetchpriority="high">
-<link rel="preload" as="image" href="images/generated-hero/chikushino-hero-real-photo-mobile-2026-07-14.webp" media="(max-width: 768px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/generated-hero/chikushino-hero-grounded-2026-07-03.webp" media="(min-width: 769px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/generated-hero/chikushino-hero-grounded-mobile-2026-07-03.webp" media="(max-width: 768px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -617,15 +617,15 @@
   .hero {
     position: relative;
     padding: 0;
-    height: clamp(520px, 42vw, 760px);
-    min-height: 520px;
+    height: clamp(430px, 43.945vw, 900px);
+    min-height: 430px;
     overflow: hidden;
     border-bottom: 1px solid var(--line-soft);
-    background: #dff0fb url("images/generated-hero/chikushino-hero-real-photo-2026-07-14.webp") center / cover no-repeat;
+    background: #fff url("images/generated-hero/chikushino-hero-grounded-2026-07-03.webp") center / cover no-repeat;
   }
   @media (min-width: 1180px) {
     .hero {
-      height: clamp(520px, calc((100vw - var(--rail)) * .42), 760px);
+      height: clamp(430px, calc((100vw - var(--rail)) * .43945), 900px);
     }
   }
   .hero img {
@@ -641,78 +641,16 @@
     position: absolute;
     inset: 0;
     display: block;
-    z-index: 0;
   }
   .hero::before {
     content: "";
     position: absolute;
     inset: 0;
-    background:
-      linear-gradient(90deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.91) 25%, rgba(255,255,255,.54) 43%, rgba(255,255,255,.04) 66%),
-      linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+    background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.02));
     z-index: 1;
   }
   .hero::after {
     display: none;
-  }
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    height: 100%;
-  }
-  .hero-copy {
-    width: min(560px, 48%);
-    padding: 26px 0 52px;
-  }
-  .hero-eyebrow {
-    margin: 0 0 16px;
-    color: var(--green-deep);
-    font-family: var(--latin);
-    font-size: 13px;
-    font-weight: 900;
-    letter-spacing: .08em;
-  }
-  .hero-copy h1 {
-    margin: 0;
-    color: #18112a;
-    font-size: clamp(44px, 4.8vw, 76px);
-    font-weight: 900;
-    line-height: 1.15;
-    letter-spacing: 0;
-  }
-  .hero-copy h1 span {
-    position: relative;
-    color: var(--purple);
-  }
-  .hero-copy h1 span::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -5px;
-    height: 6px;
-    border-radius: 3px;
-    background: var(--orange);
-    transform: rotate(-1.5deg);
-  }
-  .hero-lead {
-    margin: 24px 0 0;
-    color: #31283f;
-    font-size: clamp(16px, 1.35vw, 20px);
-    font-weight: 800;
-    line-height: 1.8;
-  }
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 26px;
-  }
-  .hero-actions .btn {
-    min-width: 178px;
-    min-height: 48px;
   }
 
   .mobile-home-dock {
@@ -2901,60 +2839,21 @@
     .mobile-cta-bar { display: grid; }
     .mobile-home-dock { display: block; }
     .hero {
-      height: min(142vw, 680px);
+      height: min(211.24vw, 840px);
       min-height: 0;
-      background: #dff0fb url("images/generated-hero/chikushino-hero-real-photo-mobile-2026-07-14.webp") center / cover no-repeat;
+      background: #fbf8ff url("images/generated-hero/chikushino-hero-grounded-mobile-2026-07-03.webp") center top / cover no-repeat;
     }
     .hero::before {
       display: block;
       background:
-        linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.88) 31%, rgba(255,255,255,.34) 50%, rgba(255,255,255,.02) 72%);
+        linear-gradient(180deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,.02) 64%, rgba(255,255,255,.30) 100%);
     }
     .hero::after,
   .home-quick { display: none; }
     .hero-picture img {
       aspect-ratio: auto;
       object-fit: cover;
-      object-position: center;
-    }
-    .hero-content {
-      align-items: flex-start;
-      padding-top: 34px;
-    }
-    .hero-copy {
-      width: 100%;
-      padding: 0;
-    }
-    .hero-eyebrow {
-      margin-bottom: 10px;
-      font-size: 10px;
-    }
-    .hero-copy h1 {
-      max-width: 360px;
-      font-size: clamp(35px, 10.2vw, 48px);
-      line-height: 1.16;
-    }
-    .hero-copy h1 span::after {
-      bottom: -3px;
-      height: 4px;
-    }
-    .hero-lead {
-      margin-top: 16px;
-      font-size: 14px;
-      line-height: 1.7;
-    }
-    .hero-actions {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      max-width: 360px;
-      gap: 8px;
-      margin-top: 17px;
-    }
-    .hero-actions .btn {
-      min-width: 0;
-      min-height: 42px;
-      padding-inline: 10px;
-      font-size: 12px;
+      object-position: center top;
     }
     .mobile-home-dock {
       margin-top: -1px;
@@ -3475,21 +3374,11 @@
 
 		  <main>
 		    <section class="hero" aria-label="メインビジュアル">
+		      <h1 class="visually-hidden">ここから、運転が好きになる。</h1>
 		      <picture class="hero-picture">
-	        <source media="(max-width: 768px)" srcset="images/generated-hero/chikushino-hero-real-photo-mobile-2026-07-14.webp">
-	        <img class="hero-main-img" src="images/generated-hero/chikushino-hero-real-photo-2026-07-14.webp" alt="筑紫野自動車学校の送迎車と教習コース" fetchpriority="high" decoding="async">
+	        <source media="(max-width: 768px)" srcset="images/generated-hero/chikushino-hero-grounded-mobile-2026-07-03.webp">
+	        <img class="hero-main-img" src="images/generated-hero/chikushino-hero-grounded-2026-07-03.webp" alt="ここから、運転が好きになる。広いエリアを無料送迎" fetchpriority="high" decoding="async">
 	      </picture>
-          <div class="wrap hero-content">
-            <div class="hero-copy">
-              <p class="hero-eyebrow">CHIKUSHINO DRIVING SCHOOL</p>
-              <h1>ここから、<br><span>運転</span>が<br>好きになる。</h1>
-              <p class="hero-lead">楽しく通える教習所で、<br>自信をつけて未来へ走り出そう！</p>
-              <div class="hero-actions">
-                <a class="btn btn-purple" href="#price-simulator">料金を調べる</a>
-                <a class="btn btn-orange" href="detail.html?page=application">仮申込・資料請求</a>
-              </div>
-            </div>
-          </div>
     </section>
 
     <section class="home-quick reveal" aria-label="主要メニュー">
