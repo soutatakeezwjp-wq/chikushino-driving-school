@@ -1960,6 +1960,37 @@
     padding: 20px;
     border-color: #e8e2ec;
   }
+  .subpage-main .card.step-card {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    column-gap: 12px;
+    align-items: start;
+    padding: 20px;
+  }
+  .subpage-main .step-card::before {
+    position: static;
+    grid-column: 1;
+    grid-row: 1;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    min-height: 32px;
+    border-right: 3px solid var(--green);
+    font-size: 18px;
+    line-height: 1;
+  }
+  .subpage-main .step-card h3 {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    margin: 0;
+    padding: 0;
+    border-left: 0;
+  }
+  .subpage-main .step-card p {
+    grid-column: 1 / -1;
+    margin-top: 12px;
+  }
   .subpage-main .card h3,
   .subpage-main .feature-mini h3 {
     font-size: 18px;
@@ -1997,12 +2028,18 @@
   }
   .subpage-main .story-photo.story-photo-full,
   .subpage-main .story-photo.story-photo-full img { max-height: none; }
+  .subpage-main .diagram-card img {
+    max-height: none;
+    aspect-ratio: auto;
+    object-fit: contain;
+    background: #fff;
+  }
   .subpage-main .plan-panel {
     margin-top: 16px;
     padding: 24px;
     border-color: #e6dfea;
   }
-  .subpage-main .plan-panel h3 {
+  .subpage-main .plan-panel > h3 {
     padding: 0 0 0 12px;
     border-left: 4px solid var(--green);
     background: transparent;
@@ -3368,8 +3405,8 @@
         <!-- ★更新運用メモ：毎月、下のカレンダー画像（teaching-01.png / teaching-02.png）を最新月のものに差し替え、
              見出しの「〇月」も合わせて書き換えること。将来的にはmicroCMS等での自動更新に載せ替え予定。 -->
         <section class="reveal"><div class="wrap real-photo-grid">
-          <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/teaching-01.png" alt="5月教習カレンダー"><div class="card-copy"><h3>5月教習カレンダー</h3><p>教習予定を月ごとに確認できます。</p></div></article>
-          <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/teaching-02.png" alt="6月教習カレンダー"><div class="card-copy"><h3>6月教習カレンダー</h3><p>学科予定、休校日などを月ごとに確認できます。</p></div></article>
+          <article class="card real-photo-card diagram-card"><img loading="lazy" decoding="async" src="images/current-site/pages/teaching-01.png" alt="5月教習カレンダー"><div class="card-copy"><h3>5月教習カレンダー</h3><p>教習予定を月ごとに確認できます。</p></div></article>
+          <article class="card real-photo-card diagram-card"><img loading="lazy" decoding="async" src="images/current-site/pages/teaching-02.png" alt="6月教習カレンダー"><div class="card-copy"><h3>6月教習カレンダー</h3><p>学科予定、休校日などを月ごとに確認できます。</p></div></article>
         </div></section>
         <section class="reveal"><div class="wrap"><p class="subnote">※最新月のカレンダーが表示されていない場合は、お手数ですが受付またはお電話（<a class="phone-link" href="tel:0927102188">092-710-2188</a>）でご確認ください。</p></div></section>
         <section class="band reveal"><div class="wrap cta-strip"><div><strong>検定日程も合わせて確認できます。</strong><p>修了検定・卒業検定の案内を在校生メニューからすぐ見られます。</p></div><a class="btn btn-purple" href="detail.html?page=students">在校生メニューへ</a></div></section>`
@@ -3656,18 +3693,6 @@
             ["卒業検定", "路上・場内での卒業検定に合格すると、卒業証明書が交付されます。"],
             ["免許センターで本試験", "運転免許試験場で学科試験に合格すると免許交付。技能試験は免除です。"]
           ].map(([t, p])=>`<article class="card step-card"><h3>${t}</h3><p>${p}</p></article>`).join("")}
-        </div></section>
-        <section class="band reveal"><div class="wrap">
-          <div class="section-head"><div><span class="eyebrow">LICENSE FLOW</span><h2 class="section-title">免許交付までの流れ</h2><p class="section-lead">普通車・準中型・二輪など、免許ごとの流れを確認できます。</p></div></div>
-          <div class="grid cols-3">
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-01.png" alt="AT普通車 免許交付の流れ"><div class="card-copy"><h3>AT普通車</h3><p>入校から卒業、免許センターでの交付までの流れ。</p></div></article>
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-03.png" alt="AT/MT普通車 免許交付の流れ"><div class="card-copy"><h3>AT/MT普通車</h3><p>普通車取得時の段階を現行図版で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-04.png" alt="準中型 免許交付の流れ"><div class="card-copy"><h3>準中型</h3><p>現有免許に応じた取得の流れを図で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-05.png" alt="普通二輪 免許交付の流れ"><div class="card-copy"><h3>普通二輪</h3><p>二輪免許の取得ステップを図で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-06.png" alt="自動二輪 免許交付の流れ"><div class="card-copy"><h3>自動二輪</h3><p>二輪系の取得ステップも、図版で確認できます。</p></div></article>
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-07.png" alt="二輪 免許交付の流れ"><div class="card-copy"><h3>二輪各種</h3><p>普通二輪・大型二輪の取得の流れを確認できます。</p></div></article>
-            <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/license-08.png" alt="限定解除 免許交付の流れ"><div class="card-copy"><h3>限定解除</h3><p>限定解除の受講から審査までを確認できます。</p></div></article>
-          </div>
         </div></section>
         <section class="band reveal"><div class="wrap">
           <div class="section-head"><div><span class="eyebrow">REQUIRED HOURS</span><h2 class="section-title">主な必要時限</h2><p class="section-lead">現有免許により必要な技能・学科時限が変わります。料金シミュレーションと合わせて確認できます。</p></div></div>
