@@ -1,0 +1,980 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="description" content="筑紫野自動車学校Webサイトの写真付きBefore / After改修計画">
+  <title>写真付きBefore / After改修計画 | 筑紫野自動車学校</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body data-device="desktop">
+  <a class="skip-link" href="#main">本文へ移動</a>
+
+  <header class="plan-header">
+    <div class="plan-header-inner">
+      <div>
+        <p class="eyebrow">Visual implementation plan / 2026.07.18</p>
+        <h1>写真付き Before / After 改修計画</h1>
+        <p class="lead">
+          現在の何が問題で、どの実写真・正式資料を使い、どの画面へ変えるかを、
+          PCとスマホの両方で確認するための実装仕様書です。
+        </p>
+      </div>
+      <div class="header-metrics" aria-label="計画の対象数">
+        <div class="metric"><strong>12</strong><span>詳細章</span></div>
+        <div class="metric"><strong>31</strong><span>確認画面</span></div>
+        <div class="metric"><strong>62</strong><span>現行スクリーンショット</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar" aria-label="表示設定">
+    <div class="toolbar-inner">
+      <div class="segmented" role="group" aria-label="表示端末">
+        <button type="button" data-device-button="desktop" aria-pressed="true">PC</button>
+        <button type="button" data-device-button="mobile" aria-pressed="false">スマホ</button>
+      </div>
+      <select id="chapter-filter" aria-label="章を絞り込む">
+        <option value="all">全章を表示</option>
+        <option value="01">01 トップ・共通UI</option>
+        <option value="02">02 普通車</option>
+        <option value="03">03 準中型</option>
+        <option value="04">04 二輪・限定解除</option>
+        <option value="05">05 入校案内</option>
+        <option value="06">06 高齢者・原付・ペーパー</option>
+        <option value="07">07 在校生・日程</option>
+        <option value="08">08 申込フォーム</option>
+        <option value="09">09 指導員</option>
+        <option value="10">10 学校・施設・アクセス</option>
+        <option value="11">11 TOPICS・その他</option>
+        <option value="12">12 バックエンド</option>
+        <option value="audit">全ページ確認</option>
+      </select>
+      <select id="status-filter" aria-label="全ページ確認の状態を絞り込む">
+        <option value="all">全ての実装状態</option>
+        <option value="not-started">未着手</option>
+        <option value="in-progress">実装中</option>
+        <option value="verified">確認済み</option>
+      </select>
+      <span class="toolbar-note">画像を押すと拡大できます。確認状態はこの端末に保存されます。</span>
+    </div>
+  </div>
+
+  <nav class="chapter-nav" aria-label="章の一覧">
+    <div class="section-inner">
+      <a href="#chapter-01">01 トップ</a>
+      <a href="#chapter-02">02 普通車</a>
+      <a href="#chapter-03">03 準中型</a>
+      <a href="#chapter-04">04 二輪</a>
+      <a href="#chapter-05">05 入校</a>
+      <a href="#chapter-06">06 講習</a>
+      <a href="#chapter-07">07 日程</a>
+      <a href="#chapter-08">08 申込</a>
+      <a href="#chapter-09">09 指導員</a>
+      <a href="#chapter-10">10 施設</a>
+      <a href="#chapter-11">11 その他</a>
+      <a href="#chapter-12">12 管理</a>
+      <a href="#all-pages">全ページ確認</a>
+    </div>
+  </nav>
+
+  <section class="summary-band" aria-label="重要な共通変更">
+    <div class="section-inner">
+      <div class="summary-grid">
+        <div class="summary-item"><b>01</b><span>旧日産車を白いマツダ教習車へ</span></div>
+        <div class="summary-item"><b>02</b><span>旧バスを現在のスクールバスへ</span></div>
+        <div class="summary-item"><b>03</b><span>校舎は写真30〜36を使用</span></div>
+        <div class="summary-item"><b>04</b><span>ナビの「料金プラン」を削除</span></div>
+        <div class="summary-item"><b>05</b><span>「通う理由」はフッターバナーへ集約</span></div>
+        <div class="summary-item"><b>06</b><span>料金シミュレーターはトップだけ</span></div>
+      </div>
+    </div>
+  </section>
+
+  <main id="main">
+    <section class="chapter" id="chapter-01" data-chapter="01">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">01</span>
+          <div>
+            <h2>トップ・共通UI</h2>
+            <p>現在の構図と「ここから、運転が好きになる。」は残し、車両・バス・校舎を最新の実写真へ更新します。</p>
+          </div>
+          <a class="chapter-url" href="/" target="_blank" rel="noopener">変更対象: トップページ / 共通ヘッダー・フッター</a>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の画面</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="top" src="./assets/current/desktop/top.jpg" alt="現在のトップページ">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/top.jpg" data-zoom-title="現在のトップページ">＋</button>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar">
+                <span class="mock-logo">C-D-S 筑紫野自動車学校</span>
+                <span class="mock-menu" aria-hidden="true"></span>
+              </div>
+              <div class="hero-mock">
+                <div class="hero-mock-images">
+                  <img src="./assets/source/photos/08-mazda-training-cars.jpg" alt="白いマツダ教習車">
+                  <img src="./assets/source/photos/24-new-bus-campus.jpg" alt="現在のスクールバス">
+                </div>
+                <div class="hero-copy">
+                  <strong>ここから、<br>運転が好きになる。</strong>
+                  <span>Drive open new world. 新しい車界へ</span>
+                  <small class="mock-badge">無料送迎あり</small>
+                </div>
+                <span class="callout callout-1">1</span>
+                <span class="callout callout-2">2</span>
+                <span class="callout callout-3">3</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>使用写真</h3>
+            <div class="source-gallery">
+              <figure>
+                <img data-zoom src="./assets/source/photos/08-mazda-training-cars.jpg" alt="写真8 白いマツダ教習車">
+                <figcaption>写真8 / 白いマツダ教習車</figcaption>
+              </figure>
+              <figure>
+                <img data-zoom src="./assets/source/photos/24-new-bus-campus.jpg" alt="写真24 新しいスクールバス">
+                <figcaption>写真24 / 新スクールバス</figcaption>
+              </figure>
+              <figure>
+                <img data-zoom src="./assets/source/photos/30-school-front.jpg" alt="写真30 校舎正面">
+                <figcaption>写真30 / 校舎正面</figcaption>
+              </figure>
+              <figure>
+                <img data-zoom src="./assets/source/photos/33-school-angle.jpg" alt="写真33 校舎斜め">
+                <figcaption>写真33 / 校舎斜め</figcaption>
+              </figure>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>変更理由</h3>
+            <ol class="change-list">
+              <li data-number="1">現在使っている教習車を最初の画面で正しく伝える。</li>
+              <li data-number="2">送迎車両の外観を最新状態へ合わせる。</li>
+              <li data-number="3">学校名が読める校舎写真で実在感を出す。</li>
+              <li data-number="4">ナビの「料金プラン」を削除して入口を整理する。</li>
+              <li data-number="5">「通う理由」はフッターバナーだけに集約する。</li>
+              <li data-number="6">料金シミュレーターはトップのみとし、サブページは正式料金表を見せる。</li>
+            </ol>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-02" data-chapter="02">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">02</span>
+          <div>
+            <h2>普通車</h2>
+            <p>シミュレーター中心のページを、正式料金表、割引、オプション、内訳、必要書類が順番に分かるページへ変更します。</p>
+          </div>
+          <a class="chapter-url" href="/detail.html?page=standard" target="_blank" rel="noopener">変更後URL: /detail.html?page=standard</a>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の画面</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="standard" src="./assets/current/desktop/standard.jpg" alt="現在の普通車ページ">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/standard.jpg" data-zoom-title="現在の普通車ページ">＋</button>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">普通自動車</span><span>正式料金</span></div>
+              <div class="mock-page">
+                <h3>普通自動車 基本料金</h3>
+                <div class="mini-tabs"><span class="is-active">AT</span><span>MT</span><span>オプション</span></div>
+                <table class="desktop-price-table">
+                  <thead><tr><th>現有免許</th><th>一般</th><th>学生</th><th>繁忙期</th></tr></thead>
+                  <tbody>
+                    <tr><td>なし</td><td>322,850円</td><td>327,850円</td><td>344,850円</td></tr>
+                    <tr><td>原付</td><td>319,550円</td><td>324,550円</td><td>341,550円</td></tr>
+                    <tr><td>二輪</td><td>249,150円</td><td>254,150円</td><td>271,150円</td></tr>
+                  </tbody>
+                </table>
+                <div class="mobile-price-cards">
+                  <div class="mobile-price-card"><strong>現有免許なし / AT</strong><dl><dt>一般</dt><dd>322,850円</dd><dt>学生</dt><dd>327,850円</dd></dl></div>
+                  <div class="mobile-price-card"><strong>原付免許あり / AT</strong><dl><dt>一般</dt><dd>319,550円</dd><dt>学生</dt><dd>324,550円</dd></dl></div>
+                  <div class="mobile-price-card"><strong>二輪免許あり / AT</strong><dl><dt>一般</dt><dd>249,150円</dd><dt>学生</dt><dd>254,150円</dd></dl></div>
+                </div>
+                <div class="price-actions"><span>料金内訳</span><span>その他費用</span></div>
+                <div class="mini-modal">
+                  <b>料金内訳</b>
+                  <div class="mini-modal-row"><span>入学金・教習料金</span><strong>総額へ含む</strong></div>
+                  <div class="mini-modal-row"><span>仮免許手数料</span><strong>別途</strong></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>正式資料</h3>
+            <div class="document-preview">
+              <img data-zoom src="./assets/documents/price-sheets/standard.jpg" alt="普通自動車正式料金表">
+              <a class="document-link" href="./assets/documents/price-sheets/standard.jpg" target="_blank" rel="noopener">普通自動車料金表を開く</a>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>変更理由</h3>
+            <ul class="compact-list">
+              <li><strong>情報順:</strong> 料金表 → 割引・注意 → 内訳 → その他費用 → 必要書類。</li>
+              <li><strong>スマホ:</strong> 横長表をカードへ変換し、横スクロールを発生させない。</li>
+              <li><strong>シミュレーター:</strong> このページから削除し、トップへ一本化する。</li>
+              <li><strong>オプション:</strong> コミコミ、スケジュール、高速プランを同ページ内で選べるようにする。</li>
+              <li><strong>根拠:</strong> 2026年8月1日適用の正式PDFを唯一の料金根拠にする。</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-03" data-chapter="03">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">03</span>
+          <div>
+            <h2>準中型</h2>
+            <p>現有免許ごとの違いを先に選べる構造にし、PCでは比較表、スマホでは1条件1カードで表示します。</p>
+          </div>
+          <a class="chapter-url" href="/detail.html?page=semi_medium" target="_blank" rel="noopener">変更後URL: /detail.html?page=semi_medium</a>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の画面</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="semi-medium" src="./assets/current/desktop/semi-medium.jpg" alt="現在の準中型ページ">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/semi-medium.jpg" data-zoom-title="現在の準中型ページ">＋</button>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">準中型車</span><span>現有免許から確認</span></div>
+              <div class="mock-page">
+                <h3>現在お持ちの免許を選択</h3>
+                <div class="mini-tabs"><span class="is-active">なし</span><span>原付</span><span>二輪</span><span>普通AT</span><span>普通MT</span></div>
+                <table class="desktop-price-table">
+                  <thead><tr><th>現有免許</th><th>一般</th><th>学生</th><th>繁忙期</th></tr></thead>
+                  <tbody>
+                    <tr><td>なし</td><td>401,280円</td><td>406,280円</td><td>423,280円</td></tr>
+                    <tr><td>普通AT</td><td>177,760円</td><td>182,760円</td><td>188,760円</td></tr>
+                    <tr><td>普通MT</td><td>152,240円</td><td>157,240円</td><td>163,240円</td></tr>
+                  </tbody>
+                </table>
+                <div class="mobile-price-cards">
+                  <div class="mobile-price-card"><strong>免許なし</strong><dl><dt>一般</dt><dd>401,280円</dd><dt>学生</dt><dd>406,280円</dd></dl></div>
+                  <div class="mobile-price-card"><strong>普通AT免許あり</strong><dl><dt>一般</dt><dd>177,760円</dd><dt>学生</dt><dd>182,760円</dd></dl></div>
+                  <div class="mobile-price-card"><strong>普通MT免許あり</strong><dl><dt>一般</dt><dd>152,240円</dd><dt>学生</dt><dd>157,240円</dd></dl></div>
+                </div>
+                <div class="price-actions"><span>料金内訳</span><span>その他費用</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>正式資料・写真</h3>
+            <div class="document-preview">
+              <img data-zoom src="./assets/documents/price-sheets/semi-medium.jpg" alt="準中型正式料金表">
+            </div>
+            <div class="source-gallery" style="margin-top:8px">
+              <figure><img data-zoom src="./assets/source/photos/07-semi-medium-trucks.jpg" alt="準中型教習車"><figcaption>写真7 / 準中型教習車</figcaption></figure>
+              <figure><img data-zoom src="./assets/source/photos/01-course-wide.jpg" alt="教習コース"><figcaption>写真1 / 教習コース</figcaption></figure>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>変更理由</h3>
+            <ul class="compact-list">
+              <li><strong>最初の判断:</strong> 5種類の現有免許から自分の条件を選ぶ。</li>
+              <li><strong>料金区分:</strong> 一般・学生・繁忙期を同じ行で比較する。</li>
+              <li><strong>限定解除:</strong> 5t限定AT・MTは同ページ内の別ブロックへ整理する。</li>
+              <li><strong>写真:</strong> 実際の準中型教習車とコースを使用する。</li>
+              <li><strong>スマホ:</strong> 1カード内で条件と金額を完結させる。</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-04" data-chapter="04">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">04</span>
+          <div>
+            <h2>二輪・限定解除</h2>
+            <p>大型・普通・小型とAT・MTを選択式で整理し、切れている旧図解は使わず、料金と受講条件をHTMLで表示します。</p>
+          </div>
+          <a class="chapter-url" href="/detail.html?page=bike" target="_blank" rel="noopener">変更後URL: /detail.html?page=bike</a>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の画面</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="bike" src="./assets/current/desktop/bike.jpg" alt="現在の二輪ページ">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/bike.jpg" data-zoom-title="現在の二輪ページ">＋</button>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">自動二輪</span><span>車種・免許別料金</span></div>
+              <div class="mock-page">
+                <h3>取得したい二輪免許</h3>
+                <div class="mini-tabs"><span>大型</span><span class="is-active">普通</span><span>小型</span></div>
+                <div class="mini-tabs"><span class="is-active">MT</span><span>AT</span></div>
+                <table class="desktop-price-table">
+                  <thead><tr><th>現有免許</th><th>基本料金</th><th>繁忙期</th></tr></thead>
+                  <tbody>
+                    <tr><td>なし・原付</td><td>正式PDF値</td><td>正式PDF値</td></tr>
+                    <tr><td>普通車</td><td>正式PDF値</td><td>正式PDF値</td></tr>
+                    <tr><td>二輪免許</td><td>正式PDF値</td><td>正式PDF値</td></tr>
+                  </tbody>
+                </table>
+                <div class="mobile-price-cards">
+                  <div class="mobile-price-card"><strong>普通二輪 MT / 免許なし</strong><dl><dt>基本料金</dt><dd>正式PDF値</dd><dt>繁忙期</dt><dd>正式PDF値</dd></dl></div>
+                  <div class="mobile-price-card"><strong>普通二輪 MT / 普通車あり</strong><dl><dt>基本料金</dt><dd>正式PDF値</dd><dt>繁忙期</dt><dd>正式PDF値</dd></dl></div>
+                </div>
+                <div class="price-actions"><span>料金内訳</span><span>限定解除を見る</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>正式資料・写真</h3>
+            <div class="document-preview"><img data-zoom src="./assets/documents/price-sheets/bike.jpg" alt="自動二輪正式料金表"></div>
+            <div class="source-gallery" style="margin-top:8px">
+              <figure><img data-zoom src="./assets/source/photos/27-motorcycles.jpg" alt="教習用自動二輪"><figcaption>写真27 / 自動二輪</figcaption></figure>
+              <figure><img data-zoom src="./assets/source/photos/17-bike-simulator-close.jpg" alt="二輪シミュレーター"><figcaption>写真17 / 二輪シミュレーター</figcaption></figure>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>変更理由</h3>
+            <ul class="compact-list">
+              <li><strong>大型を追加:</strong> 料金シミュレーターと料金ページの両方で大型二輪を扱う。</li>
+              <li><strong>分類:</strong> 大型・普通・小型、AT・MT、現有免許を順に選ぶ。</li>
+              <li><strong>図解削除:</strong> 上下が切れる旧画像を廃止し、文章と料金をHTML化する。</li>
+              <li><strong>限定解除:</strong> 対象免許と必要時限、審査までを同じ構造で表示する。</li>
+              <li><strong>実写真:</strong> 教習車とシミュレーターを用途別に掲載する。</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-05" data-chapter="05">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">05</span>
+          <div>
+            <h2>入校案内</h2>
+            <p>「入校まで」と「入校後から免許交付まで」を1ページへ統合し、利用者が今どの段階か迷わない流れにします。</p>
+          </div>
+          <a class="chapter-url" href="/detail.html?page=admission" target="_blank" rel="noopener">統合先: /detail.html?page=admission</a>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の画面</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="admission" src="./assets/current/desktop/admission.jpg" alt="現在の入校案内">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/admission.jpg" data-zoom-title="現在の入校案内">＋</button>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">入校案内</span><span>2つの流れ</span></div>
+              <div class="mock-page">
+                <div class="flow-columns">
+                  <section class="flow-block">
+                    <h4>入校までの手続き</h4>
+                    <div class="flow-steps">
+                      <div class="flow-step"><b>1</b><span>コース・料金を確認</span></div>
+                      <div class="flow-step"><b>2</b><span>資料請求・仮申込</span></div>
+                      <div class="flow-step"><b>3</b><span>学校から確認連絡</span></div>
+                      <div class="flow-step"><b>4</b><span>書類・支払いを準備</span></div>
+                      <div class="flow-step"><b>5</b><span>入校説明・適性検査</span></div>
+                    </div>
+                  </section>
+                  <section class="flow-block">
+                    <h4>免許交付まで</h4>
+                    <div class="flow-steps">
+                      <div class="flow-step"><b>1</b><span>第一段階の教習</span></div>
+                      <div class="flow-step"><b>2</b><span>修了検定・仮免</span></div>
+                      <div class="flow-step"><b>3</b><span>第二段階の教習</span></div>
+                      <div class="flow-step"><b>4</b><span>卒業検定</span></div>
+                      <div class="flow-step"><b>5</b><span>免許試験場で交付</span></div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>統合する情報</h3>
+            <ul class="compact-list">
+              <li><strong>入校資格:</strong> 年齢、視力、聴力、色彩識別、身体条件。</li>
+              <li><strong>必要書類:</strong> 住民票、本人確認書類、眼鏡、免許証。</li>
+              <li><strong>支払い:</strong> 現金、振込、ローン等の正式対応方法。</li>
+              <li><strong>検定:</strong> 修了検定と卒業検定の受付・条件・注意。</li>
+              <li><strong>統合:</strong> <code>license</code> はこのページへ転送する。</li>
+            </ul>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>変更理由</h3>
+            <ol class="change-list">
+              <li data-number="1">申込前と入校後の流れを別ページで探す必要をなくす。</li>
+              <li data-number="2">各段階から料金、申込、検定案内へ直接移動できるようにする。</li>
+              <li data-number="3">旧画像の小さい文字を廃止し、スマホでも読めるHTMLにする。</li>
+              <li data-number="4">利用者の次の行動だけを各段階に1つずつ置く。</li>
+            </ol>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-06" data-chapter="06">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">06</span>
+          <div>
+            <h2>高齢者・原付・ペーパードライバー</h2>
+            <p>長い説明を減らし、対象者、予約方法、当日の流れを実写真と3ステップで伝えます。</p>
+          </div>
+          <span class="chapter-url">対象: senior / motorcycle / paper</span>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の画面</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="senior" src="./assets/current/desktop/senior.jpg" alt="現在の高齢者講習ページ">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/senior.jpg" data-zoom-title="現在の高齢者講習ページ">＋</button>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">各種講習</span><span>電話予約</span></div>
+              <div class="mock-page">
+                <div class="service-switch">
+                  <article class="service-mini">
+                    <img src="./assets/source/photos/01-course-wide.jpg" alt="高齢者講習">
+                    <div><strong>高齢者講習</strong><span>通知確認 → 電話予約 → 来校</span></div>
+                  </article>
+                  <article class="service-mini">
+                    <img src="./assets/source/photos/27-motorcycles.jpg" alt="原付講習">
+                    <div><strong>原付講習</strong><span>電話予約 → 持参物 → 受講</span></div>
+                  </article>
+                  <article class="service-mini">
+                    <img src="./assets/source/photos/08-mazda-training-cars.jpg" alt="ペーパードライバー講習">
+                    <div><strong>ペーパー講習</strong><span>相談 → 内容決定 → 練習</span></div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>使用写真</h3>
+            <div class="source-gallery">
+              <figure><img data-zoom src="./assets/source/photos/01-course-wide.jpg" alt="教習コース"><figcaption>高齢者講習 / コース</figcaption></figure>
+              <figure><img data-zoom src="./assets/source/photos/27-motorcycles.jpg" alt="自動二輪"><figcaption>原付講習 / 二輪</figcaption></figure>
+              <figure><img data-zoom src="./assets/source/photos/08-mazda-training-cars.jpg" alt="普通車"><figcaption>ペーパー / 普通車</figcaption></figure>
+              <figure><img data-zoom src="./assets/source/photos/05-classroom.jpg" alt="教室"><figcaption>講習会場 / 教室</figcaption></figure>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>変更理由</h3>
+            <ul class="compact-list">
+              <li><strong>高齢者:</strong> 通知はがき、電話番号、所要時間、持参物を最優先にする。</li>
+              <li><strong>原付:</strong> 1枚の実写真と短い3ステップへ絞り、送迎案内は載せない。</li>
+              <li><strong>ペーパー:</strong> 不安や練習内容を電話で相談できることを明確にする。</li>
+              <li><strong>CTA:</strong> 各ページの主ボタンは電話予約または相談の1つに絞る。</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-07" data-chapter="07">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">07</span>
+          <div>
+            <h2>在校生・日程</h2>
+            <p>更新できない画像カレンダーを廃止し、Google Sheetsから「本日・今週・今月」の日程を公開します。</p>
+          </div>
+          <span class="chapter-url">対象: students / teaching / syuryokentei / sotsugyoukentei</span>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の画面</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="teaching" src="./assets/current/desktop/teaching.jpg" alt="現在の教習カレンダー">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/teaching.jpg" data-zoom-title="現在の教習カレンダー">＋</button>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">在校生メニュー</span><span>2026年7月</span></div>
+              <div class="mock-page">
+                <h3>教習・検定の日程</h3>
+                <div class="schedule-tabs"><span class="is-active">本日</span><span>今週</span><span>今月</span></div>
+                <div class="schedule-list">
+                  <div class="schedule-row"><time>7/18 09:00</time><span>修了検定 受付</span><em>受付中</em></div>
+                  <div class="schedule-row"><time>7/18 13:00</time><span>卒業検定 集合</span><em>残り2枠</em></div>
+                  <div class="schedule-row"><time>7/19 終日</time><span>休校日</span><em>休校</em></div>
+                  <div class="schedule-row"><time>7/20 10:00</time><span>学科教習 第1教室</span><em>通常</em></div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>公開項目</h3>
+            <ul class="compact-list">
+              <li><strong>日付・開始時刻</strong></li>
+              <li><strong>分類:</strong> 教習、修了検定、卒業検定、休校、重要連絡。</li>
+              <li><strong>受付状況:</strong> 受付中、締切、変更、休校。</li>
+              <li><strong>対象:</strong> 普通車、準中型、二輪、全在校生。</li>
+              <li><strong>更新元:</strong> 学校スタッフ用の日程シート。</li>
+            </ul>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>変更理由</h3>
+            <ol class="change-list">
+              <li data-number="1">古い画像が残る問題をなくす。</li>
+              <li data-number="2">スマホで日付と内容を同じ行に収める。</li>
+              <li data-number="3">検定ページと在校生ページの重複日程を一本化する。</li>
+              <li data-number="4">学校側がシートを更新すると公開画面にも反映する。</li>
+            </ol>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-08" data-chapter="08">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">08</span>
+          <div>
+            <h2>申込フォーム</h2>
+            <p>同じ内容を何度も入力する長いフォームを、選択式3ステップと概算料金確認へ変更します。</p>
+          </div>
+          <a class="chapter-url" href="/detail.html?page=application" target="_blank" rel="noopener">変更後URL: /detail.html?page=application</a>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の画面</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="application" src="./assets/current/desktop/application.jpg" alt="現在の申込フォーム">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/application.jpg" data-zoom-title="現在の申込フォーム">＋</button>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">資料請求・仮申込</span><span>約3分</span></div>
+              <div class="mock-page">
+                <div class="form-progress"><span class="is-active">1 内容</span><span>2 本人情報</span><span>3 確認</span></div>
+                <h3>ご希望の内容を選択</h3>
+                <h4>用件</h4>
+                <div class="choice-grid"><span class="is-selected">仮入校申込</span><span>資料請求</span><span>相談</span></div>
+                <h4 style="margin-top:7px">取得する免許</h4>
+                <div class="choice-grid"><span class="is-selected">普通AT</span><span>普通MT</span><span>準中型</span><span>普通二輪</span><span>大型二輪</span><span>その他</span></div>
+                <h4 style="margin-top:7px">資料の受取方法</h4>
+                <div class="choice-grid"><span class="is-selected">デジタル</span><span>郵送</span></div>
+                <div class="quote-total"><span>現在の概算料金</span><strong>322,850円〜</strong></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>統合・削除項目</h3>
+            <ul class="compact-list">
+              <li><strong>一本化:</strong> 車種と料金コース、職業と学生/一般、料金プランと教習プラン。</li>
+              <li><strong>STEP 1:</strong> 用件、免許、プラン、オプション。</li>
+              <li><strong>STEP 2:</strong> 氏名、生年月日、住所、連絡先。</li>
+              <li><strong>STEP 3:</strong> 受取方法、支払い、同意、最終確認。</li>
+              <li><strong>削除:</strong> 同じ回答を再度求める項目、制作都合の補足文。</li>
+            </ul>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>送信後の動き</h3>
+            <ol class="change-list">
+              <li data-number="1">Workerが必須項目と不正送信を検証する。</li>
+              <li data-number="2">正式マスターで料金を再計算する。</li>
+              <li data-number="3">Google Sheetsの申込一覧へ保存する。</li>
+              <li data-number="4">利用者と学校へ同じ内容の確認メールを送る。</li>
+              <li data-number="5">デジタルは資料リンク、郵送は「郵送対応待ち」にする。</li>
+            </ol>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-09" data-chapter="09">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">09</span>
+          <div>
+            <h2>指導員</h2>
+            <p>実写真と修正版名簿は内部照合だけに使い、公開画面にはニックネーム・趣味・担当と本人寄せ生成画像だけを掲載します。</p>
+          </div>
+          <a class="chapter-url" href="/detail.html?page=instructors" target="_blank" rel="noopener">変更後URL: /detail.html?page=instructors</a>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の画面</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="instructors" src="./assets/current/desktop/instructors.jpg" alt="現在の指導員ページ">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/instructors.jpg" data-zoom-title="現在の指導員ページ">＋</button>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">指導員紹介</span><span>四輪 / 二輪</span></div>
+              <div class="mock-page">
+                <h3>顔と人柄が分かる指導員紹介</h3>
+                <article class="instructor-card-mock">
+                  <img src="../../images/instructors-anime-20260718/sawamizu-nobuo.webp" alt="さわみんの修正版イメージ">
+                  <div>
+                    <strong>さわみん</strong>
+                    <span>趣味</span>
+                    <p>孤独の久留米（市内散策）・釣り</p>
+                    <div class="role-chips"><span>四輪</span><span>二輪</span></div>
+                  </div>
+                </article>
+                <article class="instructor-card-mock" style="margin-top:7px">
+                  <img src="../../images/instructors-anime-20260718/seto-konosuke.webp" alt="せとさんの修正版イメージ">
+                  <div>
+                    <strong>せとさん</strong>
+                    <span>趣味</span>
+                    <p>散歩</p>
+                    <div class="role-chips"><span>四輪</span><span>二輪</span></div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>公開範囲</h3>
+            <ol class="change-list">
+              <li data-number="1">実名と実写真は公開しない。</li>
+              <li data-number="2">公開済みニックネームと趣味を表示する。</li>
+              <li data-number="3">四輪・二輪の担当をカード内へ表示する。</li>
+              <li data-number="4">本人確認済みの生成画像だけを使用する。</li>
+            </ol>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>確認手順</h3>
+            <ol class="change-list">
+              <li data-number="1">旧Excel内の実写真で本人の顔を確認する。</li>
+              <li data-number="2">修正版Excelで氏名・ニックネーム・趣味を照合する。</li>
+              <li data-number="3">四輪・二輪の担当アイコンを表示する。</li>
+              <li data-number="4">AI画像は美化しすぎず、実写真の年齢・輪郭・髪型へ寄せる。</li>
+              <li data-number="5">現在画像と修正版を並べ、本人確認後だけ公開する。</li>
+            </ol>
+          </article>
+        </div>
+
+        <div class="wide-evidence">
+          <h3>内部照合資料の取り扱い</h3>
+          <p>実写真・実名入り名簿・生成比較表は本人確認専用としてローカル保管し、GitHubと公開サイトには含めません。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-10" data-chapter="10">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">10</span>
+          <div>
+            <h2>学校・施設・アクセス</h2>
+            <p>汎用イラストを減らし、校舎、教室、シミュレーター、コース、二輪、バスの実写真を目的別に配置します。</p>
+          </div>
+          <span class="chapter-url">対象: school / facilities / access / courses</span>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の画面</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="school" src="./assets/current/desktop/school.jpg" alt="現在の学校紹介ページ">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/school.jpg" data-zoom-title="現在の学校紹介ページ">＋</button>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">学校・施設</span><span>実写真で確認</span></div>
+              <div class="mock-page">
+                <h3>学ぶ場所を写真で確認</h3>
+                <div class="facility-mosaic">
+                  <figure><img src="./assets/source/photos/30-school-front.jpg" alt="校舎"><figcaption>校舎</figcaption></figure>
+                  <figure><img src="./assets/source/photos/05-classroom.jpg" alt="教室"><figcaption>教室</figcaption></figure>
+                  <figure><img src="./assets/source/photos/02-car-simulator.jpg" alt="四輪シミュレーター"><figcaption>四輪シミュレーター</figcaption></figure>
+                  <figure><img src="./assets/source/photos/49-bus-side.jpg" alt="スクールバス"><figcaption>スクールバス</figcaption></figure>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>写真の割り当て</h3>
+            <div class="source-gallery">
+              <figure><img data-zoom src="./assets/source/photos/01-course-wide.jpg" alt="教習コース"><figcaption>1・3・6 / 教習コース</figcaption></figure>
+              <figure><img data-zoom src="./assets/source/photos/02-car-simulator.jpg" alt="四輪シミュレーター"><figcaption>2・19・20 / 四輪シミュレーター</figcaption></figure>
+              <figure><img data-zoom src="./assets/source/photos/14-computer-study.jpg" alt="学習設備"><figcaption>5・10・13・14・16・18・21 / 教室</figcaption></figure>
+              <figure><img data-zoom src="./assets/source/photos/49-bus-side.jpg" alt="スクールバス"><figcaption>24・37〜58 / スクールバス</figcaption></figure>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>変更理由</h3>
+            <ul class="compact-list">
+              <li><strong>学校紹介:</strong> 校舎と学校の方針を最初に見せる。</li>
+              <li><strong>施設:</strong> 教室、学習設備、四輪・二輪シミュレーターを分類する。</li>
+              <li><strong>アクセス:</strong> 地図と乗降情報を先に置き、バス写真は補足にする。</li>
+              <li><strong>コース:</strong> 普通車、準中型、二輪の実車を免許選択の入口に使う。</li>
+              <li><strong>全写真:</strong> 58枚の素材一覧から公開候補を選ぶ。</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="wide-evidence">
+          <h3>追加写真58枚の確認一覧</h3>
+          <img data-zoom src="./assets/source/photo-contact-sheet.jpg" alt="追加写真58枚の一覧">
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-11" data-chapter="11">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">11</span>
+          <div>
+            <h2>TOPICS・FAQ・その他</h2>
+            <p>重要なお知らせとTOPICSは学校側で更新できるようにし、FAQ、採用、会社概要、個人情報、サイトマップは重複を整理します。</p>
+          </div>
+          <span class="chapter-url">対象: topics / faq / recruit / company / privacy / sitemap</span>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の画面</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="topics" src="./assets/current/desktop/topics.jpg" alt="現在のTOPICSページ">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/topics.jpg" data-zoom-title="現在のTOPICSページ">＋</button>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">お知らせ</span><span>学校から更新</span></div>
+              <div class="mock-page">
+                <div class="news-manager">
+                  <section class="news-preview">
+                    <h4>ホームページ</h4>
+                    <div class="news-item"><time>7/18</time><strong>夏季の入校受付</strong></div>
+                    <div class="news-item"><time>7/15</time><strong>教習日程の変更</strong></div>
+                    <div class="news-item"><time>7/10</time><strong>キャンペーン案内</strong></div>
+                  </section>
+                  <section class="sheet-preview">
+                    <h4>Google Sheets</h4>
+                    <table class="sheet-table">
+                      <tr><th>公開</th><th>タイトル</th></tr>
+                      <tr><td>ON</td><td>夏季の入校受付</td></tr>
+                      <tr><td>ON</td><td>教習日程の変更</td></tr>
+                      <tr><td>OFF</td><td>下書き</td></tr>
+                    </table>
+                  </section>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>ページ別対応</h3>
+            <ul class="compact-list">
+              <li><strong>FAQ:</strong> 料金、送迎、入校、教習、検定で分類する。</li>
+              <li><strong>採用:</strong> 仕事内容、条件、待遇、資格支援を事実だけで掲載する。</li>
+              <li><strong>会社概要:</strong> 会社・学校情報を可変2列で表示する。</li>
+              <li><strong>個人情報:</strong> 申込データの利用目的と保存先を追記する。</li>
+              <li><strong>サイトマップ:</strong> 統合・転送後の正式URLだけを掲載する。</li>
+            </ul>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>変更理由</h3>
+            <ol class="change-list">
+              <li data-number="1">既存WordPress RSSへの依存をなくす。</li>
+              <li data-number="2">学校スタッフがGoogle Sheetsから公開・非公開を選べるようにする。</li>
+              <li data-number="3">同じ案内を複数ページに重複掲載しない。</li>
+              <li data-number="4">AIへの制作指示のような不自然な説明文を削除する。</li>
+            </ol>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter" id="chapter-12" data-chapter="12">
+      <div class="section-inner">
+        <header class="chapter-heading">
+          <span class="chapter-number">12</span>
+          <div>
+            <h2>バックエンド・運用</h2>
+            <p>申込保存、料金再計算、自動メール、学校からの公開情報更新をCloudflare Worker、GAS、Google Sheetsでつなぎます。</p>
+          </div>
+          <span class="chapter-url">管理: Google Sheets / API: Cloudflare Worker + GAS</span>
+        </header>
+
+        <div class="comparison-grid">
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">A</span>現在の状態</h3>
+            <div class="viewport-window">
+              <img class="current-shot" data-slug="application" src="./assets/current/desktop/application.jpg" alt="現在の申込画面">
+              <button class="zoom-button" type="button" data-zoom-src="./assets/current/desktop/application.jpg" data-zoom-title="現在の申込画面">＋</button>
+            </div>
+            <ul class="compact-list" style="margin-top:12px">
+              <li>料金データがトップ、サブページ、GASに重複している。</li>
+              <li>WordPress RSSがドメイン移行後に切れる可能性がある。</li>
+              <li>申込Webhookの匿名アクセスと秘密情報の設定確認が必要。</li>
+            </ul>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">B</span>変更後フロー</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">データ連携</span><span>自動処理</span></div>
+              <div class="mock-page">
+                <div class="backend-flow">
+                  <div class="backend-node">利用者<br>仮申込</div>
+                  <div class="backend-node">Worker<br>検証・再計算</div>
+                  <div class="backend-node">GAS<br>保存・メール</div>
+                  <div class="backend-node">Sheets<br>申込管理</div>
+                </div>
+                <div class="backend-flow">
+                  <div class="backend-node">学校スタッフ</div>
+                  <div class="backend-node">公開情報シート</div>
+                  <div class="backend-node">GAS API</div>
+                  <div class="backend-node">ホームページ</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">C</span>管理画面モック</h3>
+            <div class="mock-device">
+              <div class="mock-topbar"><span class="mock-logo">Google Sheets</span><span>学校管理</span></div>
+              <div class="mock-page">
+                <div class="sheet-tabs"><span>申込一覧</span><span>お知らせ</span><span>TOPICS</span><span>日程</span><span>設定</span><span>処理ログ</span></div>
+                <table class="sheet-table">
+                  <thead><tr><th>受付日時</th><th>氏名</th><th>用件</th><th>免許</th><th>状態</th></tr></thead>
+                  <tbody>
+                    <tr><td>7/18 09:32</td><td>筑紫野 太郎</td><td>仮申込</td><td>普通AT</td><td class="sheet-status">確認待ち</td></tr>
+                    <tr><td>7/18 10:14</td><td>福岡 花子</td><td>資料請求</td><td>準中型</td><td class="sheet-status">郵送対応待ち</td></tr>
+                    <tr><td>7/18 11:03</td><td>太宰府 次郎</td><td>相談</td><td>大型二輪</td><td>連絡済み</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <article class="comparison-panel">
+            <h3 class="panel-title"><span class="panel-kicker">D</span>実装ルール</h3>
+            <ul class="compact-list">
+              <li><strong>料金:</strong> 1つの正式マスターから画面・申込・GASへ供給する。</li>
+              <li><strong>安全:</strong> Workerで必須検証、再計算、ハニーポット、Turnstileを実施する。</li>
+              <li><strong>メール:</strong> 利用者と学校へ受付内容・概算料金・次の手順を送る。</li>
+              <li><strong>公開情報:</strong> お知らせ、TOPICS、日程は60秒キャッシュし、障害時は直前データを表示する。</li>
+              <li><strong>電子署名:</strong> 今回は実装しない。</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="wide-evidence">
+          <h3>7月18日追加資料の反映範囲</h3>
+          <p>正式料金表、申込項目、指導員情報、施設・車両写真を用途別に確認し、公開に必要な情報だけをサイトへ反映します。原本資料は公開サイトに置きません。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="audit-section" id="all-pages" data-chapter="audit">
+      <div class="section-inner">
+        <header class="audit-header">
+          <div>
+            <p class="eyebrow">Full page audit</p>
+            <h2>全31画面の実装チェック</h2>
+            <p>トップと共通テンプレート30ページをPC・スマホで確認し、統合先・転送先・変更種別・確認状態を一元管理します。</p>
+          </div>
+          <div class="audit-progress">
+            <strong id="audit-count">0 / 31 確認済み</strong>
+            <div class="progress-track" aria-hidden="true"><span id="audit-progress-bar"></span></div>
+          </div>
+        </header>
+        <div class="audit-grid" id="audit-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer-note">
+    <div class="section-inner">このページは確認用です。本番ナビには掲載せず、検索対象外にします。</div>
+  </footer>
+
+  <dialog class="zoom-dialog" id="zoom-dialog">
+    <div class="dialog-head">
+      <strong id="zoom-title">画像プレビュー</strong>
+      <button type="button" id="zoom-close" aria-label="閉じる">×</button>
+    </div>
+    <div class="dialog-body"><img id="zoom-image" alt=""></div>
+  </dialog>
+
+  <noscript>PC・スマホ切替と確認状態の保存にはJavaScriptが必要です。</noscript>
+  <script src="./app.js"></script>
+</body>
+</html>

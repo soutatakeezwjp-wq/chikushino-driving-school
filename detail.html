@@ -35,6 +35,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/redesign-0718.css">
 <style>
   :root {
     --purple: #5c319b;
@@ -2399,7 +2400,6 @@
           <a href="detail.html?page=senior"><span>高齢者講習</span><small>SENIOR</small></a>
           <a href="detail.html?page=motorcycle"><span>原付講習</span><small>MOPED</small></a>
           <a href="detail.html?page=training"><span>企業講習</span><small>TRAINING</small></a>
-          <a href="detail.html?page=price"><span>料金プラン</span><small>PRICE</small></a>
         </div>
       </div>
       <div class="nav-item">
@@ -2415,13 +2415,11 @@
         <a class="nav-trigger" href="detail.html?page=school">学校紹介</a>
         <div class="nav-menu" aria-label="学校紹介メニュー">
           <a href="detail.html?page=school"><span>学校紹介</span><small>SCHOOL</small></a>
-          <a href="reasons/" target="_blank" rel="noopener"><span>通う理由</span><small>WHY</small></a>
           <a href="detail.html?page=faq"><span>よくあるご質問</span><small>FAQ</small></a>
           <a href="detail.html?page=access"><span>送迎バス・アクセス</span><small>ACCESS</small></a>
           <a href="detail.html?page=recruit"><span>採用情報</span><small>RECRUIT</small></a>
         </div>
       </div>
-      <a href="detail.html?page=price">料金プラン</a>
       <a href="detail.html?page=access">スクールバス</a>
       <div class="nav-item">
         <a class="nav-trigger" href="detail.html?page=students">在校生の方へ</a>
@@ -2436,23 +2434,13 @@
   </header>
 
   <nav class="mobile-cta-bar" aria-label="スマートフォン固定メニュー">
-    <a href="detail.html?page=price">料金<small>PRICE</small></a>
+    <a href="index.html#price-simulator">料金<small>PRICE</small></a>
     <a href="detail.html?page=application">仮申込・資料請求<small>REQUEST</small></a>
     <a href="tel:0927102188">電話<small>CALL</small></a>
     <a href="https://page.line.me/115cacad" target="_blank" rel="noopener"><img loading="lazy" decoding="async" class="sns-icon" src="images/icons/line.svg" alt="">LINE<small>CHAT</small></a>
   </nav>
 
   <main id="page"></main>
-
-  <section class="footer-cta">
-    <div class="wrap">
-      <h2>迷ったら、まずは料金確認から。</h2>
-      <div class="hero-actions">
-        <a class="btn btn-white" href="detail.html?page=price">料金シミュレーション</a>
-        <a class="btn btn-orange" href="detail.html?page=application">仮申込・資料請求</a>
-      </div>
-    </div>
-  </section>
 
   <footer>
     <div class="wrap">
@@ -3924,7 +3912,7 @@
     bike: ["motorcycle_mt", "二輪は、車種と現在お持ちの免許によって料金が変わります。条件を選んで確認できます。"],
     license: ["ordinary_at", "取得したい免許を選ぶ前に、料金の目安をシミュレーションで確認できます。"]
   };
-  const immediateSimulatorPages = new Set(["semi_medium", "standard", "bike", "price"]);
+  const immediateSimulatorPages = new Set();
 
   function infoVisualHtml(id) {
     // 【一時無効化 2026-07-09】図解画像（infographics/*.webp）に旧料金・旧表記（普通車AT）・
@@ -3985,7 +3973,7 @@
     const relatedMap = {
       admission: [["application", "資料請求・仮申込", "準備できたら、そのまま相談・申し込みへ進めます。"], ["price", "料金プラン", "必要な費用を先に確認して不安を減らします。"], ["access", "送迎バス", "通えるルートを確認して、通学イメージを固めます。"]],
       courses: [["price", "料金プラン", "選んだ免許の費用目安を確認できます。"], ["license", "免許交付まで", "卒業までの流れと必要時限を確認できます。"], ["application", "仮入校申し込み", "取りたい免許が決まったら相談へ進めます。"]],
-      standard: [["camp_price", "合宿風ハイスピード", "短期取得を目指すAT普通車プランへ。"], ["price", "料金シミュレーション", "普通車料金の目安を確認できます。"], ["application", "普通車教習を相談", "入校日や必要書類も確認できます。"]],
+      standard: [["camp_price", "合宿風ハイスピード", "短期取得を目指すAT普通車プランへ。"], ["price", "正式料金一覧", "免許ごとの正式料金ページを確認できます。"], ["application", "普通車教習を相談", "入校日や必要書類も確認できます。"]],
       camp_price: [["standard", "普通自動車教習", "基本プランと比較できます。"], ["application", "空き状況を相談", "短期プランの受付可否を確認。"], ["access", "通学方法を確認", "短期取得に必要な通いやすさを確認。"]],
       semi_medium: [["price", "料金プラン", "準中型の料金目安を確認。"], ["license", "免許交付まで", "必要時限と卒業までの流れを確認。"], ["application", "準中型を相談", "仕事や取得時期に合わせて相談。"]],
       bike: [["motorcycle", "原付講習", "二輪と原付の違いも確認できます。"], ["limited", "限定解除", "二輪のAT限定・小型限定解除を確認。"], ["application", "二輪教習を相談", "希望車種と時期を相談できます。"]],
@@ -4035,8 +4023,8 @@
   const directoryGroups = [
     ["入校案内", [["admission", "入校の流れ"], ["application", "資料請求・仮申込"], ["license", "免許交付まで"], ["introduction", "友人・知人紹介"]]],
     ["教習・講習", [["standard", "普通自動車教習"], ["semi_medium", "準中型車教習"], ["bike", "自動二輪車教習"], ["limited", "各種限定解除"], ["paper", "ペーパー講習"], ["senior", "高齢者講習"], ["motorcycle", "原付講習"], ["training", "企業講習"]]],
-    ["料金・アクセス", [["price", "料金プラン"], ["access", "送迎バス・アクセス"], ["faq", "よくあるご質問"]]],
-    ["学校紹介", [["school", "学校紹介"], ["company", "会社概要"], ["why", "通う理由"], ["facilities", "施設・設備"], ["instructors", "教官紹介"], ["topics", "TOPICS"], ["recruit", "採用情報"]]],
+    ["料金・アクセス", [["access", "送迎バス・アクセス"], ["faq", "よくあるご質問"]]],
+    ["学校紹介", [["school", "学校紹介"], ["company", "会社概要"], ["facilities", "施設・設備"], ["instructors", "教官紹介"], ["topics", "TOPICS"], ["recruit", "採用情報"]]],
     ["在校生の方へ", [["students", "在校生の方へ"], ["teaching", "教習カレンダー"], ["syuryokentei", "修了検定について"], ["sotsugyoukentei", "卒業検定について"], ["students#online-class", "オンライン学科教習"], ["students#musasi", "効果測定MUSASI"], ["access#buscatch", "スクールバス予約"]]],
     ["サイト情報", [["sitemap", "サイトマップ"], ["privacy", "個人情報保護方針"]]],
     ["在校生向け", [["students", "在校生メニュー"], ["teaching", "教習カレンダー"], ["syuryokentei", "修了検定"], ["sotsugyoukentei", "卒業検定"]]]
@@ -4054,8 +4042,8 @@
   const subpageNavigationGroups = [
     ["入校案内", [["admission", "入校の流れ"], ["application", "資料請求・仮申込"], ["license", "免許交付まで"], ["introduction", "友人・知人紹介"]]],
     ["教習・講習", [["courses", "教習・講習一覧"], ["standard", "普通自動車教習"], ["camp_price", "合宿風ハイスピード"], ["semi_medium", "準中型車教習"], ["bike", "自動二輪車教習"], ["limited", "各種限定解除"], ["paper", "ペーパー講習"], ["senior", "高齢者講習"], ["motorcycle", "原付講習"], ["training", "企業講習"]]],
-    ["料金・アクセス", [["price", "料金シミュレーション"], ["access", "送迎バス・アクセス"], ["faq", "よくあるご質問"]]],
-    ["学校紹介", [["school", "学校紹介"], ["company", "会社概要"], ["why", "通う理由"], ["facilities", "施設・設備"], ["instructors", "指導員紹介"], ["topics", "TOPICS"], ["recruit", "採用情報"]]],
+    ["料金・アクセス", [["access", "送迎バス・アクセス"], ["faq", "よくあるご質問"]]],
+    ["学校紹介", [["school", "学校紹介"], ["company", "会社概要"], ["facilities", "施設・設備"], ["instructors", "指導員紹介"], ["topics", "TOPICS"], ["recruit", "採用情報"]]],
     ["在校生の方へ", [["students", "在校生メニュー"], ["teaching", "教習カレンダー"], ["syuryokentei", "修了検定"], ["sotsugyoukentei", "卒業検定"]]],
     ["サイト情報", [["sitemap", "サイトマップ"], ["privacy", "個人情報保護方針"]]]
   ];
@@ -4073,12 +4061,7 @@
   }
 
   function subpageAsideHtml(id, page) {
-    const priceHref = immediateSimulatorPages.has(id) ? "#price-simulator" : "detail.html?page=price";
     return `<aside class="subpage-side" aria-label="このページの案内">
-      <div class="subpage-actions">
-        <a class="btn btn-purple" href="${priceHref}">料金を確認する</a>
-        <a class="btn btn-orange" href="detail.html?page=application">仮申込・相談</a>
-      </div>
       ${subpageLocalNavHtml(id)}
     </aside>`;
   }
@@ -4281,7 +4264,11 @@
     const topVisual = isNotFound
       ? `<section class="subpage-hero"><div class="wrap"><div class="subpage-hero-copy"><span class="eyebrow">404</span><h1>${page.title}</h1><p class="subpage-hero-lead">${page.lead}</p></div></div></section>`
       : isInstructorDirectory ? "" : subpageHeroHtml(id, page, visual);
-    const pageBody = page.focusedBody || page.body;
+    const redesignedPageIds = new Set([
+      "standard", "semi_medium", "bike", "limited", "price", "admission", "license",
+      "paper", "senior", "motorcycle", "students", "teaching", "application", "instructors"
+    ]);
+    const pageBody = redesignedPageIds.has(id) ? "" : (page.focusedBody || page.body);
 	    document.querySelector("#page").innerHTML = `
 	      ${topVisual}
 	      <section class="subpage-shell">
@@ -4759,5 +4746,7 @@
   window.addEventListener("hashchange", scrollToHashTarget);
   renderPage();
 </script>
+<script src="data/price-master.js"></script>
+<script src="assets/redesign-0718.js"></script>
 </body>
 </html>

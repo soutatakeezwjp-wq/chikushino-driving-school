@@ -49,11 +49,11 @@
   "image": "https://chikushi-ds.com/images/ogp/chikushino-ogp.webp"
 }
 </script>
-<link rel="preload" as="image" href="images/generated-hero/chikushino-hero-grounded-2026-07-03.webp" media="(min-width: 769px)" fetchpriority="high">
-<link rel="preload" as="image" href="images/generated-hero/chikushino-hero-grounded-mobile-2026-07-03.webp" media="(max-width: 768px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/hero-final-candidates-20260718/hero-B-welcome.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/redesign-0718.css">
 <style>
   :root {
     --purple: #5c319b;
@@ -3328,7 +3328,6 @@
           <a href="detail.html?page=senior"><span>高齢者講習</span><small>SENIOR</small></a>
           <a href="detail.html?page=motorcycle"><span>原付講習</span><small>MOPED</small></a>
           <a href="detail.html?page=training"><span>企業講習</span><small>TRAINING</small></a>
-          <a href="detail.html?page=price"><span>料金プラン</span><small>PRICE</small></a>
         </div>
       </div>
       <div class="nav-item">
@@ -3344,13 +3343,11 @@
         <a class="nav-trigger" href="detail.html?page=school">学校紹介</a>
         <div class="nav-menu" aria-label="学校紹介メニュー">
           <a href="detail.html?page=school"><span>学校紹介</span><small>SCHOOL</small></a>
-          <a href="reasons/" target="_blank" rel="noopener"><span>通う理由</span><small>WHY</small></a>
           <a href="detail.html?page=faq"><span>よくあるご質問</span><small>FAQ</small></a>
           <a href="detail.html?page=access"><span>送迎バス・アクセス</span><small>ACCESS</small></a>
           <a href="detail.html?page=recruit"><span>採用情報</span><small>RECRUIT</small></a>
         </div>
       </div>
-      <a href="detail.html?page=price">料金プラン</a>
       <a href="detail.html?page=access">スクールバス</a>
       <div class="nav-item">
         <a class="nav-trigger" href="detail.html?page=students">在校生の方へ</a>
@@ -3365,7 +3362,7 @@
   </header>
 
   <nav class="mobile-cta-bar" aria-label="スマートフォン固定メニュー">
-    <a href="detail.html?page=price">料金<small>PRICE</small></a>
+    <a href="#price-simulator">料金<small>PRICE</small></a>
     <a href="detail.html?page=application">資料請求<small>REQUEST</small></a>
     <a href="detail.html?page=application">仮申込<small>ENTRY</small></a>
     <a href="tel:0927102188">電話<small>CALL</small></a>
@@ -3373,12 +3370,15 @@
   </nav>
 
 		  <main>
-		    <section class="hero" aria-label="メインビジュアル">
-		      <h1 class="visually-hidden">ここから、運転が好きになる。</h1>
+		    <section class="hero hero-20260718" aria-label="メインビジュアル">
 		      <picture class="hero-picture">
-	        <source media="(max-width: 768px)" srcset="images/generated-hero/chikushino-hero-grounded-mobile-2026-07-03.webp">
-	        <img class="hero-main-img" src="images/generated-hero/chikushino-hero-grounded-2026-07-03.webp" alt="ここから、運転が好きになる。広いエリアを無料送迎" fetchpriority="high" decoding="async">
+	        <img class="hero-main-img" src="images/hero-final-candidates-20260718/hero-B-welcome.webp" alt="筑紫野自動車学校の校舎、教習車、スクールバスと教習生を迎える指導員" fetchpriority="high" decoding="async">
 	      </picture>
+          <div class="hero-copy-20260718">
+            <span class="hero-kicker">CHIKUSHINO DRIVING SCHOOL</span>
+            <h1>ここから、<br><strong>運転</strong>が好きになる。</h1>
+            <p>楽しく通える教習所で、<br>自信をつけて<span>未来</span>へ走り出そう。</p>
+          </div>
     </section>
 
     <section class="home-quick reveal" aria-label="主要メニュー">
@@ -3393,7 +3393,7 @@
           <span><small>ACCESS</small><strong>アクセス</strong><span>地図・所要時間を見る</span></span>
           <span class="arrow">›</span>
         </a>
-        <a class="home-quick-card" href="detail.html?page=price">
+        <a class="home-quick-card" href="#price-simulator">
           <span class="home-quick-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h2M12 11h2M16 11h.01M8 15h2M12 15h2M16 15h.01"/></svg></span>
           <span><small>PRICE</small><strong>料金シミュレーション</strong><span>簡単に料金をチェック</span></span>
           <span class="arrow">›</span>
@@ -3403,7 +3403,7 @@
 
     <section class="mobile-home-dock" aria-label="スマートフォン用クイックメニュー">
       <div class="wrap mobile-dock-panel">
-        <a class="mobile-dock-card" href="detail.html?page=price"><small>PRICE</small><strong>料金を確認</strong><span>ステップで見積もり</span></a>
+        <a class="mobile-dock-card" href="#price-simulator"><small>PRICE</small><strong>料金を確認</strong><span>ステップで見積もり</span></a>
         <a class="mobile-dock-card" href="detail.html?page=courses"><small>LICENSE</small><strong>免許を選ぶ</strong><span>普通車・二輪・準中型</span></a>
         <a class="mobile-dock-card" href="detail.html?page=access"><small>BUS</small><strong>送迎を見る</strong><span>通いやすい場所から</span></a>
         <a class="mobile-dock-card" href="detail.html?page=application"><small>ENTRY</small><strong>仮申込・資料請求</strong><span>資料請求も同じ入口</span></a>
@@ -3917,7 +3917,7 @@
             <h2>まずは仮申込からスタート！</h2>
             <p>料金確認も資料請求も同じ入口から。迷ったら、気軽に相談できます。</p>
             <div class="cta-actions">
-              <a class="btn btn-white" href="detail.html?page=price">料金をシミュレーション <span class="circle">›</span></a>
+              <a class="btn btn-white" href="detail.html?page=price">正式料金表を見る <span class="circle">›</span></a>
               <a class="btn btn-orange" href="detail.html?page=application">仮申込・資料請求 <span class="circle">›</span></a>
             </div>
           </div>
@@ -3985,63 +3985,81 @@
     </div>
   </footer>
 
+<script src="data/price-master.js"></script>
 <script>
   const formatter = new Intl.NumberFormat("ja-JP");
+  const priceMaster = window.CDS_PRICE_MASTER;
+  if (!priceMaster) throw new Error("料金マスターを読み込めませんでした。");
+
+  const legacyLicenseKeys = {
+    none: "none",
+    moped: "moped",
+    motorcycle: "motorcycle",
+    at_ordinary_car: "at_car",
+    mt_ordinary_car: "mt_car",
+    ordinary_car: "car"
+  };
+  function simulatorPriceRow(row) {
+    return {
+      label: row.currentLicenseLabel,
+      student: { day: row.prices.day.student, free: row.prices.free.student },
+      general: { day: row.prices.day.general, free: row.prices.free.general }
+    };
+  }
+  function simulatorLicenses(rows) {
+    return rows.reduce((result, row) => {
+      const sourceKey = row.currentLicenseCodes[0];
+      result[legacyLicenseKeys[sourceKey] || sourceKey] = simulatorPriceRow(row);
+      return result;
+    }, {});
+  }
+  const standardRows = priceMaster.catalog.standardCar.mainFeeRows;
+  const semiMediumRows = priceMaster.catalog.semiMedium.mainFeeRows;
+  const motorcycleRows = priceMaster.catalog.motorcycle.mainFeeRows;
   const priceData = {
     ordinary_at: {
       label: "AT普通自動車",
-      licenses: {
-        none: { label: "なし", student: { day: 322850, free: 344850 }, general: { day: 327850, free: 349850 } },
-        moped: { label: "原付", student: { day: 319550, free: 341550 }, general: { day: 324550, free: 346550 } },
-        motorcycle: { label: "自動二輪車", student: { day: 249150, free: 271150 }, general: { day: 254150, free: 276150 } }
-      }
+      licenses: simulatorLicenses(standardRows.filter((row) => row.course === "普通車" && row.transmission === "AT"))
     },
     ordinary_mt: {
       label: "MT普通自動車（AT取得後に移行）",
-      licenses: {
-        none: { label: "なし", phoneOnly: true }
-      }
+      licenses: { none: { label: "なし", phoneOnly: true } }
     },
     semi_medium: {
       label: "MT準中型車",
-      licenses: {
-        none: { label: "なし", student: { day: 401280, free: 423280 }, general: { day: 406280, free: 428280 } },
-        moped: { label: "原付", student: { day: 397980, free: 419980 }, general: { day: 402980, free: 424980 } },
-        motorcycle: { label: "自動二輪車", student: { day: 326920, free: 348920 }, general: { day: 331920, free: 353920 } },
-        at_car: { label: "AT普通車", student: { day: 177760, free: 188760 }, general: { day: 182760, free: 193760 } },
-        mt_car: { label: "MT普通車", student: { day: 152240, free: 163240 }, general: { day: 157240, free: 168240 } }
-      }
+      licenses: simulatorLicenses(semiMediumRows.filter((row) => row.course === "準中型車" && row.transmission === "MT"))
     },
     motorcycle_mt: {
       label: "MT普通二輪",
-      licenses: {
-        none: { label: "なし・原付", student: { day: 181390, free: 192390 }, general: { day: 186390, free: 197390 } },
-        car: { label: "普通車", student: { day: 113520, free: 124520 }, general: { day: 118520, free: 129520 } }
-      }
+      licenses: simulatorLicenses(motorcycleRows.filter((row) => row.course === "普通二輪車" && row.transmission === "MT"))
     },
     motorcycle_at: {
       label: "AT普通二輪",
-      licenses: {
-        none: { label: "なし・原付", student: { day: 163350, free: 174350 }, general: { day: 168350, free: 179350 } },
-        car: { label: "普通車", student: { day: 95480, free: 106480 }, general: { day: 100480, free: 111480 } }
-      }
+      licenses: simulatorLicenses(motorcycleRows.filter((row) => row.course === "普通二輪車" && row.transmission === "AT"))
     }
   };
+  function simulatorOptions(options) {
+    return [
+      { value: "none", label: "オプションなし", add: 0 },
+      ...options.flatMap((option) => {
+        const summer = option.pricesBySeason.aprToNov;
+        const winter = option.pricesBySeason.decToMar;
+        const base = {
+          lesson: option.label
+        };
+        if (summer === winter) {
+          return [{ ...base, value: option.id, label: `${option.label}（+${formatter.format(summer)}円）`, add: summer }];
+        }
+        return [
+          { ...base, value: `${option.id}-apr-to-nov`, label: `${option.label} 4〜11月開始（+${formatter.format(summer)}円）`, add: summer },
+          { ...base, value: `${option.id}-dec-to-mar`, label: `${option.label} 12〜3月開始（+${formatter.format(winter)}円）`, add: winter }
+        ];
+      })
+    ];
+  }
   const optionExtras = {
-    ordinary_at: [
-      { value: "none", label: "オプションなし", add: 0 },
-      { value: "komikomi", label: "ATコミコミプラン（+11,000円）", add: 11000, lesson: "コミコミプラン" },
-      { value: "camp", label: "合宿風ハイスピードプラン 4〜11月開始（+55,000円）", add: 55000, lesson: "合宿風ハイスピードプラン" },
-      { value: "camp_winter", label: "合宿風ハイスピードプラン 12〜3月開始（+77,000円）", add: 77000, lesson: "合宿風ハイスピードプラン" },
-      { value: "schedule", label: "スケジュールプラン 4〜11月開始（+55,000円）", add: 55000, lesson: "スケジュールプラン" },
-      { value: "schedule_winter", label: "スケジュールプラン 12〜3月開始（+77,000円）", add: 77000, lesson: "スケジュールプラン" }
-    ],
-    semi_medium: [
-      { value: "none", label: "オプションなし", add: 0 },
-      { value: "komikomi", label: "準中型コミコミプラン（+22,000円）", add: 22000, lesson: "コミコミプラン" },
-      { value: "schedule", label: "スケジュールプラン 4〜11月開始（+55,000円）", add: 55000, lesson: "スケジュールプラン" },
-      { value: "schedule_winter", label: "スケジュールプラン 12〜3月開始（+77,000円）", add: 77000, lesson: "スケジュールプラン" }
-    ]
+    ordinary_at: simulatorOptions(priceMaster.catalog.standardCar.options),
+    semi_medium: simulatorOptions(priceMaster.catalog.semiMedium.options)
   };
   const optionExtrasDefault = [{ value: "none", label: "オプションなし", add: 0 }];
 
