@@ -73,6 +73,8 @@
 body.has-0718-redesign { overflow-x: clip; }
 .price-example-card { opacity: 1 !important; transform: none !important; }
 body.has-0718-redesign .subpage-shell:has(.subpage-main[data-page="instructors"]) { padding-top: 0; }
+body.is-concise-course-page .subpage-hero-frame { display: none; }
+body.is-concise-course-page .subpage-hero { padding-bottom: 12px; }
 
 .redesign-0718 {
   --content-width: 1080px;
@@ -130,8 +132,8 @@ body.has-0718-redesign .subpage-shell:has(.subpage-main[data-page="instructors"]
 .redesign-0718 .r-notice {
   margin-top: 24px;
   padding: 20px 22px;
-  border-left: 4px solid var(--cds-green);
-  background: #f6fbf6;
+  border-left: 4px solid var(--cds-purple);
+  background: #f7f2fb;
   color: #4c4459;
   font-size: 14px;
   line-height: 1.8;
@@ -167,6 +169,22 @@ body.has-0718-redesign .subpage-shell:has(.subpage-main[data-page="instructors"]
 .redesign-0718 .r-button[disabled] { opacity: .55; cursor: not-allowed; transform: none; }
 
 /* Formal fee tables: desktop table and mobile cards are separate on purpose. */
+.redesign-0718 .fee-hero {
+  margin: 28px 0 20px;
+  overflow: hidden;
+  border: 1px solid var(--cds-line);
+  border-radius: 6px;
+  background: #f5f1fa;
+}
+
+.redesign-0718 .fee-hero img {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
 .redesign-0718 .fee-table-wrap {
   margin-top: 28px;
   border: 1px solid var(--cds-line);
@@ -238,6 +256,28 @@ body.has-0718-redesign .subpage-shell:has(.subpage-main[data-page="instructors"]
   margin-top: 28px;
 }
 
+.redesign-0718 .plan-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.redesign-0718 .plan-guide-card {
+  padding: 24px;
+  border: 1px solid var(--cds-line);
+  border-top: 5px solid var(--cds-purple);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.redesign-0718 .plan-guide-card h3 { margin: 0; color: var(--cds-purple-deep); font-size: 21px; }
+.redesign-0718 .plan-guide-card > strong { display: block; margin-top: 7px; color: #c84155; font-size: 17px; }
+.redesign-0718 .plan-guide-card dl { margin: 18px 0 0; }
+.redesign-0718 .plan-guide-card dl > div { display: grid; grid-template-columns: 76px minmax(0, 1fr); gap: 12px; padding: 11px 0; border-top: 1px solid #ece7f1; }
+.redesign-0718 .plan-guide-card dt { color: var(--cds-purple-deep); font-size: 13px; font-weight: 900; }
+.redesign-0718 .plan-guide-card dd { margin: 0; color: var(--cds-muted); font-size: 13px; line-height: 1.75; }
+
 .redesign-0718 .option-item,
 .redesign-0718 .simple-item {
   padding: 22px;
@@ -297,36 +337,81 @@ body.is-modal-open { overflow: hidden; }
 
 /* Flow and schedule */
 .redesign-0718 .flow-line { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 30px; counter-reset: cds-step; }
+.redesign-0718 .flow-line.is-six { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .redesign-0718 .flow-step { position: relative; min-height: 210px; padding: 58px 22px 22px; border: 1px solid var(--cds-line); border-radius: 6px; background: #fff; counter-increment: cds-step; }
 .redesign-0718 .flow-step::before { content: counter(cds-step, decimal-leading-zero); position: absolute; top: 18px; left: 20px; color: var(--cds-purple); font-family: var(--latin, sans-serif); font-size: 23px; font-weight: 900; }
 .redesign-0718 .flow-step h3 { margin: 0 0 10px; color: var(--cds-purple-deep); font-size: 19px; line-height: 1.45; }
 .redesign-0718 .flow-step p { margin: 0; color: var(--cds-muted); font-size: 14px; line-height: 1.8; }
+
+.redesign-0718 .flow-switch {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 30px;
+  overflow: hidden;
+  border: 1px solid var(--cds-purple);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.redesign-0718 .flow-switch a {
+  min-height: 58px;
+  display: grid;
+  place-items: center;
+  padding: 10px 14px;
+  border-right: 1px solid var(--cds-purple);
+  color: var(--cds-purple-deep);
+  font-weight: 900;
+  text-align: center;
+  text-decoration: none;
+}
+
+.redesign-0718 .flow-switch a:first-child { background: var(--cds-purple); color: #fff; }
+.redesign-0718 .flow-switch a:last-child { border-right: 0; }
+
+.redesign-0718 .lesson-plan-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.redesign-0718 .lesson-plan-grid article {
+  padding: 22px;
+  border: 1px solid var(--cds-line);
+  border-top: 5px solid var(--cds-purple);
+  border-radius: 6px;
+  background: #fff;
+}
+
+.redesign-0718 .lesson-plan-grid strong { display: block; color: var(--cds-purple-deep); font-size: 20px; }
+.redesign-0718 .lesson-plan-grid span { display: block; margin-top: 4px; color: #c84155; font-size: 24px; font-weight: 900; }
+.redesign-0718 .lesson-plan-grid p { margin: 8px 0 0; color: var(--cds-muted); }
 
 .redesign-0718 .time-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 24px; }
 .redesign-0718 .time-cell { min-height: 82px; display: grid; place-content: center; gap: 4px; padding: 10px; border: 1px solid var(--cds-line); border-radius: 6px; background: #fff; text-align: center; }
 .redesign-0718 .time-cell strong { color: var(--cds-purple-deep); font-size: 14px; }
 .redesign-0718 .time-cell span { color: var(--cds-muted); font-size: 12px; }
 
-.redesign-0718 .schedule-tabs { display: flex; gap: 8px; margin-top: 26px; border-bottom: 1px solid var(--cds-line); }
-.redesign-0718 .schedule-tab { min-height: 44px; padding: 0 20px; border: 0; border-bottom: 3px solid transparent; background: transparent; color: #6d6279; font-weight: 900; cursor: pointer; }
-.redesign-0718 .schedule-tab[aria-selected="true"] { border-bottom-color: var(--cds-purple); color: var(--cds-purple-deep); }
-.redesign-0718 .schedule-panel { padding-top: 24px; }
-.redesign-0718 .schedule-panel[hidden] { display: none; }
+.redesign-0718 .schedule-stack { display: grid; gap: 34px; margin-top: 30px; }
+.redesign-0718 .schedule-group { min-width: 0; }
+.redesign-0718 .schedule-group > h3 { margin: 0 0 14px; padding-left: 14px; border-left: 5px solid var(--cds-purple); color: var(--cds-purple-deep); font-size: 24px; }
 .redesign-0718 .schedule-list { display: grid; gap: 10px; }
 .redesign-0718 .schedule-row { display: grid; grid-template-columns: 132px minmax(0, 1fr) auto; gap: 18px; align-items: center; padding: 17px 18px; border: 1px solid var(--cds-line); border-radius: 6px; background: #fff; }
 .redesign-0718 .schedule-row time { color: var(--cds-purple); font-weight: 900; }
 .redesign-0718 .schedule-row strong { color: var(--cds-purple-deep); }
 .redesign-0718 .schedule-row span { color: var(--cds-muted); font-size: 13px; }
 
-/* Three-step application */
+/* Sequential application form */
 .redesign-0718 .form-honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); opacity: 0; pointer-events: none; }
 .redesign-0718 .form-honeypot input { width: 1px; min-height: 1px; padding: 0; border: 0; }
 .redesign-0718 .application-progress { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 26px 0 32px; border: 1px solid var(--cds-line); border-radius: 6px; overflow: hidden; }
 .redesign-0718 .application-progress li { list-style: none; padding: 16px 14px; border-right: 1px solid var(--cds-line); background: #fff; color: #71677d; font-size: 13px; font-weight: 900; text-align: center; }
 .redesign-0718 .application-progress li:last-child { border-right: 0; }
 .redesign-0718 .application-progress li.is-current { background: var(--cds-purple); color: #fff; }
-.redesign-0718 .application-step[hidden] { display: none; }
-.redesign-0718 .application-step h2 { margin: 0 0 22px; color: var(--cds-purple-deep); font-size: 26px; }
+.redesign-0718 .application-section { position: relative; margin-top: 34px; padding: 30px; border: 1px solid var(--cds-line); border-radius: 6px; background: #fff; }
+.redesign-0718 .application-section + .application-section { margin-top: 22px; }
+.redesign-0718 .application-section-no { display: block; margin-bottom: 8px; color: var(--cds-orange); font-family: var(--latin, sans-serif); font-size: 13px; font-weight: 900; letter-spacing: .1em; }
+.redesign-0718 .application-section h2 { margin: 0 0 24px; color: var(--cds-purple-deep); font-size: 26px; }
 .redesign-0718 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 22px; }
 .redesign-0718 .form-field { display: grid; gap: 8px; align-content: start; }
 .redesign-0718 .form-field.is-wide { grid-column: 1 / -1; }
@@ -346,6 +431,8 @@ body.is-modal-open { overflow: hidden; }
 .redesign-0718 .choice-item label { min-height: 54px; display: grid; place-items: center; padding: 10px; border: 1px solid #cfc6d9; border-radius: 5px; background: #fff; color: #574d64; font-size: 14px; font-weight: 850; text-align: center; cursor: pointer; }
 .redesign-0718 .choice-item input:checked + label { border-color: var(--cds-purple); background: var(--cds-purple-soft); color: var(--cds-purple-deep); box-shadow: inset 0 0 0 1px var(--cds-purple); }
 .redesign-0718 .form-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 30px; }
+.redesign-0718 .form-submit { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--cds-line); }
+.redesign-0718 .form-submit p { margin: 0; color: var(--cds-muted); font-size: 13px; line-height: 1.7; }
 .redesign-0718 .quote-box { margin: 0 0 26px; padding: 24px; border: 1px solid var(--cds-purple); border-radius: 6px; background: var(--cds-purple-soft); }
 .redesign-0718 .quote-box small { display: block; color: #72667e; font-weight: 800; }
 .redesign-0718 .quote-box strong { display: block; margin-top: 6px; color: var(--cds-purple-deep); font-size: 34px; font-weight: 900; }
@@ -396,8 +483,10 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .fee-mobile-list { display: grid; gap: 14px; margin-top: 24px; }
   .redesign-0718 .option-grid,
   .redesign-0718 .simple-grid,
-  .redesign-0718 .instructor-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .redesign-0718 .instructor-grid,
+  .redesign-0718 .plan-guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redesign-0718 .flow-line { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .redesign-0718 .flow-line.is-six { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redesign-0718 .time-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .redesign-0718 .choice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redesign-0718 .visual-split { grid-template-columns: 1fr; }
@@ -411,19 +500,25 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .option-grid,
   .redesign-0718 .simple-grid,
   .redesign-0718 .instructor-grid,
+  .redesign-0718 .plan-guide-grid,
   .redesign-0718 .flow-line,
   .redesign-0718 .form-grid,
   .redesign-0718 .choice-grid { grid-template-columns: 1fr; }
   .redesign-0718 .flow-step { min-height: 0; }
+  .redesign-0718 .fee-hero img { aspect-ratio: 4 / 3; }
+  .redesign-0718 .flow-switch,
+  .redesign-0718 .lesson-plan-grid { grid-template-columns: 1fr; }
+  .redesign-0718 .flow-switch a { border-right: 0; border-bottom: 1px solid var(--cds-purple); }
+  .redesign-0718 .flow-switch a:last-child { border-bottom: 0; }
   .redesign-0718 .time-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redesign-0718 .r-modal { padding: 10px; }
   .redesign-0718 .r-modal-panel { padding: 24px 16px; }
   .redesign-0718 .r-modal-list { grid-template-columns: 1fr; }
   .redesign-0718 .application-progress li { padding: 12px 6px; font-size: 11px; }
   .redesign-0718 .form-field.is-wide { grid-column: auto; }
-  .redesign-0718 .schedule-tabs { overflow-x: auto; }
-  .redesign-0718 .schedule-tab { flex: 1 0 auto; padding-inline: 16px; }
   .redesign-0718 .schedule-row { grid-template-columns: 1fr; gap: 6px; }
+  .redesign-0718 .application-section { padding: 22px 16px; }
+  .redesign-0718 .form-submit { display: grid; }
   .redesign-0718 .form-nav { display: grid; grid-template-columns: 1fr; }
   .redesign-0718 .form-nav .r-button { order: 1; }
   .redesign-0718 .form-nav .r-button.is-primary,

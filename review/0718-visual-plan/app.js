@@ -5,7 +5,7 @@ const pages = [
     current: "/",
     target: "/",
     changes: [["写真変更", "photo"], ["動的化", "dynamic"]],
-    note: "白いマツダ教習車、新バス、校舎へ更新。料金シミュレーターを全車種対応の唯一の入口にする。",
+    note: "白いマツダ教習車、新バス、校舎を使ったImageGenヒーロー4案を作成。料金は正式料金ページへ統一する。",
   },
   {
     slug: "admission",
@@ -91,9 +91,9 @@ const pages = [
     slug: "price",
     title: "料金プラン",
     current: "?page=price",
-    target: "/#price-simulator",
+    target: "/detail.html?page=price",
     changes: [["統合", "merge"], ["転送", "delete"]],
-    note: "料金シミュレーターはトップへ統合。各車種の正式料金は該当サブページに掲載する。",
+    note: "料金シミュレーターを削除し、各車種の正式料金を該当サブページに掲載する。",
   },
   {
     slug: "access",

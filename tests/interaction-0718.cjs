@@ -37,17 +37,9 @@ async function openPage(context, path) {
   const checks = [];
   try {
     const top = await openPage(context, "/index.html");
-    assert(await top.locator("#price-simulator").count() === 1, "トップの料金シミュレーターが見つかりません。");
-    assert((await top.locator("#priceValue").textContent()).replace(/\D/g, "") === "322850", "初期料金が正式マスターと一致しません。");
-    await top.selectOption("#heldLicense", "moped");
-    await top.waitForTimeout(450);
-    assert((await top.locator("#priceValue").textContent()).replace(/\D/g, "") === "319550", "原付所持料金が正式マスターと一致しません。");
-    await top.selectOption("#optionPlan", "komikomi");
-    await top.waitForTimeout(450);
-    assert((await top.locator("#priceValue").textContent()).replace(/\D/g, "") === "330550", "オプション加算が一致しません。");
-    const applicationHref = await top.locator("#applyFromSimulator").getAttribute("href");
-    assert(applicationHref.includes("priceCourse=ordinary_at") && applicationHref.includes("currentLicense=moped"), "シミュレーター条件が申込URLへ引き継がれていません。");
-    checks.push("top-simulator");
+    assert(await top.locator("#price-simulator, #simulateButton").count() === 0, "トップに料金シミュレーターが残っています。");
+    assert(await top.locator('a[href="detail.html?page=price"]').count() >= 3, "正式料金ページへの導線が不足しています。");
+    checks.push("official-fee-links");
     await top.close();
 
     const standard = await openPage(context, "/detail.html?page=standard");
@@ -71,18 +63,18 @@ async function openPage(context, path) {
         body: JSON.stringify({ ok: true, applicationId: "TEST-0718" })
       });
     });
-    await application.locator('[data-step="1"] [data-next-step]').click();
-    await application.fill('[name="name"]', "テスト 太郎");
-    await application.fill('[name="kana"]', "テスト タロウ");
+    await application.fill('[name="familyName"]', "テスト");
+    await application.fill('[name="givenName"]', "太郎");
+    await application.fill('[name="familyKana"]', "テスト");
+    await application.fill('[name="givenKana"]', "タロウ");
     await application.fill('[name="birthdate"]', "2000-01-01");
     await application.fill('[name="email"]', "test@example.com");
     await application.fill('[name="phone"]', "09012345678");
     await application.fill('[name="postalCode"]', "818-0025");
     await application.fill('[name="address"]', "福岡県筑紫野市筑紫120番地1");
-    await application.locator('[data-step="2"] [data-next-step]').click();
-    assert((await application.locator("#application-quote").textContent()).replace(/\D/g, "") === "322850", "申込確認画面の概算料金が一致しません。");
+    assert(await application.locator("#application-quote").count() === 0, "申込フォームに不要な料金シミュレーション表示が残っています。");
     await application.check('[name="privacyConsent"]');
-    await application.locator('[data-step="3"] button[type="submit"]').click();
+    await application.locator('button[type="submit"]').click();
     await application.waitForSelector("#application-status.is-success");
     assert(submittedPayload?.estimatedPrice === 322850, "送信データの概算料金が一致しません。");
     assert(submittedPayload?.priceCourse === "ordinary_at", "送信データの料金コースが一致しません。");
@@ -100,6 +92,8 @@ async function openPage(context, path) {
     const schedule = await openPage(context, "/detail.html?page=teaching");
     await schedule.waitForFunction(() => document.querySelector("#schedule-panels")?.textContent?.includes("教習予定"));
     assert((await schedule.locator("#schedule-panels").textContent()).includes("受付確認"), "公開日程APIの内容が表示されません。");
+    assert(await schedule.locator(".schedule-group").count() === 3, "本日・今週・今月が縦に3区分表示されていません。");
+    assert(await schedule.locator(".schedule-group > h3").allTextContents().then((items) => items.join("/") === "本日/今週/今月"), "日程の表示順が本日・今週・今月になっていません。");
     checks.push("public-schedule");
     await schedule.close();
 

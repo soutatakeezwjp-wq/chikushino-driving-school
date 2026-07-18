@@ -43,6 +43,7 @@ async function inspect(page) {
     const brokenImages = Array.from(document.images)
       .filter((image) => image.complete && image.naturalWidth === 0)
       .map((image) => image.currentSrc || image.src);
+    const priceSimulatorElements = document.querySelectorAll("#price-simulator, #simulateButton, .price-simulator, .simulator-widget, [data-price-simulator]").length;
     const overflowElements = Array.from(document.querySelectorAll("body *"))
       .filter((element) => {
         const style = getComputedStyle(element);
@@ -63,6 +64,7 @@ async function inspect(page) {
       viewportWidth,
       horizontalOverflow: documentWidth > viewportWidth + 1,
       brokenImages,
+      priceSimulatorElements,
       overflowElements
     };
   });
@@ -115,10 +117,10 @@ async function inspect(page) {
     generatedAt: new Date().toISOString(),
     baseUrl,
     total: results.length,
-    failures: results.filter((result) => result.status >= 400 || result.horizontalOverflow || result.brokenImages.length || result.consoleErrors.length || result.pageErrors.length),
+    failures: results.filter((result) => result.status >= 400 || result.horizontalOverflow || result.brokenImages.length || result.priceSimulatorElements || result.consoleErrors.length || result.pageErrors.length),
     results
   };
   fs.writeFileSync(path.join(outputDir, "report.json"), JSON.stringify(report, null, 2));
-  console.log(JSON.stringify({ total: report.total, failures: report.failures.length, failureSummary: report.failures.map((item) => ({ viewport: item.viewport, page: item.page, status: item.status, overflow: item.horizontalOverflow, broken: item.brokenImages.length, console: item.consoleErrors, errors: item.pageErrors })) }, null, 2));
+  console.log(JSON.stringify({ total: report.total, failures: report.failures.length, failureSummary: report.failures.map((item) => ({ viewport: item.viewport, page: item.page, status: item.status, overflow: item.horizontalOverflow, broken: item.brokenImages.length, simulator: item.priceSimulatorElements, console: item.consoleErrors, errors: item.pageErrors })) }, null, 2));
   process.exitCode = report.failures.length ? 1 : 0;
 })();

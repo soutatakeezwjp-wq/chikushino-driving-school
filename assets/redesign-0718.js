@@ -16,6 +16,9 @@
   };
 
   document.body.classList.add("has-0718-redesign");
+  if (["paper", "senior", "motorcycle"].includes(pageId)) {
+    document.body.classList.add("is-concise-course-page");
+  }
 
   function safeText(value) {
     return String(value ?? "")
@@ -80,6 +83,42 @@
     }).join("")}</div>`;
   }
 
+  function planGuide(catalog) {
+    const optionById = Object.fromEntries((catalog.options || []).map((item) => [item.id, item]));
+    const plans = [
+      {
+        title: "デイプラン",
+        hours: master.dimensions.plans.day.hours,
+        fit: "平日や日中に通える方",
+        detail: "基本料金で通える標準プランです。教習予約はデイプランの時間帯で行います。"
+      },
+      {
+        title: "フリープラン",
+        hours: master.dimensions.plans.free.hours,
+        fit: "学校・仕事のあとにも通いたい方",
+        detail: "夜間まで予約できるプランです。追加料金は正式料金表のフリー欄に含まれています。"
+      }
+    ];
+    const optionDetails = {
+      komikomi: { fit: "補習や再検定の追加負担が心配な方", detail: "延長・補習教習料と技能検定再検定料がかからない安心プランです。対象車種・適用条件は受付で確認します。" },
+      schedule: { fit: "予定に合わせて卒業まで組んでほしい方", detail: "通える曜日や時間を確認し、学校が卒業までの予約計画を作成します。混雑時期は受付枠に限りがあります。" },
+      "camp-style-high-speed": { fit: "自宅から通いながら短期取得を目指す方", detail: "学校指定の集中日程でAT普通車を進めます。最短17日は目安で、教習進度や検定結果により延びる場合があります。" }
+    };
+    Object.entries(optionDetails).forEach(([id, detail]) => {
+      const option = optionById[id];
+      if (!option) return;
+      const spring = option.pricesBySeason?.aprToNov;
+      const winter = option.pricesBySeason?.decToMar;
+      plans.push({
+        title: option.label,
+        hours: spring === winter ? `追加 ${yen(spring)}` : `4〜11月 ${yen(spring)} / 12〜3月 ${yen(winter)}`,
+        fit: detail.fit,
+        detail: detail.detail
+      });
+    });
+    return `<div class="plan-guide-grid">${plans.map((plan) => `<article class="plan-guide-card"><h3>${safeText(plan.title)}</h3><strong>${safeText(plan.hours)}</strong><dl><div><dt>おすすめ</dt><dd>${safeText(plan.fit)}</dd></div><div><dt>内容</dt><dd>${safeText(plan.detail)}</dd></div></dl></article>`).join("")}</div>`;
+  }
+
   function modalItems(items = []) {
     return items.map((item) => `<div class="r-modal-row"><span>${safeText(item.label)}</span><strong>${yen(item.amount)}${unitLabels[item.unit] || ""}${item.tax === "exempt" ? "（非課税）" : ""}</strong></div>`).join("");
   }
@@ -128,9 +167,9 @@
   }
 
   const feePageMap = {
-    standard: { key: "standardCar", title: "普通自動車 料金表", lead: "現在お持ちの免許と通える時間帯から、正式な教習料金を確認できます。", pdf: "downloads/fees-2026-08/standard-car-fees-2026-08-01.pdf" },
-    semi_medium: { key: "semiMedium", title: "準中型車 料金表", lead: "現有免許によって必要時限と料金が変わります。スマホでは1条件ずつ縦に表示します。", pdf: "downloads/fees-2026-08/semi-medium-fees-2026-08-01.pdf" },
-    bike: { key: "motorcycle", title: "自動二輪車 料金表", lead: "大型・普通・小型、AT・MTごとの料金を、現在お持ちの免許別に確認できます。", pdf: "downloads/fees-2026-08/motorcycle-fees-2026-08-01.pdf" }
+    standard: { key: "standardCar", title: "普通自動車 料金表", lead: "現在お持ちの免許と通える時間帯から、正式な教習料金を確認できます。", image: "images/official-20260718/ordinary-training-cars.jpg", imageAlt: "筑紫野自動車学校の白い普通自動車教習車", pdf: "downloads/fees-2026-08/standard-car-fees-2026-08-01.pdf" },
+    semi_medium: { key: "semiMedium", title: "準中型車 料金表", lead: "現有免許によって必要時限と料金が変わります。スマホでは1条件ずつ縦に表示します。", image: "images/official-20260718/semi-medium-trucks.jpg", imageAlt: "筑紫野自動車学校の準中型教習車", pdf: "downloads/fees-2026-08/semi-medium-fees-2026-08-01.pdf" },
+    bike: { key: "motorcycle", title: "自動二輪車 料金表", lead: "大型・普通・小型、AT・MTごとの料金を、現在お持ちの免許別に確認できます。", image: "images/official-20260718/motorcycles.jpg", imageAlt: "筑紫野自動車学校の自動二輪教習車", pdf: "downloads/fees-2026-08/motorcycle-fees-2026-08-01.pdf" }
   };
 
   function feeButtons(key, pdf) {
@@ -148,6 +187,7 @@
         ${feeTable(catalog.mainFeeRows)}
         ${feeButtons(spec.key, spec.pdf)}
       </div></section>
+      <section class="r-section is-soft"><div class="r-wrap">${sectionHeader("PLAN GUIDE", "通い方と追加プラン", "生活リズム、取得希望時期、追加費用への備えから、自分に合うプランを比較できます。")}${planGuide(catalog)}</div></section>
       ${catalog.licenseChangeRows?.length ? `<section class="r-section is-soft"><div class="r-wrap">${sectionHeader("LICENSE CHANGE", "限定解除・移行", "すでにお持ちの免許から限定条件を解除する場合の料金です。")}${feeTable(catalog.licenseChangeRows)}</div></section>` : ""}
       ${catalog.options?.length ? `<section class="r-section"><div class="r-wrap">${sectionHeader("OPTION", "通い方に合わせたオプション", "基本料金に追加して選べるプランです。")}${optionCards(catalog.options)}</div></section>` : ""}
       <section class="r-section is-soft"><div class="r-wrap">${sectionHeader("NOTICE", "料金についてのご案内")}
@@ -164,9 +204,9 @@
       ["semiMedium", "準中型車の限定解除", master.catalog.semiMedium, "downloads/fees-2026-08/semi-medium-fees-2026-08-01.pdf"],
       ["motorcycle", "自動二輪車の限定解除", master.catalog.motorcycle, "downloads/fees-2026-08/motorcycle-fees-2026-08-01.pdf"]
     ];
-    setPage(groups.map(([key, title, catalog, pdf], index) => `
+    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("LICENSE CHANGE", "限定解除 料金表", "現在お持ちの免許の限定条件を解除するための正式料金です。")}</div></section>` + groups.map(([key, title, catalog, pdf], index) => `
       <section class="r-section ${index % 2 ? "is-soft" : ""}"><div class="r-wrap">
-        ${sectionHeader(index ? "LICENSE CHANGE" : "OFFICIAL FEES", title, "現在お持ちの免許に合う行をご確認ください。")}
+        ${sectionHeader("OFFICIAL FEES", title, "現在お持ちの免許に合う行をご確認ください。")}
         ${feeTable(catalog.licenseChangeRows)}
         ${feeButtons(key, pdf)}
       </div></section>`).join("") + modalShell());
@@ -175,13 +215,14 @@
 
   function renderPriceHub() {
     setPage(`<section class="r-section"><div class="r-wrap">
-      ${sectionHeader("FEES", "免許ごとの正式料金", "各教習ページで、正式料金表・内訳・追加費用を確認できます。料金シミュレーターはトップページに集約しました。")}
+      ${sectionHeader("FEES", "免許ごとの正式料金", "普通車、準中型車、自動二輪車、限定解除の正式料金表・内訳・追加費用を確認できます。")}
       <div class="simple-grid">
         <a class="simple-item" href="detail.html?page=standard#formal-fees"><h3>普通自動車</h3><p>AT、MT移行、普通車限定解除</p></a>
         <a class="simple-item" href="detail.html?page=semi_medium#formal-fees"><h3>準中型車</h3><p>現有免許5区分と限定解除</p></a>
         <a class="simple-item" href="detail.html?page=bike#formal-fees"><h3>自動二輪車</h3><p>大型・普通・小型、AT・MT</p></a>
+        <a class="simple-item" href="detail.html?page=limited"><h3>限定解除</h3><p>普通車・準中型車・自動二輪車</p></a>
       </div>
-      <div class="r-actions"><a class="r-button is-primary" href="index.html#price-simulator">トップの料金シミュレーターへ</a></div>
+      <div class="r-actions"><a class="r-button is-primary" href="detail.html?page=application">料金・入校日を相談する</a></div>
     </div></section>`);
   }
 
@@ -204,10 +245,12 @@
 
   function renderAdmission() {
     const admissionSteps = [
-      ["コースと入校日を決める", "希望する免許、通える曜日、取得希望時期を確認します。迷っている場合は受付で相談できます。"],
-      ["仮申込・資料請求", "Webフォームから希望免許と連絡先を送信します。入力後に概算料金も確認できます。"],
-      ["学校から確認連絡", "料金、必要書類、送迎、入校日を学校側で確認し、不明点を事前に解消します。"],
-      ["書類・支払いを準備", "住民票、本人確認書類、眼鏡等、交通系ICカードなど必要なものをそろえます。"]
+      ["仮申込・お問い合わせ", "希望する免許、通える曜日、取得希望時期をWebまたは電話でお知らせください。"],
+      ["入校日の予約", "学校から空き状況をご案内し、入校説明を受ける日を決めます。"],
+      ["書類を準備", "住民票、本人確認書類、現在の免許証、眼鏡等をそろえます。"],
+      ["料金・支払いを確認", "正式料金、追加費用、支払い方法を確認します。学生の方は学生証もご準備ください。"],
+      ["入校手続き", "受付で書類確認と入校手続きを行い、教習の進め方をご案内します。"],
+      ["適性検査・教習開始", "運転適性検査と先行学科を受け、技能・学科教習を開始します。"]
     ];
     const licenseSteps = [
       ["入校説明・適性検査", "入校日の説明と適性検査を受け、教習の進め方を確認します。"],
@@ -215,14 +258,21 @@
       ["第二段階", "路上教習と学科を進め、卒業検定に備えます。"],
       ["卒業・免許交付", "卒業証明書を受け取り、運転免許試験場で本免学科試験と交付手続きを行います。"]
     ];
-    const flow = (items) => `<div class="flow-line">${items.map(([title, text]) => `<article class="flow-step"><h3>${title}</h3><p>${text}</p></article>`).join("")}</div>`;
+    const flow = (items, className = "") => `<div class="flow-line ${className}">${items.map(([title, text]) => `<article class="flow-step"><h3>${title}</h3><p>${text}</p></article>`).join("")}</div>`;
+    const lessonTimes = ["8:30〜9:20", "9:30〜10:20", "10:30〜11:20", "11:30〜12:20", "13:30〜14:20", "14:30〜15:20", "15:30〜16:20", "16:30〜17:20", "17:40〜18:30", "18:40〜19:30", "19:40〜20:30"];
     setPage(`
-      <section class="r-section"><div class="r-wrap">${sectionHeader("ENTRY FLOW", "入校までの流れ", "申し込み前の確認から入校手続きまで、4つの段階で進みます。")}${flow(admissionSteps)}</div></section>
+      <section class="r-section"><div class="r-wrap">
+        ${sectionHeader("ENTRY GUIDE", "入校から免許交付まで", "必要な手続きと教習の進み方を、順番に確認できます。")}
+        <nav class="flow-switch" aria-label="入校案内のページ内メニュー"><a href="#entry-flow">入校までの手続き</a><a href="#license-flow">入校から免許証交付まで</a><a href="#lesson-time">教習時間</a></nav>
+      </div></section>
+      <section class="r-section is-soft" id="entry-flow"><div class="r-wrap">${sectionHeader("ENTRY FLOW", "入校までの手続き", "仮申込から教習開始まで、6つの段階で進みます。")}${flow(admissionSteps, "is-six")}</div></section>
       <section class="r-section is-soft" id="license-flow"><div class="r-wrap">${sectionHeader("LICENSE FLOW", "入校から免許交付まで", "普通車を例に、卒業後の免許交付までをまとめています。")}${flow(licenseSteps)}
         <div class="r-notice">車種や現在お持ちの免許により、技能・学科時限や検定の流れは異なります。各コースページの正式料金表とあわせてご確認ください。</div>
       </div></section>
-      <section class="r-section"><div class="r-wrap">${sectionHeader("LESSON TIME", "教習時間の目安", "時期により変更する場合があります。入校時に最新時間をご案内します。")}
-        <div class="time-grid">${["8:30〜9:20","9:30〜10:20","10:30〜11:20","11:30〜12:20","13:30〜14:20","14:30〜15:20","15:30〜16:20","16:30〜17:20","17:30〜18:20","18:30〜19:20","19:30〜20:20"].map((time, index) => `<div class="time-cell"><strong>${index + 1}時限</strong><span>${time}</span></div>`).join("")}</div>
+      <section class="r-section" id="lesson-time"><div class="r-wrap">${sectionHeader("LESSON TIME", "教習時間", "通い方に合わせて、デイプランとフリープランから選べます。")}
+        <div class="lesson-plan-grid"><article><strong>デイプラン</strong><span>8:30〜18:30</span><p>昼間を中心に通える方向け</p></article><article><strong>フリープラン</strong><span>8:30〜20:30</span><p>夕方・夜間も通いたい方向け</p></article></div>
+        <div class="time-grid">${lessonTimes.map((time, index) => `<div class="time-cell"><strong>${index + 1}時限</strong><span>${time}</span></div>`).join("")}</div>
+        <p class="r-note">教習時間は時期や学校行事により変更する場合があります。最新の実施時限は入校時にご案内します。</p>
       </div></section>
       <section class="r-section is-soft"><div class="r-wrap">${sectionHeader("PREPARATION", "入校前に準備するもの")}
         <div class="simple-grid"><article class="simple-item"><h3>本人確認・住民票</h3><p>免許証の有無や国籍によって必要書類が異なります。資料内の一覧をご確認ください。</p></article><article class="simple-item"><h3>視力補助・写真</h3><p>眼鏡やコンタクトが必要な方は必ず持参してください。証明写真は学校でも案内します。</p></article><article class="simple-item"><h3>支払い・交通系IC</h3><p>支払い方法を事前に確認し、教習原簿の認証に使用する交通系ICカード等をご準備ください。</p></article></div>
@@ -236,21 +286,21 @@
         eyebrow: "PAPER DRIVER",
         title: "運転の不安を、必要な場面から練習。",
         lead: "久しぶりの運転、駐車、狭い道、高速道路など、現在の技量と目的を確認して内容を組み立てます。",
-        image: "images/real/course-car-card-real.jpg",
+        image: "images/course-visuals-20260718/paper-driver.webp",
         facts: [["まず電話で相談", "運転歴、苦手な場面、希望回数をお伝えください。"], ["1回50分", "初回に技量を確認し、その後の練習内容を調整します。"], ["学校車両で実施", "免許に合う車両で、校内から公道まで段階的に練習します。"]]
       },
       senior: {
         eyebrow: "SENIOR COURSE",
         title: "通知ハガキが届いたら、電話で予約。",
         lead: "年齢や違反状況によって必要な検査・講習が異なります。ハガキを手元にご準備ください。",
-        image: "images/detail-pages/visuals/senior-desktop.webp",
+        image: "images/course-visuals-20260718/senior-course.webp",
         facts: [["1. ハガキを確認", "高齢者講習通知書に記載された内容を確認します。"], ["2. 電話で予約", "092-710-2188へお電話ください。必要な検査と持ち物をご案内します。"], ["3. 講習日に来校", "通知書、免許証、眼鏡等、講習手数料をお持ちください。"]]
       },
       motorcycle: {
         eyebrow: "MOPED COURSE",
         title: "原付講習は、事前予約制です。",
         lead: "基本操作・基本走行・応用走行と安全運転の知識を、3時間の講習で学びます。",
-        image: "images/real/motorcycle-yard-real.jpg",
+        image: "images/course-visuals-20260718/moped-course.webp",
         facts: [["予約", "092-710-2188へ電話し、実施日と開始時間を確認します。"], ["服装", "長袖・長ズボン・運動靴・手袋。雨天時は雨具も必要です。"], ["持ち物", "本人確認書類、住民票、印鑑、筆記用具などを準備します。"]]
       }
     };
@@ -275,21 +325,16 @@
   }
 
   function renderSchedule() {
-    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("CURRENT SCHEDULE", "教習・検定日程", "古い月間画像ではなく、本日・今週・今月の順で最新予定を確認できます。")}
-      <div class="schedule-tabs" role="tablist"><button class="schedule-tab" type="button" role="tab" aria-selected="true" data-schedule-tab="today">本日</button><button class="schedule-tab" type="button" role="tab" aria-selected="false" data-schedule-tab="week">今週</button><button class="schedule-tab" type="button" role="tab" aria-selected="false" data-schedule-tab="month">今月</button></div>
-      <div id="schedule-panels" aria-live="polite"></div><p class="r-note" id="schedule-updated"></p>
+    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("CURRENT SCHEDULE", "教習・検定日程", "本日、今週、今月の順に、公開中の予定をまとめています。")}
+      <div id="schedule-panels" class="schedule-stack" aria-live="polite"></div><p class="r-note" id="schedule-updated"></p>
     </div></section>`);
-    const tabs = Array.from(main.querySelectorAll("[data-schedule-tab]"));
     const panels = main.querySelector("#schedule-panels");
     const updated = main.querySelector("#schedule-updated");
     let data = fallbackSchedule();
-    let current = "today";
     function paint() {
-      panels.innerHTML = `<section class="schedule-panel">${scheduleRows(data[current] || [])}</section>`;
-      tabs.forEach((tab) => tab.setAttribute("aria-selected", String(tab.dataset.scheduleTab === current)));
+      panels.innerHTML = [["today", "本日"], ["week", "今週"], ["month", "今月"]].map(([key, label]) => `<section class="schedule-group"><h3>${label}</h3>${scheduleRows(data[key] || [])}</section>`).join("");
       updated.textContent = data.updatedAt ? `最終更新：${new Intl.DateTimeFormat("ja-JP", { dateStyle: "long", timeStyle: "short" }).format(new Date(data.updatedAt))}` : "";
     }
-    tabs.forEach((tab) => tab.addEventListener("click", () => { current = tab.dataset.scheduleTab; paint(); }));
     paint();
     fetch("/api/public-schedule", { headers: { accept: "application/json" } })
       .then((response) => response.ok ? response.json() : Promise.reject(new Error("not configured")))
@@ -316,22 +361,23 @@
 
   function applicationHtml() {
     const choice = (name, value, label, checked = false) => `<span class="choice-item"><input type="radio" name="${name}" id="${name}-${value}" value="${value}" ${checked ? "checked" : ""}><label for="${name}-${value}">${label}</label></span>`;
-    return `<section class="r-section"><div class="r-wrap">${sectionHeader("ONLINE ENTRY", "仮申込・資料請求", "選択中心の3ステップです。最後に正式料金データを使った概算を確認して送信します。")}
-      <ol class="application-progress" aria-label="入力状況"><li class="is-current">1. 希望内容</li><li>2. 本人情報</li><li>3. 確認・送信</li></ol>
+    return `<section class="r-section"><div class="r-wrap">${sectionHeader("ONLINE ENTRY", "仮申込・資料請求", "上から順番に入力してください。仮申込と資料請求を同じフォームから送信できます。")}
       <form id="application-form-0718" novalidate>
         <div class="form-honeypot" aria-hidden="true"><label>この欄は入力しないでください<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
-        <section class="application-step" data-step="1"><h2>希望内容を選択</h2><div class="form-grid">
+        <section class="application-section"><span class="application-section-no">01</span><h2>希望内容</h2><div class="form-grid">
           <div class="form-field is-wide"><span>ご用件<span class="required">必須</span></span><div class="choice-grid">${choice("purpose", "仮入校申し込み", "仮入校申し込み", true)}${choice("purpose", "資料請求", "資料請求")}${choice("purpose", "料金について相談", "料金相談")}</div></div>
           <label class="form-field"><span>希望する免許<span class="required">必須</span></span><select name="priceCourse" id="app-course" required>${Object.entries(courseDefinitions).map(([key, value]) => `<option value="${key}">${value.label}</option>`).join("")}</select></label>
           <label class="form-field"><span>現在お持ちの免許<span class="required">必須</span></span><select name="currentLicense" id="app-license" required></select></label>
           <div class="form-field"><span>区分<span class="required">必須</span></span><div class="choice-grid">${choice("userType", "student", "学生", true)}${choice("userType", "general", "一般")}</div></div>
           <div class="form-field"><span>通える時間帯<span class="required">必須</span></span><div class="choice-grid">${choice("pricePlan", "day", "デイ", true)}${choice("pricePlan", "free", "フリー")}</div></div>
           <label class="form-field is-wide"><span>追加プラン</span><select name="optionPlans" id="app-option"><option value="">追加しない</option></select></label>
-        </div><div class="form-nav"><span></span><button class="r-button is-primary" type="button" data-next-step>本人情報へ</button></div></section>
+        </div></section>
 
-        <section class="application-step" data-step="2" hidden><h2>本人情報を入力</h2><div class="form-grid">
-          <label class="form-field"><span>お名前<span class="required">必須</span></span><input name="name" autocomplete="name" required></label>
-          <label class="form-field"><span>フリガナ<span class="required">必須</span></span><input name="kana" inputmode="kana" required></label>
+        <section class="application-section"><span class="application-section-no">02</span><h2>本人情報</h2><div class="form-grid">
+          <label class="form-field"><span>姓（漢字）<span class="required">必須</span></span><input name="familyName" autocomplete="family-name" required placeholder="筑紫野"></label>
+          <label class="form-field"><span>名（漢字）<span class="required">必須</span></span><input name="givenName" autocomplete="given-name" required placeholder="太郎"></label>
+          <label class="form-field"><span>セイ（カタカナ）<span class="required">必須</span></span><input name="familyKana" inputmode="kana" required placeholder="チクシノ"></label>
+          <label class="form-field"><span>メイ（カタカナ）<span class="required">必須</span></span><input name="givenKana" inputmode="kana" required placeholder="タロウ"></label>
           <div class="form-field"><span>性別<span class="required">必須</span></span><div class="choice-grid">${choice("gender", "男性", "男性", true)}${choice("gender", "女性", "女性")}${choice("gender", "回答しない", "回答しない")}</div></div>
           <label class="form-field"><span>生年月日<span class="required">必須</span></span><input type="date" name="birthdate" required></label>
           <label class="form-field"><span>メールアドレス<span class="required">必須</span></span><input type="email" name="email" autocomplete="email" required></label>
@@ -341,9 +387,9 @@
           <label class="form-field is-wide"><span>住所<span class="required">必須</span></span><input name="address" autocomplete="street-address" required></label>
           <label class="form-field"><span>学校・会社名</span><input name="organization" autocomplete="organization"></label>
           <label class="form-field"><span>希望入校日</span><input type="date" name="desiredEntryDate"></label>
-        </div><div class="form-nav"><button class="r-button" type="button" data-prev-step>戻る</button><button class="r-button is-primary" type="button" data-next-step>確認へ</button></div></section>
+        </div></section>
 
-        <section class="application-step" data-step="3" hidden><h2>受取方法と内容確認</h2><div class="quote-box"><small>概算料金（税込）</small><strong id="application-quote">計算中</strong><small id="application-quote-note"></small></div><div class="form-grid">
+        <section class="application-section"><span class="application-section-no">03</span><h2>連絡・資料の受取方法</h2><div class="form-grid">
           <div class="form-field"><span>資料の受取方法<span class="required">必須</span></span><div class="choice-grid">${choice("materialDelivery", "デジタル送付を希望", "デジタル", true)}${choice("materialDelivery", "郵送を希望", "郵送")}</div></div>
           <label class="form-field"><span>支払方法<span class="required">必須</span></span><select name="paymentMethod" required><option value="現金・振込を相談">現金・振込を相談</option><option value="ローンを相談">ローンを相談</option><option value="学校で確認">学校で確認</option></select></label>
           <label class="form-field"><span>どこで知りましたか<span class="required">必須</span></span><select name="howKnown" required><option value="Web検索">Web検索</option><option value="家族・知人の紹介">家族・知人の紹介</option><option value="SNS">SNS</option><option value="学校・職場">学校・職場</option><option value="その他">その他</option></select></label>
@@ -351,7 +397,7 @@
           <label class="form-field is-wide"><span>質問・備考</span><textarea name="notes" placeholder="送迎、入校時期、料金など、確認したいことをご記入ください。"></textarea></label>
           <label class="form-field is-wide"><span><input type="checkbox" name="privacyConsent" value="同意済み" required style="width:auto;min-height:0;margin-right:8px">個人情報保護方針に同意します<span class="required">必須</span></span></label>
           <div class="form-field is-wide" id="turnstile-container"></div>
-        </div><div class="form-nav"><button class="r-button" type="button" data-prev-step>戻る</button><button class="r-button is-orange" type="submit">この内容で送信する</button></div><div class="form-status" id="application-status" hidden aria-live="polite"></div></section>
+        </div><div class="form-submit"><p>送信後、学校から正式料金・必要書類・入校日をご案内します。</p><button class="r-button is-orange" type="submit">入力内容を送信する</button></div><div class="form-status" id="application-status" hidden aria-live="polite"></div></section>
       </form>
     </div></section>`;
   }
@@ -360,15 +406,10 @@
     if (!master) return;
     setPage(applicationHtml());
     const form = main.querySelector("#application-form-0718");
-    const steps = Array.from(form.querySelectorAll(".application-step"));
-    const progress = Array.from(main.querySelectorAll(".application-progress li"));
     const course = form.querySelector("#app-course");
     const license = form.querySelector("#app-license");
     const option = form.querySelector("#app-option");
-    const quote = form.querySelector("#application-quote");
-    const quoteNote = form.querySelector("#application-quote-note");
     const status = form.querySelector("#application-status");
-    let currentStep = 1;
 
     function rowsForCourse() {
       return courseDefinitions[course.value]?.rows(master) || [];
@@ -385,7 +426,6 @@
       license.innerHTML = rows.map((row, index) => `<option value="${licenseKey(row, index)}" data-row-index="${index}">${safeText(row.currentLicenseLabel)}</option>`).join("");
       const catalog = master.catalog[courseDefinitions[course.value].catalog];
       option.innerHTML = `<option value="">追加しない</option>${(catalog.options || []).map((item) => `<option value="${item.id}">${safeText(item.label)}</option>`).join("")}`;
-      syncQuote();
     }
     function selectedRow() {
       const rows = rowsForCourse();
@@ -408,28 +448,13 @@
       }
       return amount;
     }
-    function syncQuote() {
-      const amount = quoteAmount();
-      quote.textContent = Number.isFinite(amount) ? yen(amount) : "学校確認";
-      quoteNote.textContent = "最終金額は送信後、学校側で正式料金を再計算して確認します。";
-    }
-    function showStep(step) {
-      currentStep = Math.max(1, Math.min(3, step));
-      steps.forEach((node, index) => { node.hidden = index + 1 !== currentStep; });
-      progress.forEach((node, index) => node.classList.toggle("is-current", index + 1 === currentStep));
-      if (currentStep === 3) syncQuote();
-      main.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    function validateStep(step) {
-      const fields = Array.from(steps[step - 1].querySelectorAll("input, select, textarea"));
+    function validateForm() {
+      const fields = Array.from(form.querySelectorAll("input, select, textarea"));
       for (const field of fields) {
         if (!field.checkValidity()) { field.reportValidity(); return false; }
       }
       return true;
     }
-    form.querySelectorAll("[data-next-step]").forEach((button) => button.addEventListener("click", () => { if (validateStep(currentStep)) showStep(currentStep + 1); }));
-    form.querySelectorAll("[data-prev-step]").forEach((button) => button.addEventListener("click", () => showStep(currentStep - 1)));
-    form.addEventListener("change", syncQuote);
     course.addEventListener("change", syncCourse);
 
     const turnstileContainer = main.querySelector("#turnstile-container");
@@ -455,9 +480,11 @@
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      if (!validateStep(3)) return;
+      if (!validateForm()) return;
       const submit = form.querySelector('[type="submit"]');
       const data = Object.fromEntries(new FormData(form).entries());
+      data.name = `${data.familyName || ""} ${data.givenName || ""}`.trim();
+      data.kana = `${data.familyKana || ""} ${data.givenKana || ""}`.trim();
       const definition = courseDefinitions[data.priceCourse];
       data.vehicle = definition.vehicle;
       data.currentLicenseLabel = license.selectedOptions[0]?.textContent || "";

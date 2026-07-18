@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>筑紫野自動車学校｜ここから、運転が好きになる。</title>
-<meta name="description" content="筑紫野自動車学校。福岡県公安委員会指定・技能試験免除。入校案内、料金シミュレーション、スクールバス、在校生向け情報をスマホから見やすく確認できます。" />
+<meta name="description" content="筑紫野自動車学校。福岡県公安委員会指定・技能試験免除。入校案内、正式料金、スクールバス、在校生向け情報をスマホから見やすく確認できます。" />
 <meta property="og:title" content="筑紫野自動車学校｜ここから、運転が好きになる。" />
 <meta property="og:description" content="筑紫野自動車学校の入校案内、料金、無料送迎、仮申込・資料請求をスマホから見やすく確認できます。" />
 <meta property="og:type" content="website" />
@@ -3362,7 +3362,7 @@
   </header>
 
   <nav class="mobile-cta-bar" aria-label="スマートフォン固定メニュー">
-    <a href="#price-simulator">料金<small>PRICE</small></a>
+    <a href="detail.html?page=price">料金<small>PRICE</small></a>
     <a href="detail.html?page=application">資料請求<small>REQUEST</small></a>
     <a href="detail.html?page=application">仮申込<small>ENTRY</small></a>
     <a href="tel:0927102188">電話<small>CALL</small></a>
@@ -3393,9 +3393,9 @@
           <span><small>ACCESS</small><strong>アクセス</strong><span>地図・所要時間を見る</span></span>
           <span class="arrow">›</span>
         </a>
-        <a class="home-quick-card" href="#price-simulator">
+        <a class="home-quick-card" href="detail.html?page=price">
           <span class="home-quick-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h2M12 11h2M16 11h.01M8 15h2M12 15h2M16 15h.01"/></svg></span>
-          <span><small>PRICE</small><strong>料金シミュレーション</strong><span>簡単に料金をチェック</span></span>
+          <span><small>PRICE</small><strong>正式料金表</strong><span>免許・車種ごとに確認</span></span>
           <span class="arrow">›</span>
         </a>
       </div>
@@ -3403,7 +3403,7 @@
 
     <section class="mobile-home-dock" aria-label="スマートフォン用クイックメニュー">
       <div class="wrap mobile-dock-panel">
-        <a class="mobile-dock-card" href="#price-simulator"><small>PRICE</small><strong>料金を確認</strong><span>ステップで見積もり</span></a>
+        <a class="mobile-dock-card" href="detail.html?page=price"><small>PRICE</small><strong>料金を確認</strong><span>正式料金表を見る</span></a>
         <a class="mobile-dock-card" href="detail.html?page=courses"><small>LICENSE</small><strong>免許を選ぶ</strong><span>普通車・二輪・準中型</span></a>
         <a class="mobile-dock-card" href="detail.html?page=access"><small>BUS</small><strong>送迎を見る</strong><span>通いやすい場所から</span></a>
         <a class="mobile-dock-card" href="detail.html?page=application"><small>ENTRY</small><strong>仮申込・資料請求</strong><span>資料請求も同じ入口</span></a>
@@ -3582,7 +3582,7 @@
           <div class="price-plan-head">
             <small>PRICE PLAN</small>
             <h2>料金プラン例</h2>
-            <p>代表的なコースの料金目安です。免許の有無、通い方、時期やオプションによって変わるため、詳しくはシミュレーションで確認できます。</p>
+            <p>代表的なコースの料金例です。現在お持ちの免許、通える時間帯、オプションによって料金が変わります。車種ごとの正式料金表でご確認ください。</p>
           </div>
           <div class="price-example-grid" aria-label="料金プラン例">
             <article class="price-example-card">
@@ -3612,74 +3612,8 @@
           </div>
           <p class="price-guide">上記は代表的な料金例です。<em>キャンペーンやオプション</em>で金額が変わることがあります。</p>
           <div class="price-cta-stack">
-            <a class="btn btn-white" href="detail.html?page=price">料金表を詳しく見る <span class="circle">›</span></a>
-            <a class="btn btn-purple" href="#price-simulator">料金シミュレーションをしてみる <span class="circle">›</span></a>
-          </div>
-        </div>
-        <div id="price-simulator" class="simulator compact-simulator">
-          <div>
-            <h2>料金シミュレーション</h2>
-            <p class="sim-lead">条件を選ぶだけで、<br>料金の目安がすぐわかる。</p>
-            <div class="sim-flow" aria-label="料金シミュレーションの手順">
-              <span><b>1</b>免許を選ぶ</span>
-              <span><b>2</b>現有免許を選ぶ</span>
-              <span><b>3</b>区分と通い方</span>
-              <span><b>4</b>オプションプラン</span>
-              <span><b>5</b>結果を見る</span>
-            </div>
-            <div class="sim-content">
-              <div class="mascot-pair" aria-hidden="true">
-                <img class="mascot-pair-img" src="images/brand-assets/az-mascots.png" alt="">
-              </div>
-              <div>
-                <div class="fields">
-                  <div class="field">
-                    <label for="licenseType">免許の種類</label>
-	                    <select id="licenseType">
-	                      <option value="ordinary_at">AT普通自動車</option>
-	                      <option value="ordinary_mt">MT普通自動車（AT取得後に移行）</option>
-	                      <option value="semi_medium">MT準中型車</option>
-                      <option value="motorcycle_mt">MT普通二輪</option>
-                      <option value="motorcycle_at">AT普通二輪</option>
-                    </select>
-                  </div>
-                  <div class="field">
-                    <label for="heldLicense">現在の免許</label>
-                    <select id="heldLicense">
-                      <option value="none">なし</option>
-                    </select>
-                  </div>
-                  <div class="field">
-                    <label for="course">区分</label>
-                    <select id="course">
-                      <option value="student">学生</option>
-                      <option value="general">一般</option>
-                    </select>
-                  </div>
-                  <div class="field">
-                    <label for="planType">通い方</label>
-                    <select id="planType">
-                      <option value="day">デイプラン</option>
-                      <option value="free">フリープラン</option>
-                    </select>
-                  </div>
-                  <div class="field">
-                    <label for="optionPlan">オプションプラン</label>
-                    <select id="optionPlan">
-                      <option value="none">オプションなし</option>
-                    </select>
-                  </div>
-                </div>
-                <p class="sim-note">※令和8年8月1日改定料金表（税込）をもとにした主要コースの目安です。普通車・準中型の免許なしの方は、仮免試験手数料1,800円・仮免交付手数料1,100円（非課税）が別途必要です。</p>
-              </div>
-            </div>
-          </div>
-          <div class="result">
-            <small>目安</small>
-            <div class="price"><span id="priceValue">322,850</span><span id="priceUnit">円（税込）</span></div>
-            <button class="btn btn-purple simulate-btn" type="button" id="simulateButton">結果を見る <span class="circle">›</span></button>
-            <a class="btn btn-white" href="detail.html?page=price">詳細を確認する <span class="circle">›</span></a>
-            <a class="btn btn-orange" id="applyFromSimulator" href="detail.html?page=application#applicationForm">この条件で仮申込・資料請求へ <span class="circle">›</span></a>
+            <a class="btn btn-purple" href="detail.html?page=price">車種別の正式料金を見る <span class="circle">›</span></a>
+            <a class="btn btn-white" href="detail.html?page=application">料金・入校日を相談する <span class="circle">›</span></a>
           </div>
         </div>
       </div>
@@ -3985,93 +3919,7 @@
     </div>
   </footer>
 
-<script src="data/price-master.js"></script>
 <script>
-  const formatter = new Intl.NumberFormat("ja-JP");
-  const priceMaster = window.CDS_PRICE_MASTER;
-  if (!priceMaster) throw new Error("料金マスターを読み込めませんでした。");
-
-  const legacyLicenseKeys = {
-    none: "none",
-    moped: "moped",
-    motorcycle: "motorcycle",
-    at_ordinary_car: "at_car",
-    mt_ordinary_car: "mt_car",
-    ordinary_car: "car"
-  };
-  function simulatorPriceRow(row) {
-    return {
-      label: row.currentLicenseLabel,
-      student: { day: row.prices.day.student, free: row.prices.free.student },
-      general: { day: row.prices.day.general, free: row.prices.free.general }
-    };
-  }
-  function simulatorLicenses(rows) {
-    return rows.reduce((result, row) => {
-      const sourceKey = row.currentLicenseCodes[0];
-      result[legacyLicenseKeys[sourceKey] || sourceKey] = simulatorPriceRow(row);
-      return result;
-    }, {});
-  }
-  const standardRows = priceMaster.catalog.standardCar.mainFeeRows;
-  const semiMediumRows = priceMaster.catalog.semiMedium.mainFeeRows;
-  const motorcycleRows = priceMaster.catalog.motorcycle.mainFeeRows;
-  const priceData = {
-    ordinary_at: {
-      label: "AT普通自動車",
-      licenses: simulatorLicenses(standardRows.filter((row) => row.course === "普通車" && row.transmission === "AT"))
-    },
-    ordinary_mt: {
-      label: "MT普通自動車（AT取得後に移行）",
-      licenses: { none: { label: "なし", phoneOnly: true } }
-    },
-    semi_medium: {
-      label: "MT準中型車",
-      licenses: simulatorLicenses(semiMediumRows.filter((row) => row.course === "準中型車" && row.transmission === "MT"))
-    },
-    motorcycle_mt: {
-      label: "MT普通二輪",
-      licenses: simulatorLicenses(motorcycleRows.filter((row) => row.course === "普通二輪車" && row.transmission === "MT"))
-    },
-    motorcycle_at: {
-      label: "AT普通二輪",
-      licenses: simulatorLicenses(motorcycleRows.filter((row) => row.course === "普通二輪車" && row.transmission === "AT"))
-    }
-  };
-  function simulatorOptions(options) {
-    return [
-      { value: "none", label: "オプションなし", add: 0 },
-      ...options.flatMap((option) => {
-        const summer = option.pricesBySeason.aprToNov;
-        const winter = option.pricesBySeason.decToMar;
-        const base = {
-          lesson: option.label
-        };
-        if (summer === winter) {
-          return [{ ...base, value: option.id, label: `${option.label}（+${formatter.format(summer)}円）`, add: summer }];
-        }
-        return [
-          { ...base, value: `${option.id}-apr-to-nov`, label: `${option.label} 4〜11月開始（+${formatter.format(summer)}円）`, add: summer },
-          { ...base, value: `${option.id}-dec-to-mar`, label: `${option.label} 12〜3月開始（+${formatter.format(winter)}円）`, add: winter }
-        ];
-      })
-    ];
-  }
-  const optionExtras = {
-    ordinary_at: simulatorOptions(priceMaster.catalog.standardCar.options),
-    semi_medium: simulatorOptions(priceMaster.catalog.semiMedium.options)
-  };
-  const optionExtrasDefault = [{ value: "none", label: "オプションなし", add: 0 }];
-
-  const licenseType = document.querySelector("#licenseType");
-  const heldLicense = document.querySelector("#heldLicense");
-  const course = document.querySelector("#course");
-  const planType = document.querySelector("#planType");
-  const optionPlan = document.querySelector("#optionPlan");
-  const priceValue = document.querySelector("#priceValue");
-  const priceUnit = document.querySelector("#priceUnit");
-  const simulateButton = document.querySelector("#simulateButton");
-  const applyFromSimulator = document.querySelector("#applyFromSimulator");
   function escapeHtml(value = "") {
     return String(value)
       .replaceAll("&", "&amp;")
@@ -4131,84 +3979,6 @@
       console.warn("WordPress記事の取得に失敗しました。静的な初期表示を使います。", error);
     }
   }
-  function syncLicenseChoices() {
-    const selected = priceData[licenseType.value];
-    heldLicense.innerHTML = Object.entries(selected.licenses)
-      .map(([key, item]) => `<option value="${key}">${item.label}</option>`)
-      .join("");
-    syncOptionChoices();
-    updatePrice();
-  }
-  function syncOptionChoices() {
-    if (!optionPlan) return;
-    const extras = optionExtras[licenseType.value] || optionExtrasDefault;
-    optionPlan.innerHTML = extras.map((item) => `<option value="${item.value}">${item.label}</option>`).join("");
-  }
-  function currentOptionExtra() {
-    const extras = optionExtras[licenseType.value] || optionExtrasDefault;
-    return extras.find((item) => item.value === optionPlan?.value) || extras[0];
-  }
-  const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-  let priceCountUpFrame = null;
-  function animatePriceValue(total) {
-    if (priceCountUpFrame) cancelAnimationFrame(priceCountUpFrame);
-    const from = Number(String(priceValue.textContent).replace(/[^0-9]/g, "")) || 0;
-    if (reduceMotionQuery.matches || !from || from === total) {
-      priceValue.textContent = formatter.format(total);
-      return;
-    }
-    const duration = 380;
-    const start = performance.now();
-    const step = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      priceValue.textContent = formatter.format(Math.round(from + (total - from) * eased));
-      if (progress < 1) priceCountUpFrame = requestAnimationFrame(step);
-    };
-    priceCountUpFrame = requestAnimationFrame(step);
-  }
-  function updatePrice() {
-    const selected = priceData[licenseType.value];
-    const license = selected.licenses[heldLicense.value];
-    if (license.phoneOnly) {
-      priceValue.textContent = "お電話で確認";
-      if (priceUnit) priceUnit.textContent = "";
-      updateSimulatorApplicationLink();
-      return;
-    }
-    const total = license[course.value][planType.value] + currentOptionExtra().add;
-    animatePriceValue(total);
-    if (priceUnit) priceUnit.textContent = "円（税込）";
-    updateSimulatorApplicationLink();
-  }
-  function updateSimulatorApplicationLink() {
-    if (!applyFromSimulator) return;
-    const params = new URLSearchParams({
-      page: "application",
-      purpose: "仮入校申し込み",
-      vehicle: priceData[licenseType.value]?.label || "",
-      priceCourse: licenseType.value,
-      currentLicense: heldLicense.value,
-      userType: course.value,
-      pricePlan: planType.value
-    });
-    const extra = currentOptionExtra();
-    if (extra.lesson) params.set("lessonPlan", extra.lesson);
-    applyFromSimulator.href = `detail.html?${params.toString()}#applicationForm`;
-  }
-  function simulatePrice() {
-    updatePrice();
-    const result = document.querySelector(".result");
-    result?.animate([
-      { transform: "scale(1)", boxShadow: "none" },
-      { transform: "scale(1.045)", boxShadow: "0 20px 46px rgba(92,49,155,.22)" },
-      { transform: "scale(1)", boxShadow: "none" }
-    ], { duration: 520, easing: "cubic-bezier(.16,1,.3,1)" });
-  }
-  licenseType.addEventListener("change", syncLicenseChoices);
-  [heldLicense, course, planType, optionPlan].forEach((select) => select?.addEventListener("change", updatePrice));
-  simulateButton?.addEventListener("click", simulatePrice);
-  syncLicenseChoices();
   setupWordPressTopics();
 
   const topbar = document.querySelector(".topbar");
