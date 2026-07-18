@@ -13,6 +13,7 @@ const FEED_TIMEOUT_MS = 8000;
 const GAS_TIMEOUT_MS = 12000;
 const TURNSTILE_TIMEOUT_MS = 8000;
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+const PRODUCTION_API_ORIGIN = "https://chikushino-driving-school.pages.dev";
 const MAX_APPLICATION_BODY_BYTES = 64 * 1024;
 
 const APPLICATION_FIELD_LIMITS = {
@@ -478,6 +479,20 @@ function applicationConfiguration(env) {
   };
 }
 
+function shouldProxyPreviewApi(request, env) {
+  const hostname = new URL(request.url).hostname;
+  return hostname.endsWith(".chikushino-driving-school.pages.dev")
+    && hostname !== "chikushino-driving-school.pages.dev"
+    && !env.GAS_APPLICATION_WEBHOOK_URL;
+}
+
+function proxyPreviewApi(request) {
+  const target = new URL(request.url);
+  target.protocol = "https:";
+  target.host = new URL(PRODUCTION_API_ORIGIN).host;
+  return fetch(new Request(target.toString(), request));
+}
+
 async function handleApplication(request, env) {
   const configuration = applicationConfiguration(env);
 
@@ -626,6 +641,9 @@ async function handleWordPressPosts(request, env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if ((url.pathname === "/api/application" || url.pathname === "/api/public-schedule") && shouldProxyPreviewApi(request, env)) {
+      return proxyPreviewApi(request);
+    }
     if (url.pathname === "/api/wordpress-posts") {
       return handleWordPressPosts(request, env);
     }
