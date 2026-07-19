@@ -89,7 +89,9 @@ async function inspect(page) {
         const consoleErrors = [];
         const pageErrors = [];
         page.on("console", (message) => {
-          if (message.type() === "error" && !message.text().includes("public-schedule")) consoleErrors.push(message.text());
+          const source = message.location().url || "";
+          const isExternalTurnstileLog = source.includes("challenges.cloudflare.com/");
+          if (message.type() === "error" && !isExternalTurnstileLog) consoleErrors.push(message.text());
         });
         page.on("pageerror", (error) => pageErrors.push(error.message));
         const response = await page.goto(target.url, { waitUntil: "domcontentloaded", timeout: 30000 });

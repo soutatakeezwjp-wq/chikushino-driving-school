@@ -623,9 +623,20 @@ async function handleApplication(request, env) {
 }
 
 async function handlePublicSchedule(env) {
+  const fallback = () => jsonResponse({
+    ok: true,
+    stale: true,
+    warning: "最新の日程を取得できなかったため、受付での確認をご案内しています。",
+    schedule: {
+      updatedAt: new Date().toISOString(),
+      today: [],
+      week: [],
+      month: []
+    }
+  }, 200, "public, max-age=15, stale-while-revalidate=300");
   const gasEndpoint = env.PUBLIC_SCHEDULE_GAS_URL || env.GAS_APPLICATION_WEBHOOK_URL;
   if (!gasEndpoint) {
-    return jsonResponse({ ok: false, error: "日程データの取得先が未設定です。" }, 503, "no-store");
+    return fallback();
   }
   try {
     const url = new URL(gasEndpoint);
@@ -636,11 +647,11 @@ async function handlePublicSchedule(env) {
     }, GAS_TIMEOUT_MS);
     const payload = await response.json();
     if (!response.ok || payload.ok === false || !payload.schedule) {
-      return jsonResponse({ ok: false, error: "日程データを取得できませんでした。" }, 502, "no-store");
+      return fallback();
     }
     return jsonResponse({ ok: true, schedule: payload.schedule }, 200, "public, max-age=60, stale-while-revalidate=300");
   } catch (error) {
-    return jsonResponse({ ok: false, error: "日程データを取得できませんでした。" }, 502, "no-store");
+    return fallback();
   }
 }
 
