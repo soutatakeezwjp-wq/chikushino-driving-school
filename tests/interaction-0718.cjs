@@ -31,15 +31,38 @@ async function openPage(context, path) {
   return page;
 }
 
+async function selectChoice(page, selector) {
+  await page.locator(selector).evaluate((input) => {
+    input.checked = true;
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  });
+}
+
 (async () => {
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const checks = [];
   try {
     const top = await openPage(context, "/index.html");
-    assert(await top.locator("#price-simulator, #simulateButton").count() === 0, "トップに料金シミュレーターが残っています。");
+    assert(await top.locator("#price-simulator").count() === 1, "トップの料金シミュレーターが表示されていません。");
+    assert(await top.locator("#sim-course option").count() === 8, "料金シミュレーターの免許区分が8種類ではありません。");
+    assert((await top.locator("#sim-course").textContent()).includes("大型自動二輪"), "大型自動二輪が料金シミュレーターにありません。");
+    const courseValues = await top.locator("#sim-course option").evaluateAll((options) => options.map((option) => option.value));
+    for (const value of courseValues) {
+      await top.selectOption("#sim-course", value);
+      assert(await top.locator("#sim-license option").count() > 0, `${value}の現有免許選択肢がありません。`);
+      const total = Number((await top.locator("#sim-total-price").textContent()).replace(/\D/g, ""));
+      assert(total > 0, `${value}の正式料金を計算できません。`);
+    }
+    assert((await top.locator("#sim-apply").getAttribute("href")).includes("estimatedPrice="), "シミュレーター結果が仮申込へ引き継がれません。");
+    await top.locator("#open-option-details").click();
+    assert(await top.locator("#option-details-dialog").evaluate((dialog) => dialog.open), "オプション詳細が開きません。");
+    assert(await top.locator("#option-details-body tr").count() >= 3, "オプション詳細が不足しています。");
+    const optionDetails = await top.locator("#option-details-body").textContent();
+    assert(["コミコミプラン", "スケジュールプラン", "合宿風ハイスピードプラン"].every((label) => optionDetails.includes(label)), "3種類のオプション説明が揃っていません。");
+    await top.locator("[data-dialog-close]").click();
     assert(await top.locator('a[href="detail.html?page=price"]').count() >= 3, "正式料金ページへの導線が不足しています。");
-    checks.push("official-fee-links");
+    checks.push("home-fee-simulator");
     await top.close();
 
     const standard = await openPage(context, "/detail.html?page=standard");
@@ -67,23 +90,43 @@ async function openPage(context, path) {
     await application.fill('[name="givenName"]', "太郎");
     await application.fill('[name="familyKana"]', "テスト");
     await application.fill('[name="givenKana"]', "タロウ");
+    await selectChoice(application, '[name="gender"][value="男性"]');
     await application.fill('[name="birthdate"]', "2000-01-01");
     await application.fill('[name="email"]', "test@example.com");
     await application.fill('[name="phone"]', "09012345678");
     await application.fill('[name="postalCode"]', "818-0025");
     await application.fill('[name="address"]', "福岡県筑紫野市筑紫120番地1");
-    assert(await application.locator("#application-quote").count() === 0, "申込フォームに不要な料金シミュレーション表示が残っています。");
-    await application.check('[name="privacyConsent"]');
+    await selectChoice(application, '[name="occupation"][value="大学生"]');
+    await selectChoice(application, '[name="desiredVehicles"][value="普通自動車（AT）"]');
+    await selectChoice(application, '[name="desiredVehicles"][value="普通自動車（MT）"]');
+    await selectChoice(application, '[name="currentLicenses"][value="持っていない"]');
+    await selectChoice(application, '[name="lessonPlan"][value="デイプラン"]');
+    await selectChoice(application, '[name="optionPlans"][value="コミコミプラン"]');
+    await selectChoice(application, '[name="paymentMethod"][value="未定"]');
+    await selectChoice(application, '[name="howKnown"][value="インターネット"]');
+    await selectChoice(application, '[name="admissionMotives"][value="自宅から近い"]');
+    const expectedCounts = { occupation: 10, desiredVehicles: 10, currentLicenses: 21, lessonPlan: 2, optionPlans: 3, paymentMethod: 4, howKnown: 7, admissionMotives: 8 };
+    for (const [name, count] of Object.entries(expectedCounts)) {
+      assert(await application.locator(`[name="${name}"]`).count() === count, `${name}の選択肢数が従来フォームと一致しません。`);
+    }
+    assert(await application.locator('[name="preferredContactMethod"], [name="materialDelivery"]').count() === 0, "従来カンプにない追加項目が残っています。");
+    await application.check('[name="privacyConsent"]', { force: true });
     await application.locator('button[type="submit"]').click();
     await application.waitForSelector("#application-status.is-success");
-    assert(submittedPayload?.estimatedPrice === 322850, "送信データの概算料金が一致しません。");
-    assert(submittedPayload?.priceCourse === "ordinary_at", "送信データの料金コースが一致しません。");
-    assert(submittedPayload?.materialDelivery === "デジタル送付を希望", "資料受取方法がGASと一致しません。");
+    assert(submittedPayload?.desiredVehicles?.length === 2, "希望車種が配列で送信されていません。");
+    assert(submittedPayload?.currentLicenses?.[0] === "持っていない", "現有免許が配列で送信されていません。");
+    assert(submittedPayload?.optionPlans?.[0] === "コミコミプラン", "オプションが配列で送信されていません。");
+    assert(submittedPayload?.howKnown?.[0] === "インターネット", "認知経路が配列で送信されていません。");
+    assert(submittedPayload?.admissionMotives?.[0] === "自宅から近い", "入校動機が配列で送信されていません。");
     checks.push("application-flow");
     await application.close();
 
     const instructors = await openPage(context, "/detail.html?page=instructors");
-    assert(await instructors.locator(".instructor-card").count() === 9, "指導員が9名表示されていません。");
+    assert(await instructors.locator(".instructor-card").count() === 19, "指導員が19名表示されていません。");
+    assert(await instructors.locator('[aria-label="四輪担当"]').count() === 19, "四輪担当アイコンの人数がExcelと一致しません。");
+    assert(await instructors.locator('[aria-label="二輪担当"]').count() === 7, "二輪担当アイコンの人数がExcelと一致しません。");
+    assert(await instructors.locator('.instructor-card img[src*="instructors-anime-20260718"]').count() === 9, "修正版画像が指定9名だけに使われていません。");
+    assert(await instructors.locator('.instructor-card img:not([src*="instructors-anime-20260718"])').count() === 10, "従来画像が指定外10名に維持されていません。");
     const brokenInstructors = await instructors.locator(".instructor-card img").evaluateAll((images) => images.filter((image) => image.complete && image.naturalWidth === 0).length);
     assert(brokenInstructors === 0, "指導員画像に読み込み失敗があります。");
     checks.push("instructors");

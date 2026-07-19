@@ -196,12 +196,28 @@ function cleanText(value, maxLength, preserveLines = false) {
 }
 
 function cleanStringList(value, maxItems = 10, maxLength = 80) {
-  const items = Array.isArray(value) ? value : String(value || "").split(",");
+  const source = Array.isArray(value) ? value : [value];
+  const items = source.reduce((result, item) => {
+    if (Array.isArray(item)) return result.concat(item);
+    return result.concat(String(item || "").split(","));
+  }, []);
   return items
     .map((item) => cleanText(item, maxLength))
     .filter(Boolean)
     .slice(0, maxItems)
     .filter((item, index, array) => array.indexOf(item) === index);
+}
+
+function cleanAliasedStringList(payload, keys, maxItems = 10, maxLength = 80) {
+  for (const key of keys) {
+    const values = cleanStringList(payload[key], maxItems, maxLength);
+    if (values.length) return values;
+  }
+  return [];
+}
+
+function hasApplicationValue(value) {
+  return Array.isArray(value) ? value.length > 0 : Boolean(String(value || "").trim());
 }
 
 function cleanUrl(value) {
@@ -362,8 +378,21 @@ async function verifyTurnstile(payload, request, env) {
 function normalizeApplicationPayload(payload, request) {
   const requestUrl = new URL(request.url);
   const referer = request.headers.get("referer") || "";
-  const currentLicenses = cleanStringList(payload.currentLicenses || payload.currentLicense, 20, 80);
-  const optionPlans = cleanStringList(payload.optionPlans || payload.options, 10, 80);
+  const desiredVehicles = cleanAliasedStringList(
+    payload,
+    ["desiredVehicles", "desiredVehicle", "vehicle", "priceCourse"],
+    12,
+    APPLICATION_FIELD_LIMITS.vehicle
+  ).map(normalizeVehicle).filter((value, index, array) => value && array.indexOf(value) === index);
+  const currentLicenses = cleanAliasedStringList(payload, ["currentLicenses", "currentLicense"], 30, 80);
+  const optionPlans = cleanAliasedStringList(payload, ["optionPlans", "options"], 10, 80);
+  const howKnown = cleanAliasedStringList(payload, ["howKnown"], 20, APPLICATION_FIELD_LIMITS.howKnown);
+  const admissionMotives = cleanAliasedStringList(
+    payload,
+    ["admissionMotives", "admissionMotive"],
+    20,
+    120
+  );
   const familyName = payload.familyName || payload.lastName || "";
   const givenName = payload.givenName || payload.firstName || "";
   const familyKana = payload.familyNameKana || payload.lastNameKana || "";
@@ -376,16 +405,20 @@ function normalizeApplicationPayload(payload, request) {
   });
 
   normalized.purpose = normalizePurpose(payload.purpose);
-  normalized.vehicle = normalizeVehicle(payload.vehicle || payload.priceCourse);
+  normalized.desiredVehicles = desiredVehicles;
+  normalized.vehicle = normalizeVehicle(cleanStringList(payload.vehicle, 1, APPLICATION_FIELD_LIMITS.vehicle)[0] || desiredVehicles[0] || payload.priceCourse);
+  if (!normalized.desiredVehicles.length && normalized.vehicle) normalized.desiredVehicles = [normalized.vehicle];
   normalized.name = cleanText(payload.name || `${familyName} ${givenName}`, APPLICATION_FIELD_LIMITS.name);
   normalized.kana = cleanText(payload.kana || `${familyKana} ${givenKana}`, APPLICATION_FIELD_LIMITS.kana);
-  const rawCurrentLicense = Array.isArray(payload.currentLicense) ? payload.currentLicense[0] : payload.currentLicense;
+  const rawCurrentLicense = cleanStringList(payload.currentLicense, 1, APPLICATION_FIELD_LIMITS.currentLicense)[0];
   const licenseKeys = new Set(["none", "moped", "motorcycle", "at_car", "mt_car", "car", "small_at", "small_mt", "motorcycle_at", "motorcycle_mt"]);
   const inferredLicenseLabel = currentLicenses.some((value) => licenseKeys.has(value)) ? "" : currentLicenses.join("、");
   normalized.currentLicense = cleanText(rawCurrentLicense || currentLicenses[0], APPLICATION_FIELD_LIMITS.currentLicense);
   normalized.currentLicenseLabel = cleanText(payload.currentLicenseLabel || inferredLicenseLabel, APPLICATION_FIELD_LIMITS.currentLicenseLabel);
+  normalized.currentLicenses = currentLicenses;
   normalized.optionPlans = optionPlans;
-  normalized.admissionMotives = cleanStringList(payload.admissionMotives || payload.admissionMotive, 10, 80).join("、");
+  normalized.howKnown = howKnown;
+  normalized.admissionMotives = admissionMotives;
   normalized.privacyConsent = acceptedPrivacyConsent(payload.privacyConsent) ? "同意済み" : "";
   normalized.applicationId = `CDS-${new Date().toISOString().replace(/\D/g, "").slice(0, 14)}-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
   normalized.submittedAt = new Date().toISOString();
@@ -398,21 +431,30 @@ function normalizeApplicationPayload(payload, request) {
 }
 
 function validateApplicationPayload(payload) {
-  const requiredFields = ["purpose", "vehicle", "name", "kana", "phone", "email", "howKnown", "privacyConsent"];
+  const requiredFields = ["purpose", "name", "phone", "email", "privacyConsent"];
   if (payload.purpose === "仮入校申し込み") {
-    requiredFields.push("gender", "birthdate", "postalCode", "address", "occupation", "currentLicense", "lessonPlan", "paymentMethod");
+    requiredFields.push("gender", "birthdate", "postalCode", "address", "occupation", "lessonPlan", "paymentMethod");
   }
-  const missing = requiredFields.filter((field) => !String(payload[field] || "").trim());
+  const missing = requiredFields.filter((field) => !hasApplicationValue(payload[field]));
+  if (!hasApplicationValue(payload.desiredVehicles) && !hasApplicationValue(payload.vehicle)) missing.push("desiredVehicles");
+  if (
+    payload.purpose === "仮入校申し込み"
+    && !hasApplicationValue(payload.currentLicenses)
+    && !hasApplicationValue(payload.currentLicense)
+  ) {
+    missing.push("currentLicenses");
+  }
   if (missing.length) {
     throw new ApplicationRequestError("VALIDATION_REQUIRED", `必須項目が不足しています: ${missing.join(", ")}`, 400);
   }
   if (!ALLOWED_PURPOSES.has(payload.purpose)) {
     throw new ApplicationRequestError("VALIDATION_PURPOSE", "お問い合わせ種別を選び直してください。", 400);
   }
-  if (!ALLOWED_VEHICLES.has(payload.vehicle)) {
+  const requestedVehicles = payload.desiredVehicles.length ? payload.desiredVehicles : [payload.vehicle];
+  if (requestedVehicles.some((vehicle) => !ALLOWED_VEHICLES.has(vehicle))) {
     throw new ApplicationRequestError("VALIDATION_VEHICLE", "希望する免許・講習を選び直してください。", 400);
   }
-  if (!/^[ァ-ヶヴー・\s]+$/.test(payload.kana)) {
+  if (payload.kana && !/^[ァ-ヶヴー・\s]+$/.test(payload.kana)) {
     throw new ApplicationRequestError("VALIDATION_KANA", "フリガナは全角カタカナで入力してください。", 400);
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
@@ -442,13 +484,17 @@ async function createSubmissionKey(payload) {
     phone: payload.phone.replace(/\D/g, ""),
     email: payload.email.toLowerCase(),
     desiredEntryDate: payload.desiredEntryDate,
+    desiredVehicles: payload.desiredVehicles,
     priceCourse: payload.priceCourse,
     currentLicense: payload.currentLicense,
+    currentLicenses: payload.currentLicenses,
     userType: payload.userType,
     pricePlan: payload.pricePlan,
     lessonPlan: payload.lessonPlan,
     optionPlans: payload.optionPlans,
-    materialDelivery: payload.materialDelivery
+    materialDelivery: payload.materialDelivery,
+    howKnown: payload.howKnown,
+    admissionMotives: payload.admissionMotives
   };
   return sha256Hex(canonicalStringify(keyFields));
 }

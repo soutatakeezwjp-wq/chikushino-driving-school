@@ -1,0 +1,241 @@
+.home-price-simulator {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 24px;
+  align-items: stretch;
+  padding: clamp(20px, 3vw, 30px);
+  border: 1px solid rgba(92, 49, 155, .18);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 18px 46px rgba(45, 27, 87, .09);
+}
+.home-price-simulator .sim-heading {
+  margin-bottom: 20px;
+}
+.home-price-simulator .sim-heading h2 {
+  margin: 0 0 6px;
+  color: var(--purple-ink);
+  font-family: var(--jp);
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 900;
+  line-height: 1.35;
+}
+.home-price-simulator .sim-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+.home-price-simulator .sim-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.home-price-simulator .field label {
+  color: var(--purple-ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+.home-price-simulator .field select {
+  width: 100%;
+  min-width: 0;
+  height: 46px;
+  border: 1px solid #d9cbe9;
+  border-radius: 6px;
+  background: #fff;
+  color: #302342;
+}
+.home-price-simulator .field select:disabled {
+  color: #8e879a;
+  background: #f6f3f8;
+}
+.sim-option-help-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.sim-option-help {
+  appearance: none;
+  padding: 4px 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: transparent;
+  color: var(--purple);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.sim-option-help:hover { color: var(--green-deep); }
+.home-price-simulator .sim-note {
+  margin: 14px 0 0;
+  color: #766f82;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.75;
+}
+.sim-result {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+  border-radius: 12px;
+  background: linear-gradient(160deg, #f7f1ff, #fff 62%);
+  border: 1px solid #e3d6f2;
+}
+.sim-result > small {
+  color: #665d72;
+  font-size: 12px;
+  font-weight: 800;
+}
+.sim-breakdown {
+  margin: 12px 0;
+  display: grid;
+  gap: 6px;
+}
+.sim-breakdown div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #5f576b;
+  font-size: 12px;
+  font-weight: 700;
+}
+.sim-breakdown dt,
+.sim-breakdown dd { margin: 0; }
+.sim-total {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  color: var(--purple);
+  font-family: var(--latin);
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.sim-total small {
+  color: var(--purple-ink);
+  font-family: var(--jp);
+  font-size: 14px;
+}
+.sim-result .btn {
+  width: 100%;
+  min-height: 48px;
+  justify-content: center;
+  margin-top: 10px;
+}
+.sim-status-note {
+  margin: 10px 0 0;
+  color: #766f82;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.65;
+}
+.option-details-dialog {
+  width: min(920px, calc(100% - 32px));
+  max-height: min(760px, calc(100dvh - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  color: var(--text);
+  box-shadow: 0 30px 90px rgba(20, 10, 40, .28);
+}
+.option-details-dialog::backdrop {
+  background: rgba(24, 14, 38, .58);
+  backdrop-filter: blur(3px);
+}
+.option-dialog-inner { padding: clamp(20px, 4vw, 36px); }
+.option-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.option-dialog-head h2 {
+  margin: 0 0 6px;
+  color: var(--purple-ink);
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.3;
+}
+.option-dialog-head p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.option-dialog-close {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--purple-ink);
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+.option-table-wrap { overflow-x: auto; }
+.option-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.option-details-table th,
+.option-details-table td {
+  padding: 14px 12px;
+  border: 1px solid #e6ddef;
+  text-align: left;
+  vertical-align: top;
+}
+.option-details-table th {
+  background: #f5f0fb;
+  color: var(--purple-ink);
+}
+.option-details-table strong { color: var(--purple-ink); }
+.option-dialog-note {
+  margin: 14px 0 0;
+  color: #766f82;
+  font-size: 11px;
+  line-height: 1.7;
+}
+@media (max-width: 900px) {
+  .home-price-simulator { grid-template-columns: 1fr; }
+  .home-price-simulator .sim-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .home-price-simulator {
+    margin-top: 20px;
+    padding: 18px 14px;
+    border-radius: 10px;
+  }
+  .home-price-simulator .sim-fields { grid-template-columns: 1fr; }
+  .sim-option-help-row { justify-content: flex-start; }
+  .sim-result { padding: 20px 16px; }
+  .sim-total { font-size: 36px; }
+  .option-details-dialog { width: calc(100% - 16px); max-height: calc(100dvh - 16px); }
+  .option-dialog-inner { padding: 18px 14px; }
+  .option-table-wrap { overflow: visible; }
+  .option-details-table,
+  .option-details-table tbody,
+  .option-details-table tr,
+  .option-details-table td { display: block; width: 100%; }
+  .option-details-table thead { display: none; }
+  .option-details-table tr {
+    margin-bottom: 12px;
+    padding: 12px;
+    border: 1px solid #e6ddef;
+    border-radius: 8px;
+  }
+  .option-details-table td {
+    padding: 5px 0;
+    border: 0;
+  }
+  .option-details-table td::before {
+    content: attr(data-label);
+    display: block;
+    color: #766f82;
+    font-size: 10px;
+    font-weight: 800;
+  }
+}

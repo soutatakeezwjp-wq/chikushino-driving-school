@@ -245,28 +245,34 @@
 
   function renderAdmission() {
     const admissionSteps = [
-      ["仮申込・お問い合わせ", "希望する免許、通える曜日、取得希望時期をWebまたは電話でお知らせください。"],
-      ["入校日の予約", "学校から空き状況をご案内し、入校説明を受ける日を決めます。"],
-      ["書類を準備", "住民票、本人確認書類、現在の免許証、眼鏡等をそろえます。"],
-      ["料金・支払いを確認", "正式料金、追加費用、支払い方法を確認します。学生の方は学生証もご準備ください。"],
-      ["入校手続き", "受付で書類確認と入校手続きを行い、教習の進め方をご案内します。"],
-      ["適性検査・教習開始", "運転適性検査と先行学科を受け、技能・学科教習を開始します。"]
+      ["必要書類を準備", "住民票・本人確認書類などを確認"],
+      ["仮申込・来校予約", "Webまたは電話で相談"],
+      ["入校手続き", "申込書を記入し、料金を確認"],
+      ["写真撮影・視力検査", "入校資格と適性条件を確認"],
+      ["入校日を決定", "木曜日・土曜日から選択"],
+      ["入校説明・教習開始", "学科・技能教習をスタート"]
     ];
-    const licenseSteps = [
-      ["入校説明・適性検査", "入校日の説明と適性検査を受け、教習の進め方を確認します。"],
-      ["第一段階", "学科と技能を進め、修了検定・仮免学科試験を受けます。"],
-      ["第二段階", "路上教習と学科を進め、卒業検定に備えます。"],
-      ["卒業・免許交付", "卒業証明書を受け取り、運転免許試験場で本免学科試験と交付手続きを行います。"]
-    ];
-    const flow = (items, className = "") => `<div class="flow-line ${className}">${items.map(([title, text]) => `<article class="flow-step"><h3>${title}</h3><p>${text}</p></article>`).join("")}</div>`;
+    const atSteps = ["入校式", "適性検査・学科1", "第1段階 技能教習（場内）・学科教習", "修了検定", "仮免学科試験", "第2段階 技能教習（路上）・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
+    const mtSteps = ["普通車AT課程", "AT卒業検定", "MT技能教習", "修了審査（技能）", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
+    const bikeSteps = ["入校式", "適性検査", "第1段階 技能・学科教習", "第2段階 技能・学科教習", "卒業検定", "卒業証明書", "免許センター", "運転免許証交付"].map((title) => [title, ""]);
+    const hiddenFlow = (title, items) => `<div class="visually-hidden"><h3>${title}</h3><ol>${items.map(([stepTitle, text]) => `<li><strong>${safeText(stepTitle)}</strong> ${safeText(text)}</li>`).join("")}</ol></div>`;
+    const flowPicture = (basename, alt) => `<picture class="flow-artwork"><source media="(max-width: 560px)" srcset="images/detail-pages/flows-20260719/${basename}-mobile.webp"><img src="images/detail-pages/flows-20260719/${basename}-desktop.webp" alt="${safeText(alt)}" loading="eager" decoding="async"></picture>`;
     const lessonTimes = ["8:30〜9:20", "9:30〜10:20", "10:30〜11:20", "11:30〜12:20", "13:30〜14:20", "14:30〜15:20", "15:30〜16:20", "16:30〜17:20", "17:40〜18:30", "18:40〜19:30", "19:40〜20:30"];
     setPage(`
       <section class="r-section"><div class="r-wrap">
         ${sectionHeader("ENTRY GUIDE", "入校から免許交付まで", "必要な手続きと教習の進み方を、順番に確認できます。")}
         <nav class="flow-switch" aria-label="入校案内のページ内メニュー"><a href="#entry-flow">入校までの手続き</a><a href="#license-flow">入校から免許証交付まで</a><a href="#lesson-time">教習時間</a></nav>
       </div></section>
-      <section class="r-section is-soft" id="entry-flow"><div class="r-wrap">${sectionHeader("ENTRY FLOW", "入校までの手続き", "仮申込から教習開始まで、6つの段階で進みます。")}${flow(admissionSteps, "is-six")}</div></section>
-      <section class="r-section is-soft" id="license-flow"><div class="r-wrap">${sectionHeader("LICENSE FLOW", "入校から免許交付まで", "普通車を例に、卒業後の免許交付までをまとめています。")}${flow(licenseSteps)}
+      <section class="r-section is-soft" id="entry-flow"><div class="r-wrap">${sectionHeader("ENTRY FLOW", "入校までの手続き", "仮申込から教習開始まで、6つの段階で進みます。")}${flowPicture("admission", "筑紫野自動車学校の入校までの6ステップ")}${hiddenFlow("入校までの6ステップ", admissionSteps)}</div></section>
+      <section class="r-section is-soft" id="license-flow"><div class="r-wrap">${sectionHeader("LICENSE FLOW", "入校から免許交付まで", "取得する免許に合わせて流れを確認できます。")}
+        <div class="license-flow-list">
+          <section><h3>普通自動車AT</h3>${flowPicture("license-at", "普通自動車ATの入校から免許交付までの流れ")}</section>
+          <section><h3>普通自動車MT移行</h3>${flowPicture("license-mt", "普通自動車ATからMTへ移行する免許交付までの流れ")}</section>
+          <section><h3>自動二輪</h3>${flowPicture("license-bike", "自動二輪の入校から免許交付までの流れ")}</section>
+        </div>
+        ${hiddenFlow("普通自動車ATの免許交付まで", atSteps)}
+        ${hiddenFlow("普通自動車MT移行の免許交付まで", mtSteps)}
+        ${hiddenFlow("自動二輪の免許交付まで", bikeSteps)}
         <div class="r-notice">車種や現在お持ちの免許により、技能・学科時限や検定の流れは異なります。各コースページの正式料金表とあわせてご確認ください。</div>
       </div></section>
       <section class="r-section" id="lesson-time"><div class="r-wrap">${sectionHeader("LESSON TIME", "教習時間", "通い方に合わせて、デイプランとフリープランから選べます。")}
@@ -305,6 +311,11 @@
       }
     };
     const page = pages[type];
+    if (type === "senior") {
+      const transcript = page.facts.map(([title, text]) => `<li><strong>${safeText(title)}</strong> ${safeText(text)}</li>`).join("");
+      setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader(page.eyebrow, page.title, page.lead)}<picture class="flow-artwork senior-artwork"><source media="(max-width: 560px)" srcset="images/detail-pages/flows-20260719/senior-mobile.webp"><img src="images/detail-pages/flows-20260719/senior-desktop.webp" alt="高齢者講習の予約から来校までの3ステップ" loading="eager" decoding="async"></picture><div class="visually-hidden"><ol>${transcript}</ol></div><div class="r-actions"><a class="r-button is-primary" href="tel:0927102188">092-710-2188へ電話</a></div></div></section>`);
+      return;
+    }
     setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader(page.eyebrow, page.title, page.lead)}<div class="visual-split"><img src="${page.image}" alt="${safeText(page.title)}" loading="eager" decoding="async"><div>${page.facts.map(([title, text]) => `<div class="key-fact"><strong>${title}</strong><span>${text}</span></div>`).join("")}</div></div><div class="r-actions"><a class="r-button is-primary" href="tel:0927102188">092-710-2188へ電話</a>${type === "paper" ? '<a class="r-button" href="detail.html?page=application">Webで相談</a>' : ""}</div></div></section>`);
   }
 
@@ -360,102 +371,100 @@
   };
 
   function applicationHtml() {
-    const choice = (name, value, label, checked = false) => `<span class="choice-item"><input type="radio" name="${name}" id="${name}-${value}" value="${value}" ${checked ? "checked" : ""}><label for="${name}-${value}">${label}</label></span>`;
-    return `<section class="r-section"><div class="r-wrap">${sectionHeader("ONLINE ENTRY", "仮申込・資料請求", "上から順番に入力してください。仮申込と資料請求を同じフォームから送信できます。")}
-      <form id="application-form-0718" novalidate>
+    const params = new URLSearchParams(location.search);
+    const purpose = params.get("purpose")?.includes("資料") ? "資料請求" : "仮入校申し込み";
+    const choice = (type, name, value, label, index, required = false) => `<span class="choice-item"><input type="${type}" name="${name}" id="${name}-${index}" value="${safeText(value)}" ${required ? "required" : ""}><label for="${name}-${index}">${safeText(label)}</label></span>`;
+    const choices = (type, name, values, required = false) => values.map((value, index) => choice(type, name, value, value, index, required && index === 0)).join("");
+    const occupations = ["大学生", "短大生", "専門学生", "高校生", "予備校生", "会社員", "自営業", "主婦", "パート・アルバイト", "その他"];
+    const desiredVehicles = ["普通自動車（AT）", "普通自動車（MT）", "準中型車", "大型自動二輪車（MT）", "普通自動二輪車（AT）", "普通自動二輪車（MT）", "小型自動二輪車（AT）", "小型自動二輪車（MT）", "限定解除", "ペーパードライバー"];
+    const currentLicenses = ["持っていない", "普通自動車（MT）", "普通自動車（AT）", "準中型車", "大型自動二輪車（AT）", "大型自動二輪車（MT）", "普通自動二輪車（AT）", "普通自動二輪車（MT）", "小型自動二輪車（AT）", "小型自動二輪車（MT）", "原付", "5t限定準中型車（MT）", "5t限定準中型車（AT）", "中型車", "8t限定中型車（MT）", "8t限定中型車（AT）", "大型車", "けん引", "大型特殊", "大特農耕限定", "仮免許"];
+    const optionPlans = ["コミコミプラン", "スケジュールプラン", "合宿風ハイスピードプラン"];
+    const paymentMethods = ["現金", "ローン", "振込み", "未定"];
+    const howKnown = ["DM・チラシ", "看板", "教習車・スクールバス", "インターネット", "ご家族・友人・知人", "学校設置のパンフレット", "その他"];
+    const admissionMotives = ["交通の便がよい", "自宅から近い", "学校・会社から近い", "ご家族・友人・知人に勧められた", "当校職員に勧められた", "教習プランが魅力だから", "施設・サービスが魅力だから", "その他"];
+    return `<section class="r-section"><div class="r-wrap">${sectionHeader("ONLINE ENTRY", "仮申込・資料請求", "従来の公式申込書と同じ項目・順番で入力できます。複数選択の項目はチェックボックスでお選びください。")}
+      <form id="applicationForm" novalidate>
         <div class="form-honeypot" aria-hidden="true"><label>この欄は入力しないでください<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
-        <section class="application-section"><span class="application-section-no">01</span><h2>希望内容</h2><div class="form-grid">
-          <div class="form-field is-wide"><span>ご用件<span class="required">必須</span></span><div class="choice-grid">${choice("purpose", "仮入校申し込み", "仮入校申し込み", true)}${choice("purpose", "資料請求", "資料請求")}${choice("purpose", "料金について相談", "料金相談")}</div></div>
-          <label class="form-field"><span>希望する免許<span class="required">必須</span></span><select name="priceCourse" id="app-course" required>${Object.entries(courseDefinitions).map(([key, value]) => `<option value="${key}">${value.label}</option>`).join("")}</select></label>
-          <label class="form-field"><span>現在お持ちの免許<span class="required">必須</span></span><select name="currentLicense" id="app-license" required></select></label>
-          <div class="form-field"><span>区分<span class="required">必須</span></span><div class="choice-grid">${choice("userType", "student", "学生", true)}${choice("userType", "general", "一般")}</div></div>
-          <div class="form-field"><span>通える時間帯<span class="required">必須</span></span><div class="choice-grid">${choice("pricePlan", "day", "デイ", true)}${choice("pricePlan", "free", "フリー")}</div></div>
-          <label class="form-field is-wide"><span>追加プラン</span><select name="optionPlans" id="app-option"><option value="">追加しない</option></select></label>
-        </div></section>
-
-        <section class="application-section"><span class="application-section-no">02</span><h2>本人情報</h2><div class="form-grid">
+        <input type="hidden" name="purpose" value="${purpose}">
+        <input type="hidden" name="priceCourse" value="${safeText(params.get("priceCourse") || "")}">
+        <input type="hidden" name="userType" value="${safeText(params.get("userType") || "")}">
+        <input type="hidden" name="estimatedPrice" value="${safeText(params.get("estimatedPrice") || "")}">
+        <section class="application-section"><span class="application-section-no">01</span><h2>お客様情報</h2><div class="form-grid">
           <label class="form-field"><span>姓（漢字）<span class="required">必須</span></span><input name="familyName" autocomplete="family-name" required placeholder="筑紫野"></label>
           <label class="form-field"><span>名（漢字）<span class="required">必須</span></span><input name="givenName" autocomplete="given-name" required placeholder="太郎"></label>
-          <label class="form-field"><span>セイ（カタカナ）<span class="required">必須</span></span><input name="familyKana" inputmode="kana" required placeholder="チクシノ"></label>
-          <label class="form-field"><span>メイ（カタカナ）<span class="required">必須</span></span><input name="givenKana" inputmode="kana" required placeholder="タロウ"></label>
-          <div class="form-field"><span>性別<span class="required">必須</span></span><div class="choice-grid">${choice("gender", "男性", "男性", true)}${choice("gender", "女性", "女性")}${choice("gender", "回答しない", "回答しない")}</div></div>
+          <label class="form-field"><span>セイ（カタカナ）</span><input name="familyKana" inputmode="kana" placeholder="チクシノ"></label>
+          <label class="form-field"><span>メイ（カタカナ）</span><input name="givenKana" inputmode="kana" placeholder="タロウ"></label>
+          <fieldset class="form-field choice-field"><legend>性別<span class="required">必須</span></legend><div class="choice-grid">${choices("radio", "gender", ["男性", "女性"], true)}</div></fieldset>
           <label class="form-field"><span>生年月日<span class="required">必須</span></span><input type="date" name="birthdate" required></label>
-          <label class="form-field"><span>メールアドレス<span class="required">必須</span></span><input type="email" name="email" autocomplete="email" required></label>
-          <label class="form-field"><span>電話番号<span class="required">必須</span></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" required></label>
           <label class="form-field"><span>郵便番号<span class="required">必須</span></span><input name="postalCode" autocomplete="postal-code" inputmode="numeric" placeholder="818-0025" required></label>
-          <label class="form-field"><span>職業<span class="required">必須</span></span><select name="occupation" required><option value="学生">学生</option><option value="会社員">会社員</option><option value="自営業">自営業</option><option value="主婦・主夫">主婦・主夫</option><option value="その他">その他</option></select></label>
           <label class="form-field is-wide"><span>住所<span class="required">必須</span></span><input name="address" autocomplete="street-address" required></label>
-          <label class="form-field"><span>学校・会社名</span><input name="organization" autocomplete="organization"></label>
-          <label class="form-field"><span>希望入校日</span><input type="date" name="desiredEntryDate"></label>
+          <label class="form-field"><span>メールアドレス<span class="required">必須</span></span><input type="email" name="email" autocomplete="email" required placeholder="example@example.com"></label>
+          <label class="form-field"><span>電話番号<span class="required">必須</span></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" required placeholder="0927102188"></label>
+          <fieldset class="form-field is-wide choice-field"><legend>職業<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("radio", "occupation", occupations, true)}</div></fieldset>
         </div></section>
 
-        <section class="application-section"><span class="application-section-no">03</span><h2>連絡・資料の受取方法</h2><div class="form-grid">
-          <div class="form-field"><span>資料の受取方法<span class="required">必須</span></span><div class="choice-grid">${choice("materialDelivery", "デジタル送付を希望", "デジタル", true)}${choice("materialDelivery", "郵送を希望", "郵送")}</div></div>
-          <label class="form-field"><span>支払方法<span class="required">必須</span></span><select name="paymentMethod" required><option value="現金・振込を相談">現金・振込を相談</option><option value="ローンを相談">ローンを相談</option><option value="学校で確認">学校で確認</option></select></label>
-          <label class="form-field"><span>どこで知りましたか<span class="required">必須</span></span><select name="howKnown" required><option value="Web検索">Web検索</option><option value="家族・知人の紹介">家族・知人の紹介</option><option value="SNS">SNS</option><option value="学校・職場">学校・職場</option><option value="その他">その他</option></select></label>
-          <label class="form-field"><span>連絡希望方法</span><select name="preferredContactMethod"><option value="電話">電話</option><option value="メール">メール</option><option value="LINE相談">LINE相談</option></select></label>
-          <label class="form-field is-wide"><span>質問・備考</span><textarea name="notes" placeholder="送迎、入校時期、料金など、確認したいことをご記入ください。"></textarea></label>
-          <label class="form-field is-wide"><span><input type="checkbox" name="privacyConsent" value="同意済み" required style="width:auto;min-height:0;margin-right:8px">個人情報保護方針に同意します<span class="required">必須</span></span></label>
+        <section class="application-section"><span class="application-section-no">02</span><h2>所属・紹介・入校希望</h2><div class="form-grid">
+          <label class="form-field is-wide"><span>お勤め先（学校・会社）名</span><input name="organization" autocomplete="organization" placeholder="○○大学"></label>
+          <label class="form-field"><span>紹介者名（姓）</span><input name="introducerFamilyName" placeholder="筑紫野"></label>
+          <label class="form-field"><span>紹介者名（名）</span><input name="introducerGivenName" placeholder="花子"></label>
+          <label class="form-field is-wide"><span>入校希望日</span><input type="date" name="desiredEntryDate"><small>入校式が行われる木曜日、土曜日のいずれかを入力してください。</small></label>
+        </div></section>
+
+        <section class="application-section"><span class="application-section-no">03</span><h2>希望する免許・教習プラン</h2><div class="form-grid">
+          <fieldset class="form-field is-wide choice-field" data-required-group="desiredVehicles"><legend>入校車種（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "desiredVehicles", desiredVehicles)}</div></fieldset>
+          <fieldset class="form-field is-wide choice-field" data-required-group="currentLicenses"><legend>現在の免許証の有無（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "currentLicenses", currentLicenses)}</div></fieldset>
+          <fieldset class="form-field is-wide choice-field"><legend>技能教習プラン<span class="required">必須</span></legend><div class="choice-grid">${choices("radio", "lessonPlan", ["デイプラン", "フリープラン"], true)}</div></fieldset>
+          <fieldset class="form-field is-wide choice-field"><legend>オプションプラン（複数可）</legend><div class="choice-grid">${choices("checkbox", "optionPlans", optionPlans)}</div><small>スケジュールプラン・合宿風ハイスピードプランは、定員となり次第締め切ります。</small></fieldset>
+        </div></section>
+
+        <section class="application-section"><span class="application-section-no">04</span><h2>お支払い・当校を知ったきっかけ</h2><div class="form-grid">
+          <fieldset class="form-field is-wide choice-field"><legend>お支払い方法<span class="required">必須</span></legend><div class="choice-grid">${choices("radio", "paymentMethod", paymentMethods, true)}</div></fieldset>
+          <fieldset class="form-field is-wide choice-field"><legend>当校をどこでお知りになりましたか？（複数可）</legend><div class="choice-grid is-two-columns">${choices("checkbox", "howKnown", howKnown)}</div></fieldset>
+          <fieldset class="form-field is-wide choice-field"><legend>入校の動機は？（複数可）</legend><div class="choice-grid is-two-columns">${choices("checkbox", "admissionMotives", admissionMotives)}</div></fieldset>
+        </div></section>
+
+        <section class="application-section"><span class="application-section-no">05</span><h2>質問・同意</h2><div class="form-grid">
+          <label class="form-field is-wide"><span>質問・意見</span><textarea name="notes" placeholder="質問・意見を入力してください。"></textarea></label>
+          <label class="form-field is-wide privacy-check"><span><input type="checkbox" name="privacyConsent" value="同意済み" required>個人情報保護方針に同意します<span class="required">必須</span></span></label>
           <div class="form-field is-wide" id="turnstile-container"></div>
-        </div><div class="form-submit"><p>送信後、学校から正式料金・必要書類・入校日をご案内します。</p><button class="r-button is-orange" type="submit">入力内容を送信する</button></div><div class="form-status" id="application-status" hidden aria-live="polite"></div></section>
+        </div><div class="form-submit"><p>送信後、担当者より資料をお届け（郵送）します。</p><button class="r-button is-orange" type="submit">上記内容で送信する</button></div><div class="form-status" id="application-status" hidden aria-live="polite"></div></section>
       </form>
     </div></section>`;
   }
 
   function renderApplication() {
-    if (!master) return;
     setPage(applicationHtml());
-    const form = main.querySelector("#application-form-0718");
-    const course = form.querySelector("#app-course");
-    const license = form.querySelector("#app-license");
-    const option = form.querySelector("#app-option");
+    const form = main.querySelector("#applicationForm");
     const status = form.querySelector("#application-status");
-
-    function rowsForCourse() {
-      return courseDefinitions[course.value]?.rows(master) || [];
-    }
-    function licenseKey(row, index) {
-      const keyMap = {
-        none: "none", moped: "moped", motorcycle: "motorcycle", at_ordinary_car: "at_car", mt_ordinary_car: "mt_car",
-        ordinary_car: "car", at_small_motorcycle: "small_at", mt_small_motorcycle: "small_mt", at_standard_motorcycle: "motorcycle_at", mt_standard_motorcycle: "motorcycle_mt"
-      };
-      return keyMap[row.currentLicenseCodes?.[0]] || row.currentLicenseCodes?.[0] || `row-${index}`;
-    }
-    function syncCourse() {
-      const rows = rowsForCourse();
-      license.innerHTML = rows.map((row, index) => `<option value="${licenseKey(row, index)}" data-row-index="${index}">${safeText(row.currentLicenseLabel)}</option>`).join("");
-      const catalog = master.catalog[courseDefinitions[course.value].catalog];
-      option.innerHTML = `<option value="">追加しない</option>${(catalog.options || []).map((item) => `<option value="${item.id}">${safeText(item.label)}</option>`).join("")}`;
-    }
-    function selectedRow() {
-      const rows = rowsForCourse();
-      return rows[license.selectedOptions[0]?.dataset.rowIndex || 0];
-    }
-    function quoteAmount() {
-      const row = selectedRow();
-      if (!row) return null;
-      const user = form.elements.userType.value || "student";
-      const plan = form.elements.pricePlan.value || "day";
-      let amount = Number(row.prices?.[plan]?.[user]);
-      amount += Number(courseDefinitions[course.value]?.surcharge || 0);
-      if (option.value) {
-        const item = master.catalog[courseDefinitions[course.value].catalog].options?.find((entry) => entry.id === option.value);
-        if (item) {
-          const desired = form.elements.desiredEntryDate.value ? new Date(form.elements.desiredEntryDate.value) : new Date();
-          const month = desired.getMonth() + 1;
-          amount += Number(month === 12 || month <= 3 ? item.pricesBySeason?.decToMar : item.pricesBySeason?.aprToNov) || 0;
-        }
-      }
-      return amount;
-    }
     function validateForm() {
-      const fields = Array.from(form.querySelectorAll("input, select, textarea"));
-      for (const field of fields) {
-        if (!field.checkValidity()) { field.reportValidity(); return false; }
+      if (!form.checkValidity()) {
+        form.querySelector(":invalid")?.focus();
+        form.reportValidity();
+        return false;
+      }
+      const emptyGroup = Array.from(form.querySelectorAll("[data-required-group]")).find((group) => !group.querySelector("input:checked"));
+      if (emptyGroup) {
+        status.hidden = false;
+        status.className = "form-status is-error";
+        status.textContent = `${emptyGroup.querySelector("legend")?.childNodes[0]?.textContent || "必須項目"}を1つ以上選択してください。`;
+        emptyGroup.scrollIntoView({ behavior: "smooth", block: "center" });
+        emptyGroup.querySelector("input")?.focus();
+        return false;
       }
       return true;
     }
-    course.addEventListener("change", syncCourse);
+
+    const params = new URLSearchParams(location.search);
+    const checkByValue = (name, value) => {
+      if (!value) return;
+      const normalized = value === "なし" ? "持っていない" : value;
+      Array.from(form.querySelectorAll(`[name="${name}"]`)).find((input) => input.value === normalized)?.click();
+    };
+    checkByValue("desiredVehicles", params.get("vehicle"));
+    checkByValue("currentLicenses", params.get("currentLicense"));
+    checkByValue("lessonPlan", params.get("pricePlan") === "free" ? "フリープラン" : params.has("pricePlan") ? "デイプラン" : "");
+    const optionLabels = { komikomi: "コミコミプラン", schedule: "スケジュールプラン", "camp-style-high-speed": "合宿風ハイスピードプラン" };
+    checkByValue("optionPlans", params.get("optionPlan") || optionLabels[params.get("optionPlans")] || "");
 
     const turnstileContainer = main.querySelector("#turnstile-container");
     function mountTurnstile(siteKey) {
@@ -482,19 +491,31 @@
       event.preventDefault();
       if (!validateForm()) return;
       const submit = form.querySelector('[type="submit"]');
-      const data = Object.fromEntries(new FormData(form).entries());
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      data.desiredVehicles = formData.getAll("desiredVehicles");
+      data.currentLicenses = formData.getAll("currentLicenses");
+      data.optionPlans = formData.getAll("optionPlans");
+      data.howKnown = formData.getAll("howKnown");
+      data.admissionMotives = formData.getAll("admissionMotives");
       data.name = `${data.familyName || ""} ${data.givenName || ""}`.trim();
       data.kana = `${data.familyKana || ""} ${data.givenKana || ""}`.trim();
-      const definition = courseDefinitions[data.priceCourse];
-      data.vehicle = definition.vehicle;
-      data.currentLicenseLabel = license.selectedOptions[0]?.textContent || "";
-      data.lessonPlan = data.pricePlan === "free" ? "フリープラン" : "デイプラン";
-      data.optionPlans = data.optionPlans ? [data.optionPlans] : [];
+      data.introducerName = `${data.introducerFamilyName || ""} ${data.introducerGivenName || ""}`.trim();
+      data.vehicle = data.desiredVehicles[0] || "";
+      data.currentLicense = data.currentLicenses[0] || "";
+      data.currentLicenseLabel = data.currentLicenses.join("、");
+      data.pricePlan = data.lessonPlan === "フリープラン" ? "free" : "day";
+      data.userType = data.userType || (["大学生", "短大生", "専門学生", "高校生", "予備校生"].includes(data.occupation) ? "student" : "general");
+      const quotedCourse = courseDefinitions[data.priceCourse];
+      if (data.desiredVehicles.length !== 1 || !quotedCourse || quotedCourse.vehicle !== data.vehicle) {
+        data.priceCourse = "";
+        data.estimatedPrice = "";
+      }
       data.privacyConsent = Boolean(form.elements.privacyConsent.checked);
       data.honeypot = data.website || "";
       data.turnstileToken = data["cf-turnstile-response"] || "";
-      data.estimatedPrice = quoteAmount();
-      data.formVersion = "2026-07-18.1";
+      data.estimatedPrice = Number(data.estimatedPrice) || null;
+      data.formVersion = "2026-07-19.1";
       data.landingPage = location.href;
       data.referrer = document.referrer;
       const params = new URLSearchParams(location.search);
@@ -513,7 +534,6 @@
         status.classList.add("is-success");
         status.textContent = `送信が完了しました。受付ID：${result.applicationId || "発行済み"}`;
         form.reset();
-        syncCourse();
       } catch (error) {
         status.classList.add("is-error");
         status.textContent = error instanceof Error ? error.message : "送信できませんでした。時間をおいて再度お試しください。";
@@ -521,23 +541,37 @@
         submit.disabled = false;
       }
     });
-    syncCourse();
   }
 
   const instructors = [
-    ["さわみん", "孤独の久留米（市内散策）・釣り", "sawamizu-nobuo.webp"],
-    ["せとさん", "散歩", "seto-konosuke.webp"],
-    ["しげちゃん", "散歩", "shigeto-noriki.webp"],
-    ["きこ", "スポーツ観戦", "sasaki-takako.webp"],
-    ["マサやん", "スポーツ観戦", "nakamura-masanobu.webp"],
-    ["うちの先生", "ゲーセン", "uchino-shuhei.webp"],
-    ["はらぐっちゃん☆", "ずーっと探してます", "haraguchi-miho.webp"],
-    ["みやもっちゃん", "一人でドライブ", "miyamoto-junichi.webp"],
-    ["こうださん", "音楽", "koda-morio.webp"]
+    { name: "澤水 信雄", nickname: "さわみん", hobby: "久留米の街歩き・釣り", image: "images/instructors-anime-20260718/sawamizu-nobuo.webp", assignments: ["car", "motorcycle"] },
+    { name: "谷川 拓郎", nickname: "たっしゃん", hobby: "読書", image: "images/instructors-anime/tanigawa-takuro.webp", assignments: ["car", "motorcycle"] },
+    { name: "瀬戸 幸之助", nickname: "せとさん", hobby: "散歩", image: "images/instructors-anime-20260718/seto-konosuke.webp", assignments: ["car"] },
+    { name: "重藤 憲紀", nickname: "しげちゃん", hobby: "安全運転サポート", image: "images/instructors-anime-20260718/shigeto-noriki.webp", assignments: ["car"] },
+    { name: "佐々木 貴子", nickname: "きこ", hobby: "スポーツ観戦", image: "images/instructors-anime-20260718/sasaki-takako.webp", assignments: ["car"] },
+    { name: "中村 正信", nickname: "散歩ッポ", hobby: "スポーツ観戦", image: "images/instructors-anime-20260718/nakamura-masanobu.webp", assignments: ["car"] },
+    { name: "内野 修平", nickname: "うちの先生", hobby: "ゲーセン", image: "images/instructors-anime-20260718/uchino-shuhei.webp", assignments: ["car", "motorcycle"] },
+    { name: "下田 真一", nickname: "しっしい", hobby: "占い", image: "images/instructors-anime/shimoda-shinichi.webp", assignments: ["car", "motorcycle"] },
+    { name: "山本 勝介", nickname: "山本 勝", hobby: "動物園巡り", image: "images/instructors-anime/yamamoto-shosuke.webp", assignments: ["car"] },
+    { name: "羽立 衣莉奈", nickname: "はたち", hobby: "映画鑑賞", image: "images/instructors-anime/hatachi-erina.webp", assignments: ["car"] },
+    { name: "白地 貞昭", nickname: "重戦車", hobby: "スポーツカー、バイク、スイーツ巡り", image: "images/instructors-anime/shirachi-sadaaki.webp", assignments: ["car"] },
+    { name: "山本 一博", nickname: "山本2号", hobby: "旅行", image: "images/instructors-anime/yamamoto-kazuhiro.webp", assignments: ["car", "motorcycle"] },
+    { name: "原口 美穂", nickname: "はらぐっちゃん☆", hobby: "ずーっと探してます", image: "images/instructors-anime-20260718/haraguchi-miho.webp", assignments: ["car", "motorcycle"] },
+    { name: "宮本 淳一", nickname: "みやもっちゃん", hobby: "一人でドライブ", image: "images/instructors-anime-20260718/miyamoto-junichi.webp", assignments: ["car", "motorcycle"] },
+    { name: "後藤 桂子", nickname: "けいこ", hobby: "料理、ミシン", image: "images/instructors-anime/goto-keiko.webp", assignments: ["car"] },
+    { name: "春田 能孝", nickname: "ジャイアン", hobby: "スポーツ観戦・オートバイ・RC CAR", image: "images/instructors-anime/haruda-yoshitaka.webp", assignments: ["car"] },
+    { name: "角 麻美", nickname: "すみちゃん", hobby: "音楽を聴く・料理のレシピを見る", image: "images/instructors-anime/sumi-asami.webp", assignments: ["car"] },
+    { name: "後藤 良子", nickname: "りょうこ", hobby: "ガーデニング", image: "images/instructors-anime/goto-ryoko.webp", assignments: ["car"] },
+    { name: "幸田 守生", nickname: "こうださん", hobby: "音楽", image: "images/instructors-anime-20260718/koda-morio.webp", assignments: ["car"] }
   ];
 
+  const assignmentIcons = {
+    car: '<span class="assignment-icon" role="img" aria-label="四輪担当" title="四輪担当">🚗</span>',
+    motorcycle: '<span class="assignment-icon" role="img" aria-label="二輪担当" title="二輪担当">🏍️</span>'
+  };
+
   function renderInstructors() {
-    setPage(`<section class="r-section"><div class="r-wrap"><div class="instructor-intro">${sectionHeader("INSTRUCTOR PROFILE", "筑紫野の指導員紹介", "運転への不安や苦手なことも、遠慮なく相談してください。四輪・二輪の両方を担当する指導員が、一人ひとりの理解度に合わせて、安全に運転できるまで丁寧にサポートします。")}</div><div class="instructor-grid">${instructors.map(([nickname, hobby, image]) => `<article class="instructor-card"><img src="images/instructors-anime-20260718/${image}" alt="${safeText(nickname)}のイラスト" loading="eager" decoding="async"><div class="instructor-body"><h3>${safeText(nickname)}</h3><p class="instructor-hobby"><strong>趣味</strong><br>${safeText(hobby)}</p><div class="assignment-list"><span class="assignment">四輪担当</span><span class="assignment">二輪担当</span></div></div></article>`).join("")}</div></div></section>`);
+    setPage(`<section class="r-section"><div class="r-wrap"><div class="instructor-intro">${sectionHeader("INSTRUCTOR PROFILE", "筑紫野の指導員紹介", "教習中の疑問や運転への不安は、いつでも気軽にご相談ください。それぞれの経験を生かし、一人ひとりのペースに合わせて丁寧にサポートします。")}</div><div class="instructor-grid">${instructors.map((instructor) => `<article class="instructor-card"><img src="${instructor.image}" alt="${safeText(instructor.name)}指導員のイラスト" loading="lazy" decoding="async"><div class="instructor-body"><h3>${safeText(instructor.nickname || "指導員")}</h3><p class="instructor-name">${safeText(instructor.name)}</p><p class="instructor-hobby"><strong>趣味</strong><br>${safeText(instructor.hobby)}</p><div class="assignment-list" aria-label="担当車種">${instructor.assignments.map((assignment) => assignmentIcons[assignment]).join("")}</div></div></article>`).join("")}</div></div></section>`);
   }
 
   switch (pageId) {

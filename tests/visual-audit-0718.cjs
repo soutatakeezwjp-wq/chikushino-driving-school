@@ -17,7 +17,9 @@ const targets = [
 ];
 const viewports = [
   { name: "pc", width: 1440, height: 900 },
-  { name: "mobile", width: 390, height: 844 }
+  { name: "tablet", width: 768, height: 1024 },
+  { name: "mobile", width: 390, height: 844 },
+  { name: "mobile-small", width: 375, height: 812 }
 ];
 
 async function settlePageAssets(page) {
@@ -102,6 +104,7 @@ async function inspect(page) {
           url: target.url,
           status: response?.status() || 0,
           ...audit,
+          simulatorMismatch: target.id === "top" ? audit.priceSimulatorElements !== 1 : audit.priceSimulatorElements !== 0,
           consoleErrors,
           pageErrors,
           screenshot: path.relative(path.resolve(__dirname, ".."), screenshot)
@@ -117,10 +120,10 @@ async function inspect(page) {
     generatedAt: new Date().toISOString(),
     baseUrl,
     total: results.length,
-    failures: results.filter((result) => result.status >= 400 || result.horizontalOverflow || result.brokenImages.length || result.priceSimulatorElements || result.consoleErrors.length || result.pageErrors.length),
+    failures: results.filter((result) => result.status >= 400 || result.horizontalOverflow || result.brokenImages.length || result.simulatorMismatch || result.consoleErrors.length || result.pageErrors.length),
     results
   };
   fs.writeFileSync(path.join(outputDir, "report.json"), JSON.stringify(report, null, 2));
-  console.log(JSON.stringify({ total: report.total, failures: report.failures.length, failureSummary: report.failures.map((item) => ({ viewport: item.viewport, page: item.page, status: item.status, overflow: item.horizontalOverflow, broken: item.brokenImages.length, simulator: item.priceSimulatorElements, console: item.consoleErrors, errors: item.pageErrors })) }, null, 2));
+  console.log(JSON.stringify({ total: report.total, failures: report.failures.length, failureSummary: report.failures.map((item) => ({ viewport: item.viewport, page: item.page, status: item.status, overflow: item.horizontalOverflow, broken: item.brokenImages.length, simulatorMismatch: item.simulatorMismatch, console: item.consoleErrors, errors: item.pageErrors })) }, null, 2));
   process.exitCode = report.failures.length ? 1 : 0;
 })();

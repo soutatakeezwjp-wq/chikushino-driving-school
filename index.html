@@ -49,11 +49,13 @@
   "image": "https://chikushi-ds.com/images/ogp/chikushino-ogp.webp"
 }
 </script>
-<link rel="preload" as="image" href="images/hero-final-candidates-20260718/hero-B-welcome.webp" fetchpriority="high">
+<link rel="preload" as="image" href="images/generated-hero/final-20260719/hero-mobile.webp" media="(max-width: 700px)" fetchpriority="high">
+<link rel="preload" as="image" href="images/generated-hero/final-20260719/hero-desktop.webp" media="(min-width: 701px)" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/redesign-0718.css">
+<link rel="stylesheet" href="assets/home-simulator-20260719.css">
 <style>
   :root {
     --purple: #5c319b;
@@ -3362,7 +3364,7 @@
   </header>
 
   <nav class="mobile-cta-bar" aria-label="スマートフォン固定メニュー">
-    <a href="detail.html?page=price">料金<small>PRICE</small></a>
+    <a href="#price-simulator">料金<small>PRICE</small></a>
     <a href="detail.html?page=application">資料請求<small>REQUEST</small></a>
     <a href="detail.html?page=application">仮申込<small>ENTRY</small></a>
     <a href="tel:0927102188">電話<small>CALL</small></a>
@@ -3372,13 +3374,11 @@
 		  <main>
 		    <section class="hero hero-20260718" aria-label="メインビジュアル">
 		      <picture class="hero-picture">
-	        <img class="hero-main-img" src="images/hero-final-candidates-20260718/hero-B-welcome.webp" alt="筑紫野自動車学校の校舎、教習車、スクールバスと教習生を迎える指導員" fetchpriority="high" decoding="async">
+	        <source media="(max-width: 700px)" srcset="images/generated-hero/final-20260719/hero-mobile.webp">
+	        <img class="hero-main-img" src="images/generated-hero/final-20260719/hero-desktop.webp" alt="筑紫野自動車学校の校舎、白いマツダ教習車、正面を向いたスクールバスと教習生を迎える指導員" fetchpriority="high" decoding="async">
 	      </picture>
-          <div class="hero-copy-20260718">
-            <span class="hero-kicker">CHIKUSHINO DRIVING SCHOOL</span>
-            <h1>ここから、<br><strong>運転</strong>が好きになる。</h1>
-            <p>楽しく通える教習所で、<br>自信をつけて<span>未来</span>へ走り出そう。</p>
-          </div>
+          <h1 class="visually-hidden">ここから、運転が好きになる。</h1>
+          <p class="visually-hidden">楽しく通える教習所で、自信をつけて未来へ走り出そう。</p>
     </section>
 
     <section class="home-quick reveal" aria-label="主要メニュー">
@@ -3393,9 +3393,9 @@
           <span><small>ACCESS</small><strong>アクセス</strong><span>地図・所要時間を見る</span></span>
           <span class="arrow">›</span>
         </a>
-        <a class="home-quick-card" href="detail.html?page=price">
+        <a class="home-quick-card" href="#price-simulator">
           <span class="home-quick-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h2M12 11h2M16 11h.01M8 15h2M12 15h2M16 15h.01"/></svg></span>
-          <span><small>PRICE</small><strong>正式料金表</strong><span>免許・車種ごとに確認</span></span>
+          <span><small>PRICE</small><strong>料金シミュレーター</strong><span>条件を選んで概算を確認</span></span>
           <span class="arrow">›</span>
         </a>
       </div>
@@ -3403,7 +3403,7 @@
 
     <section class="mobile-home-dock" aria-label="スマートフォン用クイックメニュー">
       <div class="wrap mobile-dock-panel">
-        <a class="mobile-dock-card" href="detail.html?page=price"><small>PRICE</small><strong>料金を確認</strong><span>正式料金表を見る</span></a>
+        <a class="mobile-dock-card" href="#price-simulator"><small>PRICE</small><strong>料金を確認</strong><span>条件を選んで概算</span></a>
         <a class="mobile-dock-card" href="detail.html?page=courses"><small>LICENSE</small><strong>免許を選ぶ</strong><span>普通車・二輪・準中型</span></a>
         <a class="mobile-dock-card" href="detail.html?page=access"><small>BUS</small><strong>送迎を見る</strong><span>通いやすい場所から</span></a>
         <a class="mobile-dock-card" href="detail.html?page=application"><small>ENTRY</small><strong>仮申込・資料請求</strong><span>資料請求も同じ入口</span></a>
@@ -3616,8 +3616,61 @@
             <a class="btn btn-white" href="detail.html?page=application">料金・入校日を相談する <span class="circle">›</span></a>
           </div>
         </div>
+        <div id="price-simulator" class="home-price-simulator" aria-labelledby="simulator-heading">
+          <div>
+            <div class="sim-heading">
+              <h2 id="simulator-heading">料金シミュレーター</h2>
+              <p>希望する免許と現在お持ちの免許を選ぶと、税込の概算料金を確認できます。</p>
+            </div>
+            <div class="sim-flow" aria-label="料金シミュレーターの手順">
+              <span><b>1</b>免許を選ぶ</span>
+              <span><b>2</b>現有免許を選ぶ</span>
+              <span><b>3</b>通い方を選ぶ</span>
+              <span><b>4</b>結果を見る</span>
+            </div>
+            <div class="sim-fields">
+              <div class="field"><label for="sim-course">希望する免許</label><select id="sim-course"></select></div>
+              <div class="field"><label for="sim-license">現在お持ちの免許</label><select id="sim-license"></select></div>
+              <div class="field"><label for="sim-user-type">区分</label><select id="sim-user-type"><option value="student">学生</option><option value="general">一般</option></select></div>
+              <div class="field"><label for="sim-plan">通い方</label><select id="sim-plan"><option value="day">デイプラン</option><option value="free">フリープラン</option></select></div>
+              <div class="field"><label for="sim-season">入校時期</label><select id="sim-season"><option value="aprToNov">4〜11月</option><option value="decToMar">12〜3月</option></select></div>
+              <div class="field"><label for="sim-option">オプション</label><select id="sim-option"><option value="">追加しない</option></select></div>
+            </div>
+            <div class="sim-option-help-row"><button class="sim-option-help" id="open-option-details" type="button">オプションの詳細はこちら</button></div>
+            <p class="sim-note">※令和8年8月1日改定の正式料金表を使用しています。仮免許関係手数料などが別途必要になる場合があります。</p>
+          </div>
+          <aside class="sim-result" aria-live="polite">
+            <small>概算料金</small>
+            <dl class="sim-breakdown">
+              <div><dt>基本料金</dt><dd id="sim-base-price">0円</dd></div>
+              <div id="sim-surcharge-row" hidden><dt id="sim-surcharge-label">追加料金</dt><dd id="sim-surcharge-price">0円</dd></div>
+              <div id="sim-option-row" hidden><dt>オプション</dt><dd id="sim-option-price">0円</dd></div>
+            </dl>
+            <div class="sim-total"><span id="sim-total-price">0</span><small>円（税込）</small></div>
+            <button class="btn btn-purple simulate-btn" type="button" id="sim-calculate">結果を見る <span class="circle">›</span></button>
+            <a class="btn btn-orange" id="sim-apply" href="detail.html?page=application">この条件で仮申込へ <span class="circle">›</span></a>
+            <a class="btn btn-white" href="detail.html?page=price">正式料金表を見る <span class="circle">›</span></a>
+            <p class="sim-status-note" id="sim-status-note"></p>
+          </aside>
+        </div>
       </div>
     </section>
+
+    <dialog class="option-details-dialog" id="option-details-dialog" aria-labelledby="option-details-title">
+      <div class="option-dialog-inner">
+        <div class="option-dialog-head">
+          <div><h2 id="option-details-title">オプションプランの詳細</h2><p>通い方や追加サポートの違いを確認できます。</p></div>
+          <button class="option-dialog-close" type="button" data-dialog-close aria-label="閉じる">×</button>
+        </div>
+        <div class="option-table-wrap">
+          <table class="option-details-table">
+            <thead><tr><th>対象</th><th>オプション</th><th>内容</th><th>4〜11月</th><th>12〜3月</th></tr></thead>
+            <tbody id="option-details-body"></tbody>
+          </table>
+        </div>
+        <p class="option-dialog-note">※オプションの対象条件や空き状況は、申込時に学校へご確認ください。自動二輪車のオプション料金は正式資料に掲載されていません。</p>
+      </div>
+    </dialog>
 
     <section id="school-points" class="school-points reveal">
       <div class="wrap points-shell">
@@ -3919,6 +3972,8 @@
     </div>
   </footer>
 
+<script src="data/price-master.js"></script>
+<script src="assets/home-simulator-20260719.js"></script>
 <script>
   function escapeHtml(value = "") {
     return String(value)
