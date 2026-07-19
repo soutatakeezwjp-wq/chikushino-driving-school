@@ -515,6 +515,18 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .visual-split { grid-template-columns: 1fr; }
 }
 
+@media (min-width: 701px) and (max-width: 900px) {
+  .hero.hero-20260718 {
+    aspect-ratio: 1802 / 872;
+    height: auto;
+    min-height: 0;
+  }
+
+  .hero-20260718 .hero-picture img {
+    object-position: center;
+  }
+}
+
 @media (max-width: 560px) {
   .redesign-0718 .r-heading { font-size: 27px; }
   .redesign-0718 .r-lead { font-size: 15px; }
