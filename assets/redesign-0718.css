@@ -527,6 +527,18 @@ body.is-modal-open { overflow: hidden; }
   }
 }
 
+@media (max-width: 700px) {
+  .hero.hero-20260718 {
+    aspect-ratio: 887 / 1774;
+    height: auto;
+    min-height: 0;
+  }
+
+  .hero-20260718 .hero-picture img {
+    object-position: center top;
+  }
+}
+
 @media (max-width: 560px) {
   .redesign-0718 .r-heading { font-size: 27px; }
   .redesign-0718 .r-lead { font-size: 15px; }
