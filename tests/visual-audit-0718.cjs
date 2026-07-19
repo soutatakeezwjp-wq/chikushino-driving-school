@@ -25,14 +25,28 @@ const viewports = [
 async function settlePageAssets(page) {
   await page.evaluate(async () => {
     const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-    Array.from(document.images).forEach((image) => { image.loading = "eager"; });
-    const step = Math.max(320, Math.floor(window.innerHeight * 0.75));
-    for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
-      window.scrollTo(0, y);
-      await pause(35);
+    async function loadPendingImages() {
+      const images = Array.from(document.images);
+      images.forEach((image) => { image.loading = "eager"; });
+      for (const image of images) {
+        if (!image.complete) {
+          image.scrollIntoView({ block: "center" });
+          await pause(75);
+        }
+      }
+      await Promise.race([
+        Promise.all(images.map((image) => image.complete ? Promise.resolve() : new Promise((resolve) => {
+          image.addEventListener("load", resolve, { once: true });
+          image.addEventListener("error", resolve, { once: true });
+        }))),
+        pause(10000)
+      ]);
     }
+    await loadPendingImages();
+    // WordPress記事など、初期描画後に追加される画像も監査対象にする。
+    await pause(1000);
+    await loadPendingImages();
     window.scrollTo(0, document.documentElement.scrollHeight);
-    await pause(120);
     window.scrollTo(0, 0);
   });
   await page.waitForTimeout(350);
@@ -44,6 +58,9 @@ async function inspect(page) {
     const viewportWidth = document.documentElement.clientWidth;
     const brokenImages = Array.from(document.images)
       .filter((image) => image.complete && image.naturalWidth === 0)
+      .map((image) => image.currentSrc || image.src);
+    const unloadedImages = Array.from(document.images)
+      .filter((image) => !image.complete)
       .map((image) => image.currentSrc || image.src);
     const priceSimulatorElements = document.querySelectorAll("#price-simulator, #simulateButton, .price-simulator, .simulator-widget, [data-price-simulator]").length;
     const overflowElements = Array.from(document.querySelectorAll("body *"))
@@ -66,6 +83,7 @@ async function inspect(page) {
       viewportWidth,
       horizontalOverflow: documentWidth > viewportWidth + 1,
       brokenImages,
+      unloadedImages,
       priceSimulatorElements,
       overflowElements
     };
@@ -122,10 +140,10 @@ async function inspect(page) {
     generatedAt: new Date().toISOString(),
     baseUrl,
     total: results.length,
-    failures: results.filter((result) => result.status >= 400 || result.horizontalOverflow || result.brokenImages.length || result.simulatorMismatch || result.consoleErrors.length || result.pageErrors.length),
+    failures: results.filter((result) => result.status >= 400 || result.horizontalOverflow || result.brokenImages.length || result.unloadedImages.length || result.simulatorMismatch || result.consoleErrors.length || result.pageErrors.length),
     results
   };
   fs.writeFileSync(path.join(outputDir, "report.json"), JSON.stringify(report, null, 2));
-  console.log(JSON.stringify({ total: report.total, failures: report.failures.length, failureSummary: report.failures.map((item) => ({ viewport: item.viewport, page: item.page, status: item.status, overflow: item.horizontalOverflow, broken: item.brokenImages.length, simulatorMismatch: item.simulatorMismatch, console: item.consoleErrors, errors: item.pageErrors })) }, null, 2));
+  console.log(JSON.stringify({ total: report.total, failures: report.failures.length, failureSummary: report.failures.map((item) => ({ viewport: item.viewport, page: item.page, status: item.status, overflow: item.horizontalOverflow, broken: item.brokenImages.length, unloaded: item.unloadedImages.length, simulatorMismatch: item.simulatorMismatch, console: item.consoleErrors, errors: item.pageErrors })) }, null, 2));
   process.exitCode = report.failures.length ? 1 : 0;
 })();
