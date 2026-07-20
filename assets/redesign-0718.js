@@ -427,7 +427,6 @@
         <section class="application-section"><span class="application-section-no">05</span><h2>質問・同意</h2><div class="form-grid">
           <label class="form-field is-wide"><span>質問・意見</span><textarea name="notes" placeholder="質問・意見を入力してください。"></textarea></label>
           <label class="form-field is-wide privacy-check"><span><input type="checkbox" name="privacyConsent" value="同意済み" required>個人情報保護方針に同意します<span class="required">必須</span></span></label>
-          <div class="form-field is-wide" id="turnstile-container"></div>
         </div><div class="form-submit"><p>送信後、担当者より資料をお届け（郵送）します。</p><button class="r-button is-orange" type="submit">上記内容で送信する</button></div><div class="form-status" id="application-status" hidden aria-live="polite"></div></section>
       </form>
     </div></section>`;
@@ -480,27 +479,6 @@
     const optionLabels = { komikomi: "コミコミプラン", schedule: "スケジュールプラン", "camp-style-high-speed": "合宿風ハイスピードプラン" };
     checkByValue("optionPlans", params.get("optionPlan") || optionLabels[params.get("optionPlans")] || "");
 
-    const turnstileContainer = main.querySelector("#turnstile-container");
-    function mountTurnstile(siteKey) {
-      if (!siteKey || !turnstileContainer || turnstileContainer.dataset.mounted === "true") return;
-      turnstileContainer.dataset.mounted = "true";
-      const script = document.createElement("script");
-      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
-      turnstileContainer.innerHTML = `<div class="cf-turnstile" data-sitekey="${safeText(siteKey)}" data-action="application-submit"></div>`;
-    }
-    const inlineSiteKey = window.CDS_TURNSTILE_SITE_KEY || "";
-    if (inlineSiteKey) {
-      mountTurnstile(inlineSiteKey);
-    } else {
-      fetch("/api/application", { headers: { accept: "application/json" } })
-        .then((response) => response.ok ? response.json() : Promise.reject(new Error("not configured")))
-        .then((config) => mountTurnstile(config.turnstileSiteKey || ""))
-        .catch(() => {});
-    }
-
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (!validateForm()) return;
@@ -530,9 +508,8 @@
       }
       data.privacyConsent = Boolean(form.elements.privacyConsent.checked);
       data.honeypot = data.website || "";
-      data.turnstileToken = data["cf-turnstile-response"] || "";
       data.estimatedPrice = Number(data.estimatedPrice) || null;
-      data.formVersion = "2026-07-20.1";
+      data.formVersion = "2026-07-20.2";
       data.landingPage = location.href;
       data.referrer = document.referrer;
       const params = new URLSearchParams(location.search);

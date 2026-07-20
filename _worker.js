@@ -13,8 +13,6 @@ const FEED_TIMEOUT_MS = 8000;
 // 保存後の学校通知・自動返信まで含めると15秒前後かかるため、
 // 成功済みの受付をブラウザ側でタイムアウト扱いにしない。
 const GAS_TIMEOUT_MS = 35000;
-const TURNSTILE_TIMEOUT_MS = 8000;
-const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 const PRODUCTION_API_ORIGIN = "https://chikushino-driving-school.pages.dev";
 const MAX_APPLICATION_BODY_BYTES = 64 * 1024;
 
@@ -328,55 +326,6 @@ async function readApplicationJson(request) {
   }
 }
 
-async function verifyTurnstile(payload, request, env) {
-  const bypassed = String(env.TURNSTILE_DEV_BYPASS || "").toLowerCase() === "true";
-  if (bypassed) return { success: true, bypassed: true };
-  if (!env.TURNSTILE_SECRET_KEY) {
-    throw new ApplicationRequestError(
-      "TURNSTILE_NOT_CONFIGURED",
-      "Turnstileのサーバー検証キーが未設定です。",
-      503
-    );
-  }
-
-  const token = cleanText(payload.turnstileToken || payload["cf-turnstile-response"], 4096);
-  if (!token) {
-    throw new ApplicationRequestError("TURNSTILE_TOKEN_MISSING", "ボット対策の確認を完了してください。", 400);
-  }
-
-  const form = new FormData();
-  form.set("secret", env.TURNSTILE_SECRET_KEY);
-  form.set("response", token);
-  const remoteIp = request.headers.get("CF-Connecting-IP");
-  if (remoteIp) form.set("remoteip", remoteIp);
-  form.set("idempotency_key", crypto.randomUUID());
-
-  let response;
-  try {
-    response = await fetchWithTimeout(TURNSTILE_VERIFY_URL, { method: "POST", body: form }, TURNSTILE_TIMEOUT_MS);
-  } catch (error) {
-    throw new ApplicationRequestError("TURNSTILE_UNAVAILABLE", "ボット対策の確認に失敗しました。再度お試しください。", 503);
-  }
-  if (!response.ok) {
-    throw new ApplicationRequestError("TURNSTILE_UNAVAILABLE", "ボット対策の確認に失敗しました。再度お試しください。", 503);
-  }
-
-  const result = await response.json();
-  if (!result.success) {
-    throw new ApplicationRequestError("TURNSTILE_FAILED", "ボット対策の確認に失敗しました。ページを再読み込みしてください。", 403);
-  }
-
-  const allowedHostnames = cleanStringList(env.TURNSTILE_ALLOWED_HOSTNAMES, 20, 253);
-  if (allowedHostnames.length && !allowedHostnames.includes(String(result.hostname || ""))) {
-    throw new ApplicationRequestError("TURNSTILE_HOSTNAME_MISMATCH", "ボット対策の検証元を確認できませんでした。", 403);
-  }
-  const expectedAction = cleanText(env.TURNSTILE_EXPECTED_ACTION, 100);
-  if (expectedAction && result.action !== expectedAction) {
-    throw new ApplicationRequestError("TURNSTILE_ACTION_MISMATCH", "ボット対策の検証内容を確認できませんでした。", 403);
-  }
-  return result;
-}
-
 function normalizeApplicationPayload(payload, request) {
   const requestUrl = new URL(request.url);
   const referer = request.headers.get("referer") || "";
@@ -515,15 +464,10 @@ async function createProxyEnvelope(payload, secret) {
 function applicationConfiguration(env) {
   const gasConfigured = Boolean(env.GAS_APPLICATION_WEBHOOK_URL);
   const gasSignatureConfigured = Boolean(env.GAS_SHARED_SECRET);
-  const turnstileBypassed = String(env.TURNSTILE_DEV_BYPASS || "").toLowerCase() === "true";
-  const turnstileConfigured = Boolean(env.TURNSTILE_SECRET_KEY && env.TURNSTILE_SITE_KEY) || turnstileBypassed;
   return {
-    configured: gasConfigured && gasSignatureConfigured && turnstileConfigured,
+    configured: gasConfigured && gasSignatureConfigured,
     gasConfigured,
-    gasSignatureConfigured,
-    turnstileConfigured,
-    turnstileBypassed,
-    turnstileSiteKey: cleanText(env.TURNSTILE_SITE_KEY, 100)
+    gasSignatureConfigured
   };
 }
 
@@ -549,7 +493,6 @@ async function handleApplication(request, env) {
       ok: true,
       service: "application",
       ...configuration,
-      turnstileSiteKey: configuration.turnstileSiteKey,
       message: configuration.configured ? "受付フォームのサーバー設定は完了しています。" : "受付フォームに未設定のサーバー項目があります。"
     });
   }
@@ -567,7 +510,6 @@ async function handleApplication(request, env) {
       return applicationResponse({ ok: true, ignored: true, applicationId: `CDS-SPAM-${Date.now()}` });
     }
 
-    await verifyTurnstile(payload, request, env);
     if (!env.GAS_APPLICATION_WEBHOOK_URL) {
       throw new ApplicationRequestError("GAS_WEBHOOK_NOT_CONFIGURED", "受付フォームの保存先が未設定です。", 503);
     }
