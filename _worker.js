@@ -461,6 +461,31 @@ async function createProxyEnvelope(payload, secret) {
   };
 }
 
+async function sendDeferredNotifications(payload, applicationId, env) {
+  const notificationPayload = { ...payload, applicationId, notificationOnly: true };
+  const proxy = await createProxyEnvelope(notificationPayload, env.GAS_SHARED_SECRET);
+  const body = JSON.stringify({ ...notificationPayload, _proxy: proxy });
+
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    try {
+      const response = await fetchWithTimeout(env.GAS_APPLICATION_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "content-type": "application/json; charset=utf-8" },
+        body
+      }, GAS_TIMEOUT_MS);
+      const result = await response.json();
+      if (response.ok && result.ok !== false) return;
+      throw new Error(result.error || `Notification response ${response.status}`);
+    } catch (error) {
+      if (attempt === 2) {
+        console.error("Deferred application notification failed", applicationId, error);
+        return;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 750));
+    }
+  }
+}
+
 function applicationConfiguration(env) {
   const gasConfigured = Boolean(env.GAS_APPLICATION_WEBHOOK_URL);
   const gasSignatureConfigured = Boolean(env.GAS_SHARED_SECRET);
@@ -485,7 +510,7 @@ function proxyPreviewApi(request) {
   return fetch(new Request(target.toString(), request));
 }
 
-async function handleApplication(request, env) {
+async function handleApplication(request, env, context) {
   const configuration = applicationConfiguration(env);
 
   if (request.method === "GET") {
@@ -520,8 +545,10 @@ async function handleApplication(request, env) {
     const normalized = normalizeApplicationPayload(payload, request);
     validateApplicationPayload(normalized);
     normalized.submissionKey = await createSubmissionKey(normalized);
-    const proxy = await createProxyEnvelope(normalized, env.GAS_SHARED_SECRET);
-    const body = JSON.stringify({ ...normalized, _proxy: proxy });
+    const deferNotifications = Boolean(context && typeof context.waitUntil === "function");
+    const savePayload = { ...normalized, deferNotifications };
+    const proxy = await createProxyEnvelope(savePayload, env.GAS_SHARED_SECRET);
+    const body = JSON.stringify({ ...savePayload, _proxy: proxy });
 
     let response;
     try {
@@ -562,11 +589,16 @@ async function handleApplication(request, env) {
       );
     }
 
+    const applicationId = gasPayload.applicationId || normalized.applicationId;
+    if (deferNotifications && gasPayload.notificationsDeferred) {
+      context.waitUntil(sendDeferredNotifications(normalized, applicationId, env));
+    }
+
     return applicationResponse({
       ok: true,
       configured: true,
       duplicate: Boolean(gasPayload.duplicate),
-      applicationId: gasPayload.applicationId || normalized.applicationId,
+      applicationId,
       quote: gasPayload.quote || null,
       materialStatus: gasPayload.materialStatus || "確認待ち",
       warnings: Array.isArray(gasPayload.warnings) ? gasPayload.warnings : []
@@ -656,7 +688,7 @@ async function handleWordPressPosts(request, env) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, context) {
     const url = new URL(request.url);
     if ((url.pathname === "/api/application" || url.pathname === "/api/public-schedule") && shouldProxyPreviewApi(request, env)) {
       return proxyPreviewApi(request);
@@ -665,7 +697,7 @@ export default {
       return handleWordPressPosts(request, env);
     }
     if (url.pathname === "/api/application") {
-      return handleApplication(request, env);
+      return handleApplication(request, env, context);
     }
     if (url.pathname === "/api/public-schedule") {
       return handlePublicSchedule(env);
