@@ -382,6 +382,7 @@
     const paymentMethods = ["現金", "ローン", "振込み", "未定"];
     const howKnown = ["DM・チラシ", "看板", "教習車・スクールバス", "インターネット", "ご家族・友人・知人", "学校設置のパンフレット", "その他"];
     const admissionMotives = ["交通の便がよい", "自宅から近い", "学校・会社から近い", "ご家族・友人・知人に勧められた", "当校職員に勧められた", "教習プランが魅力だから", "施設・サービスが魅力だから", "その他"];
+    const otherInput = (source, name, label, placeholder) => `<label class="choice-other" data-other-source="${source}" hidden><span>${label}</span><input name="${name}" maxlength="100" placeholder="${placeholder}"></label>`;
     return `<section class="r-section"><div class="r-wrap">${sectionHeader("ONLINE ENTRY", "仮申込・資料請求", "従来の公式申込書と同じ項目・順番で入力できます。複数選択の項目はチェックボックスでお選びください。")}
       <form id="applicationForm" novalidate>
         <div class="form-honeypot" aria-hidden="true"><label>この欄は入力しないでください<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
@@ -400,7 +401,7 @@
           <label class="form-field is-wide"><span>住所<span class="required">必須</span></span><input name="address" autocomplete="street-address" required></label>
           <label class="form-field"><span>メールアドレス<span class="required">必須</span></span><input type="email" name="email" autocomplete="email" required placeholder="example@example.com"></label>
           <label class="form-field"><span>電話番号<span class="required">必須</span></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" required placeholder="0927102188"></label>
-          <fieldset class="form-field is-wide choice-field"><legend>職業<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("radio", "occupation", occupations, true)}</div></fieldset>
+          <fieldset class="form-field is-wide choice-field"><legend>職業<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("radio", "occupation", occupations, true)}</div>${otherInput("occupation", "occupationOther", "その他の職業", "職業をご入力ください")}</fieldset>
         </div></section>
 
         <section class="application-section"><span class="application-section-no">02</span><h2>所属・紹介・入校希望</h2><div class="form-grid">
@@ -419,8 +420,8 @@
 
         <section class="application-section"><span class="application-section-no">04</span><h2>お支払い・当校を知ったきっかけ</h2><div class="form-grid">
           <fieldset class="form-field is-wide choice-field"><legend>お支払い方法<span class="required">必須</span></legend><div class="choice-grid">${choices("radio", "paymentMethod", paymentMethods, true)}</div></fieldset>
-          <fieldset class="form-field is-wide choice-field"><legend>当校をどこでお知りになりましたか？（複数可）</legend><div class="choice-grid is-two-columns">${choices("checkbox", "howKnown", howKnown)}</div></fieldset>
-          <fieldset class="form-field is-wide choice-field"><legend>入校の動機は？（複数可）</legend><div class="choice-grid is-two-columns">${choices("checkbox", "admissionMotives", admissionMotives)}</div></fieldset>
+          <fieldset class="form-field is-wide choice-field"><legend>当校をどこでお知りになりましたか？（複数可）</legend><div class="choice-grid is-two-columns">${choices("checkbox", "howKnown", howKnown)}</div>${otherInput("howKnown", "howKnownOther", "その他のきっかけ", "どこで知ったかをご入力ください")}</fieldset>
+          <fieldset class="form-field is-wide choice-field"><legend>入校の動機は？（複数可）</legend><div class="choice-grid is-two-columns">${choices("checkbox", "admissionMotives", admissionMotives)}</div>${otherInput("admissionMotives", "admissionMotiveOther", "その他の入校動機", "入校の動機をご入力ください")}</fieldset>
         </div></section>
 
         <section class="application-section"><span class="application-section-no">05</span><h2>質問・同意</h2><div class="form-grid">
@@ -436,6 +437,19 @@
     setPage(applicationHtml());
     const form = main.querySelector("#applicationForm");
     const status = form.querySelector("#application-status");
+    form.querySelectorAll("[data-other-source]").forEach((otherField) => {
+      const sourceName = otherField.dataset.otherSource;
+      const sourceInputs = Array.from(form.querySelectorAll(`[name="${sourceName}"]`));
+      const detailInput = otherField.querySelector("input");
+      const updateOtherField = () => {
+        const selected = sourceInputs.some((input) => input.checked && input.value === "その他");
+        otherField.hidden = !selected;
+        detailInput.required = selected;
+        if (!selected) detailInput.value = "";
+      };
+      sourceInputs.forEach((input) => input.addEventListener("change", updateOtherField));
+      updateOtherField();
+    });
     function validateForm() {
       if (!form.checkValidity()) {
         form.querySelector(":invalid")?.focus();
@@ -498,6 +512,9 @@
       data.optionPlans = formData.getAll("optionPlans");
       data.howKnown = formData.getAll("howKnown");
       data.admissionMotives = formData.getAll("admissionMotives");
+      if (data.occupation === "その他" && data.occupationOther) data.occupation = `その他：${data.occupationOther}`;
+      if (data.howKnownOther) data.howKnown = data.howKnown.map((value) => value === "その他" ? `その他：${data.howKnownOther}` : value);
+      if (data.admissionMotiveOther) data.admissionMotives = data.admissionMotives.map((value) => value === "その他" ? `その他：${data.admissionMotiveOther}` : value);
       data.name = `${data.familyName || ""} ${data.givenName || ""}`.trim();
       data.kana = `${data.familyKana || ""} ${data.givenKana || ""}`.trim();
       data.introducerName = `${data.introducerFamilyName || ""} ${data.introducerGivenName || ""}`.trim();
@@ -515,7 +532,7 @@
       data.honeypot = data.website || "";
       data.turnstileToken = data["cf-turnstile-response"] || "";
       data.estimatedPrice = Number(data.estimatedPrice) || null;
-      data.formVersion = "2026-07-19.1";
+      data.formVersion = "2026-07-20.1";
       data.landingPage = location.href;
       data.referrer = document.referrer;
       const params = new URLSearchParams(location.search);

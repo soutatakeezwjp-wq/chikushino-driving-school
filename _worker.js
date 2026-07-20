@@ -10,7 +10,9 @@ const WORDPRESS_FEED_URL = "https://chikushi-ds.com/feed/";
 const DEFAULT_LIMIT = 6;
 const MAX_LIMIT = 12;
 const FEED_TIMEOUT_MS = 8000;
-const GAS_TIMEOUT_MS = 12000;
+// 保存後の学校通知・自動返信まで含めると15秒前後かかるため、
+// 成功済みの受付をブラウザ側でタイムアウト扱いにしない。
+const GAS_TIMEOUT_MS = 35000;
 const TURNSTILE_TIMEOUT_MS = 8000;
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 const PRODUCTION_API_ORIGIN = "https://chikushino-driving-school.pages.dev";
@@ -579,11 +581,27 @@ async function handleApplication(request, env) {
     const proxy = await createProxyEnvelope(normalized, env.GAS_SHARED_SECRET);
     const body = JSON.stringify({ ...normalized, _proxy: proxy });
 
-    const response = await fetchWithTimeout(env.GAS_APPLICATION_WEBHOOK_URL, {
-      method: "POST",
-      headers: { "content-type": "application/json; charset=utf-8" },
-      body
-    }, GAS_TIMEOUT_MS);
+    let response;
+    try {
+      response = await fetchWithTimeout(env.GAS_APPLICATION_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "content-type": "application/json; charset=utf-8" },
+        body
+      }, GAS_TIMEOUT_MS);
+    } catch (error) {
+      if (error?.name === "AbortError") {
+        throw new ApplicationRequestError(
+          "GAS_TIMEOUT",
+          "受付処理に時間がかかっています。連続して送信せず、1分ほど待って受付メールをご確認ください。",
+          504
+        );
+      }
+      throw new ApplicationRequestError(
+        "GAS_UNAVAILABLE",
+        "受付先へ接続できませんでした。通信状況を確認して再度お試しください。",
+        503
+      );
+    }
     const responseText = await response.text();
     let gasPayload;
     try {

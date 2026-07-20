@@ -453,6 +453,9 @@ body.is-modal-open { overflow: hidden; }
 .redesign-0718 .choice-item label { min-height: 54px; display: grid; place-items: center; padding: 10px; border: 1px solid #cfc6d9; border-radius: 5px; background: #fff; color: #574d64; font-size: 14px; font-weight: 850; text-align: center; cursor: pointer; }
 .redesign-0718 .choice-item input:checked + label { border-color: var(--cds-purple); background: var(--cds-purple-soft); color: var(--cds-purple-deep); box-shadow: inset 0 0 0 1px var(--cds-purple); }
 .redesign-0718 .choice-item input:focus-visible + label { outline: 3px solid rgba(95,45,168,.2); outline-offset: 2px; }
+.redesign-0718 .choice-other { display: grid; gap: 7px; margin-top: 12px; }
+.redesign-0718 .choice-other[hidden] { display: none; }
+.redesign-0718 .choice-other > span { color: #3d334a; font-size: 13px; font-weight: 850; }
 .redesign-0718 .privacy-check > span { display: flex; align-items: center; gap: 9px; }
 .redesign-0718 .privacy-check input { width: 20px; min-height: 20px; flex: 0 0 auto; margin: 0; }
 .redesign-0718 .form-nav { display: flex; justify-content: space-between; gap: 12px; margin-top: 30px; }
@@ -549,9 +552,13 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .instructor-grid,
   .redesign-0718 .plan-guide-grid,
   .redesign-0718 .flow-line,
-  .redesign-0718 .form-grid,
-  .redesign-0718 .choice-grid { grid-template-columns: 1fr; }
-  .redesign-0718 .choice-grid.is-two-columns { grid-template-columns: 1fr; }
+  .redesign-0718 .form-grid { grid-template-columns: 1fr; }
+  .redesign-0718 .choice-grid,
+  .redesign-0718 .choice-grid.is-two-columns { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+  .redesign-0718 .choice-item label { min-height: 44px; padding: 7px 5px; font-size: 12px; line-height: 1.35; }
+  .redesign-0718 fieldset.form-field legend,
+  .redesign-0718 .form-field > span,
+  .redesign-0718 .form-field > label { font-size: 13px; }
   .redesign-0718 .flow-step { min-height: 0; }
   .redesign-0718 .fee-hero img { aspect-ratio: 4 / 3; }
   .redesign-0718 .flow-switch,
