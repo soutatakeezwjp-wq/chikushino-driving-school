@@ -3465,7 +3465,7 @@
       visualCaption: "料金・送迎・入校日の相談までまとめて",
       body: `
 	        <section class="reveal"><div class="wrap grid cols-3">
-	          <article class="card"><h3>資料請求</h3><p>パンフレットや入校案内を確認したい方へ。郵送・デジタル送付の希望も相談できます。</p></article>
+	          <article class="card"><h3>資料請求</h3><p>パンフレット、入校案内、入校申込書などの必要書類をご入力住所へ郵送します。</p></article>
 	          <article class="card"><h3>お問い合わせ</h3><p>料金、入校日、送迎、必要書類など、申し込み前に気になることを確認できます。</p></article>
 	          <article class="card"><h3>仮入校申し込み</h3><p>希望する免許や通い方を伝えて、学校からの案内を受けられます。</p></article>
 	        </div></section>
@@ -3493,7 +3493,7 @@
 	            <div class="field" data-entry-field><label for="pricePlan">料金プラン</label><select id="pricePlan" name="pricePlan"><option value="" selected>選択してください</option><option value="day">デイプラン</option><option value="free">フリープラン</option></select></div>
 	            <div class="field" data-entry-field><label for="lessonPlan">技能教習プラン</label><select id="lessonPlan" name="lessonPlan" required><option value="" selected>選択してください</option><option>デイプラン</option><option>フリープラン</option><option>コミコミプラン</option><option>スケジュールプラン</option><option>合宿風ハイスピードプラン</option><option>未定・相談したい</option></select></div>
 	            <div class="field" data-entry-field><label for="paymentMethod">お支払い方法</label><select id="paymentMethod" name="paymentMethod" required><option value="" selected>選択してください</option><option>現金</option><option>クレジットカード</option><option>QRコード決済</option><option>ローン</option><option>振込み</option><option>未定</option></select></div>
-	            <div class="field"><label for="materialDelivery">資料の受け取り</label><select id="materialDelivery" name="materialDelivery"><option value="" selected>選択してください</option><option>デジタル送付を希望</option><option>郵送を希望</option><option>相談したい</option></select></div>
+	            <div class="field wide"><p><strong>書類の送付について</strong><br>入校申込書などの必要書類は、ご入力いただいた住所へ郵送します。</p></div>
 	            <div class="field"><label for="howKnown">どこで知りましたか？</label><select id="howKnown" name="howKnown"><option value="" selected>選択してください</option><option>Instagram</option><option>LINE</option><option>ネット検索</option><option>チラシ・DM</option><option>知人・家族の紹介</option><option>学校・職場のパンフレット</option><option>看板・通りがかり</option><option>その他</option></select></div>
             <div class="field wide"><label for="notes">ご質問・備考</label><textarea id="notes" name="notes" placeholder="希望入校日、送迎バスの相談、料金の確認など"></textarea></div>
             <label class="privacy-check wide"><input type="checkbox" name="privacyConsent" value="同意済み" required><span>個人情報保護方針を確認し、送信に同意します。</span></label>
@@ -4722,7 +4722,7 @@
   renderPage();
 </script>
 <script src="data/price-master.js"></script>
-<script src="assets/redesign-0718.js?v=20260720-2"></script>
+<script src="assets/redesign-0718.js?v=20260720-3"></script>
 <script src="assets/mobile-menu-motion.js?v=20260720-1"></script>
 </body>
 </html>

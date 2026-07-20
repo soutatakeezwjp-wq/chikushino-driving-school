@@ -427,7 +427,7 @@
         <section class="application-section"><span class="application-section-no">05</span><h2>質問・同意</h2><div class="form-grid">
           <label class="form-field is-wide"><span>質問・意見</span><textarea name="notes" placeholder="質問・意見を入力してください。"></textarea></label>
           <label class="form-field is-wide privacy-check"><span><input type="checkbox" name="privacyConsent" value="同意済み" required>個人情報保護方針に同意します<span class="required">必須</span></span></label>
-        </div><div class="form-submit"><p>送信後、担当者より資料をお届け（郵送）します。</p><button class="r-button is-orange" type="submit">上記内容で送信する</button></div><div class="form-status" id="application-status" hidden aria-live="polite"></div></section>
+        </div><div class="form-submit"><p>入校申込書などの必要書類は、ご入力いただいた住所へ郵送します。受取方法の選択は不要です。</p><button class="r-button is-orange" type="submit">上記内容で送信する</button></div><div class="form-status" id="application-status" hidden aria-live="polite"></div></section>
       </form>
     </div></section>`;
   }
