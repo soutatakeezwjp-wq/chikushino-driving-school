@@ -9,6 +9,10 @@ review/0718-instructors/
 images/hero-concepts-20260718/
 images/hero-final-candidates-20260718/*.png
 images/instructors-anime-20260718/*.png
+!images/instructors-anime-20260718/sasaki-takako.png
+!images/instructors-anime-20260718/nakamura-masanobu.png
+!images/instructors-anime-20260718/koda-morio.png
+!images/instructors-anime-20260718/uchino-shuhei.png
 data/instructors-audit.json
 data/instructors-audit.md
 review/0718-visual-plan/assets/instructors/
