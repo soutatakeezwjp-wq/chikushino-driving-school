@@ -214,6 +214,23 @@ body.is-concise-course-page .subpage-hero { padding-bottom: 12px; }
 .redesign-0718 .fee-table thead th { background: var(--cds-purple-deep); color: #fff; font-size: 13px; }
 .redesign-0718 .fee-table tbody td { color: #40364f; font-size: 14px; font-weight: 700; }
 .redesign-0718 .fee-table .fee-amount { color: #c84155; font-size: 16px; font-weight: 900; white-space: nowrap; }
+.redesign-0718 .fee-table th:nth-child(1) { width: 18%; }
+.redesign-0718 .fee-table th:nth-child(2) { width: 13%; }
+.redesign-0718 .fee-table th:nth-child(3),
+.redesign-0718 .fee-table th:nth-child(4) { width: 8%; }
+.redesign-0718 .fee-table th:nth-child(n+5) { width: 13.25%; }
+.redesign-0718 .fee-table .fee-course { line-height: 1.5; }
+
+.redesign-0718 .separate-fee-note {
+  margin: 16px 0 0;
+  padding: 13px 16px;
+  border-left: 4px solid var(--cds-orange);
+  background: #fff7ef;
+  color: #514858;
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.75;
+}
 
 .redesign-0718 .fee-mobile-list { display: none; }
 .redesign-0718 .fee-mobile-card {
@@ -331,6 +348,8 @@ body.is-concise-course-page .subpage-hero { padding-bottom: 12px; }
 .r-modal-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; padding: 14px 16px; border-right: 1px solid var(--cds-line); border-bottom: 1px solid var(--cds-line); }
 .r-modal-row span { color: #554b61; font-size: 14px; }
 .r-modal-row strong { color: var(--cds-ink); font-size: 14px; white-space: nowrap; }
+.r-modal-group + .r-modal-group { margin-top: 26px; }
+.r-modal-group > h3 { margin: 0 0 10px; color: var(--cds-purple-deep); font-size: 18px; }
 body.is-modal-open { overflow: hidden; }
 
 /* Flow and schedule */
@@ -383,32 +402,48 @@ body.is-modal-open { overflow: hidden; }
   text-decoration: none;
 }
 
+.redesign-0718 .flow-switch.is-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .redesign-0718 .flow-switch a:first-child { background: var(--cds-purple); color: #fff; }
 .redesign-0718 .flow-switch a:last-child { border-right: 0; }
 
-.redesign-0718 .lesson-plan-grid {
+.redesign-0718 .admission-info-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 18px;
   margin-top: 28px;
 }
 
-.redesign-0718 .lesson-plan-grid article {
-  padding: 22px;
+.redesign-0718 .info-panel,
+.redesign-0718 .qualification-panel {
+  padding: 26px;
   border: 1px solid var(--cds-line);
   border-top: 5px solid var(--cds-purple);
   border-radius: 6px;
   background: #fff;
 }
 
-.redesign-0718 .lesson-plan-grid strong { display: block; color: var(--cds-purple-deep); font-size: 20px; }
-.redesign-0718 .lesson-plan-grid span { display: block; margin-top: 4px; color: #c84155; font-size: 24px; font-weight: 900; }
-.redesign-0718 .lesson-plan-grid p { margin: 8px 0 0; color: var(--cds-muted); }
+.redesign-0718 .info-panel h3,
+.redesign-0718 .qualification-panel > h3 {
+  margin: 0;
+  color: var(--cds-purple-deep);
+  font-size: 22px;
+}
 
-.redesign-0718 .time-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; margin-top: 24px; }
+.redesign-0718 .info-list { display: grid; gap: 0; margin: 18px 0 0; padding: 0; list-style: none; }
+.redesign-0718 .info-list li { padding: 13px 0; border-top: 1px solid #ece7f1; }
+.redesign-0718 .info-list strong { display: block; color: var(--cds-purple-deep); font-size: 15px; }
+.redesign-0718 .info-list span { display: block; margin-top: 5px; color: var(--cds-muted); font-size: 13px; line-height: 1.75; }
+.redesign-0718 .info-emphasis { margin: 18px 0 0; padding: 14px 16px; background: #fff7ef; color: #694022; font-size: 13px; font-weight: 800; line-height: 1.7; }
+.redesign-0718 .qualification-panel { margin-top: 18px; border-top-color: var(--cds-green); }
+.redesign-0718 .qualification-list { margin: 18px 0 0; }
+.redesign-0718 .qualification-list > div { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 18px; padding: 14px 0; border-top: 1px solid #ece7f1; }
+.redesign-0718 .qualification-list dt { color: var(--cds-purple-deep); font-size: 14px; font-weight: 900; }
+.redesign-0718 .qualification-list dd { margin: 0; color: var(--cds-muted); font-size: 14px; line-height: 1.75; }
+
+.redesign-0718 .time-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 24px; }
 .redesign-0718 .time-cell { min-height: 82px; display: grid; place-content: center; gap: 4px; padding: 10px; border: 1px solid var(--cds-line); border-radius: 6px; background: #fff; text-align: center; }
 .redesign-0718 .time-cell strong { color: var(--cds-purple-deep); font-size: 14px; }
-.redesign-0718 .time-cell span { color: var(--cds-muted); font-size: 12px; }
+.redesign-0718 .time-cell span { color: var(--cds-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
 
 .redesign-0718 .schedule-stack { display: grid; gap: 34px; margin-top: 30px; }
 .redesign-0718 .schedule-group { min-width: 0; }
@@ -487,6 +522,48 @@ body.is-modal-open { overflow: hidden; }
 .redesign-0718 .key-fact strong { display: block; color: var(--cds-purple-deep); font-size: 19px; }
 .redesign-0718 .key-fact span { display: block; margin-top: 8px; color: var(--cds-muted); line-height: 1.75; }
 
+.redesign-0718 .paper-intro .r-button { margin-top: 22px; }
+.redesign-0718 .paper-type-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 26px;
+}
+.redesign-0718 .paper-type-grid article,
+.redesign-0718 .paper-booking-grid article {
+  padding: 22px;
+  border: 1px solid var(--cds-line);
+  border-left: 5px solid var(--cds-purple);
+  border-radius: 6px;
+  background: #fff;
+}
+.redesign-0718 .paper-type-grid h3,
+.redesign-0718 .paper-booking-grid h3 { margin: 0; color: var(--cds-purple-deep); font-size: 18px; }
+.redesign-0718 .paper-type-grid p,
+.redesign-0718 .paper-booking-grid p { margin: 9px 0 0; color: var(--cds-muted); font-size: 14px; line-height: 1.75; }
+.redesign-0718 .paper-single-fee {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 12px;
+  align-items: baseline;
+  margin-top: 26px;
+  padding: 22px;
+  border: 1px solid var(--cds-line);
+  border-top: 5px solid var(--cds-orange);
+  border-radius: 6px;
+  background: #fff;
+}
+.redesign-0718 .paper-single-fee span { color: var(--cds-purple-deep); font-size: 18px; font-weight: 900; }
+.redesign-0718 .paper-single-fee strong { color: #c84155; font-size: 30px; font-weight: 900; }
+.redesign-0718 .paper-single-fee small { color: var(--cds-muted); }
+.redesign-0718 .paper-subheading { margin: 30px 0 0; color: var(--cds-purple-deep); font-size: 21px; }
+.redesign-0718 .paper-rate-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+.redesign-0718 .paper-rate-grid > div { padding: 16px; border: 1px solid var(--cds-line); border-radius: 6px; background: #fff; text-align: center; }
+.redesign-0718 .paper-rate-grid span { display: block; color: var(--cds-muted); font-size: 13px; font-weight: 800; }
+.redesign-0718 .paper-rate-grid strong { display: block; margin-top: 5px; color: #c84155; font-size: 20px; }
+.redesign-0718 .paper-booking-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 24px; }
+.redesign-0718 .paper-booking-grid article { border-left-color: var(--cds-green); }
+
 @media (max-width: 900px) {
   .hero.hero-20260718 {
     height: 520px;
@@ -510,6 +587,8 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .simple-grid,
   .redesign-0718 .instructor-grid,
   .redesign-0718 .plan-guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .redesign-0718 .admission-info-grid,
+  .redesign-0718 .paper-booking-grid { grid-template-columns: 1fr; }
   .redesign-0718 .flow-line { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redesign-0718 .flow-line.is-six { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redesign-0718 .time-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -561,10 +640,15 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .flow-step { min-height: 0; }
   .redesign-0718 .fee-hero img { aspect-ratio: 4 / 3; }
   .redesign-0718 .flow-switch,
-  .redesign-0718 .lesson-plan-grid { grid-template-columns: 1fr; }
+  .redesign-0718 .flow-switch.is-four { grid-template-columns: 1fr; }
   .redesign-0718 .flow-switch a { border-right: 0; border-bottom: 1px solid var(--cds-purple); }
   .redesign-0718 .flow-switch a:last-child { border-bottom: 0; }
   .redesign-0718 .time-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .redesign-0718 .qualification-list > div { grid-template-columns: 1fr; gap: 5px; }
+  .redesign-0718 .paper-type-grid { grid-template-columns: 1fr; }
+  .redesign-0718 .paper-rate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .redesign-0718 .paper-single-fee { grid-template-columns: 1fr auto; }
+  .redesign-0718 .paper-single-fee small { grid-column: 2; }
   .redesign-0718 .r-modal { padding: 10px; }
   .redesign-0718 .r-modal-panel { padding: 24px 16px; }
   .redesign-0718 .r-modal-list { grid-template-columns: 1fr; }

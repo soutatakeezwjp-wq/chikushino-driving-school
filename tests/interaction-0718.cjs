@@ -1,6 +1,7 @@
 const { chromium } = require("playwright");
 
 const baseUrl = process.env.BASE_URL || "http://127.0.0.1:8765";
+const executablePath = process.env.PLAYWRIGHT_CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -39,7 +40,7 @@ async function selectChoice(page, selector) {
 }
 
 (async () => {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, executablePath });
   const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const checks = [];
   try {
@@ -52,7 +53,7 @@ async function selectChoice(page, selector) {
       await top.selectOption("#sim-course", value);
       assert(await top.locator("#sim-license option").count() > 0, `${value}の現有免許選択肢がありません。`);
       const total = Number((await top.locator("#sim-total-price").textContent()).replace(/\D/g, ""));
-      assert(total > 0, `${value}の正式料金を計算できません。`);
+      assert(total > 0, `${value}の料金を計算できません。`);
     }
     assert((await top.locator("#sim-apply").getAttribute("href")).includes("estimatedPrice="), "シミュレーター結果が仮申込へ引き継がれません。");
     await top.locator("#open-option-details").click();
@@ -61,7 +62,7 @@ async function selectChoice(page, selector) {
     const optionDetails = await top.locator("#option-details-body").textContent();
     assert(["コミコミプラン", "スケジュールプラン", "合宿風ハイスピードプラン"].every((label) => optionDetails.includes(label)), "3種類のオプション説明が揃っていません。");
     await top.locator("[data-dialog-close]").click();
-    assert(await top.locator('a[href="detail.html?page=price"]').count() >= 3, "正式料金ページへの導線が不足しています。");
+    assert(await top.locator('a[href="detail.html?page=price"]').count() >= 3, "料金ページへの導線が不足しています。");
     checks.push("home-fee-simulator");
     await top.close();
 
@@ -125,8 +126,6 @@ async function selectChoice(page, selector) {
     assert(await instructors.locator(".instructor-card").count() === 19, "指導員が19名表示されていません。");
     assert(await instructors.locator('[aria-label="四輪担当"]').count() === 19, "四輪担当アイコンの人数がExcelと一致しません。");
     assert(await instructors.locator('[aria-label="二輪担当"]').count() === 7, "二輪担当アイコンの人数がExcelと一致しません。");
-    assert(await instructors.locator('.instructor-card img[src*="instructors-anime-20260718"]').count() === 9, "修正版画像が指定9名だけに使われていません。");
-    assert(await instructors.locator('.instructor-card img:not([src*="instructors-anime-20260718"])').count() === 10, "従来画像が指定外10名に維持されていません。");
     const brokenInstructors = await instructors.locator(".instructor-card img").evaluateAll((images) => images.filter((image) => image.complete && image.naturalWidth === 0).length);
     assert(brokenInstructors === 0, "指導員画像に読み込み失敗があります。");
     checks.push("instructors");

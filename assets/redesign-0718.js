@@ -38,11 +38,19 @@
     return `<span class="r-eyebrow">${eyebrow}</span><h2 class="r-heading">${title}</h2>${lead ? `<p class="r-lead">${lead}</p>` : ""}`;
   }
 
+  function courseLabel(row) {
+    if (row.id?.startsWith("standard-at-")) return "普通車AT";
+    if (row.id === "standard-mt-transition-at-graduation-certificate") return "MT移行（AT解除）";
+    if (row.id === "standard-mt-license-change-from-at") return "MT普通車";
+    if (row.id?.startsWith("semi-medium-from-")) return "準中型車（MT）";
+    return `${safeText(row.course)}${row.transmission ? `（${safeText(row.transmission)}）` : ""}`;
+  }
+
   function feeTable(rows) {
     if (!rows?.length) return "";
     const desktopRows = rows.map((row) => `
-      <tr>
-        <td>${safeText(row.course)} ${safeText(row.transmission || "")}</td>
+      <tr data-fee-row="${safeText(row.id)}">
+        <td class="fee-course">${courseLabel(row)}</td>
         <td>${safeText(row.currentLicenseLabel)}</td>
         <td>${row.skillHours ?? "-"}時限</td>
         <td>${row.academicHours == null ? "-" : `${row.academicHours}時限`}</td>
@@ -52,8 +60,8 @@
         <td class="fee-amount">${yen(row.prices?.free?.general)}</td>
       </tr>`).join("");
     const mobileRows = rows.map((row) => `
-      <article class="fee-mobile-card">
-        <h3>${safeText(row.course)} ${safeText(row.transmission || "")}</h3>
+      <article class="fee-mobile-card" data-fee-row="${safeText(row.id)}">
+        <h3>${courseLabel(row)}</h3>
         <dl>
           <div><dt>現在お持ちの免許</dt><dd>${safeText(row.currentLicenseLabel)}</dd></div>
           <div><dt>技能 / 学科</dt><dd>${row.skillHours ?? "-"} / ${row.academicHours == null ? "-" : row.academicHours} 時限</dd></div>
@@ -83,8 +91,7 @@
     }).join("")}</div>`;
   }
 
-  function planGuide(catalog) {
-    const optionById = Object.fromEntries((catalog.options || []).map((item) => [item.id, item]));
+  function planGuide() {
     const plans = [
       {
         title: "デイプラン",
@@ -96,26 +103,9 @@
         title: "フリープラン",
         hours: master.dimensions.plans.free.hours,
         fit: "学校・仕事のあとにも通いたい方",
-        detail: "夜間まで予約できるプランです。追加料金は正式料金表のフリー欄に含まれています。"
+        detail: "夜間まで予約できるプランです。追加料金は料金表のフリー欄に含まれています。"
       }
     ];
-    const optionDetails = {
-      komikomi: { fit: "補習や再検定の追加負担が心配な方", detail: "延長・補習教習料と技能検定再検定料がかからない安心プランです。対象車種・適用条件は受付で確認します。" },
-      schedule: { fit: "予定に合わせて卒業まで組んでほしい方", detail: "通える曜日や時間を確認し、学校が卒業までの予約計画を作成します。混雑時期は受付枠に限りがあります。" },
-      "camp-style-high-speed": { fit: "自宅から通いながら短期取得を目指す方", detail: "学校指定の集中日程でAT普通車を進めます。最短17日は目安で、教習進度や検定結果により延びる場合があります。" }
-    };
-    Object.entries(optionDetails).forEach(([id, detail]) => {
-      const option = optionById[id];
-      if (!option) return;
-      const spring = option.pricesBySeason?.aprToNov;
-      const winter = option.pricesBySeason?.decToMar;
-      plans.push({
-        title: option.label,
-        hours: spring === winter ? `追加 ${yen(spring)}` : `4〜11月 ${yen(spring)} / 12〜3月 ${yen(winter)}`,
-        fit: detail.fit,
-        detail: detail.detail
-      });
-    });
     return `<div class="plan-guide-grid">${plans.map((plan) => `<article class="plan-guide-card"><h3>${safeText(plan.title)}</h3><strong>${safeText(plan.hours)}</strong><dl><div><dt>おすすめ</dt><dd>${safeText(plan.fit)}</dd></div><div><dt>内容</dt><dd>${safeText(plan.detail)}</dd></div></dl></article>`).join("")}</div>`;
   }
 
@@ -125,6 +115,42 @@
 
   function modalShell() {
     return `<div class="r-modal" id="fee-detail-modal" hidden aria-hidden="true"><div class="r-modal-backdrop" data-modal-close></div><section class="r-modal-panel" role="dialog" aria-modal="true" aria-labelledby="fee-modal-title"><button class="r-modal-close" type="button" data-modal-close aria-label="閉じる">×</button><h2 id="fee-modal-title"></h2><div id="fee-modal-content"></div></section></div>`;
+  }
+
+  function motorcycleModalSections(config, isBreakdown) {
+    const source = isBreakdown ? (config.feeBreakdown || []) : (config.otherFees || []);
+    const largeId = isBreakdown ? "large-skill-lesson" : "large-extension-lesson";
+    const standardId = isBreakdown ? "standard-skill-lesson" : "standard-extension-lesson";
+    const shared = source.filter((item) => ![largeId, standardId].includes(item.id));
+    const enrollment = shared.find((item) => item.id === "enrollment");
+    const sharedWithoutEnrollment = shared.filter((item) => item.id !== "enrollment");
+    const withVehicleItem = (vehicleId) => [
+      ...(enrollment ? [enrollment] : []),
+      ...source.filter((item) => item.id === vehicleId),
+      ...sharedWithoutEnrollment
+    ];
+    return [
+      { title: "大型二輪車", items: withVehicleItem(largeId) },
+      { title: "普通二輪車・小型二輪車", items: withVehicleItem(standardId) }
+    ];
+  }
+
+  function modalSections(config, isBreakdown, scope) {
+    if (scope === "license") {
+      return [{
+        title: "限定解除",
+        items: isBreakdown
+          ? (config.licenseChangeFeeBreakdown || [])
+          : (config.licenseChangeOtherFees || [])
+      }];
+    }
+    if (config.label === "自動二輪車") return motorcycleModalSections(config, isBreakdown);
+    return [{
+      title: "",
+      items: isBreakdown
+        ? (config.feeBreakdown || [])
+        : [...(config.otherFees || []), ...(config.separateFees || [])]
+    }];
   }
 
   function setupModal(configs) {
@@ -147,12 +173,11 @@
         const config = configs[button.dataset.catalog];
         if (!config) return;
         const isBreakdown = button.dataset.feeView === "breakdown";
-        const items = isBreakdown
-          ? [...(config.feeBreakdown || []), ...(config.licenseChangeFeeBreakdown || [])]
-          : [...(config.otherFees || []), ...(config.separateFees || []), ...(config.licenseChangeOtherFees || [])];
+        const scope = button.dataset.feeScope || "normal";
+        const sections = modalSections(config, isBreakdown, scope);
         lastTrigger = button;
-        title.textContent = `${config.label} ${isBreakdown ? "料金内訳" : "その他の費用"}`;
-        content.innerHTML = `<div class="r-modal-list">${modalItems(items)}</div><p class="r-note">金額は正式料金資料（2026年8月1日適用）に基づく税込表示です。非課税項目は個別に記載しています。</p>`;
+        title.textContent = `${button.dataset.feeLabel || config.label} ${isBreakdown ? "料金内訳" : "その他の費用"}`;
+        content.innerHTML = `${sections.map((section) => `<section class="r-modal-group">${section.title ? `<h3>${safeText(section.title)}</h3>` : ""}<div class="r-modal-list">${modalItems(section.items)}</div></section>`).join("")}<p class="r-note">料金は税込表示です。非課税項目は個別に記載しています。</p>`;
         modal.hidden = false;
         modal.setAttribute("aria-hidden", "false");
         document.body.classList.add("is-modal-open");
@@ -167,13 +192,18 @@
   }
 
   const feePageMap = {
-    standard: { key: "standardCar", title: "普通自動車 料金表", lead: "現在お持ちの免許と通える時間帯から、正式な教習料金を確認できます。", image: "images/official-20260718/ordinary-training-cars.jpg", imageAlt: "筑紫野自動車学校の白い普通自動車教習車", pdf: "downloads/fees-2026-08/standard-car-fees-2026-08-01.pdf" },
-    semi_medium: { key: "semiMedium", title: "準中型車 料金表", lead: "現有免許によって必要時限と料金が変わります。スマホでは1条件ずつ縦に表示します。", image: "images/official-20260718/semi-medium-trucks.jpg", imageAlt: "筑紫野自動車学校の準中型教習車", pdf: "downloads/fees-2026-08/semi-medium-fees-2026-08-01.pdf" },
-    bike: { key: "motorcycle", title: "自動二輪車 料金表", lead: "大型・普通・小型、AT・MTごとの料金を、現在お持ちの免許別に確認できます。", image: "images/official-20260718/motorcycles.jpg", imageAlt: "筑紫野自動車学校の自動二輪教習車", pdf: "downloads/fees-2026-08/motorcycle-fees-2026-08-01.pdf" }
+    standard: { key: "standardCar", title: "普通自動車 料金表", lead: "現在お持ちの免許と通える時間帯から、教習料金を確認できます。" },
+    semi_medium: { key: "semiMedium", title: "準中型車 料金表", lead: "現有免許によって必要時限と料金が変わります。該当する免許区分をご確認ください。" },
+    bike: { key: "motorcycle", title: "自動二輪車 料金表", lead: "大型・普通・小型、AT・MTごとの料金を、現在お持ちの免許別に確認できます。" }
   };
 
-  function feeButtons(key, pdf) {
-    return `<div class="r-actions"><button class="r-button is-primary" type="button" data-fee-view="breakdown" data-catalog="${key}">料金内訳を見る</button><button class="r-button" type="button" data-fee-view="other" data-catalog="${key}">その他の費用を見る</button><a class="r-button" href="${pdf}" target="_blank" rel="noopener">正式料金表PDF</a></div>`;
+  function feeButtons(key, scope = "normal", label = "") {
+    return `<div class="r-actions"><button class="r-button is-primary" type="button" data-fee-view="breakdown" data-fee-scope="${scope}" data-fee-label="${safeText(label)}" data-catalog="${key}">料金内訳を見る</button><button class="r-button" type="button" data-fee-view="other" data-fee-scope="${scope}" data-fee-label="${safeText(label)}" data-catalog="${key}">その他の費用を見る</button></div>`;
+  }
+
+  function separateFeeNotice(catalog) {
+    if (!(catalog.separateFees || []).length) return "";
+    return `<p class="separate-fee-note">仮免試験手数料1,800円（非課税）　仮免交付手数料1,100円（非課税）が別途必要になります。</p>`;
   }
 
   function renderFeePage(id) {
@@ -182,15 +212,15 @@
     const catalog = master.catalog[spec.key];
     setPage(`
       <section class="r-section" id="formal-fees"><div class="r-wrap">
-        ${sectionHeader("OFFICIAL FEES", spec.title, spec.lead)}
-        <p class="r-note">適用日：${master.effectiveDate.replace(/-/g, "/")}　料金は税込です。学生料金は学生証の提示が必要です。</p>
+        ${sectionHeader("FEES", spec.title, spec.lead)}
+        <p class="r-note">料金は税込です。学生料金は学生証の提示が必要です。</p>
         ${feeTable(catalog.mainFeeRows)}
-        ${feeButtons(spec.key, spec.pdf)}
+        ${separateFeeNotice(catalog)}
+        ${feeButtons(spec.key)}
       </div></section>
-      <section class="r-section is-soft"><div class="r-wrap">${sectionHeader("PLAN GUIDE", "通い方と追加プラン", "生活リズム、取得希望時期、追加費用への備えから、自分に合うプランを比較できます。")}${planGuide(catalog)}</div></section>
-      ${catalog.licenseChangeRows?.length ? `<section class="r-section is-soft"><div class="r-wrap">${sectionHeader("LICENSE CHANGE", "限定解除・移行", "すでにお持ちの免許から限定条件を解除する場合の料金です。")}${feeTable(catalog.licenseChangeRows)}</div></section>` : ""}
+      <section class="r-section is-soft"><div class="r-wrap">${sectionHeader("PLAN GUIDE", "教習プラン", "通える時間帯に合わせて、デイプランまたはフリープランを選べます。")}${planGuide()}</div></section>
       ${catalog.options?.length ? `<section class="r-section"><div class="r-wrap">${sectionHeader("OPTION", "通い方に合わせたオプション", "基本料金に追加して選べるプランです。")}${optionCards(catalog.options)}</div></section>` : ""}
-      <section class="r-section is-soft"><div class="r-wrap">${sectionHeader("NOTICE", "料金についてのご案内")}
+      <section class="r-section is-soft"><div class="r-wrap"><h2 class="visually-hidden">注意事項</h2>
         <div class="r-notice">${(catalog.notices || []).map((notice) => `<div>・${safeText(notice)}</div>`).join("") || "割引の適用条件や入校時期による差は、受付で最終確認します。"}</div>
       </div></section>
       ${modalShell()}`);
@@ -200,22 +230,22 @@
   function renderLimitedFees() {
     if (!master) return;
     const groups = [
-      ["standardCar", "普通車の限定解除", master.catalog.standardCar, "downloads/fees-2026-08/standard-car-fees-2026-08-01.pdf"],
-      ["semiMedium", "準中型車の限定解除", master.catalog.semiMedium, "downloads/fees-2026-08/semi-medium-fees-2026-08-01.pdf"],
-      ["motorcycle", "自動二輪車の限定解除", master.catalog.motorcycle, "downloads/fees-2026-08/motorcycle-fees-2026-08-01.pdf"]
+      ["standardCar", "普通車の限定解除", master.catalog.standardCar],
+      ["semiMedium", "準中型車の限定解除", master.catalog.semiMedium],
+      ["motorcycle", "自動二輪車の限定解除", master.catalog.motorcycle]
     ];
-    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("LICENSE CHANGE", "限定解除 料金表", "現在お持ちの免許の限定条件を解除するための正式料金です。")}</div></section>` + groups.map(([key, title, catalog, pdf], index) => `
+    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("LICENSE CHANGE", "限定解除 料金表", "現在お持ちの免許の限定条件を解除する場合の料金です。")}</div></section>` + groups.map(([key, title, catalog], index) => `
       <section class="r-section ${index % 2 ? "is-soft" : ""}"><div class="r-wrap">
-        ${sectionHeader("OFFICIAL FEES", title, "現在お持ちの免許に合う行をご確認ください。")}
+        ${sectionHeader("FEES", title, "現在お持ちの免許に合う行をご確認ください。")}
         ${feeTable(catalog.licenseChangeRows)}
-        ${feeButtons(key, pdf)}
+        ${feeButtons(key, "license", title)}
       </div></section>`).join("") + modalShell());
     setupModal(Object.fromEntries(groups.map(([key, , catalog]) => [key, catalog])));
   }
 
   function renderPriceHub() {
     setPage(`<section class="r-section"><div class="r-wrap">
-      ${sectionHeader("FEES", "免許ごとの正式料金", "普通車、準中型車、自動二輪車、限定解除の正式料金表・内訳・追加費用を確認できます。")}
+      ${sectionHeader("FEES", "免許ごとの料金", "普通車、準中型車、自動二輪車、限定解除の料金・内訳・追加費用を確認できます。")}
       <div class="simple-grid">
         <a class="simple-item" href="detail.html?page=standard#formal-fees"><h3>普通自動車</h3><p>AT、MT移行、普通車限定解除</p></a>
         <a class="simple-item" href="detail.html?page=semi_medium#formal-fees"><h3>準中型車</h3><p>現有免許5区分と限定解除</p></a>
@@ -239,50 +269,123 @@
       </div>
       ${optionCards(highSpeed ? [highSpeed] : [])}
       <div class="r-notice"><div>・最短日数は目安で、教習の進み方や検定結果により延びる場合があります。</div><div>・基本教習料金に追加して利用するプランです。</div><div>・入校日と空き状況は受付でご確認ください。</div></div>
-      <div class="r-actions"><a class="r-button is-primary" href="detail.html?page=standard#formal-fees">普通車の正式料金を見る</a><a class="r-button is-orange" href="detail.html?page=application">空き状況を相談する</a></div>
+      <div class="r-actions"><a class="r-button is-primary" href="detail.html?page=standard#formal-fees">普通車の料金を見る</a><a class="r-button is-orange" href="detail.html?page=application">空き状況を相談する</a></div>
     </div></section>`);
   }
 
   function renderAdmission() {
     const admissionSteps = [
-      ["必要書類を準備", "住民票・本人確認書類などを確認"],
-      ["仮申込・来校予約", "Webまたは電話で相談"],
-      ["入校手続き", "申込書を記入し、料金を確認"],
-      ["写真撮影・視力検査", "入校資格と適性条件を確認"],
+      ["必要書類を準備", ""],
+      ["入校手続き来校", "必要書類を持参"],
+      ["写真撮影・視力検査", "眼鏡・コンタクトが必要な方はご準備下さい"],
       ["入校日を決定", "木曜日・土曜日から選択"],
-      ["入校説明・教習開始", "学科・技能教習をスタート"]
+      ["入校受付完了", "入校日に来校"]
     ];
     const atSteps = ["入校式", "適性検査・学科1", "第1段階 技能教習（場内）・学科教習", "修了検定", "仮免学科試験", "第2段階 技能教習（路上）・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
-    const mtSteps = ["普通車AT課程", "AT卒業検定", "MT技能教習", "修了審査（技能）", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
+    const mtSteps = ["AT普通車課程", "AT卒業検定", "MT技能教習", "技能審査", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
     const bikeSteps = ["入校式", "適性検査", "第1段階 技能・学科教習", "第2段階 技能・学科教習", "卒業検定", "卒業証明書", "免許センター", "運転免許証交付"].map((title) => [title, ""]);
     const hiddenFlow = (title, items) => `<div class="visually-hidden"><h3>${title}</h3><ol>${items.map(([stepTitle, text]) => `<li><strong>${safeText(stepTitle)}</strong> ${safeText(text)}</li>`).join("")}</ol></div>`;
-    const flowPicture = (basename, alt) => `<picture class="flow-artwork"><source media="(max-width: 560px)" srcset="images/detail-pages/flows-20260719/${basename}-mobile.webp"><img src="images/detail-pages/flows-20260719/${basename}-desktop.webp" alt="${safeText(alt)}" loading="eager" decoding="async"></picture>`;
-    const lessonTimes = ["8:30〜9:20", "9:30〜10:20", "10:30〜11:20", "11:30〜12:20", "13:30〜14:20", "14:30〜15:20", "15:30〜16:20", "16:30〜17:20", "17:40〜18:30", "18:40〜19:30", "19:40〜20:30"];
+    const flowPicture = (basename, alt) => `<picture class="flow-artwork"><source media="(max-width: 560px)" srcset="images/detail-pages/flows-20260723/${basename}-mobile.webp"><img src="images/detail-pages/flows-20260723/${basename}-desktop.webp" alt="${safeText(alt)}" loading="eager" decoding="async"></picture>`;
+    const lessonTimes = ["8:30〜9:20", "9:30〜10:20", "10:30〜11:20", "11:30〜12:20", "12:30〜13:20", "13:30〜14:20", "14:30〜15:20", "15:30〜16:20", "16:30〜17:20", "17:40〜18:30", "18:40〜19:30", "19:40〜20:30"];
     setPage(`
       <section class="r-section"><div class="r-wrap">
-        ${sectionHeader("ENTRY GUIDE", "入校から免許交付まで", "必要な手続きと教習の進み方を、順番に確認できます。")}
-        <nav class="flow-switch" aria-label="入校案内のページ内メニュー"><a href="#entry-flow">入校までの手続き</a><a href="#license-flow">入校から免許証交付まで</a><a href="#lesson-time">教習時間</a></nav>
+        ${sectionHeader("ENTRY GUIDE", "入校案内", "必要な手続き、入校資格、免許証交付までの流れを順番に確認できます。")}
+        <nav class="flow-switch is-four" aria-label="入校案内のページ内メニュー"><a href="#entry-flow">入校まで</a><a href="#preparation">準備・資格</a><a href="#license-flow">免許証交付まで</a><a href="#lesson-time">教習時間</a></nav>
       </div></section>
-      <section class="r-section is-soft" id="entry-flow"><div class="r-wrap">${sectionHeader("ENTRY FLOW", "入校までの手続き", "仮申込から教習開始まで、6つの段階で進みます。")}${flowPicture("admission", "筑紫野自動車学校の入校までの6ステップ")}${hiddenFlow("入校までの6ステップ", admissionSteps)}</div></section>
-      <section class="r-section is-soft" id="license-flow"><div class="r-wrap">${sectionHeader("LICENSE FLOW", "入校から免許交付まで", "取得する免許に合わせて流れを確認できます。")}
-        <div class="license-flow-list">
-          <section><h3>普通自動車AT</h3>${flowPicture("license-at", "普通自動車ATの入校から免許交付までの流れ")}</section>
-          <section><h3>普通自動車MT移行</h3>${flowPicture("license-mt", "普通自動車ATからMTへ移行する免許交付までの流れ")}</section>
-          <section><h3>自動二輪</h3>${flowPicture("license-bike", "自動二輪の入校から免許交付までの流れ")}</section>
+      <section class="r-section is-soft" id="entry-flow"><div class="r-wrap">
+        ${sectionHeader("ENTRY FLOW", "入校までの流れ", "必要書類の準備から入校受付完了まで、5つの段階で進みます。")}
+        ${flowPicture("admission", "筑紫野自動車学校の入校までの5ステップ")}
+        ${hiddenFlow("入校までの5ステップ", admissionSteps)}
+      </div></section>
+      <section class="r-section" id="preparation"><div class="r-wrap">
+        ${sectionHeader("PREPARATION", "入校前に準備するもの", "入校手続きは入校日前日までにお済ませください。")}
+        <div class="admission-info-grid">
+          <article class="info-panel">
+            <h3>必要書類</h3>
+            <ul class="info-list">
+              <li><strong>入校申込書</strong></li>
+              <li><strong>住民票 1通</strong><span>本籍地を記載し、個人番号は記載しないもの。運転免許証をお持ちの方は不要です。</span></li>
+              <li><strong>運転免許証またはマイナ免許証</strong><span>マイナ免許証をお持ちの方は暗証番号をご準備ください。</span></li>
+              <li><strong>本人確認書類</strong><span>健康保険資格確認書、学生証、パスポート、マイナンバーカードなど。</span></li>
+              <li><strong>眼鏡・コンタクト</strong><span>必要な方はご持参ください。カラーコンタクト・サークルレンズは使用できません。</span></li>
+              <li><strong>交通系ICカード</strong><span>nimoca・SUGOCAなど、お持ちの方はご持参ください。</span></li>
+            </ul>
+          </article>
+          <article class="info-panel">
+            <h3>お支払い方法</h3>
+            <ul class="info-list">
+              <li><strong>現金</strong><span>入校手続き時までにお支払いください。</span></li>
+              <li><strong>銀行振込</strong><span>振込先は受付からご案内します。振込手数料はお客様負担です。</span></li>
+              <li><strong>教習ローン</strong><span>入校日前日までに審査を完了してください。</span></li>
+              <li><strong>クレジットカード</strong><span>一括払いのみご利用いただけます。</span></li>
+              <li><strong>QRコード決済</strong><span>一括払いのみご利用いただけます。</span></li>
+            </ul>
+            <p class="info-emphasis">教習料金は前払いです。入校手続き時までにお支払い方法をご確認ください。</p>
+          </article>
         </div>
-        ${hiddenFlow("普通自動車ATの免許交付まで", atSteps)}
-        ${hiddenFlow("普通自動車MT移行の免許交付まで", mtSteps)}
-        ${hiddenFlow("自動二輪の免許交付まで", bikeSteps)}
-        <div class="r-notice">車種や現在お持ちの免許により、技能・学科時限や検定の流れは異なります。各コースページの正式料金表とあわせてご確認ください。</div>
-      </div></section>
-      <section class="r-section" id="lesson-time"><div class="r-wrap">${sectionHeader("LESSON TIME", "教習時間", "通い方に合わせて、デイプランとフリープランから選べます。")}
-        <div class="lesson-plan-grid"><article><strong>デイプラン</strong><span>8:30〜18:30</span><p>昼間を中心に通える方向け</p></article><article><strong>フリープラン</strong><span>8:30〜20:30</span><p>夕方・夜間も通いたい方向け</p></article></div>
-        <div class="time-grid">${lessonTimes.map((time, index) => `<div class="time-cell"><strong>${index + 1}時限</strong><span>${time}</span></div>`).join("")}</div>
-        <p class="r-note">教習時間は時期や学校行事により変更する場合があります。最新の実施時限は入校時にご案内します。</p>
-      </div></section>
-      <section class="r-section is-soft"><div class="r-wrap">${sectionHeader("PREPARATION", "入校前に準備するもの")}
-        <div class="simple-grid"><article class="simple-item"><h3>本人確認・住民票</h3><p>免許証の有無や国籍によって必要書類が異なります。資料内の一覧をご確認ください。</p></article><article class="simple-item"><h3>視力補助・写真</h3><p>眼鏡やコンタクトが必要な方は必ず持参してください。証明写真は学校でも案内します。</p></article><article class="simple-item"><h3>支払い・交通系IC</h3><p>支払い方法を事前に確認し、教習原簿の認証に使用する交通系ICカード等をご準備ください。</p></article></div>
+        <section class="qualification-panel">
+          <h3>入校資格</h3>
+          <dl class="qualification-list">
+            <div><dt>年齢</dt><dd>普通車・準中型車は17歳6か月以上、大型二輪は18歳以上、普通二輪・小型二輪は16歳以上。普通車免許の交付は18歳以降です。</dd></div>
+            <div><dt>視力</dt><dd>普通車・二輪は両眼0.7以上かつ片眼それぞれ0.3以上。準中型車は両眼0.8以上かつ片眼それぞれ0.5以上。</dd></div>
+            <div><dt>視野</dt><dd>片眼が0.3未満の場合は、他眼が0.7以上かつ視野150度以上。準中型車には適用できません。</dd></div>
+            <div><dt>深視力</dt><dd>準中型車のみ、3回の検査の平均誤差が2cm以下（合計誤差6cm以下）。</dd></div>
+            <div><dt>色彩識別</dt><dd>赤色・青色・黄色を識別できること。</dd></div>
+            <div><dt>聴力</dt><dd>10mの距離で90dBの警音器の音が聞こえること。</dd></div>
+            <div><dt>運動能力</dt><dd>自動車などの運転に支障を及ぼす身体障害がないこと。</dd></div>
+          </dl>
+        </section>
         <div class="r-actions"><a class="r-button is-primary" href="detail.html?page=application">仮申込・資料請求へ</a><a class="r-button" href="tel:0927102188">電話で確認する</a></div>
+      </div></section>
+      <section class="r-section is-soft" id="license-flow"><div class="r-wrap">${sectionHeader("LICENSE FLOW", "免許証交付まで", "取得する免許に合わせて流れを確認できます。")}
+        <div class="license-flow-list">
+          <section><h3>AT普通自動車</h3>${flowPicture("license-at", "AT普通自動車の免許証交付までの10工程")}</section>
+          <section><h3>MT普通自動車</h3>${flowPicture("license-mt", "MT普通自動車の免許証交付までの7工程")}</section>
+          <section><h3>自動二輪</h3>${flowPicture("license-bike", "自動二輪の免許証交付までの8工程")}</section>
+        </div>
+        ${hiddenFlow("AT普通自動車の免許証交付まで", atSteps)}
+        ${hiddenFlow("MT普通自動車の免許証交付まで", mtSteps)}
+        ${hiddenFlow("自動二輪の免許交付まで", bikeSteps)}
+      </div></section>
+      <section class="r-section" id="lesson-time"><div class="r-wrap">${sectionHeader("LESSON TIME", "教習時間", "1時限は50分です。")}
+        <div class="time-grid">${lessonTimes.map((time, index) => `<div class="time-cell"><strong>${index + 1}時限</strong><span>${time}</span></div>`).join("")}</div>
+        <div class="r-notice"><div>・平日は10:30〜20:30に実施します。</div><div>・土日は9:30〜18:30に実施します。</div><div>・時間割は時期によって変わる場合があります。</div></div>
+      </div></section>`);
+  }
+
+  function renderPaperPage() {
+    const courseTypes = [
+      ["ペーパードライバー講習", "普通自動車の運転を、現在の技量と目的に合わせて練習します。"],
+      ["ペーパーライダー講習", "二輪免許に合う学校車両で、基本操作から確認します。"],
+      ["運転免許試験の受験講習", "受験する試験に合わせて、必要な運転操作を練習します。"],
+      ["外国免許からの切替講習", "切替を申請する車両に合わせて練習します。"]
+    ];
+    const multiRates = [["2回コース", "13,500円"], ["3回コース", "20,000円"], ["4回コース", "26,500円"], ["5回コース", "33,000円"]];
+    setPage(`
+      <section class="r-section"><div class="r-wrap">
+        ${sectionHeader("PAPER DRIVER", "ペーパードライバー講習等", "「運転をしない期間が長くて運転をするのが怖い」「免許を取ってからほとんど運転したことがないけど、大丈夫？」そんな不安解消やご要望にベテランスタッフがお応えします。運転技量をチェックし、技量に応じてプランを組み立てます。")}
+        <div class="visual-split paper-intro"><img src="images/course-visuals-20260718/paper-driver.webp" alt="学校車両を使ったペーパードライバー講習" loading="eager" decoding="async"><div><div class="key-fact"><strong>まずは電話でご相談ください</strong><span>運転歴、苦手な場面、希望する練習内容を確認します。学校周辺の公道や、ご要望に応じた高速道路での講習にも対応します。</span></div><a class="r-button is-primary" href="tel:0927102188">092-710-2188へ電話</a></div></div>
+      </div></section>
+      <section class="r-section is-soft"><div class="r-wrap">
+        ${sectionHeader("COURSE", "対応している講習")}
+        <div class="paper-type-grid">${courseTypes.map(([title, text]) => `<article><h3>${safeText(title)}</h3><p>${safeText(text)}</p></article>`).join("")}</div>
+      </div></section>
+      <section class="r-section"><div class="r-wrap">
+        ${sectionHeader("FEE", "講習料金")}
+        <article class="paper-single-fee"><span>1回（50分）講習</span><strong>7,000円</strong><small>税込</small></article>
+        <h3 class="paper-subheading">複数回コース</h3>
+        <div class="paper-rate-grid">${multiRates.map(([label, amount]) => `<div><span>${label}</span><strong>${amount}</strong></div>`).join("")}</div>
+        <p class="r-note">5回以上をご希望の方はお問い合わせください。途中で終了する場合、返金はありません。</p>
+      </div></section>
+      <section class="r-section is-soft"><div class="r-wrap">
+        ${sectionHeader("NOTICE", "受講前にご確認ください")}
+        <div class="r-notice"><div>・講習は当校の車両で行います。</div><div>・ペーパードライバー講習・ペーパーライダー講習は、お持ちの運転免許証で運転できる車両を使用します。</div><div>・外国免許からの切替講習は、切替を申請する車両を使用します。</div><div>・講習中のけがについては自己責任となります。ご了承ください。</div><div>・講習料の有効期限は初回講習日から6か月間です。</div><div>・高速道路を利用する場合、通行料金は別途必要です。</div></div>
+        <div class="paper-booking-grid">
+          <article><h3>予約</h3><p>事前予約制です。希望する講習と回数を電話でお伝えください。</p></article>
+          <article><h3>持ち物</h3><p>運転免許証、必要な方は眼鏡・コンタクトをご持参ください。</p></article>
+          <article><h3>講習時間</h3><p>1回50分です。実施日時は予約時にご案内します。</p></article>
+        </div>
+        <div class="r-actions"><a class="r-button is-primary" href="tel:0927102188">電話で予約する</a><a class="r-button" href="detail.html?page=application">Webで相談する</a></div>
       </div></section>`);
   }
 
@@ -588,6 +691,8 @@
       renderAdmission();
       break;
     case "paper":
+      renderPaperPage();
+      break;
     case "senior":
     case "motorcycle":
       renderConcisePage(pageId);

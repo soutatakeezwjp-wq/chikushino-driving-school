@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 const baseUrl = process.env.BASE_URL || "http://127.0.0.1:8765";
+const executablePath = process.env.PLAYWRIGHT_CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const outputDir = path.resolve(__dirname, "../review/0718-qa");
 const pageIds = [
   "admission", "application", "license", "introduction", "courses", "standard", "camp_price",
@@ -92,7 +93,7 @@ async function inspect(page) {
 
 (async () => {
   fs.mkdirSync(outputDir, { recursive: true });
-  const browser = await chromium.launch({ headless: true });
+  const browser = await chromium.launch({ headless: true, executablePath });
   const results = [];
   try {
     for (const viewport of viewports) {
