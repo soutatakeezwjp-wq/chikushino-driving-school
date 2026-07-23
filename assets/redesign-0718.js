@@ -538,10 +538,10 @@
   }
 
   const instructors = [
-    { name: "澤水 信雄", nickname: "さわみん", hobby: "孤独の久留米散策", image: "images/instructors-anime-20260723/sawamizu-nobuo.webp", assignments: ["car", "motorcycle"] },
+    { name: "澤水 信雄", nickname: "さわみん", hobby: "孤独の久留米散策", image: "images/instructors-anime-20260724/sawamizu-nobuo.webp", assignments: ["car", "motorcycle"] },
     { name: "谷川 拓郎", nickname: "たっしゃん", hobby: "読書", image: "images/instructors-anime-20260723/tanigawa-takuro.webp", assignments: ["car", "motorcycle"] },
-    { name: "瀬戸 幸之助", nickname: "せとさん", hobby: "散歩", image: "images/instructors-anime-20260723/seto-konosuke.webp", assignments: ["car"] },
-    { name: "重藤 憲紀", nickname: "しげちゃん", hobby: "散歩", image: "images/instructors-anime-20260723/shigeto-noriki.webp", assignments: ["car"] },
+    { name: "瀬戸 幸之助", nickname: "せとさん", hobby: "散歩", image: "images/instructors-anime-20260724/seto-konosuke.webp", assignments: ["car"] },
+    { name: "重藤 憲紀", nickname: "しげちゃん", hobby: "散歩", image: "images/instructors-anime-20260724/shigeto-noriki.webp", assignments: ["car"] },
     { name: "佐々木 貴子", nickname: "きこ", hobby: "スポーツ観戦", image: "images/instructors-anime-20260718/sasaki-takako.webp", assignments: ["car"] },
     { name: "中村 正信", nickname: "マサやん", hobby: "スポーツ観戦", image: "images/instructors-anime-20260718/nakamura-masanobu.webp", assignments: ["car"] },
     { name: "内野 修平", nickname: "うちの先生", hobby: "ゲーセン", image: "images/instructors-anime-20260718/uchino-shuhei.webp", assignments: ["car", "motorcycle"] },
@@ -550,7 +550,7 @@
     { name: "羽立 衣莉奈", nickname: "はたち", hobby: "映画鑑賞", image: "images/instructors-anime/hatachi-erina.webp", assignments: ["car"] },
     { name: "白地 貞昭", nickname: "しらっちゃん", hobby: "スポーツカー、バイク、スイーツ巡り", image: "images/instructors-anime-20260723/shirachi-sadaaki.webp", assignments: ["car"] },
     { name: "山本 一博", nickname: "山本2号", hobby: "旅行", image: "images/instructors-anime/yamamoto-kazuhiro.webp", assignments: ["car", "motorcycle"] },
-    { name: "原口 美穂", nickname: "はらぐっちゃん☆", hobby: "ずーっと探してます", image: "images/instructors-anime-20260723/haraguchi-miho.webp", assignments: ["car", "motorcycle"] },
+    { name: "原口 美穂", nickname: "はらぐっちゃん☆", hobby: "ずーっと探してます", image: "images/instructors-anime-20260724/haraguchi-miho.webp", assignments: ["car", "motorcycle"] },
     { name: "宮本 淳一", nickname: "みやもっちゃん", hobby: "一人でドライブ", image: "images/instructors-anime-20260723/miyamoto-junichi.webp", assignments: ["car", "motorcycle"] },
     { name: "後藤 桂子", nickname: "けいこ", hobby: "料理、ミシン", image: "images/instructors-anime/goto-keiko.webp", assignments: ["car"] },
     { name: "春田 能孝", nickname: "はるしゃん", hobby: "スポーツ観戦・オートバイ・RC CAR", image: "images/instructors-anime-20260723/haruda-yoshitaka.webp", assignments: ["car"] },

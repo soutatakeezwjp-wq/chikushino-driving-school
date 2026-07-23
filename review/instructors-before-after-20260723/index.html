@@ -54,7 +54,7 @@
       top:0;
       z-index:5;
       display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
+      grid-template-columns:repeat(4,minmax(0,1fr));
       gap:12px;
       margin-bottom:22px;
       padding:12px 0;
@@ -72,6 +72,7 @@
     .legend span:nth-child(1){border-top:4px solid #98919e}
     .legend span:nth-child(2){border-top:4px solid var(--orange)}
     .legend span:nth-child(3){border-top:4px solid var(--green)}
+    .legend span:nth-child(4){border-top:4px solid var(--purple)}
     .person{
       margin:0 0 24px;
       overflow:hidden;
@@ -105,6 +106,7 @@
       gap:1px;
       background:var(--line);
     }
+    .compare.has-latest{grid-template-columns:repeat(4,minmax(0,1fr))}
     figure{min-width:0;margin:0;background:white}
     .visual{
       position:relative;
@@ -138,6 +140,7 @@
     }
     figure:nth-child(2) .label{background:var(--orange)}
     figure:nth-child(3) .label{background:var(--green)}
+    figure:nth-child(4) .label{background:var(--purple)}
     figcaption{min-height:94px;padding:15px 17px 18px}
     figcaption strong{display:block;color:var(--purple-deep);font-size:16px}
     figcaption span{display:block;margin-top:7px;color:var(--muted);font-size:13px;line-height:1.7}
@@ -197,9 +200,9 @@
     <div class="hero-inner">
       <p class="eyebrow">INSTRUCTOR PROFILE / BEFORE &amp; AFTER</p>
       <h1>指導員紹介 修正前後比較</h1>
-      <p class="lead">Excel内の実写真を本人確認の基準にして、似顔絵の本人らしさと全体のイラスト感を調整しました。今回変更した10名を、実写真・修正前・修正後の順で確認できます。</p>
+      <p class="lead">Excel内の実写真を本人確認の基準にして、似顔絵の本人らしさと全体のイラスト感を調整しました。瀬戸さん・しげちゃん・原口さん・さわみんは、初回修正版からさらに本人へ近づけた最新版も並べています。</p>
       <div class="summary">
-        <div><strong>10名</strong><span>似顔絵を再制作</span></div>
+        <div><strong>4名</strong><span>本人らしさを追加調整</span></div>
         <div><strong>19名</strong><span>カードから実名を削除</span></div>
         <div><strong>7項目</strong><span>ニックネーム・趣味を修正</span></div>
       </div>
@@ -221,7 +224,8 @@
     <div class="legend" aria-label="比較の見方">
       <span>1. 本人確認用の実写真</span>
       <span>2. 修正前の掲載画像</span>
-      <span>3. 今回の修正版</span>
+      <span>3. 初回修正版</span>
+      <span>4. 最新の再調整版</span>
     </div>
     <div id="people"></div>
   </main>
@@ -233,7 +237,8 @@
         actual:"assets/actual/image7.jpeg", rotate:true,
         before:"images/instructors-anime-20260718/sawamizu-nobuo.webp",
         after:"images/instructors-anime-20260723/sawamizu-nobuo.webp",
-        reason:"顔立ち・輪郭を実写真へ寄せ、写真感を抑えたイラスト調へ変更",
+        latest:"images/instructors-anime-20260724/sawamizu-nobuo.webp",
+        reason:"輪郭・首・肩を細くし、頬と顎まわりを本人の体格へ近づけて再調整",
         copy:[["趣味","久留米の街歩き・釣り","孤独の久留米散策"]]
       },
       {
@@ -249,7 +254,8 @@
         actual:"assets/actual/image13.jpeg", rotate:true,
         before:"images/instructors-anime-20260718/seto-konosuke.webp",
         after:"images/instructors-anime-20260723/seto-konosuke.webp",
-        reason:"目元・髪型・表情を本人写真へ近づけ、描画タッチを統一",
+        latest:"images/instructors-anime-20260724/seto-konosuke.webp",
+        reason:"顔を縦長かつ細めにし、目・頬・顎・髪の量を本人写真へ近づけて再調整",
         copy:[]
       },
       {
@@ -257,7 +263,8 @@
         actual:"assets/actual/image11.jpeg", rotate:true,
         before:"images/instructors-anime-20260718/shigeto-noriki.webp",
         after:"images/instructors-anime-20260723/shigeto-noriki.webp",
-        reason:"輪郭と髪型を見直し、実写寄りだった質感をイラスト化",
+        latest:"images/instructors-anime-20260724/shigeto-noriki.webp",
+        reason:"顔を縦長かつ細めにし、目と髪量を抑えて本人写真へ近づけて再調整",
         copy:[["趣味","安全運転サポート","散歩"]]
       },
       {
@@ -265,7 +272,8 @@
         actual:"assets/actual/image2.jpeg", rotate:true,
         before:"images/instructors-anime-20260718/haraguchi-miho.webp",
         after:"images/instructors-anime-20260723/haraguchi-miho.webp",
-        reason:"顔の比率と目元を実写真に合わせ、他の女性指導員と同じタッチへ統一",
+        latest:"images/instructors-anime-20260724/haraguchi-miho.webp",
+        reason:"顔の縦比率を伸ばして頬幅と目元を抑え、本人写真へ近づけて再調整",
         copy:[]
       },
       {
@@ -323,7 +331,7 @@
             <div><h2>${String(index + 1).padStart(2,"0")}　${item.nickname}</h2><p>本人確認名：${item.person}</p></div>
             <span class="status">本番反映済み</span>
           </div>
-          <div class="compare">
+          <div class="compare ${item.latest ? "has-latest" : ""}">
             <figure>
               <div class="visual actual ${item.rotate ? "rotate" : ""} ${item.crop ? "haruda-crop" : ""}">
                 <img src="${imageUrl(item.actual)}" alt="${item.person}さんの実写真">
@@ -343,8 +351,16 @@
                 <img src="${imageUrl(item.after)}" alt="${item.nickname}の修正後画像">
                 <span class="label">AFTER</span>
               </div>
-              <figcaption><strong>今回の修正版</strong><span>本人らしさを残しながら、やわらかな似顔絵表現へ統一</span></figcaption>
+              <figcaption><strong>初回修正版</strong><span>本人らしさを残しながら、やわらかな似顔絵表現へ統一</span></figcaption>
             </figure>
+            ${item.latest ? `
+            <figure>
+              <div class="visual">
+                <img src="${imageUrl(item.latest)}" alt="${item.nickname}の最新再調整画像">
+                <span class="label">LATEST</span>
+              </div>
+              <figcaption><strong>最新の再調整版</strong><span>今回のご指摘を反映し、顔型と体格をさらに本人へ近づけました</span></figcaption>
+            </figure>` : ""}
           </div>
           <dl class="changes">${changes}</dl>
         </section>
