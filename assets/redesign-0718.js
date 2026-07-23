@@ -538,10 +538,10 @@
   }
 
   const instructors = [
-    { name: "澤水 信雄", nickname: "さわみん", hobby: "孤独の久留米散策", image: "images/instructors-anime-20260724/sawamizu-nobuo.webp", assignments: ["car", "motorcycle"] },
-    { name: "谷川 拓郎", nickname: "たっしゃん", hobby: "読書", image: "images/instructors-anime-20260723/tanigawa-takuro.webp", assignments: ["car", "motorcycle"] },
-    { name: "瀬戸 幸之助", nickname: "せとさん", hobby: "散歩", image: "images/instructors-anime-20260724/seto-konosuke.webp", assignments: ["car"] },
-    { name: "重藤 憲紀", nickname: "しげちゃん", hobby: "散歩", image: "images/instructors-anime-20260724/shigeto-noriki.webp", assignments: ["car"] },
+    { name: "澤水 信雄", nickname: "さわみん", hobby: "孤独の久留米散策", image: "images/instructors-anime-20260724-v2/sawamizu-nobuo.webp", assignments: ["car", "motorcycle"] },
+    { name: "谷川 拓郎", nickname: "たっしゃん", hobby: "読書", image: "images/instructors-anime-20260724-v2/tanigawa-takuro.webp", assignments: ["car", "motorcycle"] },
+    { name: "瀬戸 幸之助", nickname: "せとさん", hobby: "散歩", image: "images/instructors-anime-20260724-v2/seto-konosuke.webp", assignments: ["car"] },
+    { name: "重藤 憲紀", nickname: "しげちゃん", hobby: "散歩", image: "images/instructors-anime-20260724-v2/shigeto-noriki.webp", assignments: ["car"] },
     { name: "佐々木 貴子", nickname: "きこ", hobby: "スポーツ観戦", image: "images/instructors-anime-20260718/sasaki-takako.webp", assignments: ["car"] },
     { name: "中村 正信", nickname: "マサやん", hobby: "スポーツ観戦", image: "images/instructors-anime-20260718/nakamura-masanobu.webp", assignments: ["car"] },
     { name: "内野 修平", nickname: "うちの先生", hobby: "ゲーセン", image: "images/instructors-anime-20260718/uchino-shuhei.webp", assignments: ["car", "motorcycle"] },
