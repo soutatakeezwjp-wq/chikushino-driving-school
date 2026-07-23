@@ -538,25 +538,25 @@
   }
 
   const instructors = [
-    { name: "澤水 信雄", nickname: "さわみん", hobby: "久留米の街歩き・釣り", image: "images/instructors-anime-20260718/sawamizu-nobuo.webp", assignments: ["car", "motorcycle"] },
-    { name: "谷川 拓郎", nickname: "たっしゃん", hobby: "読書", image: "images/instructors-anime/tanigawa-takuro.webp", assignments: ["car", "motorcycle"] },
-    { name: "瀬戸 幸之助", nickname: "せとさん", hobby: "散歩", image: "images/instructors-anime-20260718/seto-konosuke.webp", assignments: ["car"] },
-    { name: "重藤 憲紀", nickname: "しげちゃん", hobby: "安全運転サポート", image: "images/instructors-anime-20260718/shigeto-noriki.webp", assignments: ["car"] },
+    { name: "澤水 信雄", nickname: "さわみん", hobby: "孤独の久留米散策", image: "images/instructors-anime-20260723/sawamizu-nobuo.webp", assignments: ["car", "motorcycle"] },
+    { name: "谷川 拓郎", nickname: "たっしゃん", hobby: "読書", image: "images/instructors-anime-20260723/tanigawa-takuro.webp", assignments: ["car", "motorcycle"] },
+    { name: "瀬戸 幸之助", nickname: "せとさん", hobby: "散歩", image: "images/instructors-anime-20260723/seto-konosuke.webp", assignments: ["car"] },
+    { name: "重藤 憲紀", nickname: "しげちゃん", hobby: "散歩", image: "images/instructors-anime-20260723/shigeto-noriki.webp", assignments: ["car"] },
     { name: "佐々木 貴子", nickname: "きこ", hobby: "スポーツ観戦", image: "images/instructors-anime-20260718/sasaki-takako.webp", assignments: ["car"] },
-    { name: "中村 正信", nickname: "散歩ッポ", hobby: "スポーツ観戦", image: "images/instructors-anime-20260718/nakamura-masanobu.webp", assignments: ["car"] },
+    { name: "中村 正信", nickname: "マサやん", hobby: "スポーツ観戦", image: "images/instructors-anime-20260718/nakamura-masanobu.webp", assignments: ["car"] },
     { name: "内野 修平", nickname: "うちの先生", hobby: "ゲーセン", image: "images/instructors-anime-20260718/uchino-shuhei.webp", assignments: ["car", "motorcycle"] },
     { name: "下田 真一", nickname: "しっしい", hobby: "占い", image: "images/instructors-anime/shimoda-shinichi.webp", assignments: ["car", "motorcycle"] },
-    { name: "山本 勝介", nickname: "山本 勝", hobby: "動物園巡り", image: "images/instructors-anime/yamamoto-shosuke.webp", assignments: ["car"] },
+    { name: "山本 勝介", nickname: "山本1号", hobby: "クレーンゲーム", image: "images/instructors-anime-20260723/yamamoto-shosuke.webp", assignments: ["car"] },
     { name: "羽立 衣莉奈", nickname: "はたち", hobby: "映画鑑賞", image: "images/instructors-anime/hatachi-erina.webp", assignments: ["car"] },
-    { name: "白地 貞昭", nickname: "重戦車", hobby: "スポーツカー、バイク、スイーツ巡り", image: "images/instructors-anime/shirachi-sadaaki.webp", assignments: ["car"] },
+    { name: "白地 貞昭", nickname: "しらっちゃん", hobby: "スポーツカー、バイク、スイーツ巡り", image: "images/instructors-anime-20260723/shirachi-sadaaki.webp", assignments: ["car"] },
     { name: "山本 一博", nickname: "山本2号", hobby: "旅行", image: "images/instructors-anime/yamamoto-kazuhiro.webp", assignments: ["car", "motorcycle"] },
-    { name: "原口 美穂", nickname: "はらぐっちゃん☆", hobby: "ずーっと探してます", image: "images/instructors-anime-20260718/haraguchi-miho.webp", assignments: ["car", "motorcycle"] },
-    { name: "宮本 淳一", nickname: "みやもっちゃん", hobby: "一人でドライブ", image: "images/instructors-anime-20260718/miyamoto-junichi.webp", assignments: ["car", "motorcycle"] },
+    { name: "原口 美穂", nickname: "はらぐっちゃん☆", hobby: "ずーっと探してます", image: "images/instructors-anime-20260723/haraguchi-miho.webp", assignments: ["car", "motorcycle"] },
+    { name: "宮本 淳一", nickname: "みやもっちゃん", hobby: "一人でドライブ", image: "images/instructors-anime-20260723/miyamoto-junichi.webp", assignments: ["car", "motorcycle"] },
     { name: "後藤 桂子", nickname: "けいこ", hobby: "料理、ミシン", image: "images/instructors-anime/goto-keiko.webp", assignments: ["car"] },
-    { name: "春田 能孝", nickname: "ジャイアン", hobby: "スポーツ観戦・オートバイ・RC CAR", image: "images/instructors-anime/haruda-yoshitaka.webp", assignments: ["car"] },
+    { name: "春田 能孝", nickname: "はるしゃん", hobby: "スポーツ観戦・オートバイ・RC CAR", image: "images/instructors-anime-20260723/haruda-yoshitaka.webp", assignments: ["car"] },
     { name: "角 麻美", nickname: "すみちゃん", hobby: "音楽を聴く・料理のレシピを見る", image: "images/instructors-anime/sumi-asami.webp", assignments: ["car"] },
     { name: "後藤 良子", nickname: "りょうこ", hobby: "ガーデニング", image: "images/instructors-anime/goto-ryoko.webp", assignments: ["car"] },
-    { name: "幸田 守生", nickname: "こうださん", hobby: "音楽", image: "images/instructors-anime-20260718/koda-morio.webp", assignments: ["car"] }
+    { name: "幸田 守生", nickname: "こうださん", hobby: "音楽", image: "images/instructors-anime-20260723/koda-morio.webp", assignments: ["car"] }
   ];
 
   const assignmentIcons = {
@@ -565,7 +565,7 @@
   };
 
   function renderInstructors() {
-    setPage(`<section class="r-section"><div class="r-wrap"><div class="instructor-intro">${sectionHeader("INSTRUCTOR PROFILE", "筑紫野の指導員紹介", "教習中の疑問や運転への不安は、いつでも気軽にご相談ください。それぞれの経験を生かし、一人ひとりのペースに合わせて丁寧にサポートします。")}</div><div class="instructor-grid">${instructors.map((instructor) => `<article class="instructor-card"><img src="${instructor.image}" alt="${safeText(instructor.name)}指導員のイラスト" loading="lazy" decoding="async"><div class="instructor-body"><h3>${safeText(instructor.nickname || "指導員")}</h3><p class="instructor-name">${safeText(instructor.name)}</p><p class="instructor-hobby"><strong>趣味</strong><br>${safeText(instructor.hobby)}</p><div class="assignment-list" aria-label="担当車種">${instructor.assignments.map((assignment) => assignmentIcons[assignment]).join("")}</div></div></article>`).join("")}</div></div></section>`);
+    setPage(`<section class="r-section"><div class="r-wrap"><div class="instructor-intro">${sectionHeader("INSTRUCTOR PROFILE", "筑紫野の指導員紹介", "教習中の疑問や運転への不安は、いつでも気軽にご相談ください。それぞれの経験を生かし、一人ひとりのペースに合わせて丁寧にサポートします。")}</div><div class="instructor-grid">${instructors.map((instructor) => `<article class="instructor-card"><img src="${instructor.image}" alt="${safeText(instructor.name)}指導員のイラスト" loading="lazy" decoding="async"><div class="instructor-body"><h3>${safeText(instructor.nickname || "指導員")}</h3><p class="instructor-hobby"><strong>趣味</strong><br>${safeText(instructor.hobby)}</p><div class="assignment-list" aria-label="担当車種">${instructor.assignments.map((assignment) => assignmentIcons[assignment]).join("")}</div></div></article>`).join("")}</div></div></section>`);
   }
 
   switch (pageId) {
