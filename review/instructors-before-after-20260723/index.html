@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>指導員紹介 修正前後比較｜筑紫野自動車学校</title>
+  <style>
+    :root{
+      --purple:#54258e;
+      --purple-deep:#281249;
+      --purple-soft:#f3eef9;
+      --orange:#ff7818;
+      --green:#62b96a;
+      --ink:#282331;
+      --muted:#71697b;
+      --line:#ded5e8;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--ink);
+      background:#f7f5f9;
+      font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+      letter-spacing:0;
+    }
+    img{max-width:100%}
+    .hero{
+      padding:58px 24px 46px;
+      color:white;
+      background:linear-gradient(120deg,var(--purple-deep),var(--purple) 68%,#7043aa);
+    }
+    .hero-inner,.main{width:min(1240px,100%);margin:auto}
+    .eyebrow{margin:0 0 12px;color:#ffb372;font-size:13px;font-weight:900;letter-spacing:.12em}
+    h1{margin:0;font-size:clamp(30px,5vw,54px);line-height:1.25}
+    .lead{max-width:760px;margin:18px 0 0;font-size:16px;line-height:1.9}
+    .summary{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+      margin-top:28px;
+    }
+    .summary div{
+      padding:16px 18px;
+      border:1px solid rgba(255,255,255,.24);
+      background:rgba(255,255,255,.1);
+    }
+    .summary strong{display:block;font-size:25px}
+    .summary span{display:block;margin-top:4px;color:#e8def5;font-size:13px}
+    .main{padding:34px 24px 72px}
+    .legend{
+      position:sticky;
+      top:0;
+      z-index:5;
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+      margin-bottom:22px;
+      padding:12px 0;
+      background:rgba(247,245,249,.94);
+      backdrop-filter:blur(12px);
+    }
+    .legend span{
+      padding:11px 14px;
+      border:1px solid var(--line);
+      background:white;
+      font-size:13px;
+      font-weight:900;
+      text-align:center;
+    }
+    .legend span:nth-child(1){border-top:4px solid #98919e}
+    .legend span:nth-child(2){border-top:4px solid var(--orange)}
+    .legend span:nth-child(3){border-top:4px solid var(--green)}
+    .person{
+      margin:0 0 24px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:8px;
+      background:white;
+      box-shadow:0 8px 26px rgba(52,28,78,.06);
+    }
+    .person-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:20px;
+      padding:21px 24px;
+      border-bottom:1px solid var(--line);
+    }
+    .person-head h2{margin:0;color:var(--purple-deep);font-size:25px}
+    .person-head p{margin:6px 0 0;color:var(--muted);font-size:14px}
+    .status{
+      flex:0 0 auto;
+      padding:7px 10px;
+      border-radius:4px;
+      color:#267a35;
+      background:#e9f7eb;
+      font-size:12px;
+      font-weight:900;
+    }
+    .compare{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:1px;
+      background:var(--line);
+    }
+    figure{min-width:0;margin:0;background:white}
+    .visual{
+      position:relative;
+      overflow:hidden;
+      width:100%;
+      aspect-ratio:1;
+      background:#f3f0f6;
+    }
+    .visual>img{display:block;width:100%;height:100%;object-fit:cover}
+    .visual.actual>img{object-fit:contain;background:#f1f1f1}
+    .visual.actual.rotate>img{transform:rotate(90deg) scale(.96)}
+    .visual.haruda-crop>img{
+      position:absolute;
+      top:-67%;
+      left:-168%;
+      width:560%;
+      max-width:none;
+      height:auto;
+    }
+    .label{
+      position:absolute;
+      top:12px;
+      left:12px;
+      padding:6px 9px;
+      border-radius:3px;
+      color:white;
+      background:#625d68;
+      font-size:12px;
+      font-weight:900;
+      box-shadow:0 3px 12px rgba(0,0,0,.16);
+    }
+    figure:nth-child(2) .label{background:var(--orange)}
+    figure:nth-child(3) .label{background:var(--green)}
+    figcaption{min-height:94px;padding:15px 17px 18px}
+    figcaption strong{display:block;color:var(--purple-deep);font-size:16px}
+    figcaption span{display:block;margin-top:7px;color:var(--muted);font-size:13px;line-height:1.7}
+    .changes{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:8px 14px;
+      margin:0;
+      padding:18px 24px 21px;
+      border-top:1px solid var(--line);
+      background:#fbfafc;
+      font-size:14px;
+      line-height:1.7;
+    }
+    .changes dt{color:var(--purple);font-weight:900}
+    .changes dd{margin:0}
+    .old{color:#aa4d26;text-decoration:line-through}
+    .arrow{padding:0 7px;color:#a69bac}
+    .new{color:#237733;font-weight:900}
+    .global-note{
+      margin:0 0 26px;
+      padding:20px 22px;
+      border-left:5px solid var(--orange);
+      background:white;
+      box-shadow:0 8px 26px rgba(52,28,78,.05);
+    }
+    .global-note strong{color:var(--purple-deep)}
+    .global-note p{margin:7px 0 0;color:var(--muted);line-height:1.8}
+    .copy-summary{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:1px;
+      margin:0 0 26px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:var(--line);
+    }
+    .copy-summary div{padding:15px 18px;background:white;font-size:14px;line-height:1.7}
+    .copy-summary strong{display:block;margin-bottom:4px;color:var(--purple-deep)}
+    @media(max-width:720px){
+      .hero{padding:38px 18px 32px}
+      .summary{grid-template-columns:1fr}
+      .main{padding:20px 14px 56px}
+      .legend{position:static;grid-template-columns:1fr;gap:6px}
+      .compare{grid-template-columns:1fr}
+      .person-head{display:block;padding:18px}
+      .status{display:inline-block;margin-top:12px}
+      .changes{grid-template-columns:1fr;padding:17px 18px}
+      .changes dd{margin-bottom:7px}
+      .copy-summary{grid-template-columns:1fr}
+      figcaption{min-height:0}
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">INSTRUCTOR PROFILE / BEFORE &amp; AFTER</p>
+      <h1>指導員紹介 修正前後比較</h1>
+      <p class="lead">Excel内の実写真を本人確認の基準にして、似顔絵の本人らしさと全体のイラスト感を調整しました。今回変更した10名を、実写真・修正前・修正後の順で確認できます。</p>
+      <div class="summary">
+        <div><strong>10名</strong><span>似顔絵を再制作</span></div>
+        <div><strong>19名</strong><span>カードから実名を削除</span></div>
+        <div><strong>7項目</strong><span>ニックネーム・趣味を修正</span></div>
+      </div>
+    </div>
+  </header>
+  <main class="main">
+    <aside class="global-note">
+      <strong>全員に共通して変更したこと</strong>
+      <p>カード内に表示していた実名を削除し、ニックネーム・趣味・担当アイコンだけで見せる構成へ統一しました。似顔絵は写真のように見えすぎない、やわらかな手描きイラスト調に揃えています。</p>
+    </aside>
+    <section class="copy-summary" aria-label="文言変更一覧">
+      <div><strong>さわみん・趣味</strong><span class="old">久留米の街歩き・釣り</span><span class="arrow">→</span><span class="new">孤独の久留米散策</span></div>
+      <div><strong>しげちゃん・趣味</strong><span class="old">安全運転サポート</span><span class="arrow">→</span><span class="new">散歩</span></div>
+      <div><strong>山本 勝介</strong><span class="old">山本 勝／動物園巡り</span><span class="arrow">→</span><span class="new">山本1号／クレーンゲーム</span></div>
+      <div><strong>白地 貞昭</strong><span class="old">重戦車</span><span class="arrow">→</span><span class="new">しらっちゃん</span></div>
+      <div><strong>春田 能孝</strong><span class="old">ジャイアン</span><span class="arrow">→</span><span class="new">はるしゃん</span></div>
+      <div><strong>中村 正信</strong><span class="old">散歩ッポ</span><span class="arrow">→</span><span class="new">マサやん</span></div>
+    </section>
+    <div class="legend" aria-label="比較の見方">
+      <span>1. 本人確認用の実写真</span>
+      <span>2. 修正前の掲載画像</span>
+      <span>3. 今回の修正版</span>
+    </div>
+    <div id="people"></div>
+  </main>
+  <script>
+    const root = "../../";
+    const people = [
+      {
+        person:"澤水 信雄", nickname:"さわみん",
+        actual:"assets/actual/image7.jpeg", rotate:true,
+        before:"images/instructors-anime-20260718/sawamizu-nobuo.webp",
+        after:"images/instructors-anime-20260723/sawamizu-nobuo.webp",
+        reason:"顔立ち・輪郭を実写真へ寄せ、写真感を抑えたイラスト調へ変更",
+        copy:[["趣味","久留米の街歩き・釣り","孤独の久留米散策"]]
+      },
+      {
+        person:"谷川 拓郎", nickname:"たっしゃん",
+        actual:"assets/actual/image21.jpeg", rotate:true,
+        before:"images/instructors-anime/tanigawa-takuro.webp",
+        after:"images/instructors-anime-20260723/tanigawa-takuro.webp",
+        reason:"本人の眼鏡・髪型・輪郭を実写真基準で再構成",
+        copy:[]
+      },
+      {
+        person:"瀬戸 幸之助", nickname:"せとさん",
+        actual:"assets/actual/image13.jpeg", rotate:true,
+        before:"images/instructors-anime-20260718/seto-konosuke.webp",
+        after:"images/instructors-anime-20260723/seto-konosuke.webp",
+        reason:"目元・髪型・表情を本人写真へ近づけ、描画タッチを統一",
+        copy:[]
+      },
+      {
+        person:"重藤 憲紀", nickname:"しげちゃん",
+        actual:"assets/actual/image11.jpeg", rotate:true,
+        before:"images/instructors-anime-20260718/shigeto-noriki.webp",
+        after:"images/instructors-anime-20260723/shigeto-noriki.webp",
+        reason:"輪郭と髪型を見直し、実写寄りだった質感をイラスト化",
+        copy:[["趣味","安全運転サポート","散歩"]]
+      },
+      {
+        person:"原口 美穂", nickname:"はらぐっちゃん☆",
+        actual:"assets/actual/image2.jpeg", rotate:true,
+        before:"images/instructors-anime-20260718/haraguchi-miho.webp",
+        after:"images/instructors-anime-20260723/haraguchi-miho.webp",
+        reason:"顔の比率と目元を実写真に合わせ、他の女性指導員と同じタッチへ統一",
+        copy:[]
+      },
+      {
+        person:"山本 勝介", nickname:"山本1号",
+        actual:"assets/actual/image10.jpeg",
+        before:"images/instructors-anime/yamamoto-shosuke.webp",
+        after:"images/instructors-anime-20260723/yamamoto-shosuke.webp",
+        reason:"本人の笑顔・輪郭・短髪を基準に、親しみやすい似顔絵へ変更",
+        copy:[["ニックネーム","山本 勝","山本1号"],["趣味","動物園巡り","クレーンゲーム"]]
+      },
+      {
+        person:"宮本 淳一", nickname:"みやもっちゃん",
+        actual:"assets/actual/image9.jpeg", rotate:true,
+        before:"images/instructors-anime-20260718/miyamoto-junichi.webp",
+        after:"images/instructors-anime-20260723/miyamoto-junichi.webp",
+        reason:"顔の輪郭・目元・髪型を見直し、本人らしさを強化",
+        copy:[]
+      },
+      {
+        person:"幸田 守生", nickname:"こうださん",
+        actual:"assets/actual/koda-morio.png",
+        before:"images/instructors-anime-20260718/koda-morio.webp",
+        after:"images/instructors-anime-20260723/koda-morio.webp",
+        reason:"眼鏡・髪型・顔のしわ・ネクタイを実写真基準で調整し、手描き感を追加",
+        copy:[]
+      },
+      {
+        person:"春田 能孝", nickname:"はるしゃん",
+        actual:"assets/actual/haruda-sheet.jpg", crop:true,
+        before:"images/instructors-anime/haruda-yoshitaka.webp",
+        after:"images/instructors-anime-20260723/haruda-yoshitaka.webp",
+        reason:"支給写真を基準に顔立ちを作り直し、全体の描画タッチを統一",
+        copy:[["ニックネーム","ジャイアン","はるしゃん"]]
+      },
+      {
+        person:"白地 貞昭", nickname:"しらっちゃん",
+        actual:"assets/actual/image16.jpeg",
+        before:"images/instructors-anime/shirachi-sadaaki.webp",
+        after:"images/instructors-anime-20260723/shirachi-sadaaki.webp",
+        reason:"顔型・髪型・表情を本人写真へ合わせ、写真的な質感を抑制",
+        copy:[["ニックネーム","重戦車","しらっちゃん"]]
+      }
+    ];
+    const imageUrl = (value) => value.startsWith("assets/") ? value : root + value;
+    document.querySelector("#people").innerHTML = people.map((item, index) => {
+      const changes = [
+        `<dt>画像</dt><dd>${item.reason}</dd>`,
+        ...item.copy.map(([label, oldValue, newValue]) =>
+          `<dt>${label}</dt><dd><span class="old">${oldValue}</span><span class="arrow">→</span><span class="new">${newValue}</span></dd>`
+        )
+      ].join("");
+      return `
+        <section class="person">
+          <div class="person-head">
+            <div><h2>${String(index + 1).padStart(2,"0")}　${item.nickname}</h2><p>本人確認名：${item.person}</p></div>
+            <span class="status">本番反映済み</span>
+          </div>
+          <div class="compare">
+            <figure>
+              <div class="visual actual ${item.rotate ? "rotate" : ""} ${item.crop ? "haruda-crop" : ""}">
+                <img src="${imageUrl(item.actual)}" alt="${item.person}さんの実写真">
+                <span class="label">実写真</span>
+              </div>
+              <figcaption><strong>本人確認の基準</strong><span>Excelまたは支給資料に掲載された実写真</span></figcaption>
+            </figure>
+            <figure>
+              <div class="visual">
+                <img src="${imageUrl(item.before)}" alt="${item.nickname}の修正前画像">
+                <span class="label">BEFORE</span>
+              </div>
+              <figcaption><strong>修正前</strong><span>本人との違い、写真感、他の指導員とのタッチ差を再確認</span></figcaption>
+            </figure>
+            <figure>
+              <div class="visual">
+                <img src="${imageUrl(item.after)}" alt="${item.nickname}の修正後画像">
+                <span class="label">AFTER</span>
+              </div>
+              <figcaption><strong>今回の修正版</strong><span>本人らしさを残しながら、やわらかな似顔絵表現へ統一</span></figcaption>
+            </figure>
+          </div>
+          <dl class="changes">${changes}</dl>
+        </section>
+      `;
+    }).join("");
+  </script>
+</body>
+</html>
