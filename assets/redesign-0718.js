@@ -610,7 +610,7 @@
 
   function renderStudents() {
     setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("STUDENTS", "在校生メニュー", "予定確認、学科教習、効果測定、送迎予約へ迷わず進めます。")}
-      <div class="simple-grid"><a class="simple-item" href="detail.html?page=teaching"><h3>本日・今週・今月の日程</h3><p>最新の教習・検定予定を確認</p></a><a class="simple-item" href="#online-class"><h3>オンライン学科教習</h3><p>受講方法と注意事項を確認</p></a><a class="simple-item" href="#musasi"><h3>効果測定MUSASI</h3><p>学科試験の学習入口</p></a><a class="simple-item" href="detail.html?page=access#buscatch"><h3>スクールバス予約</h3><p>BusCatchの予約画面へ</p></a><a class="simple-item" href="detail.html?page=syuryokentei"><h3>修了検定</h3><p>集合時間と必要条件を確認</p></a><a class="simple-item" href="detail.html?page=sotsugyoukentei"><h3>卒業検定</h3><p>卒業前の手続きを確認</p></a></div>
+      <div class="simple-grid"><a class="simple-item" href="detail.html?page=teaching"><h3>教習カレンダー</h3><p>本日・今週・今月の教習・検定予定</p></a><a class="simple-item" href="https://dondora.online/chikushi/students/sign_in" target="_blank" rel="noopener"><h3>オンライン学科教習</h3><p>オンライン学科のログイン画面へ</p></a><a class="simple-item" href="https://www.musasi.jp/amagi/requirements" target="_blank" rel="noopener"><h3>効果測定MUSASI</h3><p>学科試験対策のログイン画面へ</p></a><a class="simple-item" href="https://buscatch.jp/pc/login.php?rosen_group_id=1926" target="_blank" rel="noopener"><h3>スクールバス予約</h3><p>BusCatchの予約画面へ</p></a><a class="simple-item" href="detail.html?page=syuryokentei"><h3>修了検定</h3><p>集合時間と必要条件を確認</p></a><a class="simple-item" href="detail.html?page=sotsugyoukentei"><h3>卒業検定</h3><p>卒業前の手続きを確認</p></a></div>
     </div></section>`);
   }
 
