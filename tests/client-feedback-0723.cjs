@@ -91,6 +91,8 @@ async function checkAdmission(page, viewport) {
 
 async function checkFeePage(page, id, viewport) {
   const root = page.locator(".redesign-0718");
+  assert(await root.locator("#discount-guide picture").count() === 1, `${viewport.name}/${id}: 割引案内画像がありません。`);
+  assert((await root.locator("#discount-guide .visually-hidden").innerText()).includes("割引"), `${viewport.name}/${id}: 割引案内の読み上げテキストがありません。`);
   assert(await root.locator('a[href$=".pdf"]').count() === 0, `${viewport.name}/${id}: PDFボタンが残っています。`);
   assert(await root.locator(".plan-guide-card").count() === 2, `${viewport.name}/${id}: 教習プランがデイ・フリーの2種類ではありません。`);
   assert(await root.locator("text=限定解除・移行").count() === 0, `${viewport.name}/${id}: 個別料金ページに限定解除欄が残っています。`);
@@ -141,6 +143,8 @@ async function checkVisibleFeeLabels(page, id, viewport) {
 
 async function checkLimited(page, viewport) {
   const root = page.locator(".redesign-0718");
+  assert(await root.locator("#discount-guide picture").count() === 1, `${viewport.name}/limited: 割引案内画像がありません。`);
+  assert((await root.locator("#discount-guide .visually-hidden").innerText()).includes("1万円"), `${viewport.name}/limited: 限定解除の割引額がありません。`);
   assert(await root.locator(".fee-mobile-card").count() + await root.locator(".fee-table tbody tr").count() > 0, `${viewport.name}/limited: 限定解除料金がありません。`);
   const standardRowText = await root.locator('[data-fee-row="standard-mt-license-change-from-at"]').first().innerText();
   assert(standardRowText.includes("MT普通車") && standardRowText.includes("AT普通車"), `${viewport.name}/limited: 普通車の車種・現有免許表記がExcelと一致しません。`);

@@ -124,6 +124,16 @@
   justify-content: center;
   margin-top: 10px;
 }
+.sim-discount-link {
+  align-self: center;
+  margin-top: 10px;
+  color: var(--purple);
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.sim-discount-link:hover { color: var(--green-deep); }
 .sim-status-note {
   margin: 10px 0 0;
   color: #766f82;

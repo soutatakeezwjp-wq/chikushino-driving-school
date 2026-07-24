@@ -56,6 +56,8 @@ async function selectChoice(page, selector) {
       assert(total > 0, `${value}の料金を計算できません。`);
     }
     assert((await top.locator("#sim-apply").getAttribute("href")).includes("estimatedPrice="), "シミュレーター結果が仮申込へ引き継がれません。");
+    assert((await top.locator("#sim-status-note").textContent()).includes("割引は含まれていません"), "シミュレーターに割引未適用の案内がありません。");
+    assert((await top.locator("#sim-discount-link").getAttribute("href")).includes("#discount-guide"), "割引案内への導線がありません。");
     await top.locator("#open-option-details").click();
     assert(await top.locator("#option-details-dialog").evaluate((dialog) => dialog.open), "オプション詳細が開きません。");
     assert(await top.locator("#option-details-body tr").count() >= 3, "オプション詳細が不足しています。");
@@ -68,6 +70,7 @@ async function selectChoice(page, selector) {
 
     const standard = await openPage(context, "/detail.html?page=standard");
     assert(await standard.locator("#price-simulator, .simulator").count() === 0, "サブページに料金シミュレーターが残っています。");
+    assert(await standard.locator("#discount-guide picture").count() === 1, "普通車の割引案内が表示されていません。");
     await standard.locator('[data-fee-view="breakdown"]').click();
     assert(await standard.locator("#fee-detail-modal").getAttribute("aria-hidden") === "false", "料金内訳モーダルが開きません。");
     assert(await standard.locator(".r-modal-row").count() > 3, "料金内訳が不足しています。");
@@ -98,6 +101,10 @@ async function selectChoice(page, selector) {
     await application.fill('[name="postalCode"]', "818-0025");
     await application.fill('[name="address"]', "福岡県筑紫野市筑紫120番地1");
     await selectChoice(application, '[name="occupation"][value="大学生"]');
+    assert(await application.locator(".application-section").count() === 4, "フォームの01・02が統合されていません。");
+    assert(await application.locator(".application-section-no").allTextContents().then((values) => values.join(",")) === "01,02,03,04", "フォームのセクション番号が正しくありません。");
+    assert(await application.locator('[name="desiredEntryDate"]').getAttribute("required") !== null, "入校希望日が必須ではありません。");
+    await application.fill('[name="desiredEntryDate"]', "2026-08-06");
     await selectChoice(application, '[name="desiredVehicles"][value="普通自動車（AT）"]');
     await selectChoice(application, '[name="desiredVehicles"][value="普通自動車（MT）"]');
     await selectChoice(application, '[name="currentLicenses"][value="持っていない"]');
@@ -119,6 +126,8 @@ async function selectChoice(page, selector) {
     assert(submittedPayload?.optionPlans?.[0] === "コミコミプラン", "オプションが配列で送信されていません。");
     assert(submittedPayload?.howKnown?.[0] === "インターネット", "認知経路が配列で送信されていません。");
     assert(submittedPayload?.admissionMotives?.[0] === "自宅から近い", "入校動機が配列で送信されていません。");
+    assert(submittedPayload?.desiredEntryDate === "2026-08-06", "入校希望日が送信されていません。");
+    assert(submittedPayload?.formVersion === "2026-07-24.1", "フォームバージョンが更新されていません。");
     checks.push("application-flow");
     await application.close();
 

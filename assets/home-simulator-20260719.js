@@ -18,7 +18,8 @@
       vehicle: "普通自動車（AT）",
       catalog: master.catalog.standardCar,
       transmission: "AT",
-      rows: standardRows.filter((row) => row.course === "普通車" && row.transmission === "AT")
+      rows: standardRows.filter((row) => row.course === "普通車" && row.transmission === "AT"),
+      discountPage: "standard"
     },
     ordinary_mt: {
       label: "普通自動車MT（AT取得後に移行）",
@@ -27,49 +28,56 @@
       transmission: "MT",
       rows: standardRows.filter((row) => row.course === "普通車" && row.transmission === "AT"),
       surchargeLabel: "MT移行教習",
-      surcharge: mtTransitionAmount
+      surcharge: mtTransitionAmount,
+      discountPage: "standard"
     },
     semi_medium: {
       label: "準中型車MT",
       vehicle: "準中型車",
       catalog: master.catalog.semiMedium,
       transmission: "MT",
-      rows: semiMediumRows.filter((row) => row.course === "準中型車")
+      rows: semiMediumRows.filter((row) => row.course === "準中型車"),
+      discountPage: "semi_medium"
     },
     motorcycle_large_mt: {
       label: "大型自動二輪MT",
       vehicle: "大型自動二輪車（MT）",
       catalog: master.catalog.motorcycle,
       transmission: "MT",
-      rows: motorcycleRows.filter((row) => row.course === "大型二輪車" && row.transmission === "MT")
+      rows: motorcycleRows.filter((row) => row.course === "大型二輪車" && row.transmission === "MT"),
+      discountPage: "bike"
     },
     motorcycle_mt: {
       label: "普通自動二輪MT",
       vehicle: "普通自動二輪車（MT）",
       catalog: master.catalog.motorcycle,
       transmission: "MT",
-      rows: motorcycleRows.filter((row) => row.course === "普通二輪車" && row.transmission === "MT")
+      rows: motorcycleRows.filter((row) => row.course === "普通二輪車" && row.transmission === "MT"),
+      discountPage: "bike"
     },
     motorcycle_at: {
       label: "普通自動二輪AT",
       vehicle: "普通自動二輪車（AT）",
       catalog: master.catalog.motorcycle,
       transmission: "AT",
-      rows: motorcycleRows.filter((row) => row.course === "普通二輪車" && row.transmission === "AT")
+      rows: motorcycleRows.filter((row) => row.course === "普通二輪車" && row.transmission === "AT"),
+      discountPage: "bike"
     },
     motorcycle_small_mt: {
       label: "小型自動二輪MT",
       vehicle: "小型自動二輪車（MT）",
       catalog: master.catalog.motorcycle,
       transmission: "MT",
-      rows: motorcycleRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "MT")
+      rows: motorcycleRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "MT"),
+      discountPage: "bike"
     },
     motorcycle_small_at: {
       label: "小型自動二輪AT",
       vehicle: "小型自動二輪車（AT）",
       catalog: master.catalog.motorcycle,
       transmission: "AT",
-      rows: motorcycleRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "AT")
+      rows: motorcycleRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "AT"),
+      discountPage: "bike"
     }
   };
 
@@ -88,7 +96,8 @@
     optionPrice: root.querySelector("#sim-option-price"),
     total: root.querySelector("#sim-total-price"),
     apply: root.querySelector("#sim-apply"),
-    note: root.querySelector("#sim-status-note")
+    note: root.querySelector("#sim-status-note"),
+    discountLink: root.querySelector("#sim-discount-link")
   };
 
   function yen(value) {
@@ -151,8 +160,9 @@
     elements.optionPrice.textContent = yen(optionPrice);
     elements.total.textContent = formatter.format(total);
     elements.note.textContent = availableOptions(definition).length
-      ? "表示額は税込の概算です。正式金額は学校で最終確認します。"
-      : "この車種のオプション料金は正式資料に掲載がないため、必要な場合は学校へご相談ください。";
+      ? "表示額は税込の概算です。卒業生割引・複数人入校割引は含まれていません。正式金額は学校で最終確認します。"
+      : "卒業生割引・複数人入校割引は含まれていません。この車種のオプション料金は学校へご相談ください。";
+    elements.discountLink.href = `detail.html?page=${definition.discountPage}#discount-guide`;
 
     const params = new URLSearchParams({
       page: "application",

@@ -295,6 +295,25 @@ body.is-concise-course-page .subpage-hero { padding-bottom: 12px; }
   line-height: 1.75;
 }
 
+.redesign-0718 .discount-guide-section { background: #fff; }
+.redesign-0718 .discount-guide-picture {
+  width: 100%;
+  display: block;
+  margin-top: 28px;
+  overflow: hidden;
+  border: 1px solid var(--cds-line);
+  border-radius: 8px;
+  background: #faf8fd;
+  box-shadow: 0 18px 44px rgba(48, 27, 82, .08);
+}
+.redesign-0718 .discount-guide-picture img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  display: block;
+  object-fit: cover;
+}
+
 .redesign-0718 .fee-mobile-list { display: none; }
 .redesign-0718 .fee-mobile-card {
   border: 1px solid var(--cds-line);
@@ -749,6 +768,7 @@ body.is-modal-open { overflow: hidden; }
 }
 
 @media (max-width: 560px) {
+  .redesign-0718 .discount-guide-picture img { aspect-ratio: 3 / 4; }
   .redesign-0718 .r-heading { font-size: 27px; }
   .redesign-0718 .r-lead { font-size: 15px; }
   .redesign-0718 .r-actions { display: grid; }

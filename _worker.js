@@ -382,7 +382,7 @@ function normalizeApplicationPayload(payload, request) {
 }
 
 function validateApplicationPayload(payload) {
-  const requiredFields = ["purpose", "name", "phone", "email", "privacyConsent"];
+  const requiredFields = ["purpose", "name", "phone", "email", "privacyConsent", "desiredEntryDate"];
   if (payload.purpose === "仮入校申し込み") {
     requiredFields.push("gender", "birthdate", "postalCode", "address", "occupation", "lessonPlan", "paymentMethod");
   }
@@ -422,6 +422,12 @@ function validateApplicationPayload(payload) {
     const birthdate = new Date(`${payload.birthdate}T00:00:00+09:00`);
     if (Number.isNaN(birthdate.getTime()) || birthdate.getTime() >= Date.now()) {
       throw new ApplicationRequestError("VALIDATION_BIRTHDATE", "生年月日を確認してください。", 400);
+    }
+  }
+  if (payload.desiredEntryDate) {
+    const entryDate = new Date(`${payload.desiredEntryDate}T00:00:00+09:00`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(payload.desiredEntryDate) || Number.isNaN(entryDate.getTime())) {
+      throw new ApplicationRequestError("VALIDATION_ENTRY_DATE", "入校希望日を確認してください。", 400);
     }
   }
 }

@@ -54,8 +54,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/redesign-0718.css?v=20260723-1">
-<link rel="stylesheet" href="assets/home-simulator-20260719.css">
+<link rel="stylesheet" href="assets/redesign-0718.css?v=20260724-1">
+<link rel="stylesheet" href="assets/home-simulator-20260719.css?v=20260724-1">
 <style>
   :root {
     --purple: #5c319b;
@@ -3651,6 +3651,7 @@
             <button class="btn btn-purple simulate-btn" type="button" id="sim-calculate">結果を見る <span class="circle">›</span></button>
             <a class="btn btn-orange" id="sim-apply" href="detail.html?page=application">この条件で仮申込へ <span class="circle">›</span></a>
             <a class="btn btn-white" href="detail.html?page=price">正式料金表を見る <span class="circle">›</span></a>
+            <a class="sim-discount-link" id="sim-discount-link" href="detail.html?page=standard#discount-guide">割引の詳細を見る</a>
             <p class="sim-status-note" id="sim-status-note"></p>
           </aside>
         </div>
@@ -3973,8 +3974,8 @@
     </div>
   </footer>
 
-<script src="data/price-master.js?v=20260723-1"></script>
-<script src="assets/home-simulator-20260719.js"></script>
+<script src="data/price-master.js?v=20260724-1"></script>
+<script src="assets/home-simulator-20260719.js?v=20260724-1"></script>
 <script>
   function escapeHtml(value = "") {
     return String(value)

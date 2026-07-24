@@ -541,13 +541,42 @@
           ],
           "action": "窓口へ申し出"
         },
-        {
-          "id": "graduate-discount",
-          "label": "卒業生割引",
-          "amount": null,
-          "amountStatus": "source_does_not_state_amount",
-          "action": "窓口へ確認"
-        }
+          {
+            "id": "graduate-discount",
+            "label": "卒業生割引",
+            "tiers": [
+              {
+                "minimumTeachingFee": 110000,
+                "amount": 20000
+              },
+              {
+                "maximumTeachingFeeExclusive": 110000,
+                "amount": 10000
+              }
+            ],
+            "combinable": false,
+            "action": "申込時に窓口へ申し出"
+          },
+          {
+            "id": "group-enrollment-discount",
+            "label": "複数人での入校割引",
+            "appliesToCurrentLicenses": [
+              "none",
+              "moped"
+            ],
+            "tiers": [
+              {
+                "people": 2,
+                "amountPerPerson": 10000
+              },
+              {
+                "minimumPeople": 3,
+                "amountPerPerson": 15000
+              }
+            ],
+            "sameEnrollmentMonthRequired": true,
+            "combinable": false
+          }
       ],
       "notices": [
         "高速教習は原則、実車で行います。",
@@ -1022,13 +1051,46 @@
           ],
           "action": "窓口へ申し出"
         },
-        {
-          "id": "graduate-discount",
-          "label": "卒業生割引",
-          "amount": null,
-          "amountStatus": "source_does_not_state_amount",
-          "action": "窓口へ確認"
-        }
+          {
+            "id": "graduate-discount",
+            "label": "卒業生割引",
+            "amount": 20000,
+            "combinable": false,
+            "action": "申込時に窓口へ申し出"
+          },
+          {
+            "id": "group-enrollment-discount",
+            "label": "複数人での入校割引",
+            "tiers": [
+              {
+                "currentLicenses": [
+                  "none",
+                  "moped"
+                ],
+                "people": 2,
+                "amountPerPerson": 10000
+              },
+              {
+                "currentLicenses": [
+                  "none",
+                  "moped"
+                ],
+                "minimumPeople": 3,
+                "amountPerPerson": 15000
+              },
+              {
+                "currentLicenseGroups": [
+                  "standardCar",
+                  "motorcycle"
+                ],
+                "minimumPeople": 2,
+                "amountPerPerson": 5000
+              }
+            ],
+            "sameEnrollmentMonthRequired": true,
+            "differentVehicleTypesAllowed": true,
+            "combinable": false
+          }
       ],
       "notices": [
         "高速教習は原則、実車で行います。",
@@ -1714,13 +1776,31 @@
           ],
           "action": "窓口へ申し出"
         },
-        {
-          "id": "graduate-discount",
-          "label": "卒業生割引",
-          "amount": null,
-          "amountStatus": "source_does_not_state_amount",
-          "action": "窓口へ確認"
-        }
+          {
+            "id": "graduate-discount",
+            "label": "卒業生割引",
+            "tiers": [
+              {
+                "minimumTeachingFee": 110000,
+                "amount": 20000
+              },
+              {
+                "maximumTeachingFeeExclusive": 110000,
+                "amount": 10000
+              }
+            ],
+            "combinable": false,
+            "action": "申込時に窓口へ申し出"
+          },
+          {
+            "id": "group-enrollment-discount",
+            "label": "複数人での入校割引",
+            "minimumPeople": 2,
+            "amountPerPerson": 5000,
+            "sameEnrollmentMonthRequired": true,
+            "differentVehicleTypesAllowed": true,
+            "combinable": false
+          }
       ],
       "notices": [
         "医師・看護師等の資格をお持ちの方は窓口へお申し出ください。学科教習が3時限免除になります。（免なし・原付持の方）",

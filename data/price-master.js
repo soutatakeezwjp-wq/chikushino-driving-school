@@ -552,9 +552,38 @@ var CDS_PRICE_MASTER = (function () {
           {
             "id": "graduate-discount",
             "label": "卒業生割引",
-            "amount": null,
-            "amountStatus": "source_does_not_state_amount",
-            "action": "窓口へ確認"
+            "tiers": [
+              {
+                "minimumTeachingFee": 110000,
+                "amount": 20000
+              },
+              {
+                "maximumTeachingFeeExclusive": 110000,
+                "amount": 10000
+              }
+            ],
+            "combinable": false,
+            "action": "申込時に窓口へ申し出"
+          },
+          {
+            "id": "group-enrollment-discount",
+            "label": "複数人での入校割引",
+            "appliesToCurrentLicenses": [
+              "none",
+              "moped"
+            ],
+            "tiers": [
+              {
+                "people": 2,
+                "amountPerPerson": 10000
+              },
+              {
+                "minimumPeople": 3,
+                "amountPerPerson": 15000
+              }
+            ],
+            "sameEnrollmentMonthRequired": true,
+            "combinable": false
           }
         ],
         "notices": [
@@ -1033,9 +1062,42 @@ var CDS_PRICE_MASTER = (function () {
           {
             "id": "graduate-discount",
             "label": "卒業生割引",
-            "amount": null,
-            "amountStatus": "source_does_not_state_amount",
-            "action": "窓口へ確認"
+            "amount": 20000,
+            "combinable": false,
+            "action": "申込時に窓口へ申し出"
+          },
+          {
+            "id": "group-enrollment-discount",
+            "label": "複数人での入校割引",
+            "tiers": [
+              {
+                "currentLicenses": [
+                  "none",
+                  "moped"
+                ],
+                "people": 2,
+                "amountPerPerson": 10000
+              },
+              {
+                "currentLicenses": [
+                  "none",
+                  "moped"
+                ],
+                "minimumPeople": 3,
+                "amountPerPerson": 15000
+              },
+              {
+                "currentLicenseGroups": [
+                  "standardCar",
+                  "motorcycle"
+                ],
+                "minimumPeople": 2,
+                "amountPerPerson": 5000
+              }
+            ],
+            "sameEnrollmentMonthRequired": true,
+            "differentVehicleTypesAllowed": true,
+            "combinable": false
           }
         ],
         "notices": [
@@ -1725,9 +1787,27 @@ var CDS_PRICE_MASTER = (function () {
           {
             "id": "graduate-discount",
             "label": "卒業生割引",
-            "amount": null,
-            "amountStatus": "source_does_not_state_amount",
-            "action": "窓口へ確認"
+            "tiers": [
+              {
+                "minimumTeachingFee": 110000,
+                "amount": 20000
+              },
+              {
+                "maximumTeachingFeeExclusive": 110000,
+                "amount": 10000
+              }
+            ],
+            "combinable": false,
+            "action": "申込時に窓口へ申し出"
+          },
+          {
+            "id": "group-enrollment-discount",
+            "label": "複数人での入校割引",
+            "minimumPeople": 2,
+            "amountPerPerson": 5000,
+            "sameEnrollmentMonthRequired": true,
+            "differentVehicleTypesAllowed": true,
+            "combinable": false
           }
         ],
         "notices": [

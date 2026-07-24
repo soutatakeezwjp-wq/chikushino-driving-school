@@ -273,6 +273,44 @@
     return `<p class="separate-fee-note">仮免試験手数料1,800円（非課税）　仮免交付手数料1,100円（非課税）が別途必要になります。</p>`;
   }
 
+  const discountGuides = {
+    standard: {
+      slug: "ordinary",
+      alt: "普通自動車の卒業生割引と複数人入校割引",
+      text: "卒業生割引は教習料金合計11万円以上で2万円、11万円未満で1万円です。現有免許なし・原付のみの方が同じ月に入校する場合、2人で1人1万円、3人以上で1人1万5千円を割り引きます。他の割引や特典とは併用できません。"
+    },
+    semi_medium: {
+      slug: "semi-medium",
+      alt: "準中型車の卒業生割引と複数人入校割引",
+      text: "卒業生割引は2万円です。現有免許なし・原付のみの方が同じ月に入校する場合、2人で1人1万円、3人以上で1人1万5千円を割り引きます。普通車または自動二輪免許をお持ちの方は、2人以上で1人5千円を割り引きます。車種が異なる場合も対象です。他の割引や特典とは併用できません。"
+    },
+    bike: {
+      slug: "motorcycle",
+      alt: "自動二輪車の卒業生割引と複数人入校割引",
+      text: "卒業生割引は教習料金合計11万円以上で2万円、11万円未満で1万円です。同じ月に2人以上で入校する場合、1人5千円を割り引きます。車種が異なる場合も対象です。他の割引や特典とは併用できません。"
+    },
+    limited: {
+      slug: "limited",
+      alt: "各種限定解除の卒業生割引",
+      text: "各種限定解除の卒業生割引は1万円です。他の割引や特典とは併用できません。"
+    }
+  };
+
+  function discountGuide(id) {
+    const guide = discountGuides[id];
+    if (!guide) return "";
+    const base = `images/detail-pages/discounts-20260724/${guide.slug}-discount`;
+    return `<section class="r-section discount-guide-section" id="discount-guide"><div class="r-wrap">
+      ${sectionHeader("DISCOUNT", "割引のご案内", "対象条件をご確認のうえ、お申し込み時に受付へお申し出ください。")}
+      <picture class="discount-guide-picture">
+        <source media="(max-width: 600px)" srcset="${base}-mobile.webp">
+        <img src="${base}-desktop.webp" width="1600" height="900" loading="lazy" decoding="async" alt="${safeText(guide.alt)}">
+      </picture>
+      <p class="visually-hidden">${safeText(guide.text)}</p>
+      <p class="r-note">割引の適用可否は受付で最終確認します。</p>
+    </div></section>`;
+  }
+
   function renderFeePage(id) {
     if (!master) return;
     const spec = feePageMap[id];
@@ -285,6 +323,7 @@
         ${separateFeeNotice(catalog)}
         ${feeButtons(spec.key)}
       </div></section>
+      ${discountGuide(id)}
       <section class="r-section is-soft"><div class="r-wrap">${sectionHeader("PLAN GUIDE", "教習プラン", "通える時間帯に合わせて、デイプランまたはフリープランを選べます。")}${planGuide()}</div></section>
       ${catalog.options?.length ? `<section class="r-section"><div class="r-wrap">${sectionHeader("OPTION", "通い方に合わせたオプション", "基本料金に追加して選べるプランです。")}${optionCards(catalog.options)}</div></section>` : ""}
       <section class="r-section is-soft"><div class="r-wrap"><h2 class="visually-hidden">注意事項</h2>
@@ -306,7 +345,7 @@
         ${sectionHeader("FEES", title, "現在お持ちの免許に合う行をご確認ください。")}
         ${feeTable(catalog.licenseChangeRows)}
         ${feeButtons(key, "license", title)}
-      </div></section>`).join("") + modalShell());
+      </div></section>`).join("") + discountGuide("limited") + modalShell());
     setupModal(Object.fromEntries(groups.map(([key, , catalog]) => [key, catalog])));
   }
 
@@ -578,29 +617,26 @@
           <label class="form-field"><span>メールアドレス<span class="required">必須</span></span><input type="email" name="email" autocomplete="email" required placeholder="example@example.com"></label>
           <label class="form-field"><span>電話番号<span class="required">必須</span></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" required placeholder="0927102188"></label>
           <fieldset class="form-field is-wide choice-field"><legend>職業<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("radio", "occupation", occupations, true)}</div>${otherInput("occupation", "occupationOther", "その他の職業", "職業をご入力ください")}</fieldset>
-        </div></section>
-
-        <section class="application-section"><span class="application-section-no">02</span><h2>所属・紹介・入校希望</h2><div class="form-grid">
           <label class="form-field is-wide"><span>お勤め先（学校・会社）名</span><input name="organization" autocomplete="organization" placeholder="○○大学"></label>
           <label class="form-field"><span>紹介者名（姓）</span><input name="introducerFamilyName" placeholder="筑紫野"></label>
           <label class="form-field"><span>紹介者名（名）</span><input name="introducerGivenName" placeholder="花子"></label>
-          <label class="form-field is-wide"><span>入校希望日</span><input type="date" name="desiredEntryDate"><small>入校式が行われる木曜日、土曜日のいずれかを入力してください。</small></label>
+          <label class="form-field is-wide"><span>入校希望日<span class="required">必須</span></span><input type="date" name="desiredEntryDate" required aria-describedby="desired-entry-date-help"><small id="desired-entry-date-help">入校式が行われる木曜日、土曜日のいずれかを入力してください。</small></label>
         </div></section>
 
-        <section class="application-section"><span class="application-section-no">03</span><h2>希望する免許・教習プラン</h2><div class="form-grid">
+        <section class="application-section"><span class="application-section-no">02</span><h2>希望する免許・教習プラン</h2><div class="form-grid">
           <fieldset class="form-field is-wide choice-field" data-required-group="desiredVehicles"><legend>入校車種（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "desiredVehicles", desiredVehicles)}</div></fieldset>
           <fieldset class="form-field is-wide choice-field" data-required-group="currentLicenses"><legend>現在の免許証の有無（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "currentLicenses", currentLicenses)}</div></fieldset>
           <fieldset class="form-field is-wide choice-field"><legend>技能教習プラン<span class="required">必須</span></legend><div class="choice-grid">${choices("radio", "lessonPlan", ["デイプラン", "フリープラン"], true)}</div></fieldset>
           <fieldset class="form-field is-wide choice-field"><legend>オプションプラン（複数可）</legend><div class="choice-grid">${choices("checkbox", "optionPlans", optionPlans)}</div><small>スケジュールプラン・合宿風ハイスピードプランは、定員となり次第締め切ります。</small></fieldset>
         </div></section>
 
-        <section class="application-section"><span class="application-section-no">04</span><h2>お支払い・当校を知ったきっかけ</h2><div class="form-grid">
+        <section class="application-section"><span class="application-section-no">03</span><h2>お支払い・当校を知ったきっかけ</h2><div class="form-grid">
           <fieldset class="form-field is-wide choice-field"><legend>お支払い方法<span class="required">必須</span></legend><div class="choice-grid">${choices("radio", "paymentMethod", paymentMethods, true)}</div></fieldset>
           <fieldset class="form-field is-wide choice-field"><legend>当校をどこでお知りになりましたか？（複数可）</legend><div class="choice-grid is-two-columns">${choices("checkbox", "howKnown", howKnown)}</div>${otherInput("howKnown", "howKnownOther", "その他のきっかけ", "どこで知ったかをご入力ください")}</fieldset>
           <fieldset class="form-field is-wide choice-field"><legend>入校の動機は？（複数可）</legend><div class="choice-grid is-two-columns">${choices("checkbox", "admissionMotives", admissionMotives)}</div>${otherInput("admissionMotives", "admissionMotiveOther", "その他の入校動機", "入校の動機をご入力ください")}</fieldset>
         </div></section>
 
-        <section class="application-section"><span class="application-section-no">05</span><h2>質問・同意</h2><div class="form-grid">
+        <section class="application-section"><span class="application-section-no">04</span><h2>質問・同意</h2><div class="form-grid">
           <label class="form-field is-wide"><span>質問・意見</span><textarea name="notes" placeholder="質問・意見を入力してください。"></textarea></label>
           <label class="form-field is-wide privacy-check"><span><input type="checkbox" name="privacyConsent" value="同意済み" required>個人情報保護方針に同意します<span class="required">必須</span></span></label>
         </div><div class="form-submit"><p>入校申込書などの必要書類は、ご入力いただいた住所へ郵送します。受取方法の選択は不要です。</p><button class="r-button is-orange" type="submit">上記内容で送信する</button></div><div class="form-status" id="application-status" hidden aria-live="polite"></div></section>
@@ -685,7 +721,7 @@
       data.privacyConsent = Boolean(form.elements.privacyConsent.checked);
       data.honeypot = data.website || "";
       data.estimatedPrice = Number(data.estimatedPrice) || null;
-      data.formVersion = "2026-07-20.2";
+      data.formVersion = "2026-07-24.1";
       data.landingPage = location.href;
       data.referrer = document.referrer;
       const params = new URLSearchParams(location.search);
