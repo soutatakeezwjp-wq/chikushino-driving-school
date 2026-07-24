@@ -399,7 +399,7 @@
     setPage(`
       <section class="r-section"><div class="r-wrap">
         ${sectionHeader("ENTRY GUIDE", "入校案内", "必要な手続き、入校資格、免許証交付までの流れを順番に確認できます。")}
-        <nav class="flow-switch is-four" aria-label="入校案内のページ内メニュー"><a href="#entry-flow">入校まで</a><a href="#preparation">準備・資格</a><a href="#license-flow">免許証交付まで</a><a href="#lesson-time">教習時間</a></nav>
+        <nav class="flow-switch is-five" aria-label="入校案内のページ内メニュー"><a href="#entry-flow">入校まで</a><a href="#preparation">準備・資格</a><a href="#admission-day">入校日</a><a href="#license-flow">免許証交付まで</a><a href="#lesson-time">教習時間</a></nav>
       </div></section>
       <section class="r-section is-soft" id="entry-flow"><div class="r-wrap">
         ${sectionHeader("ENTRY FLOW", "入校までの流れ", "必要書類の準備から入校受付完了まで、5つの段階で進みます。")}
@@ -446,7 +446,47 @@
             <div><dt>運動能力</dt><dd>自動車などの運転に支障を及ぼす身体障害がないこと。</dd></div>
           </dl>
         </section>
-        <div class="r-actions"><a class="r-button is-primary" href="detail.html?page=application">仮申込・資料請求へ</a><a class="r-button" href="tel:0927102188">電話で確認する</a></div>
+      </div></section>
+      <section class="r-section admission-day-section" id="admission-day"><div class="r-wrap">
+        ${sectionHeader("ADMISSION DAY", "入校日", "入校する車種と免許の取得状況により、当日の時間が異なります。")}
+        <div class="admission-day-grid">
+          <article class="admission-day-card">
+            <h3>普通車・準中型車・自動二輪車で<br>新規入校の方</h3>
+            <p class="admission-day-intro"><strong>入校日は毎週木曜日と土曜日です。</strong><span>入校説明開始時間前にご来校ください。</span></p>
+            <div class="admission-day-schedule">
+              <section>
+                <h4>木曜日</h4>
+                <dl>
+                  <div><dt>入校説明</dt><dd>17:40〜18:30</dd></div>
+                  <div><dt>運転適性検査</dt><dd>18:40〜19:30</dd></div>
+                  <div><dt>学科第1教程</dt><dd>19:40〜20:30</dd></div>
+                </dl>
+              </section>
+              <section>
+                <h4>土曜日</h4>
+                <dl>
+                  <div><dt>入校説明</dt><dd>14:30〜15:20</dd></div>
+                  <div><dt>運転適性検査</dt><dd>15:30〜16:20</dd></div>
+                  <div><dt>学科第1教程</dt><dd>16:30〜17:20</dd></div>
+                </dl>
+              </section>
+            </div>
+          </article>
+          <article class="admission-day-card">
+            <h3>準中型車・自動二輪車・各種限定解除で入校の方<br><small>追加で免許を取得される方</small></h3>
+            <p class="admission-day-intro"><strong>入校日は毎週木曜日と土曜日です。</strong><span>運転適性検査開始時間前にご来校ください。</span></p>
+            <div class="admission-day-schedule">
+              <section>
+                <h4>木曜日</h4>
+                <dl><div><dt>運転適性検査</dt><dd>18:40〜19:30</dd></div></dl>
+              </section>
+              <section>
+                <h4>土曜日</h4>
+                <dl><div><dt>運転適性検査</dt><dd>15:30〜16:20</dd></div></dl>
+              </section>
+            </div>
+          </article>
+        </div>
       </div></section>
       <section class="r-section is-soft" id="license-flow"><div class="r-wrap">${sectionHeader("LICENSE FLOW", "免許証交付まで", "取得する免許に合わせて流れを確認できます。")}
         <div class="license-flow-list">

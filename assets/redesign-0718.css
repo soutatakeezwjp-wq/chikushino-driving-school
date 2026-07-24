@@ -546,6 +546,7 @@ body.is-modal-open { overflow: hidden; }
 }
 
 .redesign-0718 .flow-switch.is-four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.redesign-0718 .flow-switch.is-five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .redesign-0718 .flow-switch a:first-child { background: var(--cds-purple); color: #fff; }
 .redesign-0718 .flow-switch a:last-child { border-right: 0; }
 
@@ -582,6 +583,25 @@ body.is-modal-open { overflow: hidden; }
 .redesign-0718 .qualification-list > div { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 18px; padding: 14px 0; border-top: 1px solid #ece7f1; }
 .redesign-0718 .qualification-list dt { color: var(--cds-purple-deep); font-size: 14px; font-weight: 900; }
 .redesign-0718 .qualification-list dd { margin: 0; color: var(--cds-muted); font-size: 14px; line-height: 1.75; }
+
+.redesign-0718 .admission-day-section { scroll-margin-top: 110px; border-top: 1px solid #eee8f4; }
+.redesign-0718 .admission-day-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.redesign-0718 .admission-day-card { padding: 28px; border: 1px solid #ded5e8; border-top: 5px solid var(--cds-purple); border-radius: 6px; background: #fff; }
+.redesign-0718 .admission-day-card h3 { margin: 0; color: var(--cds-purple-deep); font-size: 22px; line-height: 1.55; }
+.redesign-0718 .admission-day-card h3 small { display: inline-block; margin-top: 4px; color: var(--cds-muted); font-size: 15px; font-weight: 700; }
+.redesign-0718 .admission-day-intro { display: grid; gap: 6px; margin: 20px 0 24px; color: var(--cds-muted); font-size: 15px; line-height: 1.8; }
+.redesign-0718 .admission-day-intro strong { color: #2c2635; }
+.redesign-0718 .admission-day-schedule { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.redesign-0718 .admission-day-schedule section { padding: 18px; border-left: 4px solid var(--cds-orange); background: #faf8fc; }
+.redesign-0718 .admission-day-schedule h4 { margin: 0 0 12px; color: #126fa9; font-size: 18px; }
+.redesign-0718 .admission-day-schedule h4::before { content: "■"; margin-right: 4px; font-size: 13px; }
+.redesign-0718 .admission-day-schedule dl,
+.redesign-0718 .admission-day-schedule dl div { margin: 0; }
+.redesign-0718 .admission-day-schedule dl { display: grid; gap: 8px; }
+.redesign-0718 .admission-day-schedule dl div { display: flex; flex-wrap: wrap; gap: 4px; color: #37313f; font-size: 15px; line-height: 1.6; }
+.redesign-0718 .admission-day-schedule dt { font-weight: 900; }
+.redesign-0718 .admission-day-schedule dt::after { content: "："; }
+.redesign-0718 .admission-day-schedule dd { margin: 0; }
 
 .redesign-0718 .lesson-time-figure {
   width: min(520px, 100%);
@@ -736,6 +756,7 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .instructor-grid,
   .redesign-0718 .plan-guide-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redesign-0718 .admission-info-grid,
+  .redesign-0718 .admission-day-grid,
   .redesign-0718 .paper-booking-grid { grid-template-columns: 1fr; }
   .redesign-0718 .flow-line { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redesign-0718 .flow-line.is-six { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -772,6 +793,10 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .r-heading { font-size: 27px; }
   .redesign-0718 .r-lead { font-size: 15px; }
   .redesign-0718 .r-actions { display: grid; }
+  .redesign-0718 .flow-switch.is-five { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .redesign-0718 .admission-day-card { padding: 20px 16px; }
+  .redesign-0718 .admission-day-card h3 { font-size: 19px; }
+  .redesign-0718 .admission-day-schedule { grid-template-columns: 1fr; }
   .redesign-0718 .r-button { width: 100%; }
   .redesign-0718 .option-grid,
   .redesign-0718 .simple-grid,

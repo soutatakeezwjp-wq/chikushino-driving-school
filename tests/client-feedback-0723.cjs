@@ -56,6 +56,13 @@ async function checkAdmission(page, viewport) {
   assert(!text.includes("仮申込・来校予約"), `${viewport.name}/admission: 削除対象の旧工程が残っています。`);
   assert(!text.includes("入校説明・教習開始"), `${viewport.name}/admission: 削除対象の旧最終工程が残っています。`);
   assert(await page.locator("#entry-flow .flow-artwork").count() === 1, `${viewport.name}/admission: 5段階フロー画像がありません。`);
+  assert(await page.locator("#preparation + #admission-day").count() === 1, `${viewport.name}/admission: 入校日が準備・資格の直後にありません。`);
+  assert(await page.locator("#admission-day .admission-day-card").count() === 2, `${viewport.name}/admission: 入校日の対象区分が2種類ではありません。`);
+  assert(await page.locator("#preparation .r-actions").count() === 0, `${viewport.name}/admission: 削除対象のCTAが残っています。`);
+  const admissionDayText = await page.locator("#admission-day").innerText();
+  for (const keyword of ["入校説明", "17:40〜18:30", "運転適性検査", "18:40〜19:30", "学科第1教程", "19:40〜20:30", "14:30〜15:20", "15:30〜16:20", "16:30〜17:20"]) {
+    assert(admissionDayText.includes(keyword), `${viewport.name}/admission: 入校日の「${keyword}」がありません。`);
+  }
   assert(await page.locator("#license-flow .flow-artwork").count() === 3, `${viewport.name}/admission: 免許交付画像が3種類ではありません。`);
   assert(await page.locator("#lesson-time .time-cell").count() === 0, `${viewport.name}/admission: 削除対象の教習時間カードが残っています。`);
   assert(await page.locator("#lesson-time .plan-guide-card").count() === 0, `${viewport.name}/admission: 削除対象のプランカードが残っています。`);
