@@ -57,9 +57,16 @@ async function checkAdmission(page, viewport) {
   assert(!text.includes("入校説明・教習開始"), `${viewport.name}/admission: 削除対象の旧最終工程が残っています。`);
   assert(await page.locator("#entry-flow .flow-artwork").count() === 1, `${viewport.name}/admission: 5段階フロー画像がありません。`);
   assert(await page.locator("#license-flow .flow-artwork").count() === 3, `${viewport.name}/admission: 免許交付画像が3種類ではありません。`);
-  assert(await page.locator(".time-cell").count() === 12, `${viewport.name}/admission: 教習時間が12時限ではありません。`);
-  const actualTimes = await page.locator(".time-cell span").allTextContents();
+  assert(await page.locator("#lesson-time .time-cell").count() === 0, `${viewport.name}/admission: 削除対象の教習時間カードが残っています。`);
+  assert(await page.locator("#lesson-time .plan-guide-card").count() === 0, `${viewport.name}/admission: 削除対象のプランカードが残っています。`);
+  assert(await page.locator("#lesson-time .lesson-time-figure img").count() === 1, `${viewport.name}/admission: 指定された教習時間図がありません。`);
+  const lessonImage = page.locator("#lesson-time .lesson-time-figure img");
+  await lessonImage.evaluate((image) => image.complete || new Promise((resolve) => image.addEventListener("load", resolve, { once: true })));
+  assert(await lessonImage.evaluate((image) => image.naturalWidth > 0 && image.currentSrc.endsWith("/images/detail-pages/admission/lesson-times-official.png")), `${viewport.name}/admission: 教習時間図が指定画像ではありません。`);
+  const actualTimes = await page.locator(".lesson-time-text li").evaluateAll((items) => items.map((item) => item.textContent.replace(/^\d+時限\s*/, "").trim()));
   assert(JSON.stringify(actualTimes) === JSON.stringify(expectedTimes), `${viewport.name}/admission: 教習時間がExcelと一致しません。`);
+  assert(text.includes("現有免許により学科教習時限が異なります。"), `${viewport.name}/admission: 自動二輪の注記がありません。`);
+  assert(await page.locator(".visually-hidden h3", { hasText: "自動二輪の免許証交付まで" }).count() === 1, `${viewport.name}/admission: 自動二輪の正式見出しがありません。`);
   for (const keyword of [
     "入校申込書", "住民票", "発行から6か月以内", "マイナ免許証",
     "外国籍の方", "国籍を記載した住民票", "在留カード",

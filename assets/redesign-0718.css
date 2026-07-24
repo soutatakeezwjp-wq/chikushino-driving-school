@@ -427,6 +427,18 @@ body.is-modal-open { overflow: hidden; }
 .redesign-0718 .license-flow-list { display: grid; gap: 44px; margin-top: 30px; }
 .redesign-0718 .license-flow-list > section { min-width: 0; }
 .redesign-0718 .license-flow-list h3 { margin: 0; padding-left: 14px; border-left: 5px solid var(--cds-green); color: var(--cds-purple-deep); font-size: 24px; }
+.redesign-0718 .license-flow-note {
+  margin: 10px 0 0;
+  padding: 10px 14px;
+  border: 1px solid var(--cds-purple);
+  border-radius: 5px;
+  background: #fff;
+  color: var(--cds-purple-deep);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.7;
+  text-align: center;
+}
 .redesign-0718 .senior-artwork { max-width: 1080px; }
 
 .redesign-0718 .flow-switch {
@@ -489,10 +501,15 @@ body.is-modal-open { overflow: hidden; }
 .redesign-0718 .qualification-list dt { color: var(--cds-purple-deep); font-size: 14px; font-weight: 900; }
 .redesign-0718 .qualification-list dd { margin: 0; color: var(--cds-muted); font-size: 14px; line-height: 1.75; }
 
-.redesign-0718 .time-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 24px; }
-.redesign-0718 .time-cell { min-height: 82px; display: grid; place-content: center; gap: 4px; padding: 10px; border: 1px solid var(--cds-line); border-radius: 6px; background: #fff; text-align: center; }
-.redesign-0718 .time-cell strong { color: var(--cds-purple-deep); font-size: 14px; }
-.redesign-0718 .time-cell span { color: var(--cds-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.redesign-0718 .lesson-time-figure {
+  width: min(520px, 100%);
+  margin: 0 auto;
+}
+.redesign-0718 .lesson-time-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 
 .redesign-0718 .schedule-stack { display: grid; gap: 34px; margin-top: 30px; }
 .redesign-0718 .schedule-group { min-width: 0; }
@@ -640,7 +657,6 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .paper-booking-grid { grid-template-columns: 1fr; }
   .redesign-0718 .flow-line { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redesign-0718 .flow-line.is-six { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .redesign-0718 .time-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .redesign-0718 .choice-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redesign-0718 .visual-split { grid-template-columns: 1fr; }
 }
@@ -692,7 +708,6 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .flow-switch.is-four { grid-template-columns: 1fr; }
   .redesign-0718 .flow-switch a { border-right: 0; border-bottom: 1px solid var(--cds-purple); }
   .redesign-0718 .flow-switch a:last-child { border-bottom: 0; }
-  .redesign-0718 .time-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .redesign-0718 .qualification-list > div { grid-template-columns: 1fr; gap: 5px; }
   .redesign-0718 .paper-type-grid { grid-template-columns: 1fr; }
   .redesign-0718 .paper-rate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

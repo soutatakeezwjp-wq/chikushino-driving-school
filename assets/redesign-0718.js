@@ -377,15 +377,16 @@
         <div class="license-flow-list">
           <section><h3>AT普通自動車</h3>${flowPicture("license-at", "AT普通自動車の免許証交付までの10工程")}</section>
           <section><h3>MT普通自動車</h3>${flowPicture("license-mt", "MT普通自動車の免許証交付までの7工程")}</section>
-          <section><h3>自動二輪</h3>${flowPicture("license-bike", "自動二輪の免許証交付までの8工程")}</section>
+          <section class="license-flow-bike"><h3>自動二輪</h3>${flowPicture("license-bike", "自動二輪の免許証交付までの8工程")}<p class="license-flow-note">現有免許により学科教習時限が異なります。</p></section>
         </div>
         ${hiddenFlow("AT普通自動車の免許証交付まで", atSteps)}
         ${hiddenFlow("MT普通自動車の免許証交付まで", mtSteps)}
-        ${hiddenFlow("自動二輪の免許交付まで", bikeSteps)}
+        ${hiddenFlow("自動二輪の免許証交付まで", bikeSteps)}
       </div></section>
-      <section class="r-section" id="lesson-time"><div class="r-wrap">${sectionHeader("LESSON TIME", "教習時間", "1時限は50分です。")}
-        <div class="time-grid">${lessonTimes.map((time, index) => `<div class="time-cell"><strong>${index + 1}時限</strong><span>${time}</span></div>`).join("")}</div>
-        <div class="r-notice"><div>・平日は10:30〜20:30に実施します。</div><div>・土日は9:30〜18:30に実施します。</div><div>・時間割は時期によって変わる場合があります。</div></div>
+      <section class="r-section" id="lesson-time"><div class="r-wrap">
+        <h2 class="visually-hidden">教習時間</h2>
+        <figure class="lesson-time-figure"><img src="images/detail-pages/admission/lesson-times-official.png" alt="教習時間。1限目8時30分から9時20分、2限目9時30分から10時20分、3限目10時30分から11時20分、4限目11時30分から12時20分、5限目12時30分から13時20分、6限目13時30分から14時20分、7限目14時30分から15時20分、8限目15時30分から16時20分、9限目16時30分から17時20分、10限目17時40分から18時30分、11限目18時40分から19時30分、12限目19時40分から20時30分。平日は10時30分から20時30分、土日は9時30分から18時30分。時間割は時期によって変わる場合があります。" loading="eager" decoding="async"></figure>
+        <ol class="visually-hidden lesson-time-text">${lessonTimes.map((time, index) => `<li><strong>${index + 1}時限</strong> ${time}</li>`).join("")}</ol>
       </div></section>`);
   }
 
