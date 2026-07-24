@@ -350,9 +350,12 @@
     ];
     const atSteps = ["入校式", "適性検査・学科1", "第1段階 技能教習（場内）・学科教習", "修了検定", "仮免学科試験", "第2段階 技能教習（路上）・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
     const mtSteps = ["AT普通車課程", "AT卒業検定", "MT技能教習", "技能審査", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
-    const bikeSteps = ["入校式", "適性検査", "第1段階 技能・学科教習", "第2段階 技能・学科教習", "卒業検定", "卒業証明書", "免許センター", "運転免許証交付"].map((title) => [title, ""]);
+    const bikeSteps = ["入校式", "適性検査", "第1段階 技能・学科教習", "第2段階 技能・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
     const hiddenFlow = (title, items) => `<div class="visually-hidden"><h3>${title}</h3><ol>${items.map(([stepTitle, text]) => `<li><strong>${safeText(stepTitle)}</strong> ${safeText(text)}</li>`).join("")}</ol></div>`;
-    const flowPicture = (basename, alt) => `<picture class="flow-artwork"><source media="(max-width: 560px)" srcset="images/detail-pages/flows-20260723/${basename}-mobile.webp"><img src="images/detail-pages/flows-20260723/${basename}-desktop.webp" alt="${safeText(alt)}" loading="eager" decoding="async"></picture>`;
+    const flowPicture = (basename, alt) => {
+      const directory = basename === "license-bike" ? "flows-20260724" : "flows-20260723";
+      return `<picture class="flow-artwork"><source media="(max-width: 560px)" srcset="images/detail-pages/${directory}/${basename}-mobile.webp"><img src="images/detail-pages/${directory}/${basename}-desktop.webp" alt="${safeText(alt)}" loading="eager" decoding="async"></picture>`;
+    };
     const lessonTimes = ["8:30〜9:20", "9:30〜10:20", "10:30〜11:20", "11:30〜12:20", "12:30〜13:20", "13:30〜14:20", "14:30〜15:20", "15:30〜16:20", "16:30〜17:20", "17:40〜18:30", "18:40〜19:30", "19:40〜20:30"];
     setPage(`
       <section class="r-section"><div class="r-wrap">
@@ -418,7 +421,7 @@
       </div></section>
       <section class="r-section" id="lesson-time"><div class="r-wrap">
         <h2 class="visually-hidden">教習時間</h2>
-        <figure class="lesson-time-figure"><img src="images/detail-pages/admission/lesson-times-official.png" alt="教習時間。1限目8時30分から9時20分、2限目9時30分から10時20分、3限目10時30分から11時20分、4限目11時30分から12時20分、5限目12時30分から13時20分、6限目13時30分から14時20分、7限目14時30分から15時20分、8限目15時30分から16時20分、9限目16時30分から17時20分、10限目17時40分から18時30分、11限目18時40分から19時30分、12限目19時40分から20時30分。平日は10時30分から20時30分、土日は9時30分から18時30分。時間割は時期によって変わる場合があります。" loading="eager" decoding="async"></figure>
+        <figure class="lesson-time-figure"><img src="images/detail-pages/admission/lesson-times-imagegen-v2.webp" alt="教習時間。1限目8時30分から9時20分、2限目9時30分から10時20分、3限目10時30分から11時20分、4限目11時30分から12時20分、5限目12時30分から13時20分、6限目13時30分から14時20分、7限目14時30分から15時20分、8限目15時30分から16時20分、9限目16時30分から17時20分、10限目17時40分から18時30分、11限目18時40分から19時30分、12限目19時40分から20時30分。平日は10時30分から20時30分、土日は9時30分から18時30分。時間割は時期によって変わる場合があります。" loading="eager" decoding="async"></figure>
         <ol class="visually-hidden lesson-time-text">${lessonTimes.map((time, index) => `<li><strong>${index + 1}時限</strong> ${time}</li>`).join("")}</ol>
       </div></section>`);
   }

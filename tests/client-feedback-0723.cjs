@@ -46,7 +46,7 @@ async function checkAdmission(page, viewport) {
     ["必要書類を準備", "入校手続き来校", "写真撮影・視力検査", "入校日を決定", "入校受付完了"],
     ["入校式", "適性検査・学科1", "第1段階 技能教習（場内）・学科教習", "修了検定", "仮免学科試験", "第2段階 技能教習（路上）・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"],
     ["AT普通車課程", "AT卒業検定", "MT技能教習", "技能審査", "卒業証明書", "本免学科試験", "運転免許証交付"],
-    ["入校式", "適性検査", "第1段階 技能・学科教習", "第2段階 技能・学科教習", "卒業検定", "卒業証明書", "免許センター", "運転免許証交付"]
+    ["入校式", "適性検査", "第1段階 技能・学科教習", "第2段階 技能・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"]
   ];
   const expectedTimes = [
     "8:30〜9:20", "9:30〜10:20", "10:30〜11:20", "11:30〜12:20",
@@ -62,7 +62,7 @@ async function checkAdmission(page, viewport) {
   assert(await page.locator("#lesson-time .lesson-time-figure img").count() === 1, `${viewport.name}/admission: 指定された教習時間図がありません。`);
   const lessonImage = page.locator("#lesson-time .lesson-time-figure img");
   await lessonImage.evaluate((image) => image.complete || new Promise((resolve) => image.addEventListener("load", resolve, { once: true })));
-  assert(await lessonImage.evaluate((image) => image.naturalWidth > 0 && image.currentSrc.endsWith("/images/detail-pages/admission/lesson-times-official.png")), `${viewport.name}/admission: 教習時間図が指定画像ではありません。`);
+  assert(await lessonImage.evaluate((image) => image.naturalWidth >= 1000 && image.currentSrc.endsWith("/images/detail-pages/admission/lesson-times-imagegen-v2.webp")), `${viewport.name}/admission: 高解像度の教習時間図ではありません。`);
   const actualTimes = await page.locator(".lesson-time-text li").evaluateAll((items) => items.map((item) => item.textContent.replace(/^\d+時限\s*/, "").trim()));
   assert(JSON.stringify(actualTimes) === JSON.stringify(expectedTimes), `${viewport.name}/admission: 教習時間がExcelと一致しません。`);
   assert(text.includes("現有免許により学科教習時限が異なります。"), `${viewport.name}/admission: 自動二輪の注記がありません。`);
