@@ -81,6 +81,39 @@
       <div class="fee-mobile-list">${mobileRows}</div>`;
   }
 
+  function motorcycleFeeTables(rows) {
+    const groups = [
+      {
+        id: "large-motorcycle-fees",
+        label: "大型二輪車",
+        description: "大型二輪免許（MT）を取得する方"
+      },
+      {
+        id: "standard-motorcycle-fees",
+        label: "普通二輪車",
+        description: "普通二輪免許（MT・AT）を取得する方"
+      },
+      {
+        id: "small-motorcycle-fees",
+        label: "普通二輪車（小型限定）",
+        description: "125cc以下の小型限定免許（MT・AT）を取得する方"
+      }
+    ];
+    const navigation = `<nav class="fee-category-nav" aria-label="自動二輪車の料金区分">${groups.map((group) => `<a href="#${group.id}">${group.label}</a>`).join("")}</nav>`;
+    const tables = groups.map((group, index) => {
+      const groupRows = rows.filter((row) => {
+        if (group.id === "large-motorcycle-fees") return row.course === "大型二輪車";
+        if (group.id === "standard-motorcycle-fees") return row.course === "普通二輪車";
+        return row.course === "普通二輪車小型限定";
+      });
+      return `<section class="fee-vehicle-group" id="${group.id}">
+        <header class="fee-vehicle-heading"><span>${String(index + 1).padStart(2, "0")}</span><div><h3>${group.label}</h3><p>${group.description}</p></div></header>
+        ${feeTable(groupRows)}
+      </section>`;
+    }).join("");
+    return `${navigation}<div class="fee-vehicle-groups">${tables}</div>`;
+  }
+
   function optionCards(options = []) {
     if (!options.length) return "";
     return `<div class="option-grid">${options.map((option) => {
@@ -248,7 +281,7 @@
       <section class="r-section" id="formal-fees"><div class="r-wrap">
         ${sectionHeader("FEES", spec.title, spec.lead)}
         <p class="r-note">料金は税込です。学生料金は学生証の提示が必要です。</p>
-        ${feeTable(catalog.mainFeeRows)}
+        ${id === "bike" ? motorcycleFeeTables(catalog.mainFeeRows) : feeTable(catalog.mainFeeRows)}
         ${separateFeeNotice(catalog)}
         ${feeButtons(spec.key)}
       </div></section>

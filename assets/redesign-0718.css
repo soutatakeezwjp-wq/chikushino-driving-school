@@ -221,6 +221,69 @@ body.is-concise-course-page .subpage-hero { padding-bottom: 12px; }
 .redesign-0718 .fee-table th:nth-child(n+5) { width: 13.25%; }
 .redesign-0718 .fee-table .fee-course { line-height: 1.5; }
 
+.redesign-0718 .fee-category-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 28px;
+  border: 1px solid var(--cds-purple);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.redesign-0718 .fee-category-nav a {
+  min-height: 56px;
+  display: grid;
+  place-items: center;
+  padding: 10px 14px;
+  border-right: 1px solid var(--cds-purple);
+  color: var(--cds-purple-deep);
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.45;
+  text-align: center;
+  text-decoration: none;
+}
+
+.redesign-0718 .fee-category-nav a:first-child {
+  background: var(--cds-purple);
+  color: #fff;
+}
+
+.redesign-0718 .fee-category-nav a:last-child { border-right: 0; }
+.redesign-0718 .fee-vehicle-groups { display: grid; gap: 48px; margin-top: 42px; }
+.redesign-0718 .fee-vehicle-group { min-width: 0; scroll-margin-top: 110px; }
+.redesign-0718 .fee-vehicle-group .fee-table-wrap { margin-top: 18px; }
+
+.redesign-0718 .fee-vehicle-heading {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--cds-purple);
+}
+
+.redesign-0718 .fee-vehicle-heading > span {
+  color: var(--cds-orange);
+  font-family: var(--latin, sans-serif);
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.redesign-0718 .fee-vehicle-heading h3 {
+  margin: 0;
+  color: var(--cds-purple-deep);
+  font-size: 25px;
+  line-height: 1.35;
+}
+
+.redesign-0718 .fee-vehicle-heading p {
+  margin: 4px 0 0;
+  color: var(--cds-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
 .redesign-0718 .separate-fee-note {
   margin: 16px 0 0;
   padding: 13px 16px;
@@ -708,6 +771,12 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .flow-switch.is-four { grid-template-columns: 1fr; }
   .redesign-0718 .flow-switch a { border-right: 0; border-bottom: 1px solid var(--cds-purple); }
   .redesign-0718 .flow-switch a:last-child { border-bottom: 0; }
+  .redesign-0718 .fee-category-nav { grid-template-columns: 1fr; }
+  .redesign-0718 .fee-category-nav a { min-height: 48px; border-right: 0; border-bottom: 1px solid var(--cds-purple); }
+  .redesign-0718 .fee-category-nav a:last-child { border-bottom: 0; }
+  .redesign-0718 .fee-vehicle-groups { gap: 38px; margin-top: 34px; }
+  .redesign-0718 .fee-vehicle-heading h3 { font-size: 22px; }
+  .redesign-0718 .fee-vehicle-group .fee-mobile-list { margin-top: 14px; }
   .redesign-0718 .qualification-list > div { grid-template-columns: 1fr; gap: 5px; }
   .redesign-0718 .paper-type-grid { grid-template-columns: 1fr; }
   .redesign-0718 .paper-rate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

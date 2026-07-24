@@ -97,6 +97,14 @@ async function checkFeePage(page, id, viewport) {
   const expectedNotices = id === "bike" ? 6 : 7;
   assert(await root.locator(".r-notice > div").count() === expectedNotices, `${viewport.name}/${id}: 注意事項が${expectedNotices}項目ではありません。`);
   assert(await root.locator(".separate-fee-note").count() === (id === "bike" ? 0 : 1), `${viewport.name}/${id}: 仮免手数料の表示が正しくありません。`);
+  if (id === "bike") {
+    const groupTitles = await root.locator(".fee-vehicle-heading h3").allTextContents();
+    assert(JSON.stringify(groupTitles) === JSON.stringify(["大型二輪車", "普通二輪車", "普通二輪車（小型限定）"]), `${viewport.name}/${id}: 車種区分が正しくありません。`);
+    assert(await root.locator(".fee-category-nav a").count() === 3, `${viewport.name}/${id}: 車種ナビが3区分ではありません。`);
+    assert(await root.locator("#large-motorcycle-fees [data-fee-row]").count() === 10, `${viewport.name}/${id}: 大型二輪車の料金行が5件ではありません。`);
+    assert(await root.locator("#standard-motorcycle-fees [data-fee-row]").count() === 8, `${viewport.name}/${id}: 普通二輪車の料金行が4件ではありません。`);
+    assert(await root.locator("#small-motorcycle-fees [data-fee-row]").count() === 8, `${viewport.name}/${id}: 小型限定の料金行が4件ではありません。`);
+  }
 
   await root.locator('[data-fee-view="breakdown"]').click();
   const modalText = await root.locator("#fee-modal-content").innerText();
