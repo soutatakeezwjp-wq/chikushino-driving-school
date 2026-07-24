@@ -95,9 +95,26 @@ async function checkFeePage(page, id, viewport) {
   const modalText = await root.locator("#fee-modal-content").innerText();
   assert(!modalText.includes("限定解除"), `${viewport.name}/${id}: 通常料金モーダルに限定解除料金が混ざっています。`);
   if (id === "bike") {
-    assert(modalText.includes("大型二輪車") && modalText.includes("普通二輪車・小型二輪車"), `${viewport.name}/bike: 二輪料金内訳が車種別に分かれていません。`);
+    const comparison = root.locator(".r-motorcycle-comparison");
+    assert(await comparison.count() === 1, `${viewport.name}/bike: 二輪料金内訳が比較表になっていません。`);
+    assert(await comparison.locator(".r-motorcycle-comparison-row").count() === 12, `${viewport.name}/bike: 二輪料金内訳の項目数が正しくありません。`);
+    const vehicleLabels = await comparison.locator(".r-motorcycle-fee-amount").evaluateAll((items) => items.map((item) => item.dataset.vehicle));
+    assert(vehicleLabels.includes("大型二輪車") && vehicleLabels.includes("普通・小型二輪車"), `${viewport.name}/bike: 二輪料金内訳の車種見出しがありません。`);
+    assert(modalText.includes("教科書代（免許なし・原付）") && modalText.includes("教科書代（免許あり）"), `${viewport.name}/bike: 教科書代の適用条件が明記されていません。`);
+    const skillRow = comparison.locator(".r-motorcycle-comparison-row").first();
+    assert((await skillRow.locator(".r-motorcycle-fee-amount").allTextContents()).join("|").includes("5,060円") && (await skillRow.locator(".r-motorcycle-fee-amount").allTextContents()).join("|").includes("4,510円"), `${viewport.name}/bike: 大型・普通二輪の技能料金が同じ行で比較できません。`);
   }
   await page.keyboard.press("Escape");
+
+  if (id === "bike") {
+    await root.locator('[data-fee-view="other"]').click();
+    const comparison = root.locator(".r-motorcycle-comparison");
+    assert(await comparison.count() === 1, `${viewport.name}/bike: その他費用が比較表になっていません。`);
+    const extensionRow = comparison.locator(".r-motorcycle-comparison-row").first();
+    const extensionAmounts = (await extensionRow.locator(".r-motorcycle-fee-amount").allTextContents()).join("|");
+    assert(extensionAmounts.includes("5,060円") && extensionAmounts.includes("4,510円"), `${viewport.name}/bike: 大型・普通二輪の延長料金が同じ行で比較できません。`);
+    await page.keyboard.press("Escape");
+  }
 }
 
 async function checkVisibleFeeLabels(page, id, viewport) {

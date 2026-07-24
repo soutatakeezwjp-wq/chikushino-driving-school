@@ -350,6 +350,55 @@ body.is-concise-course-page .subpage-hero { padding-bottom: 12px; }
 .r-modal-row strong { color: var(--cds-ink); font-size: 14px; white-space: nowrap; }
 .r-modal-group + .r-modal-group { margin-top: 26px; }
 .r-modal-group > h3 { margin: 0 0 10px; color: var(--cds-purple-deep); font-size: 18px; }
+.r-motorcycle-comparison {
+  overflow: hidden;
+  border: 1px solid var(--cds-line);
+  border-radius: 6px;
+}
+.r-motorcycle-comparison-header,
+.r-motorcycle-comparison-row {
+  display: grid;
+  grid-template-columns: minmax(190px, 1.2fr) repeat(2, minmax(180px, 1fr));
+}
+.r-motorcycle-comparison-header {
+  background: var(--cds-purple-deep);
+  color: #fff;
+}
+.r-motorcycle-comparison-header > *,
+.r-motorcycle-comparison-row > * {
+  min-width: 0;
+  margin: 0;
+  padding: 15px 18px;
+}
+.r-motorcycle-comparison-header > * + *,
+.r-motorcycle-comparison-row > * + * {
+  border-left: 1px solid var(--cds-line);
+}
+.r-motorcycle-comparison-header strong {
+  font-size: 15px;
+  text-align: center;
+}
+.r-motorcycle-comparison-header span {
+  font-size: 14px;
+  font-weight: 800;
+}
+.r-motorcycle-comparison-row + .r-motorcycle-comparison-row {
+  border-top: 1px solid var(--cds-line);
+}
+.r-motorcycle-comparison-row:nth-child(odd) {
+  background: #faf8fc;
+}
+.r-motorcycle-fee-label {
+  color: #554b61;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.r-motorcycle-fee-amount {
+  color: var(--cds-ink);
+  font-size: 15px;
+  text-align: right;
+  white-space: nowrap;
+}
 body.is-modal-open { overflow: hidden; }
 
 /* Flow and schedule */
@@ -652,6 +701,52 @@ body.is-modal-open { overflow: hidden; }
   .redesign-0718 .r-modal { padding: 10px; }
   .redesign-0718 .r-modal-panel { padding: 24px 16px; }
   .redesign-0718 .r-modal-list { grid-template-columns: 1fr; }
+  .redesign-0718 .r-motorcycle-comparison {
+    border: 0;
+    border-radius: 0;
+  }
+  .redesign-0718 .r-motorcycle-comparison-header {
+    display: none;
+  }
+  .redesign-0718 .r-motorcycle-comparison-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border: 1px solid var(--cds-line);
+    border-radius: 6px;
+    background: #fff;
+  }
+  .redesign-0718 .r-motorcycle-comparison-row + .r-motorcycle-comparison-row {
+    margin-top: 10px;
+  }
+  .redesign-0718 .r-motorcycle-comparison-row > * {
+    padding: 11px 12px;
+  }
+  .redesign-0718 .r-motorcycle-comparison-row > * + * {
+    border-left: 0;
+  }
+  .redesign-0718 .r-motorcycle-fee-label {
+    grid-column: 1 / -1;
+    border-bottom: 1px solid var(--cds-line);
+    background: #f7f3fa;
+    color: var(--cds-purple-deep);
+    font-weight: 800;
+  }
+  .redesign-0718 .r-motorcycle-fee-amount {
+    font-size: 13px;
+    line-height: 1.5;
+    text-align: left;
+    white-space: normal;
+  }
+  .redesign-0718 .r-motorcycle-fee-amount + .r-motorcycle-fee-amount {
+    border-left: 1px solid var(--cds-line);
+  }
+  .redesign-0718 .r-motorcycle-fee-amount::before {
+    content: attr(data-vehicle);
+    display: block;
+    margin-bottom: 3px;
+    color: #706779;
+    font-size: 10px;
+    font-weight: 700;
+  }
   .redesign-0718 .application-progress li { padding: 12px 6px; font-size: 11px; }
   .redesign-0718 .form-field.is-wide { grid-column: auto; }
   .redesign-0718 .schedule-row { grid-template-columns: 1fr; gap: 6px; }

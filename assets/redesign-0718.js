@@ -109,30 +109,61 @@
     return `<div class="plan-guide-grid">${plans.map((plan) => `<article class="plan-guide-card"><h3>${safeText(plan.title)}</h3><strong>${safeText(plan.hours)}</strong><dl><div><dt>おすすめ</dt><dd>${safeText(plan.fit)}</dd></div><div><dt>内容</dt><dd>${safeText(plan.detail)}</dd></div></dl></article>`).join("")}</div>`;
   }
 
+  function modalAmount(item) {
+    if (!item) return "―";
+    return `${yen(item.amount)}${unitLabels[item.unit] || ""}${item.tax === "exempt" ? "（非課税）" : ""}`;
+  }
+
+  function modalItemLabel(item) {
+    if (item.id === "textbook-no-license-or-moped") return "教科書代（免許なし・原付）";
+    if (item.id === "textbook-license-holder") return "教科書代（免許あり）";
+    return item.label;
+  }
+
   function modalItems(items = []) {
-    return items.map((item) => `<div class="r-modal-row"><span>${safeText(item.label)}</span><strong>${yen(item.amount)}${unitLabels[item.unit] || ""}${item.tax === "exempt" ? "（非課税）" : ""}</strong></div>`).join("");
+    return items.map((item) => `<div class="r-modal-row"><span>${safeText(modalItemLabel(item))}</span><strong>${modalAmount(item)}</strong></div>`).join("");
   }
 
   function modalShell() {
     return `<div class="r-modal" id="fee-detail-modal" hidden aria-hidden="true"><div class="r-modal-backdrop" data-modal-close></div><section class="r-modal-panel" role="dialog" aria-modal="true" aria-labelledby="fee-modal-title"><button class="r-modal-close" type="button" data-modal-close aria-label="閉じる">×</button><h2 id="fee-modal-title"></h2><div id="fee-modal-content"></div></section></div>`;
   }
 
-  function motorcycleModalSections(config, isBreakdown) {
+  function motorcycleComparisonRows(config, isBreakdown) {
     const source = isBreakdown ? (config.feeBreakdown || []) : (config.otherFees || []);
     const largeId = isBreakdown ? "large-skill-lesson" : "large-extension-lesson";
     const standardId = isBreakdown ? "standard-skill-lesson" : "standard-extension-lesson";
     const shared = source.filter((item) => ![largeId, standardId].includes(item.id));
-    const enrollment = shared.find((item) => item.id === "enrollment");
-    const sharedWithoutEnrollment = shared.filter((item) => item.id !== "enrollment");
-    const withVehicleItem = (vehicleId) => [
-      ...(enrollment ? [enrollment] : []),
-      ...source.filter((item) => item.id === vehicleId),
-      ...sharedWithoutEnrollment
-    ];
     return [
-      { title: "大型二輪車", items: withVehicleItem(largeId) },
-      { title: "普通二輪車・小型二輪車", items: withVehicleItem(standardId) }
+      {
+        label: isBreakdown ? "技能教習料" : "延長・補習教習料",
+        large: source.find((item) => item.id === largeId),
+        standard: source.find((item) => item.id === standardId)
+      },
+      ...shared.map((item) => ({
+        label: modalItemLabel(item),
+        large: item,
+        standard: item
+      }))
     ];
+  }
+
+  function motorcycleComparisonTable(config, isBreakdown) {
+    const rows = motorcycleComparisonRows(config, isBreakdown);
+    return `
+      <div class="r-motorcycle-comparison" role="table" aria-label="大型二輪車と普通・小型二輪車の料金比較">
+        <div class="r-motorcycle-comparison-header" role="row">
+          <span role="columnheader">費用項目</span>
+          <strong role="columnheader">大型二輪車</strong>
+          <strong role="columnheader">普通・小型二輪車</strong>
+        </div>
+        ${rows.map((row) => `
+          <div class="r-motorcycle-comparison-row" role="row">
+            <span class="r-motorcycle-fee-label" role="rowheader">${safeText(row.label)}</span>
+            <strong class="r-motorcycle-fee-amount" role="cell" data-vehicle="大型二輪車">${modalAmount(row.large)}</strong>
+            <strong class="r-motorcycle-fee-amount" role="cell" data-vehicle="普通・小型二輪車">${modalAmount(row.standard)}</strong>
+          </div>
+        `).join("")}
+      </div>`;
   }
 
   function modalSections(config, isBreakdown, scope) {
@@ -144,7 +175,6 @@
           : (config.licenseChangeOtherFees || [])
       }];
     }
-    if (config.label === "自動二輪車") return motorcycleModalSections(config, isBreakdown);
     return [{
       title: "",
       items: isBreakdown
@@ -175,9 +205,13 @@
         const isBreakdown = button.dataset.feeView === "breakdown";
         const scope = button.dataset.feeScope || "normal";
         const sections = modalSections(config, isBreakdown, scope);
+        const isMotorcycleComparison = scope !== "license" && config.label === "自動二輪車";
         lastTrigger = button;
         title.textContent = `${button.dataset.feeLabel || config.label} ${isBreakdown ? "料金内訳" : "その他の費用"}`;
-        content.innerHTML = `${sections.map((section) => `<section class="r-modal-group">${section.title ? `<h3>${safeText(section.title)}</h3>` : ""}<div class="r-modal-list">${modalItems(section.items)}</div></section>`).join("")}<p class="r-note">料金は税込表示です。非課税項目は個別に記載しています。</p>`;
+        content.innerHTML = `${isMotorcycleComparison
+          ? motorcycleComparisonTable(config, isBreakdown)
+          : sections.map((section) => `<section class="r-modal-group">${section.title ? `<h3>${safeText(section.title)}</h3>` : ""}<div class="r-modal-list">${modalItems(section.items)}</div></section>`).join("")
+        }<p class="r-note">料金は税込表示です。非課税項目は個別に記載しています。</p>`;
         modal.hidden = false;
         modal.setAttribute("aria-hidden", "false");
         document.body.classList.add("is-modal-open");
