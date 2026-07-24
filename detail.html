@@ -1320,6 +1320,26 @@
   .real-photo-card .card-copy {
     padding: 0 20px 22px;
   }
+  .exam-guide-section {
+    padding-top: 8px;
+  }
+  .exam-guide-visual {
+    width: min(100%, 1120px);
+    margin: 0 auto;
+    padding: 18px;
+    border: 1px solid #e5dced;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 18px 44px rgba(49, 22, 91, .08);
+  }
+  .exam-guide-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    border-radius: 4px;
+    object-fit: contain;
+  }
   .price-wizard {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 300px;
@@ -1704,6 +1724,13 @@
     .wizard-step strong { display: none; }
     .wizard-step.is-active { transform: none; }
     .summary-card { padding: 22px; }
+    .exam-guide-section { padding-top: 0; }
+    .exam-guide-visual {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      box-shadow: 0 10px 28px rgba(49, 22, 91, .08);
+    }
     .compact-row {
       grid-template-columns: 84px 1fr 22px;
       padding: 12px 14px;
@@ -3433,10 +3460,11 @@
             <a class="compact-row" href="detail.html?page=students#musasi"><small>MUSASI</small><strong>効果測定MUSASIを確認</strong><span>›</span></a>
           </div>
         </div></section>
-        <section class="reveal"><div class="wrap real-photo-grid">
-          <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/syuryokentei-01.png" alt="修了検定について"><div class="card-copy"><h3>修了検定について</h3><p>検定受付や確認事項をまとめています。</p></div></article>
-        </div></section>
-        <section class="band reveal"><div class="wrap grid cols-3"><article class="card"><h3>日程確認</h3><p>検定日、集合時間、受付の流れを事前に確認します。</p></article><article class="card"><h3>持ち物</h3><p>必要書類、眼鏡等、筆記用具などを忘れないように確認します。</p></article><article class="card"><h3>不安なとき</h3><p>予約や受検条件で不明な点は受付へ相談できます。</p></article></div></section>`
+        <section class="reveal exam-guide-section"><div class="wrap">
+          <figure class="exam-guide-visual">
+            <img loading="eager" decoding="async" src="images/exam-guides/completion-test-guide.webp" alt="修了検定の受付時間、必要なもの、注意事項、送迎バス、検定受験料、当日のスケジュール">
+          </figure>
+        </div></section>`
     },
     sotsugyoukentei: {
       eyebrow: "GRADUATION TEST",
@@ -3452,10 +3480,11 @@
             <a class="compact-row" href="detail.html?page=license"><small>LICENSE</small><strong>免許交付までの流れを見る</strong><span>›</span></a>
           </div>
         </div></section>
-        <section class="reveal"><div class="wrap real-photo-grid">
-          <article class="card real-photo-card"><img loading="lazy" decoding="async" src="images/current-site/pages/sotsugyoukentei-01.png" alt="卒業検定について"><div class="card-copy"><h3>卒業検定について</h3><p>卒業検定の受付や確認事項をまとめています。</p></div></article>
-        </div></section>
-        <section class="band reveal"><div class="wrap grid cols-3"><article class="card"><h3>受検前</h3><p>技能教習の進行、検定予約、集合時間を確認します。</p></article><article class="card"><h3>当日</h3><p>受付、説明、検定、結果確認の流れを見落とさない導線にします。</p></article><article class="card"><h3>卒業後</h3><p>免許センターでの学科試験や交付手続きへ進みます。</p></article></div></section>`
+        <section class="reveal exam-guide-section"><div class="wrap">
+          <figure class="exam-guide-visual">
+            <img loading="eager" decoding="async" src="images/exam-guides/graduation-test-guide.webp" alt="卒業検定の受付時間、必要なもの、注意事項、送迎バス、検定受験料、当日のスケジュール、その他の費用">
+          </figure>
+        </div></section>`
     },
     application: {
       eyebrow: "REQUEST / APPLICATION",
