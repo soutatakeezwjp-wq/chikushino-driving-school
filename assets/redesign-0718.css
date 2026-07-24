@@ -311,7 +311,7 @@ body.is-concise-course-page .subpage-hero { padding-bottom: 12px; }
   height: auto;
   aspect-ratio: 16 / 9;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .redesign-0718 .fee-mobile-list { display: none; }
@@ -768,7 +768,7 @@ body.is-modal-open { overflow: hidden; }
 }
 
 @media (max-width: 560px) {
-  .redesign-0718 .discount-guide-picture img { aspect-ratio: 3 / 4; }
+  .redesign-0718 .discount-guide-picture img { aspect-ratio: 1 / 2; }
   .redesign-0718 .r-heading { font-size: 27px; }
   .redesign-0718 .r-lead { font-size: 15px; }
   .redesign-0718 .r-actions { display: grid; }
