@@ -304,9 +304,10 @@
             <h3>必要書類</h3>
             <ul class="info-list">
               <li><strong>入校申込書</strong></li>
-              <li><strong>住民票 1通</strong><span>本籍地を記載し、個人番号は記載しないもの。運転免許証をお持ちの方は不要です。</span></li>
+              <li><strong>住民票 1通</strong><span>本籍地を記載し、個人番号は記載しない、発行から6か月以内のもの。運転免許証をお持ちの方は不要です。</span></li>
               <li><strong>運転免許証またはマイナ免許証</strong><span>マイナ免許証をお持ちの方は暗証番号をご準備ください。</span></li>
-              <li><strong>本人確認書類</strong><span>健康保険資格確認書、学生証、パスポート、マイナンバーカードなど。</span></li>
+              <li><strong>外国籍の方</strong><span>国籍を記載した住民票と在留カードが必要です。</span></li>
+              <li><strong>本人確認書類</strong><span>健康保険資格確認書、学生証、パスポート、マイナンバーカードなど。学生証の提示で学生料金が適用されます。</span></li>
               <li><strong>眼鏡・コンタクト</strong><span>必要な方はご持参ください。カラーコンタクト・サークルレンズは使用できません。</span></li>
               <li><strong>交通系ICカード</strong><span>nimoca・SUGOCAなど、お持ちの方はご持参ください。</span></li>
             </ul>
@@ -314,8 +315,8 @@
           <article class="info-panel">
             <h3>お支払い方法</h3>
             <ul class="info-list">
-              <li><strong>現金</strong><span>入校手続き時までにお支払いください。</span></li>
-              <li><strong>銀行振込</strong><span>振込先は受付からご案内します。振込手数料はお客様負担です。</span></li>
+              <li><strong>現金</strong><span>当校窓口でお支払いください。</span></li>
+              <li><strong>銀行振込</strong><span>お申込手続き後、入校日前日までにお振込みください。振込先は受付からご案内し、振込手数料はお客様負担です。</span></li>
               <li><strong>教習ローン</strong><span>入校日前日までに審査を完了してください。</span></li>
               <li><strong>クレジットカード</strong><span>一括払いのみご利用いただけます。</span></li>
               <li><strong>QRコード決済</strong><span>一括払いのみご利用いただけます。</span></li>
@@ -325,6 +326,7 @@
         </div>
         <section class="qualification-panel">
           <h3>入校資格</h3>
+          <p class="r-note">身体に障がいをお持ちの方は、事前にご相談ください。</p>
           <dl class="qualification-list">
             <div><dt>年齢</dt><dd>普通車・準中型車は17歳6か月以上、大型二輪は18歳以上、普通二輪・小型二輪は16歳以上。普通車免許の交付は18歳以降です。</dd></div>
             <div><dt>視力</dt><dd>普通車・二輪は両眼0.7以上かつ片眼それぞれ0.3以上。準中型車は両眼0.8以上かつ片眼それぞれ0.5以上。</dd></div>

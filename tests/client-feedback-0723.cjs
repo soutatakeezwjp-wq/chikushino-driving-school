@@ -42,6 +42,12 @@ async function assertViewport(page, id, viewport) {
 
 async function checkAdmission(page, viewport) {
   const text = await page.locator(".redesign-0718").innerText();
+  const expectedFlows = [
+    ["必要書類を準備", "入校手続き来校", "写真撮影・視力検査", "入校日を決定", "入校受付完了"],
+    ["入校式", "適性検査・学科1", "第1段階 技能教習（場内）・学科教習", "修了検定", "仮免学科試験", "第2段階 技能教習（路上）・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"],
+    ["AT普通車課程", "AT卒業検定", "MT技能教習", "技能審査", "卒業証明書", "本免学科試験", "運転免許証交付"],
+    ["入校式", "適性検査", "第1段階 技能・学科教習", "第2段階 技能・学科教習", "卒業検定", "卒業証明書", "免許センター", "運転免許証交付"]
+  ];
   const expectedTimes = [
     "8:30〜9:20", "9:30〜10:20", "10:30〜11:20", "11:30〜12:20",
     "12:30〜13:20", "13:30〜14:20", "14:30〜15:20", "15:30〜16:20",
@@ -54,12 +60,19 @@ async function checkAdmission(page, viewport) {
   assert(await page.locator(".time-cell").count() === 12, `${viewport.name}/admission: 教習時間が12時限ではありません。`);
   const actualTimes = await page.locator(".time-cell span").allTextContents();
   assert(JSON.stringify(actualTimes) === JSON.stringify(expectedTimes), `${viewport.name}/admission: 教習時間がExcelと一致しません。`);
-  for (const keyword of ["入校申込書", "住民票", "マイナ免許証", "カラーコンタクト", "交通系ICカード", "教習ローン", "QRコード決済", "17歳6か月以上", "深視力"]) {
+  for (const keyword of [
+    "入校申込書", "住民票", "発行から6か月以内", "マイナ免許証",
+    "外国籍の方", "国籍を記載した住民票", "在留カード",
+    "学生証の提示で学生料金", "カラーコンタクト", "交通系ICカード",
+    "お申込手続き後、入校日前日まで", "教習ローン", "QRコード決済",
+    "17歳6か月以上", "身体に障がいをお持ちの方", "深視力"
+  ]) {
     assert(text.includes(keyword), `${viewport.name}/admission: 「${keyword}」がありません。`);
   }
-  for (const count of [5, 10, 7, 8]) {
-    assert(await page.locator(`.visually-hidden ol:has(li:nth-child(${count})):not(:has(li:nth-child(${count + 1})))`).count() >= 1, `${viewport.name}/admission: ${count}工程のHTML原稿がありません。`);
-  }
+  const actualFlows = await page.locator(".visually-hidden ol").evaluateAll((lists) =>
+    lists.map((list) => Array.from(list.querySelectorAll("li strong"), (item) => item.textContent.trim()))
+  );
+  assert(JSON.stringify(actualFlows) === JSON.stringify(expectedFlows), `${viewport.name}/admission: 工程の順番または文言がExcelと一致しません。`);
   const imageSources = await page.locator(".flow-artwork img").evaluateAll((images) => images.map((image) => image.currentSrc));
   const expectedSuffix = viewport.width <= 560 ? "-mobile.webp" : "-desktop.webp";
   assert(imageSources.every((source) => source.endsWith(expectedSuffix)), `${viewport.name}/admission: 端末専用画像へ切り替わっていません。`);

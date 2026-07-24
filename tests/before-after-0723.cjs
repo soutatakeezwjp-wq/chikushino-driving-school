@@ -4,6 +4,7 @@ const path = require("path");
 
 const beforeUrl = process.env.BEFORE_URL || "http://127.0.0.1:8789";
 const afterUrl = process.env.AFTER_URL || "http://127.0.0.1:8788";
+const captureState = process.env.CAPTURE_STATE || "both";
 const executablePath = process.env.PLAYWRIGHT_CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const outputDir = path.resolve(__dirname, "../review/0723-before-after/screenshots");
 const pages = ["admission", "standard", "semi_medium", "bike", "limited", "paper"];
@@ -21,13 +22,24 @@ async function capture(browser, baseUrl, state, pageId, viewport) {
   });
   await page.waitForTimeout(600);
   await page.evaluate(async () => {
+    const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
     document.querySelectorAll("img").forEach((image) => { image.loading = "eager"; });
-    await Promise.all(Array.from(document.images).map((image) => image.complete
-      ? Promise.resolve()
-      : new Promise((resolve) => {
-        image.addEventListener("load", resolve, { once: true });
-        image.addEventListener("error", resolve, { once: true });
-      })));
+    for (const image of Array.from(document.images)) {
+      image.scrollIntoView({ block: "center" });
+      if (!image.complete) {
+        await Promise.race([
+          new Promise((resolve) => {
+            image.addEventListener("load", resolve, { once: true });
+            image.addEventListener("error", resolve, { once: true });
+          }),
+          wait(10000)
+        ]);
+      }
+      if (image.decode) {
+        await image.decode().catch(() => {});
+      }
+      await wait(80);
+    }
   });
   await page.evaluate(async () => {
     const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -54,14 +66,19 @@ async function capture(browser, baseUrl, state, pageId, viewport) {
   try {
     for (const viewport of viewports) {
       for (const pageId of pages) {
-        await capture(browser, beforeUrl, "before", pageId, viewport);
-        await capture(browser, afterUrl, "after", pageId, viewport);
+        if (captureState !== "after") {
+          await capture(browser, beforeUrl, "before", pageId, viewport);
+        }
+        if (captureState !== "before") {
+          await capture(browser, afterUrl, "after", pageId, viewport);
+        }
       }
     }
   } finally {
     await browser.close();
   }
-  console.log(JSON.stringify({ ok: true, screenshots: pages.length * viewports.length * 2, outputDir }, null, 2));
+  const stateCount = captureState === "both" ? 2 : 1;
+  console.log(JSON.stringify({ ok: true, screenshots: pages.length * viewports.length * stateCount, outputDir }, null, 2));
 })().catch((error) => {
   console.error(error.stack || error.message || String(error));
   process.exitCode = 1;
