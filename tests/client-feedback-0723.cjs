@@ -73,6 +73,10 @@ async function checkAdmission(page, viewport) {
     lists.map((list) => Array.from(list.querySelectorAll("li strong"), (item) => item.textContent.trim()))
   );
   assert(JSON.stringify(actualFlows) === JSON.stringify(expectedFlows), `${viewport.name}/admission: 工程の順番または文言がExcelと一致しません。`);
+  await page.waitForFunction(() => {
+    const images = Array.from(document.querySelectorAll(".flow-artwork img"));
+    return images.length === 4 && images.every((image) => image.complete && image.naturalWidth > 0 && image.currentSrc);
+  }, { timeout: 15000 });
   const imageSources = await page.locator(".flow-artwork img").evaluateAll((images) => images.map((image) => image.currentSrc));
   const expectedSuffix = viewport.width <= 560 ? "-mobile.webp" : "-desktop.webp";
   assert(imageSources.every((source) => source.endsWith(expectedSuffix)), `${viewport.name}/admission: 端末専用画像へ切り替わっていません。`);
