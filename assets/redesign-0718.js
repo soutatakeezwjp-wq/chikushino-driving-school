@@ -576,7 +576,7 @@
 
   function scheduleRows(items) {
     if (!items.length) return `<div class="r-notice">公開中の予定はありません。最新情報は受付へご確認ください。</div>`;
-    return `<div class="schedule-list">${items.map((item) => `<article class="schedule-row"><time>${safeText(item.date || item.time || "")}</time><strong>${safeText(item.title || "教習予定")}</strong><span>${safeText(item.note || "")}</span></article>`).join("")}</div>`;
+    return `<div class="schedule-list">${items.map((item) => `<article class="schedule-row"><time>${safeText(item.date || item.time || "")}</time><div class="schedule-copy"><span class="schedule-category">${safeText(item.category || "教習")}</span><strong>${safeText(item.title || "教習予定")}</strong></div><span>${safeText(item.note || item.details || "")}</span></article>`).join("")}</div>`;
   }
 
   function fallbackSchedule() {
@@ -591,21 +591,85 @@
   }
 
   function renderSchedule() {
-    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("CURRENT SCHEDULE", "教習・検定日程", "本日、今週、今月の順に、公開中の予定をまとめています。")}
+    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("CURRENT SCHEDULE", "教習・検定日程", "確認したい期間を選ぶと、公開中の予定をすぐに確認できます。")}
+      <div class="schedule-tabs" role="tablist" aria-label="表示する期間">
+        <button type="button" class="is-active" data-period="today" role="tab" aria-selected="true">本日</button>
+        <button type="button" data-period="week" role="tab" aria-selected="false">今週</button>
+        <button type="button" data-period="month" role="tab" aria-selected="false">今月</button>
+      </div>
       <div id="schedule-panels" class="schedule-stack" aria-live="polite"></div><p class="r-note" id="schedule-updated"></p>
     </div></section>`);
     const panels = main.querySelector("#schedule-panels");
     const updated = main.querySelector("#schedule-updated");
+    const tabs = [...main.querySelectorAll("[data-period]")];
     let data = fallbackSchedule();
+    let activePeriod = "today";
     function paint() {
-      panels.innerHTML = [["today", "本日"], ["week", "今週"], ["month", "今月"]].map(([key, label]) => `<section class="schedule-group"><h3>${label}</h3>${scheduleRows(data[key] || [])}</section>`).join("");
+      const labels = { today: "本日", week: "今週", month: "今月" };
+      panels.innerHTML = `<section class="schedule-group" role="tabpanel"><h3>${labels[activePeriod]}</h3>${scheduleRows(data[activePeriod] || [])}</section>`;
       updated.textContent = data.updatedAt ? `最終更新：${new Intl.DateTimeFormat("ja-JP", { dateStyle: "long", timeStyle: "short" }).format(new Date(data.updatedAt))}` : "";
     }
+    tabs.forEach((tab) => tab.addEventListener("click", () => {
+      activePeriod = tab.dataset.period;
+      tabs.forEach((button) => {
+        const isActive = button === tab;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
+      paint();
+    }));
     paint();
-    fetch("/api/public-schedule", { headers: { accept: "application/json" } })
+    fetch("/api/cms/events", { headers: { accept: "application/json" } })
       .then((response) => response.ok ? response.json() : Promise.reject(new Error("not configured")))
-      .then((result) => { if (result?.ok && result.schedule) { data = result.schedule; paint(); } })
-      .catch(() => {});
+      .then((result) => {
+        const schedule = result?.schedule;
+        const hasCmsEvents = schedule && ["today", "week", "month"].some((period) => Array.isArray(schedule[period]) && schedule[period].length);
+        if (!result?.ok || !hasCmsEvents) throw new Error("cms schedule is empty");
+        data = schedule;
+        paint();
+      })
+      .catch(() => fetch("/api/public-schedule", { headers: { accept: "application/json" } })
+        .then((response) => response.ok ? response.json() : Promise.reject(new Error("not configured")))
+        .then((result) => { if (result?.ok && result.schedule) { data = result.schedule; paint(); } })
+        .catch(() => {}));
+  }
+
+  function renderTopics() {
+    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("NEWS", "お知らせ", "学校からのお知らせや大切なご案内を掲載しています。")}
+      <div class="topic-filters" role="group" aria-label="お知らせの絞り込み">
+        <button type="button" class="is-active" data-topic-filter="all">すべて</button>
+        <button type="button" data-topic-filter="重要">重要</button>
+        <button type="button" data-topic-filter="お知らせ">お知らせ</button>
+      </div>
+      <div id="cms-topic-grid" class="cms-topic-grid" aria-live="polite"><div class="r-notice">お知らせを読み込んでいます。</div></div>
+    </div></section>`);
+    const grid = main.querySelector("#cms-topic-grid");
+    const filters = [...main.querySelectorAll("[data-topic-filter]")];
+    let posts = [];
+    let activeFilter = "all";
+    function paint() {
+      const filtered = activeFilter === "all" ? posts : posts.filter((post) => post.tag === activeFilter);
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="r-notice">公開中のお知らせはありません。</div>`;
+        return;
+      }
+      grid.innerHTML = filtered.map((post) => `<a class="cms-topic-card" href="article.html?slug=${encodeURIComponent(post.slug)}">
+        ${post.imageUrl ? `<img src="${safeText(post.imageUrl)}" alt="" loading="lazy" decoding="async">` : '<div class="cms-topic-placeholder" aria-hidden="true">CDS</div>'}
+        <div class="cms-topic-body"><div class="cms-topic-meta"><span class="cms-topic-tag${post.tag === "重要" ? " is-important" : ""}">${safeText(post.tag || "お知らせ")}</span><time>${safeText(post.date || post.publishedAt || "")}</time></div><h3>${safeText(post.title)}</h3><p>${safeText(post.summary || "")}</p></div>
+      </a>`).join("");
+    }
+    filters.forEach((button) => button.addEventListener("click", () => {
+      activeFilter = button.dataset.topicFilter;
+      filters.forEach((item) => item.classList.toggle("is-active", item === button));
+      paint();
+    }));
+    fetch("/api/cms/posts?limit=30", { headers: { accept: "application/json" } })
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error("not configured")))
+      .then((result) => {
+        posts = Array.isArray(result.posts) ? result.posts : [];
+        paint();
+      })
+      .catch(() => { grid.innerHTML = `<div class="r-notice">お知らせを取得できませんでした。時間をおいて再度お試しください。</div>`; });
   }
 
   function renderStudents() {
@@ -872,6 +936,9 @@
       break;
     case "teaching":
       renderSchedule();
+      break;
+    case "topics":
+      renderTopics();
       break;
     case "students":
       renderStudents();

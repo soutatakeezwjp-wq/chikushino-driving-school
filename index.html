@@ -4010,34 +4010,57 @@
       </a>
     `;
   }
-  async function setupWordPressTopics() {
+  function applyTopicPosts(posts) {
     const grid = document.querySelector(".topics-grid");
     const importantBar = document.querySelector(".important-news-bar");
-    if (!grid && !importantBar) return;
+    if (!posts.length || (!grid && !importantBar)) return false;
+
+    if (grid) {
+      grid.innerHTML = posts.map((post) => renderTopicCard(post)).join("") + posts.map((post) => renderTopicCard(post, true)).join("");
+    }
+
+    const first = posts.find((post) => post.category === "重要") || posts[0];
+    if (importantBar && first) {
+      importantBar.href = first.link;
+      if (/^https?:\/\//.test(first.link)) {
+        importantBar.target = "_blank";
+        importantBar.rel = "noopener";
+      } else {
+        importantBar.removeAttribute("target");
+        importantBar.removeAttribute("rel");
+      }
+      importantBar.querySelector(".important-news-date").textContent = first.date || "";
+      importantBar.querySelector(".important-news-title").textContent = first.title || "筑紫野自動車学校からのお知らせ";
+    }
+    return true;
+  }
+  async function setupTopics() {
     try {
+      const cmsResponse = await fetch("/api/cms/posts?limit=6", { headers: { accept: "application/json" } });
+      if (cmsResponse.ok) {
+        const cmsData = await cmsResponse.json();
+        const cmsPosts = Array.isArray(cmsData.posts)
+          ? cmsData.posts.filter((post) => post.title && post.slug).map((post) => ({
+              category: post.tag || "お知らせ",
+              image: post.imageUrl || "images/current-site/news/news-2025-01-18-13019.png",
+              title: post.title,
+              date: post.date || "",
+              link: `article.html?slug=${encodeURIComponent(post.slug)}`
+            }))
+          : [];
+        if (applyTopicPosts(cmsPosts)) return;
+      }
+
       const response = await fetch("/api/wordpress-posts?limit=6", { headers: { accept: "application/json" } });
       if (!response.ok) throw new Error(`WordPress posts API failed: ${response.status}`);
       const data = await response.json();
       const posts = Array.isArray(data.posts) ? data.posts.filter((post) => post.title && post.link) : [];
-      if (!posts.length) return;
-
-      if (grid) {
-        grid.innerHTML = posts.map((post) => renderTopicCard(post)).join("") + posts.map((post) => renderTopicCard(post, true)).join("");
-      }
-
-      const first = posts[0];
-      if (importantBar && first) {
-        importantBar.href = first.link;
-        importantBar.target = "_blank";
-        importantBar.rel = "noopener";
-        importantBar.querySelector(".important-news-date").textContent = first.date || "";
-        importantBar.querySelector(".important-news-title").textContent = first.title || "筑紫野自動車学校からのお知らせ";
-      }
+      applyTopicPosts(posts);
     } catch (error) {
-      console.warn("WordPress記事の取得に失敗しました。静的な初期表示を使います。", error);
+      console.warn("記事の取得に失敗しました。静的な初期表示を使います。", error);
     }
   }
-  setupWordPressTopics();
+  setupTopics();
 
   const topbar = document.querySelector(".topbar");
   const menuToggle = document.querySelector(".mobile-menu-toggle");

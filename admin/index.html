@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>学校情報 更新画面｜筑紫野自動車学校</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="admin.js" defer></script>
+</head>
+<body>
+  <header class="admin-header">
+    <div class="admin-wrap header-inner">
+      <a class="brand" href="../" target="_blank" rel="noopener">
+        <img src="../images/brand-assets/cds-horizontal-logo.png" alt="筑紫野自動車学校">
+        <span>学校情報 更新画面</span>
+      </a>
+      <a class="public-link" href="../" target="_blank" rel="noopener">公開サイトを見る</a>
+    </div>
+  </header>
+
+  <main class="admin-wrap">
+    <section class="login-panel" id="login-panel">
+      <p class="eyebrow">STAFF ONLY</p>
+      <h1>学校情報を更新</h1>
+      <p>学校からお渡しした管理パスワードを入力してください。</p>
+      <form id="login-form">
+        <label>
+          <span>管理パスワード</span>
+          <input type="password" id="admin-password" autocomplete="current-password" required>
+        </label>
+        <button type="submit">ログイン</button>
+      </form>
+    </section>
+
+    <section id="admin-app" hidden>
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">CONTENT MANAGER</p>
+          <h1>学校情報を更新</h1>
+        </div>
+        <button class="quiet-button" id="logout-button" type="button">ログアウト</button>
+      </div>
+
+      <nav class="admin-tabs" aria-label="更新する内容">
+        <button class="is-active" type="button" data-view="events">教習カレンダー</button>
+        <button type="button" data-view="posts">記事・お知らせ</button>
+      </nav>
+
+      <section class="admin-view is-active" id="events-view">
+        <div class="view-intro">
+          <div>
+            <p class="eyebrow">SCHEDULE</p>
+            <h2>教習カレンダー</h2>
+            <p>日付と内容を登録すると、公開サイトの「本日・今週・今月」に自動で表示されます。</p>
+          </div>
+          <button class="primary-button" type="button" data-new="event">予定を追加</button>
+        </div>
+
+        <form class="editor" id="event-form" hidden>
+          <input type="hidden" name="id">
+          <div class="form-heading">
+            <h3 id="event-form-title">予定を追加</h3>
+            <button class="icon-button" type="button" data-cancel="event" aria-label="閉じる">×</button>
+          </div>
+          <div class="form-grid">
+            <label><span>日付</span><input type="date" name="eventDate" required></label>
+            <label><span>分類</span>
+              <select name="category">
+                <option>教習</option>
+                <option>検定</option>
+                <option>休校</option>
+                <option>その他</option>
+              </select>
+            </label>
+            <label class="is-wide"><span>タイトル</span><input name="title" maxlength="80" required placeholder="例：卒業検定"></label>
+            <label class="is-wide"><span>補足</span><textarea name="details" maxlength="300" placeholder="例：受付は9:45までです"></textarea></label>
+          </div>
+          <div class="form-actions">
+            <button class="secondary-button" type="button" data-cancel="event">キャンセル</button>
+            <button class="primary-button" type="submit">保存する</button>
+          </div>
+        </form>
+
+        <div class="content-list" id="event-list" aria-live="polite"></div>
+      </section>
+
+      <section class="admin-view" id="posts-view">
+        <div class="view-intro">
+          <div>
+            <p class="eyebrow">NEWS</p>
+            <h2>記事・お知らせ</h2>
+            <p>「重要」または「お知らせ」を選び、画像・タイトル・本文を登録できます。</p>
+          </div>
+          <button class="primary-button" type="button" data-new="post">記事を追加</button>
+        </div>
+
+        <form class="editor" id="post-form" hidden>
+          <input type="hidden" name="id">
+          <input type="hidden" name="imageUrl">
+          <div class="form-heading">
+            <h3 id="post-form-title">記事を追加</h3>
+            <button class="icon-button" type="button" data-cancel="post" aria-label="閉じる">×</button>
+          </div>
+          <div class="tag-picker" role="group" aria-label="記事のタグ">
+            <label><input type="radio" name="tag" value="お知らせ" checked><span>お知らせ</span></label>
+            <label><input type="radio" name="tag" value="重要"><span>重要</span></label>
+          </div>
+          <div class="form-grid">
+            <label class="is-wide"><span>タイトル</span><input name="title" maxlength="120" required></label>
+            <label class="is-wide"><span>一覧に表示する短い説明</span><textarea name="summary" maxlength="240" required></textarea></label>
+            <label class="is-wide"><span>本文</span><textarea class="body-input" name="body" required placeholder="段落の間は1行空けてください。"></textarea></label>
+            <label><span>公開日時</span><input type="datetime-local" name="publishedAt" required></label>
+            <label class="publish-check"><input type="checkbox" name="isPublished" checked><span>公開する</span></label>
+            <label class="is-wide image-picker"><span>イメージ画像</span><input type="file" id="post-image" accept="image/jpeg,image/png,image/webp"></label>
+            <div class="image-preview is-wide" id="image-preview" hidden>
+              <img alt="選択した記事画像">
+              <button class="quiet-button" type="button" id="remove-image">画像を外す</button>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="secondary-button" type="button" data-cancel="post">キャンセル</button>
+            <button class="primary-button" type="submit">保存する</button>
+          </div>
+        </form>
+
+        <div class="content-list" id="post-list" aria-live="polite"></div>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

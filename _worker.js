@@ -620,6 +620,317 @@ async function handleApplication(request, env, context) {
   }
 }
 
+const CMS_JSON_HEADERS = {
+  "content-type": "application/json; charset=utf-8",
+  "cache-control": "no-store"
+};
+const CMS_MAX_IMAGE_BYTES = 900 * 1024;
+
+function cmsResponse(payload, status = 200, cacheControl = "no-store") {
+  return new Response(JSON.stringify(payload), {
+    status,
+    headers: {
+      ...CMS_JSON_HEADERS,
+      "cache-control": cacheControl
+    }
+  });
+}
+
+function requireCmsDatabase(env) {
+  if (!env.CMS_DB) {
+    throw new Error("CMS_DB_NOT_CONFIGURED");
+  }
+  return env.CMS_DB;
+}
+
+function isCmsAdmin(request, env) {
+  const expected = String(env.CMS_ADMIN_PASSWORD || "");
+  if (!expected) return false;
+  const authorization = request.headers.get("authorization") || "";
+  return authorization === `Bearer ${expected}`;
+}
+
+function cmsUnauthorized() {
+  return cmsResponse({ ok: false, error: "パスワードが正しくありません。" }, 401);
+}
+
+function cleanCmsText(value, maxLength = 500) {
+  return String(value || "").trim().slice(0, maxLength);
+}
+
+function createCmsSlug(title = "") {
+  const base = String(title)
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 48);
+  return `${base || "news"}-${Date.now().toString(36)}`;
+}
+
+function formatCmsDate(dateValue = "") {
+  const value = String(dateValue);
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return match ? `${match[1]}.${match[2]}.${match[3]}` : value;
+}
+
+function cmsPostToPublic(row) {
+  return {
+    id: row.id,
+    slug: row.slug,
+    tag: row.tag,
+    category: row.tag,
+    title: row.title,
+    summary: row.summary || "",
+    body: row.body || "",
+    image: row.image_url || "",
+    imageUrl: row.image_url || "",
+    published: Boolean(row.published),
+    publishedAt: row.published_at,
+    date: formatCmsDate(row.published_at),
+    link: `article.html?slug=${encodeURIComponent(row.slug)}`
+  };
+}
+
+async function readCmsJson(request, maxBytes = 1024 * 1024) {
+  const length = Number(request.headers.get("content-length") || 0);
+  if (length > maxBytes) {
+    throw new Error("PAYLOAD_TOO_LARGE");
+  }
+  const text = await request.text();
+  if (text.length > maxBytes) {
+    throw new Error("PAYLOAD_TOO_LARGE");
+  }
+  return JSON.parse(text || "{}");
+}
+
+async function handleCmsEvents(request, env, admin = false) {
+  const db = requireCmsDatabase(env);
+  const url = new URL(request.url);
+  if (!admin && request.method === "GET") {
+    const anchorValue = url.searchParams.get("today") || new Date().toISOString().slice(0, 10);
+    const anchor = /^\d{4}-\d{2}-\d{2}$/.test(anchorValue) ? anchorValue : new Date().toISOString().slice(0, 10);
+    const base = new Date(`${anchor}T12:00:00+09:00`);
+    const day = base.getDay() || 7;
+    const monday = new Date(base);
+    monday.setDate(base.getDate() - day + 1);
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    const monthStart = `${anchor.slice(0, 7)}-01`;
+    const monthEndDate = new Date(base.getFullYear(), base.getMonth() + 1, 0);
+    const monthEnd = `${monthEndDate.getFullYear()}-${String(monthEndDate.getMonth() + 1).padStart(2, "0")}-${String(monthEndDate.getDate()).padStart(2, "0")}`;
+    const iso = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    const rows = await db.prepare(
+      "SELECT id, event_date, title, details, category FROM cms_events WHERE event_date BETWEEN ?1 AND ?2 ORDER BY event_date ASC, id ASC"
+    ).bind(monthStart, monthEnd).all();
+    const events = (rows.results || []).map((row) => ({
+      id: row.id,
+      date: row.event_date,
+      title: row.title,
+      note: row.details || "",
+      category: row.category || "教習"
+    }));
+    return cmsResponse({
+      ok: true,
+      generatedAt: new Date().toISOString(),
+      schedule: {
+        updatedAt: new Date().toISOString(),
+        today: events.filter((event) => event.date === anchor),
+        week: events.filter((event) => event.date >= iso(monday) && event.date <= iso(sunday)),
+        month: events
+      }
+    }, 200, "public, max-age=30, stale-while-revalidate=120");
+  }
+
+  if (!isCmsAdmin(request, env)) return cmsUnauthorized();
+  if (request.method === "GET") {
+    const rows = await db.prepare(
+      "SELECT id, event_date, title, details, category, created_at, updated_at FROM cms_events ORDER BY event_date DESC, id DESC LIMIT 200"
+    ).all();
+    const events = (rows.results || []).map((row) => ({
+      id: row.id,
+      eventDate: row.event_date,
+      title: row.title,
+      details: row.details || "",
+      category: row.category || "教習",
+      createdAt: row.created_at,
+      updatedAt: row.updated_at
+    }));
+    return cmsResponse({ ok: true, events });
+  }
+
+  if (request.method === "POST") {
+    const input = await readCmsJson(request);
+    const eventDate = cleanCmsText(input.eventDate, 10);
+    const title = cleanCmsText(input.title, 120);
+    const details = cleanCmsText(input.details, 500);
+    const category = cleanCmsText(input.category || "教習", 30);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(eventDate) || !title) {
+      return cmsResponse({ ok: false, error: "日付とタイトルを入力してください。" }, 400);
+    }
+    const result = await db.prepare(
+      "INSERT INTO cms_events (event_date, title, details, category) VALUES (?1, ?2, ?3, ?4)"
+    ).bind(eventDate, title, details, category).run();
+    return cmsResponse({ ok: true, id: result.meta.last_row_id }, 201);
+  }
+
+  const id = Number(url.pathname.split("/").pop());
+  if (!Number.isInteger(id) || id <= 0) return cmsResponse({ ok: false, error: "予定が見つかりません。" }, 404);
+  if (request.method === "PUT") {
+    const input = await readCmsJson(request);
+    const eventDate = cleanCmsText(input.eventDate, 10);
+    const title = cleanCmsText(input.title, 120);
+    const details = cleanCmsText(input.details, 500);
+    const category = cleanCmsText(input.category || "教習", 30);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(eventDate) || !title) {
+      return cmsResponse({ ok: false, error: "日付とタイトルを入力してください。" }, 400);
+    }
+    await db.prepare(
+      "UPDATE cms_events SET event_date = ?1, title = ?2, details = ?3, category = ?4, updated_at = CURRENT_TIMESTAMP WHERE id = ?5"
+    ).bind(eventDate, title, details, category, id).run();
+    return cmsResponse({ ok: true });
+  }
+  if (request.method === "DELETE") {
+    await db.prepare("DELETE FROM cms_events WHERE id = ?1").bind(id).run();
+    return cmsResponse({ ok: true });
+  }
+  return cmsResponse({ ok: false, error: "Method not allowed" }, 405);
+}
+
+async function handleCmsPosts(request, env, admin = false) {
+  const db = requireCmsDatabase(env);
+  const url = new URL(request.url);
+  const parts = url.pathname.split("/").filter(Boolean);
+  const last = decodeURIComponent(parts[parts.length - 1] || "");
+  const isSinglePublic = !admin && parts.length > 3;
+
+  if (!admin && request.method === "GET") {
+    if (isSinglePublic) {
+      const row = await db.prepare(
+        "SELECT * FROM cms_posts WHERE slug = ?1 AND published = 1 LIMIT 1"
+      ).bind(last).first();
+      if (!row) return cmsResponse({ ok: false, error: "記事が見つかりません。" }, 404);
+      return cmsResponse({ ok: true, post: cmsPostToPublic(row) }, 200, "public, max-age=60");
+    }
+    const limit = Math.min(Math.max(Number(url.searchParams.get("limit") || 20), 1), 100);
+    const tag = cleanCmsText(url.searchParams.get("tag"), 20);
+    const statement = tag
+      ? db.prepare("SELECT * FROM cms_posts WHERE published = 1 AND tag = ?1 ORDER BY published_at DESC, id DESC LIMIT ?2").bind(tag, limit)
+      : db.prepare("SELECT * FROM cms_posts WHERE published = 1 ORDER BY published_at DESC, id DESC LIMIT ?1").bind(limit);
+    const rows = await statement.all();
+    return cmsResponse({ ok: true, posts: (rows.results || []).map(cmsPostToPublic) }, 200, "public, max-age=30, stale-while-revalidate=120");
+  }
+
+  if (!isCmsAdmin(request, env)) return cmsUnauthorized();
+  if (request.method === "GET") {
+    const rows = await db.prepare("SELECT * FROM cms_posts ORDER BY published_at DESC, id DESC LIMIT 200").all();
+    const posts = (rows.results || []).map((row) => ({
+      ...cmsPostToPublic(row),
+      isPublished: Boolean(row.published)
+    }));
+    return cmsResponse({ ok: true, posts });
+  }
+
+  if (request.method === "POST") {
+    const input = await readCmsJson(request);
+    const title = cleanCmsText(input.title, 160);
+    const body = cleanCmsText(input.body, 12000);
+    const tag = input.tag === "重要" ? "重要" : "お知らせ";
+    const summary = cleanCmsText(input.summary, 240);
+    const imageUrl = cleanCmsText(input.imageUrl, 500);
+    const publishedAt = cleanCmsText(input.publishedAt, 25) || new Date().toISOString();
+    const published = input.isPublished === false || input.isPublished === "false" ? 0 : 1;
+    if (!title || !body) return cmsResponse({ ok: false, error: "タイトルと本文を入力してください。" }, 400);
+    const slug = createCmsSlug(title);
+    const result = await db.prepare(
+      "INSERT INTO cms_posts (slug, tag, title, summary, body, image_url, published, published_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)"
+    ).bind(slug, tag, title, summary, body, imageUrl, published, publishedAt).run();
+    return cmsResponse({ ok: true, id: result.meta.last_row_id, slug }, 201);
+  }
+
+  const id = Number(last);
+  if (!Number.isInteger(id) || id <= 0) return cmsResponse({ ok: false, error: "記事が見つかりません。" }, 404);
+  if (request.method === "PUT") {
+    const input = await readCmsJson(request);
+    const title = cleanCmsText(input.title, 160);
+    const body = cleanCmsText(input.body, 12000);
+    const tag = input.tag === "重要" ? "重要" : "お知らせ";
+    const summary = cleanCmsText(input.summary, 240);
+    const imageUrl = cleanCmsText(input.imageUrl, 500);
+    const publishedAt = cleanCmsText(input.publishedAt, 25) || new Date().toISOString();
+    const published = input.isPublished === false || input.isPublished === "false" ? 0 : 1;
+    if (!title || !body) return cmsResponse({ ok: false, error: "タイトルと本文を入力してください。" }, 400);
+    await db.prepare(
+      "UPDATE cms_posts SET tag = ?1, title = ?2, summary = ?3, body = ?4, image_url = ?5, published = ?6, published_at = ?7, updated_at = CURRENT_TIMESTAMP WHERE id = ?8"
+    ).bind(tag, title, summary, body, imageUrl, published, publishedAt, id).run();
+    return cmsResponse({ ok: true });
+  }
+  if (request.method === "DELETE") {
+    await db.prepare("DELETE FROM cms_posts WHERE id = ?1").bind(id).run();
+    return cmsResponse({ ok: true });
+  }
+  return cmsResponse({ ok: false, error: "Method not allowed" }, 405);
+}
+
+async function handleCmsMedia(request, env) {
+  const db = requireCmsDatabase(env);
+  const url = new URL(request.url);
+  if (url.pathname.startsWith("/cms-media/") && request.method === "GET") {
+    const id = cleanCmsText(url.pathname.split("/").pop(), 80);
+    const row = await db.prepare("SELECT content_type, data FROM cms_media WHERE id = ?1").bind(id).first();
+    if (!row) return new Response("Not found", { status: 404 });
+    const binary = Uint8Array.from(atob(row.data), (char) => char.charCodeAt(0));
+    return new Response(binary, {
+      headers: {
+        "content-type": row.content_type,
+        "cache-control": "public, max-age=31536000, immutable"
+      }
+    });
+  }
+  if (!isCmsAdmin(request, env)) return cmsUnauthorized();
+  if (request.method !== "POST") return cmsResponse({ ok: false, error: "Method not allowed" }, 405);
+  const input = await readCmsJson(request, 2 * 1024 * 1024);
+  const match = String(input.dataUrl || "").match(/^data:(image\/(?:webp|jpeg|png));base64,([A-Za-z0-9+/=]+)$/);
+  if (!match) return cmsResponse({ ok: false, error: "JPEG、PNG、WebP画像を選んでください。" }, 400);
+  const estimatedBytes = Math.floor(match[2].length * 0.75);
+  if (estimatedBytes > CMS_MAX_IMAGE_BYTES) return cmsResponse({ ok: false, error: "画像サイズを小さくしてください。" }, 413);
+  const id = `${Date.now().toString(36)}-${crypto.randomUUID().slice(0, 8)}`;
+  await db.prepare("INSERT INTO cms_media (id, content_type, data) VALUES (?1, ?2, ?3)")
+    .bind(id, match[1], match[2]).run();
+  return cmsResponse({ ok: true, url: `/cms-media/${id}` }, 201);
+}
+
+async function handleCmsRequest(request, env) {
+  const url = new URL(request.url);
+  try {
+    if (url.pathname === "/api/cms/admin/session") {
+      if (request.method === "POST") {
+        const input = await readCmsJson(request, 4096);
+        const expected = String(env.CMS_ADMIN_PASSWORD || "");
+        return expected && String(input.password || "") === expected
+          ? cmsResponse({ ok: true })
+          : cmsUnauthorized();
+      }
+      return isCmsAdmin(request, env)
+        ? cmsResponse({ ok: true })
+        : cmsUnauthorized();
+    }
+    if (url.pathname === "/api/cms/events") return handleCmsEvents(request, env, false);
+    if (url.pathname === "/api/cms/posts" || url.pathname.startsWith("/api/cms/posts/")) return handleCmsPosts(request, env, false);
+    if (url.pathname.startsWith("/cms-media/") || url.pathname === "/api/cms/admin/media") return handleCmsMedia(request, env);
+    if (url.pathname === "/api/cms/admin/events" || url.pathname.startsWith("/api/cms/admin/events/")) return handleCmsEvents(request, env, true);
+    if (url.pathname === "/api/cms/admin/posts" || url.pathname.startsWith("/api/cms/admin/posts/")) return handleCmsPosts(request, env, true);
+    return cmsResponse({ ok: false, error: "Not found" }, 404);
+  } catch (error) {
+    const message = error?.message === "CMS_DB_NOT_CONFIGURED"
+      ? "更新用データベースが未設定です。"
+      : error?.message === "PAYLOAD_TOO_LARGE"
+        ? "送信内容が大きすぎます。"
+        : "処理中にエラーが発生しました。";
+    return cmsResponse({ ok: false, error: message }, error?.message === "PAYLOAD_TOO_LARGE" ? 413 : 500);
+  }
+}
+
 async function handlePublicSchedule(env) {
   const fallback = () => jsonResponse({
     ok: true,
@@ -696,6 +1007,9 @@ async function handleWordPressPosts(request, env) {
 export default {
   async fetch(request, env, context) {
     const url = new URL(request.url);
+    if (url.pathname.startsWith("/api/cms/") || url.pathname.startsWith("/cms-media/")) {
+      return handleCmsRequest(request, env);
+    }
     if ((url.pathname === "/api/application" || url.pathname === "/api/public-schedule") && shouldProxyPreviewApi(request, env)) {
       return proxyPreviewApi(request);
     }

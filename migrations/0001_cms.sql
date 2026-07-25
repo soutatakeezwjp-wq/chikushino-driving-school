@@ -1,0 +1,34 @@
+CREATE TABLE IF NOT EXISTS cms_events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  event_date TEXT NOT NULL,
+  title TEXT NOT NULL,
+  details TEXT NOT NULL DEFAULT '',
+  category TEXT NOT NULL DEFAULT '教習',
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_cms_events_date ON cms_events(event_date);
+
+CREATE TABLE IF NOT EXISTS cms_posts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  slug TEXT NOT NULL UNIQUE,
+  tag TEXT NOT NULL CHECK(tag IN ('お知らせ', '重要')),
+  title TEXT NOT NULL,
+  summary TEXT NOT NULL DEFAULT '',
+  body TEXT NOT NULL,
+  image_url TEXT NOT NULL DEFAULT '',
+  published INTEGER NOT NULL DEFAULT 1,
+  published_at TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_cms_posts_published ON cms_posts(published, published_at DESC);
+
+CREATE TABLE IF NOT EXISTS cms_media (
+  id TEXT PRIMARY KEY,
+  content_type TEXT NOT NULL,
+  data TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

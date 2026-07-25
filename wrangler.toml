@@ -1,0 +1,8 @@
+name = "chikushino-driving-school"
+pages_build_output_dir = "."
+compatibility_date = "2026-05-07"
+
+[[d1_databases]]
+binding = "CMS_DB"
+database_name = "chikushino-school-content"
+database_id = "2c943d04-6e5c-4e87-b921-25399ffa3696"

@@ -4282,7 +4282,7 @@
       : isInstructorDirectory ? "" : subpageHeroHtml(id, page, visual);
     const redesignedPageIds = new Set([
       "standard", "semi_medium", "bike", "limited", "price", "admission", "license",
-      "paper", "senior", "motorcycle", "students", "teaching", "application", "instructors"
+      "paper", "senior", "motorcycle", "students", "teaching", "topics", "application", "instructors"
     ]);
     const pageBody = redesignedPageIds.has(id) ? "" : (page.focusedBody || page.body);
 	    document.querySelector("#page").innerHTML = `
