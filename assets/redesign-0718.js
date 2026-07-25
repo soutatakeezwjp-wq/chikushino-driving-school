@@ -43,7 +43,10 @@
     if (row.id === "standard-mt-transition-at-graduation-certificate") return "MT移行（AT解除）";
     if (row.id === "standard-mt-license-change-from-at") return "MT普通車";
     if (row.id?.startsWith("semi-medium-from-")) return "MT準中型車";
-    return `${safeText(row.course)}${row.transmission ? `（${safeText(row.transmission)}）` : ""}`;
+    const course = row.course === "普通二輪車小型限定"
+      ? "普通二輪車（小型限定）"
+      : row.course;
+    return `${row.transmission ? safeText(row.transmission) : ""}${safeText(course)}`;
   }
 
   function feeTable(rows) {
