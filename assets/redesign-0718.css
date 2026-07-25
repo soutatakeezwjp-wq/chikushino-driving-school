@@ -642,6 +642,7 @@ body.is-modal-open { overflow: hidden; }
 .redesign-0718 .form-field > label { color: #3d334a; font-size: 14px; font-weight: 900; }
 .redesign-0718 .form-field small { color: var(--cds-muted); font-size: 12px; line-height: 1.7; }
 .redesign-0718 .required { margin-left: 7px; padding: 2px 6px; border-radius: 3px; background: #d94c59; color: #fff; font-size: 10px; }
+.redesign-0718 .optional { margin-left: 7px; padding: 2px 6px; border-radius: 3px; background: #eeeaf4; color: #5f566a; font-size: 10px; }
 .redesign-0718 input,
 .redesign-0718 select,
 .redesign-0718 textarea { width: 100%; min-width: 0; min-height: 50px; padding: 11px 13px; border: 1px solid #cfc6d9; border-radius: 5px; background: #fff; color: var(--cds-ink); font: inherit; }

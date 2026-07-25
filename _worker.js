@@ -382,9 +382,9 @@ function normalizeApplicationPayload(payload, request) {
 }
 
 function validateApplicationPayload(payload) {
-  const requiredFields = ["purpose", "name", "phone", "email", "privacyConsent", "desiredEntryDate"];
+  const requiredFields = ["purpose", "name", "phone", "email", "privacyConsent"];
   if (payload.purpose === "仮入校申し込み") {
-    requiredFields.push("gender", "birthdate", "postalCode", "address", "occupation", "lessonPlan", "paymentMethod");
+    requiredFields.push("gender", "birthdate", "postalCode", "address", "occupation", "lessonPlan", "paymentMethod", "desiredEntryDate");
   }
   const missing = requiredFields.filter((field) => !hasApplicationValue(payload[field]));
   if (!hasApplicationValue(payload.desiredVehicles) && !hasApplicationValue(payload.vehicle)) missing.push("desiredVehicles");

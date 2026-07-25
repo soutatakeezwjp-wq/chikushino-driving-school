@@ -628,6 +628,13 @@
   function applicationHtml() {
     const params = new URLSearchParams(location.search);
     const purpose = params.get("purpose")?.includes("資料") ? "資料請求" : "仮入校申し込み";
+    const isMaterialRequest = purpose === "資料請求";
+    const desiredEntryDateLabel = isMaterialRequest ? "入校をご検討中の日程" : "入校希望日";
+    const desiredEntryDateBadge = isMaterialRequest ? '<span class="optional">任意</span>' : '<span class="required">必須</span>';
+    const desiredEntryDateRequired = isMaterialRequest ? "" : " required";
+    const desiredEntryDateHelp = isMaterialRequest
+      ? "入校をご検討中の日程があればご記入ください。未定の場合は空欄で構いません。"
+      : "入校式が行われる木曜日、土曜日のいずれかを入力してください。";
     const choice = (type, name, value, label, index, required = false) => `<span class="choice-item"><input type="${type}" name="${name}" id="${name}-${index}" value="${safeText(value)}" ${required ? "required" : ""}><label for="${name}-${index}">${safeText(label)}</label></span>`;
     const choices = (type, name, values, required = false) => values.map((value, index) => choice(type, name, value, value, index, required && index === 0)).join("");
     const occupations = ["大学生", "短大生", "専門学生", "高校生", "予備校生", "会社員", "自営業", "主婦", "パート・アルバイト", "その他"];
@@ -660,7 +667,7 @@
           <label class="form-field is-wide"><span>お勤め先（学校・会社）名</span><input name="organization" autocomplete="organization" placeholder="○○大学"></label>
           <label class="form-field"><span>紹介者名（姓）</span><input name="introducerFamilyName" placeholder="筑紫野"></label>
           <label class="form-field"><span>紹介者名（名）</span><input name="introducerGivenName" placeholder="花子"></label>
-          <label class="form-field is-wide"><span>入校希望日<span class="required">必須</span></span><input type="date" name="desiredEntryDate" required aria-describedby="desired-entry-date-help"><small id="desired-entry-date-help">入校式が行われる木曜日、土曜日のいずれかを入力してください。</small></label>
+          <label class="form-field is-wide"><span>${desiredEntryDateLabel}${desiredEntryDateBadge}</span><input type="date" name="desiredEntryDate"${desiredEntryDateRequired} aria-describedby="desired-entry-date-help"><small id="desired-entry-date-help">${desiredEntryDateHelp}</small></label>
         </div></section>
 
         <section class="application-section"><span class="application-section-no">02</span><h2>希望する免許・教習プラン</h2><div class="form-grid">
@@ -761,7 +768,7 @@
       data.privacyConsent = Boolean(form.elements.privacyConsent.checked);
       data.honeypot = data.website || "";
       data.estimatedPrice = Number(data.estimatedPrice) || null;
-      data.formVersion = "2026-07-24.1";
+      data.formVersion = "2026-07-25.1";
       data.landingPage = location.href;
       data.referrer = document.referrer;
       const params = new URLSearchParams(location.search);

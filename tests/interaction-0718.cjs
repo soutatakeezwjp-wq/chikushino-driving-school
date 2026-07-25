@@ -127,9 +127,16 @@ async function selectChoice(page, selector) {
     assert(submittedPayload?.howKnown?.[0] === "インターネット", "認知経路が配列で送信されていません。");
     assert(submittedPayload?.admissionMotives?.[0] === "自宅から近い", "入校動機が配列で送信されていません。");
     assert(submittedPayload?.desiredEntryDate === "2026-08-06", "入校希望日が送信されていません。");
-    assert(submittedPayload?.formVersion === "2026-07-24.1", "フォームバージョンが更新されていません。");
+    assert(submittedPayload?.formVersion === "2026-07-25.1", "フォームバージョンが更新されていません。");
     checks.push("application-flow");
     await application.close();
+
+    const materialRequest = await openPage(context, "/detail.html?page=application&purpose=%E8%B3%87%E6%96%99%E8%AB%8B%E6%B1%82");
+    assert(await materialRequest.locator('[name="purpose"]').getAttribute("value") === "資料請求", "資料請求フォームとして判別されていません。");
+    assert(await materialRequest.locator('[name="desiredEntryDate"]').getAttribute("required") === null, "資料請求の検討日が任意になっていません。");
+    assert((await materialRequest.locator("#desired-entry-date-help").textContent()).includes("未定の場合は空欄"), "資料請求の日程案内が更新されていません。");
+    checks.push("material-request-optional-date");
+    await materialRequest.close();
 
     const instructors = await openPage(context, "/detail.html?page=instructors");
     assert(await instructors.locator(".instructor-card").count() === 19, "指導員が19名表示されていません。");
