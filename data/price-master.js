@@ -200,7 +200,7 @@ var CDS_PRICE_MASTER = (function () {
         "licenseChangeRows": [
           {
             "id": "standard-mt-license-change-from-at",
-            "course": "普通車MT限定解除",
+            "course": "MT普通車限定解除",
             "transmission": "MT",
             "currentLicenseCodes": [
               "at_ordinary_car"
@@ -1114,7 +1114,7 @@ var CDS_PRICE_MASTER = (function () {
         "sourceId": "motorcycle",
         "label": "自動二輪車",
         "sourceOmissions": [
-          "大型二輪ATの料金行は正式PDFに掲載されていません。",
+          "AT大型二輪車の料金行は正式PDFに掲載されていません。",
           "自動二輪のオプションプラン料金表は正式PDFに掲載されていません。"
         ],
         "mainFeeRows": [
@@ -1146,7 +1146,7 @@ var CDS_PRICE_MASTER = (function () {
             "currentLicenseCodes": [
               "at_small_motorcycle"
             ],
-            "currentLicenseLabel": "AT小型二輪車",
+            "currentLicenseLabel": "AT普通二輪車（小型限定）",
             "skillHours": 24,
             "academicHours": null,
             "prices": {
@@ -1167,7 +1167,7 @@ var CDS_PRICE_MASTER = (function () {
             "currentLicenseCodes": [
               "mt_small_motorcycle"
             ],
-            "currentLicenseLabel": "MT小型二輪車",
+            "currentLicenseLabel": "MT普通二輪車（小型限定）",
             "skillHours": 20,
             "academicHours": null,
             "prices": {
@@ -1404,7 +1404,7 @@ var CDS_PRICE_MASTER = (function () {
             "currentLicenseCodes": [
               "at_small_motorcycle"
             ],
-            "currentLicenseLabel": "AT小型二輪車",
+            "currentLicenseLabel": "AT普通二輪車（小型限定）",
             "skillHours": 8,
             "academicHours": null,
             "prices": {
@@ -1425,7 +1425,7 @@ var CDS_PRICE_MASTER = (function () {
             "currentLicenseCodes": [
               "mt_small_motorcycle"
             ],
-            "currentLicenseLabel": "MT小型二輪車",
+            "currentLicenseLabel": "MT普通二輪車（小型限定）",
             "skillHours": 5,
             "academicHours": null,
             "prices": {
@@ -1467,7 +1467,7 @@ var CDS_PRICE_MASTER = (function () {
             "currentLicenseCodes": [
               "at_small_motorcycle"
             ],
-            "currentLicenseLabel": "AT小型二輪車",
+            "currentLicenseLabel": "AT普通二輪車（小型限定）",
             "skillHours": 5,
             "academicHours": null,
             "prices": {
@@ -1488,7 +1488,7 @@ var CDS_PRICE_MASTER = (function () {
             "currentLicenseCodes": [
               "mt_small_motorcycle"
             ],
-            "currentLicenseLabel": "MT小型二輪車",
+            "currentLicenseLabel": "MT普通二輪車（小型限定）",
             "skillHours": 3,
             "academicHours": null,
             "prices": {
@@ -1509,7 +1509,7 @@ var CDS_PRICE_MASTER = (function () {
             "currentLicenseCodes": [
               "at_small_motorcycle"
             ],
-            "currentLicenseLabel": "AT小型二輪車",
+            "currentLicenseLabel": "AT普通二輪車（小型限定）",
             "skillHours": 4,
             "academicHours": null,
             "prices": {

@@ -14,16 +14,16 @@
 
   const courseDefinitions = {
     ordinary_at: {
-      label: "普通自動車AT",
-      vehicle: "普通自動車（AT）",
+      label: "AT普通車",
+      vehicle: "AT普通車",
       catalog: master.catalog.standardCar,
       transmission: "AT",
       rows: standardRows.filter((row) => row.course === "普通車" && row.transmission === "AT"),
       discountPage: "standard"
     },
     ordinary_mt: {
-      label: "普通自動車MT（AT取得後に移行）",
-      vehicle: "普通自動車（MT）",
+      label: "MT普通車（AT取得後に移行）",
+      vehicle: "MT普通車",
       catalog: master.catalog.standardCar,
       transmission: "MT",
       rows: standardRows.filter((row) => row.course === "普通車" && row.transmission === "AT"),
@@ -32,48 +32,48 @@
       discountPage: "standard"
     },
     semi_medium: {
-      label: "準中型車MT",
-      vehicle: "準中型車",
+      label: "MT準中型車",
+      vehicle: "MT準中型車",
       catalog: master.catalog.semiMedium,
       transmission: "MT",
       rows: semiMediumRows.filter((row) => row.course === "準中型車"),
       discountPage: "semi_medium"
     },
     motorcycle_large_mt: {
-      label: "大型自動二輪MT",
-      vehicle: "大型自動二輪車（MT）",
+      label: "MT大型二輪車",
+      vehicle: "MT大型二輪車",
       catalog: master.catalog.motorcycle,
       transmission: "MT",
       rows: motorcycleRows.filter((row) => row.course === "大型二輪車" && row.transmission === "MT"),
       discountPage: "bike"
     },
     motorcycle_mt: {
-      label: "普通自動二輪MT",
-      vehicle: "普通自動二輪車（MT）",
+      label: "MT普通二輪車",
+      vehicle: "MT普通二輪車",
       catalog: master.catalog.motorcycle,
       transmission: "MT",
       rows: motorcycleRows.filter((row) => row.course === "普通二輪車" && row.transmission === "MT"),
       discountPage: "bike"
     },
     motorcycle_at: {
-      label: "普通自動二輪AT",
-      vehicle: "普通自動二輪車（AT）",
+      label: "AT普通二輪車",
+      vehicle: "AT普通二輪車",
       catalog: master.catalog.motorcycle,
       transmission: "AT",
       rows: motorcycleRows.filter((row) => row.course === "普通二輪車" && row.transmission === "AT"),
       discountPage: "bike"
     },
     motorcycle_small_mt: {
-      label: "小型自動二輪MT",
-      vehicle: "小型自動二輪車（MT）",
+      label: "MT普通二輪車（小型限定）",
+      vehicle: "MT普通二輪車（小型限定）",
       catalog: master.catalog.motorcycle,
       transmission: "MT",
       rows: motorcycleRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "MT"),
       discountPage: "bike"
     },
     motorcycle_small_at: {
-      label: "小型自動二輪AT",
-      vehicle: "小型自動二輪車（AT）",
+      label: "AT普通二輪車（小型限定）",
+      vehicle: "AT普通二輪車（小型限定）",
       catalog: master.catalog.motorcycle,
       transmission: "AT",
       rows: motorcycleRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "AT"),

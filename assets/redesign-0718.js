@@ -39,10 +39,10 @@
   }
 
   function courseLabel(row) {
-    if (row.id?.startsWith("standard-at-")) return "普通車AT";
+    if (row.id?.startsWith("standard-at-")) return "AT普通車";
     if (row.id === "standard-mt-transition-at-graduation-certificate") return "MT移行（AT解除）";
     if (row.id === "standard-mt-license-change-from-at") return "MT普通車";
-    if (row.id?.startsWith("semi-medium-from-")) return "準中型車（MT）";
+    if (row.id?.startsWith("semi-medium-from-")) return "MT準中型車";
     return `${safeText(row.course)}${row.transmission ? `（${safeText(row.transmission)}）` : ""}`;
   }
 
@@ -86,12 +86,12 @@
       {
         id: "large-motorcycle-fees",
         label: "大型二輪車",
-        description: "大型二輪免許（MT）を取得する方"
+        description: "MT大型二輪免許を取得する方"
       },
       {
         id: "standard-motorcycle-fees",
         label: "普通二輪車",
-        description: "普通二輪免許（MT・AT）を取得する方"
+        description: "AT普通二輪免許・MT普通二輪免許を取得する方"
       },
       {
         id: "small-motorcycle-fees",
@@ -369,7 +369,7 @@
     setPage(`<section class="r-section"><div class="r-wrap">
       ${sectionHeader("HIGH SPEED PLAN", "合宿風ハイスピードプラン", "自宅から通いながら、当校が組んだ短期スケジュールでAT普通車の取得を目指す追加プランです。")}
       <div class="simple-grid">
-        <article class="simple-item"><h3>対象</h3><p>普通自動車AT</p></article>
+        <article class="simple-item"><h3>対象</h3><p>AT普通車</p></article>
         <article class="simple-item"><h3>取得期間の目安</h3><p>最短17日</p></article>
         <article class="simple-item"><h3>受付人数</h3><p>各入校日 先着1名</p></article>
       </div>
@@ -490,12 +490,12 @@
       </div></section>
       <section class="r-section is-soft" id="license-flow"><div class="r-wrap">${sectionHeader("LICENSE FLOW", "免許証交付まで", "取得する免許に合わせて流れを確認できます。")}
         <div class="license-flow-list">
-          <section><h3>AT普通自動車</h3>${flowPicture("license-at", "AT普通自動車の免許証交付までの10工程")}</section>
-          <section><h3>MT普通自動車</h3>${flowPicture("license-mt", "MT普通自動車の免許証交付までの7工程")}</section>
+          <section><h3>AT普通車</h3>${flowPicture("license-at", "AT普通車の免許証交付までの10工程")}</section>
+          <section><h3>MT普通車</h3>${flowPicture("license-mt", "MT普通車の免許証交付までの7工程")}</section>
           <section class="license-flow-bike"><h3>自動二輪</h3>${flowPicture("license-bike", "自動二輪の免許証交付までの8工程")}<p class="license-flow-note">現有免許により学科教習時限が異なります。</p></section>
         </div>
-        ${hiddenFlow("AT普通自動車の免許証交付まで", atSteps)}
-        ${hiddenFlow("MT普通自動車の免許証交付まで", mtSteps)}
+        ${hiddenFlow("AT普通車の免許証交付まで", atSteps)}
+        ${hiddenFlow("MT普通車の免許証交付まで", mtSteps)}
         ${hiddenFlow("自動二輪の免許証交付まで", bikeSteps)}
       </div></section>
       <section class="r-section" id="lesson-time"><div class="r-wrap">
@@ -679,14 +679,14 @@
   }
 
   const courseDefinitions = {
-    ordinary_at: { vehicle: "普通自動車（AT）", label: "普通自動車AT", catalog: "standardCar", rows: (m) => m.catalog.standardCar.mainFeeRows.filter((row) => row.course === "普通車") },
-    ordinary_mt: { vehicle: "普通自動車（MT）", label: "普通自動車MT（AT取得後に移行）", catalog: "standardCar", surcharge: 36300, rows: (m) => m.catalog.standardCar.mainFeeRows.filter((row) => row.course === "普通車") },
-    semi_medium: { vehicle: "準中型車", label: "準中型MT", catalog: "semiMedium", rows: (m) => m.catalog.semiMedium.mainFeeRows },
-    motorcycle_large_mt: { vehicle: "大型自動二輪車（MT）", label: "大型自動二輪MT", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "大型二輪車") },
-    motorcycle_mt: { vehicle: "普通自動二輪車（MT）", label: "普通自動二輪MT", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "普通二輪車" && row.transmission === "MT") },
-    motorcycle_at: { vehicle: "普通自動二輪車（AT）", label: "普通自動二輪AT", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "普通二輪車" && row.transmission === "AT") },
-    motorcycle_small_mt: { vehicle: "小型自動二輪車（MT）", label: "小型自動二輪MT", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "MT") },
-    motorcycle_small_at: { vehicle: "小型自動二輪車（AT）", label: "小型自動二輪AT", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "AT") }
+    ordinary_at: { vehicle: "AT普通車", label: "AT普通車", catalog: "standardCar", rows: (m) => m.catalog.standardCar.mainFeeRows.filter((row) => row.course === "普通車") },
+    ordinary_mt: { vehicle: "MT普通車", label: "MT普通車（AT取得後に移行）", catalog: "standardCar", surcharge: 36300, rows: (m) => m.catalog.standardCar.mainFeeRows.filter((row) => row.course === "普通車") },
+    semi_medium: { vehicle: "MT準中型車", label: "MT準中型車", catalog: "semiMedium", rows: (m) => m.catalog.semiMedium.mainFeeRows },
+    motorcycle_large_mt: { vehicle: "MT大型二輪車", label: "MT大型二輪車", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "大型二輪車") },
+    motorcycle_mt: { vehicle: "MT普通二輪車", label: "MT普通二輪車", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "普通二輪車" && row.transmission === "MT") },
+    motorcycle_at: { vehicle: "AT普通二輪車", label: "AT普通二輪車", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "普通二輪車" && row.transmission === "AT") },
+    motorcycle_small_mt: { vehicle: "MT普通二輪車（小型限定）", label: "MT普通二輪車（小型限定）", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "MT") },
+    motorcycle_small_at: { vehicle: "AT普通二輪車（小型限定）", label: "AT普通二輪車（小型限定）", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "AT") }
   };
 
   function applicationHtml() {
@@ -707,8 +707,8 @@
     const choice = (type, name, value, label, index, required = false) => `<span class="choice-item"><input type="${type}" name="${name}" id="${name}-${index}" value="${safeText(value)}" ${required ? "required" : ""}><label for="${name}-${index}">${safeText(label)}</label></span>`;
     const choices = (type, name, values, required = false) => values.map((value, index) => choice(type, name, value, value, index, required && index === 0)).join("");
     const occupations = ["大学生", "短大生", "専門学生", "高校生", "予備校生", "会社員", "自営業", "主婦", "パート・アルバイト", "その他"];
-    const desiredVehicles = ["普通自動車（AT）", "普通自動車（MT）", "準中型車", "大型自動二輪車（MT）", "普通自動二輪車（AT）", "普通自動二輪車（MT）", "小型自動二輪車（AT）", "小型自動二輪車（MT）", "限定解除", "ペーパードライバー"];
-    const currentLicenses = ["持っていない", "普通自動車（MT）", "普通自動車（AT）", "準中型車", "大型自動二輪車（AT）", "大型自動二輪車（MT）", "普通自動二輪車（AT）", "普通自動二輪車（MT）", "小型自動二輪車（AT）", "小型自動二輪車（MT）", "原付", "5t限定準中型車（MT）", "5t限定準中型車（AT）", "中型車", "8t限定中型車（MT）", "8t限定中型車（AT）", "大型車", "けん引", "大型特殊", "大特農耕限定", "仮免許"];
+    const desiredVehicles = ["AT普通車", "MT普通車", "MT準中型車", "MT大型二輪車", "AT普通二輪車", "MT普通二輪車", "AT普通二輪車（小型限定）", "MT普通二輪車（小型限定）", "限定解除", "ペーパードライバー"];
+    const currentLicenses = ["持っていない", "MT普通車", "AT普通車", "MT準中型車", "AT大型二輪車", "MT大型二輪車", "AT普通二輪車", "MT普通二輪車", "AT普通二輪車（小型限定）", "MT普通二輪車（小型限定）", "原付", "MT5t限定準中型車", "AT5t限定準中型車", "中型車", "MT8t限定中型車", "AT8t限定中型車", "大型車", "けん引", "大型特殊", "大特農耕限定", "仮免許"];
     const optionPlans = ["コミコミプラン", "スケジュールプラン", "合宿風ハイスピードプラン"];
     const paymentMethods = ["現金", "ローン", "振込み", "未定"];
     const howKnown = ["DM・チラシ", "看板", "教習車・スクールバス", "インターネット", "ご家族・友人・知人", "学校設置のパンフレット", "その他"];

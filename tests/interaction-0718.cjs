@@ -47,7 +47,7 @@ async function selectChoice(page, selector) {
     const top = await openPage(context, "/index.html");
     assert(await top.locator("#price-simulator").count() === 1, "トップの料金シミュレーターが表示されていません。");
     assert(await top.locator("#sim-course option").count() === 8, "料金シミュレーターの免許区分が8種類ではありません。");
-    assert((await top.locator("#sim-course").textContent()).includes("大型自動二輪"), "大型自動二輪が料金シミュレーターにありません。");
+    assert((await top.locator("#sim-course").textContent()).includes("MT大型二輪車"), "MT大型二輪車が料金シミュレーターにありません。");
     const courseValues = await top.locator("#sim-course option").evaluateAll((options) => options.map((option) => option.value));
     for (const value of courseValues) {
       await top.selectOption("#sim-course", value);
@@ -105,8 +105,8 @@ async function selectChoice(page, selector) {
     assert(await application.locator(".application-section-no").allTextContents().then((values) => values.join(",")) === "01,02,03,04", "フォームのセクション番号が正しくありません。");
     assert(await application.locator('[name="desiredEntryDate"]').getAttribute("required") !== null, "入校希望日が必須ではありません。");
     await application.fill('[name="desiredEntryDate"]', "2026-08-06");
-    await selectChoice(application, '[name="desiredVehicles"][value="普通自動車（AT）"]');
-    await selectChoice(application, '[name="desiredVehicles"][value="普通自動車（MT）"]');
+    await selectChoice(application, '[name="desiredVehicles"][value="AT普通車"]');
+    await selectChoice(application, '[name="desiredVehicles"][value="MT普通車"]');
     await selectChoice(application, '[name="currentLicenses"][value="持っていない"]');
     await selectChoice(application, '[name="lessonPlan"][value="デイプラン"]');
     await selectChoice(application, '[name="optionPlans"][value="コミコミプラン"]');
@@ -150,8 +150,8 @@ async function selectChoice(page, selector) {
     const schedule = await openPage(context, "/detail.html?page=teaching");
     await schedule.waitForFunction(() => document.querySelector("#schedule-panels")?.textContent?.includes("教習予定"));
     assert((await schedule.locator("#schedule-panels").textContent()).includes("受付確認"), "公開日程APIの内容が表示されません。");
-    assert(await schedule.locator(".schedule-group").count() === 3, "本日・今週・今月が縦に3区分表示されていません。");
-    assert(await schedule.locator(".schedule-group > h3").allTextContents().then((items) => items.join("/") === "本日/今週/今月"), "日程の表示順が本日・今週・今月になっていません。");
+    assert(await schedule.locator(".schedule-tabs [data-period]").count() === 3, "本日・今週・今月の切替タブが表示されていません。");
+    assert(await schedule.locator(".schedule-tabs [data-period]").allTextContents().then((items) => items.join("/") === "本日/今週/今月"), "日程タブの表示順が本日・今週・今月になっていません。");
     checks.push("public-schedule");
     await schedule.close();
 
