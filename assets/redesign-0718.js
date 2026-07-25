@@ -358,7 +358,7 @@
         <a class="simple-item" href="detail.html?page=bike#formal-fees"><h3>自動二輪車</h3><p>大型・普通・小型、AT・MT</p></a>
         <a class="simple-item" href="detail.html?page=limited"><h3>限定解除</h3><p>普通車・準中型車・自動二輪車</p></a>
       </div>
-      <div class="r-actions"><a class="r-button is-primary" href="detail.html?page=application">料金・入校日を相談する</a></div>
+      <div class="r-actions"><a class="r-button is-primary" href="detail.html?page=application&amp;purpose=資料請求">料金・入校日を相談する</a></div>
     </div></section>`);
   }
 
@@ -375,7 +375,7 @@
       </div>
       ${optionCards(highSpeed ? [highSpeed] : [])}
       <div class="r-notice"><div>・最短日数は目安で、教習の進み方や検定結果により延びる場合があります。</div><div>・基本教習料金に追加して利用するプランです。</div><div>・入校日と空き状況は受付でご確認ください。</div></div>
-      <div class="r-actions"><a class="r-button is-primary" href="detail.html?page=standard#formal-fees">普通車の料金を見る</a><a class="r-button is-orange" href="detail.html?page=application">空き状況を相談する</a></div>
+      <div class="r-actions"><a class="r-button is-primary" href="detail.html?page=standard#formal-fees">普通車の料金を見る</a><a class="r-button is-orange" href="detail.html?page=application&amp;purpose=資料請求">空き状況を相談する</a></div>
     </div></section>`);
   }
 
@@ -537,7 +537,7 @@
           <article><h3>持ち物</h3><p>運転免許証、必要な方は眼鏡・コンタクトをご持参ください。</p></article>
           <article><h3>講習時間</h3><p>1回50分です。実施日時は予約時にご案内します。</p></article>
         </div>
-        <div class="r-actions"><a class="r-button is-primary" href="tel:0927102188">電話で予約する</a><a class="r-button" href="detail.html?page=application">Webで相談する</a></div>
+        <div class="r-actions"><a class="r-button is-primary" href="tel:0927102188">電話で予約する</a><a class="r-button" href="detail.html?page=application&amp;purpose=資料請求">Webで相談する</a></div>
       </div></section>`);
   }
 
@@ -571,7 +571,7 @@
       setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader(page.eyebrow, page.title, page.lead)}<picture class="flow-artwork senior-artwork"><source media="(max-width: 560px)" srcset="images/detail-pages/flows-20260719/senior-mobile.webp"><img src="images/detail-pages/flows-20260719/senior-desktop.webp" alt="高齢者講習の予約から来校までの3ステップ" loading="eager" decoding="async"></picture><div class="visually-hidden"><ol>${transcript}</ol></div><div class="r-actions"><a class="r-button is-primary" href="tel:0927102188">092-710-2188へ電話</a></div></div></section>`);
       return;
     }
-    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader(page.eyebrow, page.title, page.lead)}<div class="visual-split"><img src="${page.image}" alt="${safeText(page.title)}" loading="eager" decoding="async"><div>${page.facts.map(([title, text]) => `<div class="key-fact"><strong>${title}</strong><span>${text}</span></div>`).join("")}</div></div><div class="r-actions"><a class="r-button is-primary" href="tel:0927102188">092-710-2188へ電話</a>${type === "paper" ? '<a class="r-button" href="detail.html?page=application">Webで相談</a>' : ""}</div></div></section>`);
+    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader(page.eyebrow, page.title, page.lead)}<div class="visual-split"><img src="${page.image}" alt="${safeText(page.title)}" loading="eager" decoding="async"><div>${page.facts.map(([title, text]) => `<div class="key-fact"><strong>${title}</strong><span>${text}</span></div>`).join("")}</div></div><div class="r-actions"><a class="r-button is-primary" href="tel:0927102188">092-710-2188へ電話</a>${type === "paper" ? '<a class="r-button" href="detail.html?page=application&amp;purpose=資料請求">Webで相談</a>' : ""}</div></div></section>`);
   }
 
   function scheduleRows(items) {
@@ -629,6 +629,11 @@
     const params = new URLSearchParams(location.search);
     const purpose = params.get("purpose")?.includes("資料") ? "資料請求" : "仮入校申し込み";
     const isMaterialRequest = purpose === "資料請求";
+    const sectionEyebrow = isMaterialRequest ? "REQUEST / CONTACT" : "ONLINE ENTRY";
+    const sectionTitle = isMaterialRequest ? "資料請求・お問い合わせ" : "仮入校申し込み";
+    const sectionLead = isMaterialRequest
+      ? "資料請求やご不明点を入力できます。入校をご検討中の日程があれば、任意でご記入ください。"
+      : "従来の公式申込書と同じ項目・順番で入力できます。複数選択の項目はチェックボックスでお選びください。";
     const desiredEntryDateLabel = isMaterialRequest ? "入校をご検討中の日程" : "入校希望日";
     const desiredEntryDateBadge = isMaterialRequest ? '<span class="optional">任意</span>' : '<span class="required">必須</span>';
     const desiredEntryDateRequired = isMaterialRequest ? "" : " required";
@@ -645,7 +650,7 @@
     const howKnown = ["DM・チラシ", "看板", "教習車・スクールバス", "インターネット", "ご家族・友人・知人", "学校設置のパンフレット", "その他"];
     const admissionMotives = ["交通の便がよい", "自宅から近い", "学校・会社から近い", "ご家族・友人・知人に勧められた", "当校職員に勧められた", "教習プランが魅力だから", "施設・サービスが魅力だから", "その他"];
     const otherInput = (source, name, label, placeholder) => `<label class="choice-other" data-other-source="${source}" hidden><span>${label}</span><input name="${name}" maxlength="100" placeholder="${placeholder}"></label>`;
-    return `<section class="r-section"><div class="r-wrap">${sectionHeader("ONLINE ENTRY", "仮申込", "従来の公式申込書と同じ項目・順番で入力できます。複数選択の項目はチェックボックスでお選びください。")}
+    return `<section class="r-section"><div class="r-wrap">${sectionHeader(sectionEyebrow, sectionTitle, sectionLead)}
       <form id="applicationForm" novalidate>
         <div class="form-honeypot" aria-hidden="true"><label>この欄は入力しないでください<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
         <input type="hidden" name="purpose" value="${purpose}">
@@ -780,14 +785,26 @@
       status.className = "form-status";
       status.textContent = "送信しています。";
       submit.disabled = true;
+      let responseSettled = false;
+      const earlyReceiptTimer = window.setTimeout(() => {
+        if (responseSettled) return;
+        status.className = "form-status is-success";
+        status.textContent = "送信を受け付けました。受付処理を進めています。";
+      }, 3000);
       try {
         const response = await fetch("/api/application", { method: "POST", headers: { "content-type": "application/json", accept: "application/json" }, body: JSON.stringify(data) });
         const result = await response.json().catch(() => ({}));
+        responseSettled = true;
+        window.clearTimeout(earlyReceiptTimer);
         if (!response.ok || !result.ok) throw new Error(result.message || result.error || "送信できませんでした。時間をおいて再度お試しください。");
+        status.className = "form-status is-success";
         status.classList.add("is-success");
         status.textContent = `送信が完了しました。受付ID：${result.applicationId || "発行済み"}`;
         form.reset();
       } catch (error) {
+        responseSettled = true;
+        window.clearTimeout(earlyReceiptTimer);
+        status.className = "form-status is-error";
         status.classList.add("is-error");
         status.textContent = error instanceof Error ? error.message : "送信できませんでした。時間をおいて再度お試しください。";
       } finally {

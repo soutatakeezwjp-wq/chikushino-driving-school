@@ -166,7 +166,7 @@
 
     const params = new URLSearchParams({
       page: "application",
-      purpose: "仮申込",
+      purpose: "仮入校申し込み",
       vehicle: definition.vehicle,
       priceCourse: elements.course.value,
       currentLicense: row.currentLicenseLabel,
