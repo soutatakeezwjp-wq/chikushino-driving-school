@@ -826,7 +826,7 @@
       if (data.admissionMotiveOther) data.admissionMotives = data.admissionMotives.map((value) => value === "その他" ? `その他：${data.admissionMotiveOther}` : value);
       data.name = `${data.familyName || ""} ${data.givenName || ""}`.trim();
       data.kana = `${data.familyKana || ""} ${data.givenKana || ""}`.trim();
-      data.introducerName = `${data.introducerFamilyName || ""} ${data.introducerGivenName || ""}`.trim();
+      data.introducer = `${data.introducerFamilyName || ""} ${data.introducerGivenName || ""}`.trim();
       data.vehicle = data.desiredVehicles[0] || "";
       data.currentLicense = data.currentLicenses[0] || "";
       data.currentLicenseLabel = data.currentLicenses.join("、");
@@ -840,7 +840,7 @@
       data.privacyConsent = Boolean(form.elements.privacyConsent.checked);
       data.honeypot = data.website || "";
       data.estimatedPrice = Number(data.estimatedPrice) || null;
-      data.formVersion = "2026-07-25.1";
+      data.formVersion = "2026-08-01.1";
       data.landingPage = location.href;
       data.referrer = document.referrer;
       const params = new URLSearchParams(location.search);

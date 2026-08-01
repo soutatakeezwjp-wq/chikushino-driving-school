@@ -367,6 +367,13 @@ function normalizeApplicationPayload(payload, request) {
     normalized[field] = cleanText(payload[field], APPLICATION_FIELD_LIMITS[field], preserveLines);
   });
 
+  // 現行フォームの introducer に加え、旧版の introducerName と
+  // 姓・名を個別送信する形式も受け付け、保存先の項目名へ統一する。
+  normalized.introducer = cleanText(
+    payload.introducer || payload.introducerName || `${payload.introducerFamilyName || ""} ${payload.introducerGivenName || ""}`,
+    APPLICATION_FIELD_LIMITS.introducer
+  );
+
   normalized.purpose = normalizePurpose(payload.purpose);
   normalized.desiredVehicles = desiredVehicles;
   normalized.vehicle = normalizeVehicle(cleanStringList(payload.vehicle, 1, APPLICATION_FIELD_LIMITS.vehicle)[0] || desiredVehicles[0] || payload.priceCourse);
@@ -462,6 +469,7 @@ async function createSubmissionKey(payload) {
     lessonPlan: payload.lessonPlan,
     optionPlans: payload.optionPlans,
     materialDelivery: payload.materialDelivery,
+    introducer: payload.introducer,
     howKnown: payload.howKnown,
     admissionMotives: payload.admissionMotives
   };
