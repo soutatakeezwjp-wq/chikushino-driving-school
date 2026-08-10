@@ -29,6 +29,34 @@
       .replace(/'/g, "&#039;");
   }
 
+  function normalizeVehicleLabel(value) {
+    const original = String(value ?? "").trim();
+    if (!original || original === "MT移行（AT解除）" || original.includes("卒業証明書")) return original;
+    const transmissionMatch = original.match(/\b(AT|MT)\b/i)
+      || original.match(/[（(](AT|MT)[）)]/i);
+    if (!transmissionMatch) return original;
+
+    const transmission = (transmissionMatch[1] || transmissionMatch[0]).replace(/[（）()]/g, "").toUpperCase();
+    let vehicle = original
+      .replace(/\b(AT|MT)\b/ig, "")
+      .replace(/[（(]\s*[）)]/g, "")
+      .replace(/\s+/g, "")
+      .trim();
+
+    const aliases = {
+      普通自動車: "普通車",
+      準中型自動車: "準中型車",
+      大型自動二輪車: "大型二輪車",
+      普通自動二輪車: "普通二輪車",
+      普通自動二輪車小型限定: "普通二輪車（小型限定）",
+      普通二輪車小型限定: "普通二輪車（小型限定）",
+      小型二輪車: "普通二輪車（小型限定）",
+      小型限定: "普通二輪車（小型限定）"
+    };
+    vehicle = aliases[vehicle] || vehicle;
+    return `${transmission}${vehicle}`;
+  }
+
   function setPage(html) {
     main.innerHTML = `${mobileNav}<div class="redesign-0718">${html}</div>`;
     document.querySelectorAll(".subpage-side .subpage-actions").forEach((node) => node.remove());
@@ -38,15 +66,16 @@
     return `<span class="r-eyebrow">${eyebrow}</span><h2 class="r-heading">${title}</h2>${lead ? `<p class="r-lead">${lead}</p>` : ""}`;
   }
 
+  function taxNote(extra = "") {
+    return `<p class="r-note fee-tax-note">表示金額は税込です。${extra ? ` ${safeText(extra)}` : ""}</p>`;
+  }
+
   function courseLabel(row) {
     if (row.id?.startsWith("standard-at-")) return "AT普通車";
     if (row.id === "standard-mt-transition-at-graduation-certificate") return "MT移行（AT解除）";
     if (row.id === "standard-mt-license-change-from-at") return "MT普通車";
     if (row.id?.startsWith("semi-medium-from-")) return "MT準中型車";
-    const course = row.course === "普通二輪車小型限定"
-      ? "普通二輪車（小型限定）"
-      : row.course;
-    return `${row.transmission ? safeText(row.transmission) : ""}${safeText(course)}`;
+    return normalizeVehicleLabel(`${row.transmission || ""}${row.course || ""}`);
   }
 
   function feeTable(rows) {
@@ -54,7 +83,7 @@
     const desktopRows = rows.map((row) => `
       <tr data-fee-row="${safeText(row.id)}">
         <td class="fee-course">${courseLabel(row)}</td>
-        <td>${safeText(row.currentLicenseLabel)}</td>
+        <td>${safeText(normalizeVehicleLabel(row.currentLicenseLabel))}</td>
         <td>${row.skillHours ?? "-"}時限</td>
         <td>${row.academicHours == null ? "-" : `${row.academicHours}時限`}</td>
         <td class="fee-amount">${yen(row.prices?.day?.student)}</td>
@@ -66,7 +95,7 @@
       <article class="fee-mobile-card" data-fee-row="${safeText(row.id)}">
         <h3>${courseLabel(row)}</h3>
         <dl>
-          <div><dt>現在お持ちの免許</dt><dd>${safeText(row.currentLicenseLabel)}</dd></div>
+          <div><dt>現在お持ちの免許</dt><dd>${safeText(normalizeVehicleLabel(row.currentLicenseLabel))}</dd></div>
           <div><dt>技能 / 学科</dt><dd>${row.skillHours ?? "-"} / ${row.academicHours == null ? "-" : row.academicHours} 時限</dd></div>
           <div><dt>デイ・学生</dt><dd class="fee-amount">${yen(row.prices?.day?.student)}</dd></div>
           <div><dt>デイ・一般</dt><dd class="fee-amount">${yen(row.prices?.day?.general)}</dd></div>
@@ -81,23 +110,27 @@
           <tbody>${desktopRows}</tbody>
         </table>
       </div>
-      <div class="fee-mobile-list">${mobileRows}</div>`;
+      <div class="fee-mobile-list">${mobileRows}</div>
+      ${taxNote()}`;
   }
 
-  function motorcycleFeeTables(rows) {
+  function motorcycleFeeTables(rows, catalogKey) {
     const groups = [
       {
         id: "large-motorcycle-fees",
+        scope: "large",
         label: "大型二輪車",
         description: "MT大型二輪免許を取得する方"
       },
       {
         id: "standard-motorcycle-fees",
+        scope: "standard",
         label: "普通二輪車",
         description: "AT普通二輪免許・MT普通二輪免許を取得する方"
       },
       {
         id: "small-motorcycle-fees",
+        scope: "small",
         label: "普通二輪車（小型限定）",
         description: "125cc以下の小型限定免許（MT・AT）を取得する方"
       }
@@ -112,10 +145,32 @@
       return `<section class="fee-vehicle-group" id="${group.id}">
         <header class="fee-vehicle-heading"><span>${String(index + 1).padStart(2, "0")}</span><div><h3>${group.label}</h3><p>${group.description}</p></div></header>
         ${feeTable(groupRows)}
+        ${feeButtons(catalogKey, group.scope, group.label)}
       </section>`;
     }).join("");
     return `${navigation}<div class="fee-vehicle-groups">${tables}</div>`;
   }
+
+  const optionPlanPresentation = {
+    komikomi: {
+      target: "AT普通車・MT準中型車",
+      notes: []
+    },
+    "camp-style-high-speed": {
+      target: "AT普通車",
+      notes: [
+        "入校希望日の2週間前までにお手続きが必要です。",
+        "各入校日先着3名のため、お受けできない場合があります。"
+      ]
+    },
+    schedule: {
+      target: "AT普通車・MT普通車・MT準中型車",
+      notes: [
+        "入校希望日の1週間前までにお手続きが必要です。",
+        "各入校日先着3名のため、お受けできない場合があります。"
+      ]
+    }
+  };
 
   function optionCards(options = []) {
     if (!options.length) return "";
@@ -123,8 +178,16 @@
       const spring = option.pricesBySeason?.aprToNov;
       const winter = option.pricesBySeason?.decToMar;
       const price = spring === winter ? yen(spring) : `4〜11月 ${yen(spring)} / 12〜3月 ${yen(winter)}`;
-      return `<article class="option-item"><h3>${safeText(option.label)}</h3><p>${safeText(option.description)}</p><strong class="option-price">${price}</strong></article>`;
-    }).join("")}</div>`;
+      const presentation = optionPlanPresentation[option.id] || {};
+      const notes = (presentation.notes || []).map((note) => `<li>${safeText(note)}</li>`).join("");
+      return `<article class="option-item">
+        <h3>${safeText(option.label)}</h3>
+        ${presentation.target ? `<strong class="option-target">対象：${safeText(presentation.target)}</strong>` : ""}
+        <p>${safeText(option.description)}</p>
+        <strong class="option-price">${price}</strong>
+        ${notes ? `<ul class="option-notes">${notes}</ul>` : ""}
+      </article>`;
+    }).join("")}</div>${taxNote()}`;
   }
 
   function planGuide() {
@@ -139,7 +202,7 @@
         title: "フリープラン",
         hours: master.dimensions.plans.free.hours,
         fit: "学校・仕事のあとにも通いたい方",
-        detail: "夜間まで予約できるプランです。追加料金は料金表のフリー欄に含まれています。"
+        detail: "フリープラン料が別途必要になります。"
       }
     ];
     return `<div class="plan-guide-grid">${plans.map((plan) => `<article class="plan-guide-card"><h3>${safeText(plan.title)}</h3><strong>${safeText(plan.hours)}</strong><dl><div><dt>おすすめ</dt><dd>${safeText(plan.fit)}</dd></div><div><dt>内容</dt><dd>${safeText(plan.detail)}</dd></div></dl></article>`).join("")}</div>`;
@@ -147,13 +210,21 @@
 
   function modalAmount(item) {
     if (!item) return "―";
-    return `${yen(item.amount)}${unitLabels[item.unit] || ""}${item.tax === "exempt" ? "（非課税）" : ""}`;
+    return `${yen(item.amount)}${item.tax === "exempt" ? "（非課税）" : ""}`;
   }
 
   function modalItemLabel(item) {
-    if (item.id === "textbook-no-license-or-moped") return "教科書代（免許なし・原付）";
-    if (item.id === "textbook-license-holder") return "教科書代（免許あり）";
-    return item.label;
+    if (item.id === "textbook") return "教科書代（免なし・原付持の方）";
+    if (item.id === "textbook-no-license-or-moped") return "教科書代（免なし・原付持の方）";
+    if (item.id === "textbook-license-holder") return "教科書代（免有の方）";
+    const unitSuffix = {
+      per_period: "（1時限）",
+      per_attempt: "（1回）",
+      per_occurrence: "（1回）"
+    }[item.unit] || "";
+    return unitSuffix && !String(item.label).includes(unitSuffix)
+      ? `${item.label}${unitSuffix}`
+      : item.label;
   }
 
   function modalItems(items = []) {
@@ -163,6 +234,75 @@
   function modalShell() {
     return `<div class="r-modal" id="fee-detail-modal" hidden aria-hidden="true"><div class="r-modal-backdrop" data-modal-close></div><section class="r-modal-panel" role="dialog" aria-modal="true" aria-labelledby="fee-modal-title"><button class="r-modal-close" type="button" data-modal-close aria-label="閉じる">×</button><h2 id="fee-modal-title"></h2><div id="fee-modal-content"></div></section></div>`;
   }
+
+  const motorcycleFeeScopes = {
+    large: {
+      breakdown: [
+        { id: "large-admission", label: "入学金", amount: 38000, tax: "included" },
+        { id: "large-skill-lesson", label: "技能教習料", amount: 5060, tax: "included", unit: "per_period" },
+        { id: "large-academic", label: "学科教習料", amount: 2200, tax: "included" },
+        { id: "large-textbook", label: "教科書代（免有の方）", amount: 1100, tax: "included" },
+        { id: "large-aptitude", label: "適性検査料", amount: 3300, tax: "included" },
+        { id: "large-graduation-test", label: "卒業検定料", amount: 6050, tax: "included" },
+        { id: "large-photo", label: "証明写真代", amount: 1100, tax: "included" },
+        { id: "large-certificate", label: "証明書発行料", amount: 3300, tax: "included" },
+        { id: "large-free-plan", label: "フリープラン料", amount: 22000, tax: "included" }
+      ],
+      other: [
+        { id: "large-extension", label: "延長・補習教習料", amount: 5060, tax: "included", unit: "per_period" },
+        { id: "large-retest", label: "卒業検定再検定料", amount: 6050, tax: "included", unit: "per_attempt" },
+        { id: "large-certificate-reissue", label: "証明書再発行料", amount: 3300, tax: "included" },
+        { id: "large-lesson-cancel", label: "技能教習無断キャンセル料", amount: 5000, tax: "exempt", unit: "per_attempt" },
+        { id: "large-test-cancel", label: "技能検定無断キャンセル料", amount: 5000, tax: "exempt", unit: "per_attempt" }
+      ]
+    },
+    standard: {
+      breakdown: [
+        { id: "standard-admission", label: "入学金", amount: 24800, tax: "included" },
+        { id: "standard-skill-lesson", label: "技能教習料", amount: 4510, tax: "included", unit: "per_period" },
+        { id: "standard-academic-stage-1", label: "学科教習料1段階", amount: 22000, tax: "included" },
+        { id: "standard-academic-stage-2", label: "学科教習料2段階", amount: 35200, tax: "included" },
+        { id: "standard-textbook-none", label: "教科書代（免なし・原付持の方）", amount: 3300, tax: "included" },
+        { id: "standard-textbook-holder", label: "教科書代（免有の方）", amount: 1100, tax: "included" },
+        { id: "standard-aptitude", label: "適性検査料", amount: 3300, tax: "included" },
+        { id: "standard-effect", label: "効果測定料", amount: 1650, tax: "included" },
+        { id: "standard-graduation-test", label: "卒業検定料", amount: 6050, tax: "included" },
+        { id: "standard-photo", label: "証明写真代", amount: 1100, tax: "included" },
+        { id: "standard-certificate", label: "証明書発行料", amount: 3300, tax: "included" },
+        { id: "standard-free-plan", label: "フリープラン料", amount: 11000, tax: "included" }
+      ],
+      other: [
+        { id: "standard-extension", label: "延長・補習教習料", amount: 4510, tax: "included", unit: "per_period" },
+        { id: "standard-retest", label: "卒業検定再検定料", amount: 6050, tax: "included", unit: "per_attempt" },
+        { id: "standard-certificate-reissue", label: "証明書再発行料", amount: 3300, tax: "included" },
+        { id: "standard-lesson-cancel", label: "技能教習無断キャンセル料", amount: 5000, tax: "exempt", unit: "per_attempt" },
+        { id: "standard-test-cancel", label: "技能検定無断キャンセル料", amount: 5000, tax: "exempt", unit: "per_attempt" }
+      ]
+    },
+    small: {
+      breakdown: [
+        { id: "small-admission", label: "入学金", amount: 34700, tax: "included" },
+        { id: "small-skill-lesson", label: "技能教習料", amount: 4510, tax: "included", unit: "per_period" },
+        { id: "small-academic-stage-1", label: "学科教習料1段階", amount: 22000, tax: "included" },
+        { id: "small-academic-stage-2", label: "学科教習料2段階", amount: 35200, tax: "included" },
+        { id: "small-textbook-none", label: "教科書代（免なし・原付持の方）", amount: 3300, tax: "included" },
+        { id: "small-textbook-holder", label: "教科書代（免有の方）", amount: 1100, tax: "included" },
+        { id: "small-aptitude", label: "適性検査料", amount: 3300, tax: "included" },
+        { id: "small-effect", label: "効果測定料", amount: 1650, tax: "included" },
+        { id: "small-graduation-test", label: "卒業検定料", amount: 6050, tax: "included" },
+        { id: "small-photo", label: "証明写真代", amount: 1100, tax: "included" },
+        { id: "small-certificate", label: "証明書発行料", amount: 3300, tax: "included" },
+        { id: "small-free-plan", label: "フリープラン料", amount: 11000, tax: "included" }
+      ],
+      other: [
+        { id: "small-extension", label: "延長・補習教習料", amount: 4510, tax: "included", unit: "per_period" },
+        { id: "small-retest", label: "卒業検定再検定料", amount: 6050, tax: "included", unit: "per_attempt" },
+        { id: "small-certificate-reissue", label: "証明書再発行料", amount: 3300, tax: "included" },
+        { id: "small-lesson-cancel", label: "技能教習無断キャンセル料", amount: 5000, tax: "exempt", unit: "per_attempt" },
+        { id: "small-test-cancel", label: "技能検定無断キャンセル料", amount: 5000, tax: "exempt", unit: "per_attempt" }
+      ]
+    }
+  };
 
   function motorcycleComparisonRows(config, isBreakdown) {
     const source = isBreakdown ? (config.feeBreakdown || []) : (config.otherFees || []);
@@ -211,11 +351,24 @@
           : (config.licenseChangeOtherFees || [])
       }];
     }
+    if (motorcycleFeeScopes[scope]) {
+      const scopeLabels = {
+        large: "大型二輪車",
+        standard: "普通二輪車",
+        small: "普通二輪車（小型限定）"
+      };
+      return [{
+        title: `${scopeLabels[scope]} ${isBreakdown ? "料金内訳" : "その他の費用の内訳"}`,
+        items: isBreakdown
+          ? motorcycleFeeScopes[scope].breakdown
+          : motorcycleFeeScopes[scope].other
+      }];
+    }
     return [{
       title: "",
       items: isBreakdown
         ? (config.feeBreakdown || [])
-        : [...(config.otherFees || []), ...(config.separateFees || [])]
+        : (config.otherFees || [])
     }];
   }
 
@@ -241,13 +394,13 @@
         const isBreakdown = button.dataset.feeView === "breakdown";
         const scope = button.dataset.feeScope || "normal";
         const sections = modalSections(config, isBreakdown, scope);
-        const isMotorcycleComparison = scope !== "license" && config.label === "自動二輪車";
+        const isMotorcycleComparison = scope === "normal" && config.label === "自動二輪車";
         lastTrigger = button;
         title.textContent = `${button.dataset.feeLabel || config.label} ${isBreakdown ? "料金内訳" : "その他の費用"}`;
         content.innerHTML = `${isMotorcycleComparison
           ? motorcycleComparisonTable(config, isBreakdown)
           : sections.map((section) => `<section class="r-modal-group">${section.title ? `<h3>${safeText(section.title)}</h3>` : ""}<div class="r-modal-list">${modalItems(section.items)}</div></section>`).join("")
-        }<p class="r-note">料金は税込表示です。非課税項目は個別に記載しています。</p>`;
+        }${taxNote("なお、「非課税」と記載した項目は対象外です。")}`;
         modal.hidden = false;
         modal.setAttribute("aria-hidden", "false");
         document.body.classList.add("is-modal-open");
@@ -310,6 +463,7 @@
         <img src="${base}-desktop.webp" width="1600" height="900" loading="lazy" decoding="async" alt="${safeText(guide.alt)}">
       </picture>
       <p class="visually-hidden">${safeText(guide.text)}</p>
+      ${taxNote()}
       <p class="r-note">割引の適用可否は受付で最終確認します。</p>
     </div></section>`;
   }
@@ -321,10 +475,10 @@
     setPage(`
       <section class="r-section" id="formal-fees"><div class="r-wrap">
         ${sectionHeader("FEES", spec.title, spec.lead)}
-        <p class="r-note">料金は税込です。学生料金は学生証の提示が必要です。</p>
-        ${id === "bike" ? motorcycleFeeTables(catalog.mainFeeRows) : feeTable(catalog.mainFeeRows)}
+        <p class="r-note">学生料金は学生証の提示が必要です。</p>
+        ${id === "bike" ? motorcycleFeeTables(catalog.mainFeeRows, spec.key) : feeTable(catalog.mainFeeRows)}
         ${separateFeeNotice(catalog)}
-        ${feeButtons(spec.key)}
+        ${id === "bike" ? "" : feeButtons(spec.key)}
       </div></section>
       ${discountGuide(id)}
       <section class="r-section is-soft"><div class="r-wrap">${sectionHeader("PLAN GUIDE", "教習プラン", "通える時間帯に合わせて、デイプランまたはフリープランを選べます。")}${planGuide()}</div></section>
@@ -374,7 +528,7 @@
       <div class="simple-grid">
         <article class="simple-item"><h3>対象</h3><p>AT普通車</p></article>
         <article class="simple-item"><h3>取得期間の目安</h3><p>最短17日</p></article>
-        <article class="simple-item"><h3>受付人数</h3><p>各入校日 先着1名</p></article>
+        <article class="simple-item"><h3>受付人数</h3><p>各入校日 先着3名</p></article>
       </div>
       ${optionCards(highSpeed ? [highSpeed] : [])}
       <div class="r-notice"><div>・最短日数は目安で、教習の進み方や検定結果により延びる場合があります。</div><div>・基本教習料金に追加して利用するプランです。</div><div>・入校日と空き状況は受付でご確認ください。</div></div>
@@ -392,7 +546,7 @@
     ];
     const atSteps = ["入校式", "適性検査・学科1", "第1段階 技能教習（場内）・学科教習", "修了検定", "仮免学科試験", "第2段階 技能教習（路上）・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
     const mtSteps = ["AT普通車課程", "AT卒業検定", "MT技能教習", "技能審査", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
-    const bikeSteps = ["入校式", "適性検査", "第1段階 技能・学科教習", "第2段階 技能・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
+    const bikeSteps = ["入校式", "適性検査・学科1", "第1段階 技能教習・学科教習", "第2段階 技能教習・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"].map((title) => [title, ""]);
     const hiddenFlow = (title, items) => `<div class="visually-hidden"><h3>${title}</h3><ol>${items.map(([stepTitle, text]) => `<li><strong>${safeText(stepTitle)}</strong> ${safeText(text)}</li>`).join("")}</ol></div>`;
     const flowPicture = (basename, alt) => {
       const directory = basename === "license-bike" ? "flows-20260724" : "flows-20260723";
@@ -453,7 +607,7 @@
         </section>
       </div></section>
       <section class="r-section admission-day-section" id="admission-day"><div class="r-wrap">
-        ${sectionHeader("ADMISSION DAY", "入校日", "入校する車種と免許の取得状況により、当日の時間が異なります。")}
+        ${sectionHeader("ADMISSION DAY", "入校日")}
         <div class="admission-day-grid">
           <article class="admission-day-card">
             <h3>普通車・準中型車・自動二輪車で<br>新規入校の方</h3>
@@ -505,7 +659,7 @@
       </div></section>
       <section class="r-section" id="lesson-time"><div class="r-wrap">
         <h2 class="visually-hidden">教習時間</h2>
-        <figure class="lesson-time-figure"><img src="images/detail-pages/admission/lesson-times-imagegen-v2.webp" alt="教習時間。1限目8時30分から9時20分、2限目9時30分から10時20分、3限目10時30分から11時20分、4限目11時30分から12時20分、5限目12時30分から13時20分、6限目13時30分から14時20分、7限目14時30分から15時20分、8限目15時30分から16時20分、9限目16時30分から17時20分、10限目17時40分から18時30分、11限目18時40分から19時30分、12限目19時40分から20時30分。平日は10時30分から20時30分、土日は9時30分から18時30分。時間割は時期によって変わる場合があります。" loading="eager" decoding="async"></figure>
+        <figure class="lesson-time-figure"><img src="images/detail-pages/admission/lesson-times-imagegen-v3.webp" alt="教習時間。1限目8時30分から9時20分、2限目9時30分から10時20分、3限目10時30分から11時20分、4限目11時30分から12時20分、5限目12時30分から13時20分、6限目13時30分から14時20分、7限目14時30分から15時20分、8限目15時30分から16時20分、9限目16時30分から17時20分、10限目17時40分から18時30分、11限目18時40分から19時30分、12限目19時40分から20時30分。平日は10時30分から20時30分、土日は9時30分から18時30分。時間割は時期によって変わる場合があります。" loading="eager" decoding="async"></figure>
         <ol class="visually-hidden lesson-time-text">${lessonTimes.map((time, index) => `<li><strong>${index + 1}時限</strong> ${time}</li>`).join("")}</ol>
       </div></section>`);
   }
@@ -532,6 +686,7 @@
         <article class="paper-single-fee"><span>1回（50分）講習</span><strong>7,000円</strong><small>税込</small></article>
         <h3 class="paper-subheading">複数回コース</h3>
         <div class="paper-rate-grid">${multiRates.map(([label, amount]) => `<div><span>${label}</span><strong>${amount}</strong></div>`).join("")}</div>
+        ${taxNote()}
         <p class="r-note">5回以上をご希望の方はお問い合わせください。途中で終了する場合、返金はありません。</p>
       </div></section>
       <section class="r-section is-soft"><div class="r-wrap">
@@ -577,22 +732,6 @@
       return;
     }
     setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader(page.eyebrow, page.title, page.lead)}<div class="visual-split"><img src="${page.image}" alt="${safeText(page.title)}" loading="eager" decoding="async"><div>${page.facts.map(([title, text]) => `<div class="key-fact"><strong>${title}</strong><span>${text}</span></div>`).join("")}</div></div><div class="r-actions"><a class="r-button is-primary" href="tel:0927102188">092-710-2188へ電話</a>${type === "paper" ? '<a class="r-button" href="detail.html?page=application&amp;purpose=資料請求">Webで相談</a>' : ""}</div></div></section>`);
-  }
-
-  function scheduleRows(items) {
-    if (!items.length) return `<div class="r-notice">公開中の予定はありません。最新情報は受付へご確認ください。</div>`;
-    return `<div class="schedule-list">${items.map((item) => `<article class="schedule-row"><time>${safeText(item.date || item.time || "")}</time><div class="schedule-copy"><span class="schedule-category">${safeText(item.category || "教習")}</span><strong>${safeText(item.title || "教習予定")}</strong></div><span>${safeText(item.note || item.details || "")}</span></article>`).join("")}</div>`;
-  }
-
-  function fallbackSchedule() {
-    const now = new Date();
-    const label = new Intl.DateTimeFormat("ja-JP", { month: "long", day: "numeric", weekday: "short" }).format(now);
-    return {
-      updatedAt: now.toISOString(),
-      today: [{ date: label, title: "本日の予定", note: "公開予定は受付で更新されます。" }],
-      week: [],
-      month: []
-    };
   }
 
   function renderSchedule() {
@@ -1123,9 +1262,9 @@
         grid.innerHTML = `<div class="r-notice">公開中のお知らせはありません。</div>`;
         return;
       }
-      grid.innerHTML = filtered.map((post) => `<a class="cms-topic-card" href="article.html?slug=${encodeURIComponent(post.slug)}">
+      grid.innerHTML = filtered.map((post) => `<a class="cms-topic-card" href="${safeText(post.href)}"${post.isExternal ? ' target="_blank" rel="noopener"' : ""}>
         ${post.imageUrl ? `<img src="${safeText(post.imageUrl)}" alt="" loading="lazy" decoding="async">` : '<div class="cms-topic-placeholder" aria-hidden="true">CDS</div>'}
-        <div class="cms-topic-body"><div class="cms-topic-meta"><span class="cms-topic-tag${post.tag === "重要" ? " is-important" : ""}">${safeText(post.tag || "お知らせ")}</span><time>${safeText(post.date || post.publishedAt || "")}</time></div><h3>${safeText(post.title)}</h3><p>${safeText(post.summary || "")}</p></div>
+        <div class="cms-topic-body"><div class="cms-topic-meta"><span class="cms-topic-tag${post.tag === "重要" ? " is-important" : ""}">${safeText(post.tag || "お知らせ")}</span><time>${safeText(post.date || post.publishedAt || "")}</time></div><h3>${safeText(post.title)}</h3></div>
       </a>`).join("");
     }
     filters.forEach((button) => button.addEventListener("click", () => {
@@ -1136,7 +1275,13 @@
     fetch("/api/cms/posts?limit=30", { headers: { accept: "application/json" } })
       .then((response) => response.ok ? response.json() : Promise.reject(new Error("not configured")))
       .then((result) => {
-        posts = Array.isArray(result.posts) ? result.posts : [];
+        posts = (Array.isArray(result.posts) ? result.posts : [])
+          .filter((post) => post.title && post.slug)
+          .map((post) => ({
+            ...post,
+            href: post.link || `article.html?slug=${encodeURIComponent(post.slug)}`,
+            isExternal: false
+          }));
         paint();
       })
       .catch(() => { grid.innerHTML = `<div class="r-notice">お知らせを取得できませんでした。時間をおいて再度お試しください。</div>`; });
@@ -1157,6 +1302,12 @@
     motorcycle_at: { vehicle: "AT普通二輪車", label: "AT普通二輪車", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "普通二輪車" && row.transmission === "AT") },
     motorcycle_small_mt: { vehicle: "MT普通二輪車（小型限定）", label: "MT普通二輪車（小型限定）", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "MT") },
     motorcycle_small_at: { vehicle: "AT普通二輪車（小型限定）", label: "AT普通二輪車（小型限定）", catalog: "motorcycle", rows: (m) => m.catalog.motorcycle.mainFeeRows.filter((row) => row.course === "普通二輪車小型限定" && row.transmission === "AT") }
+  };
+
+  const applicationOptionEligibility = {
+    "コミコミプラン": ["AT普通車", "MT準中型車"],
+    "スケジュールプラン": ["AT普通車", "MT普通車", "MT準中型車"],
+    "合宿風ハイスピードプラン": ["AT普通車"]
   };
 
   function applicationHtml() {
@@ -1182,7 +1333,8 @@
     const occupations = ["大学生", "短大生", "専門学生", "高校生", "予備校生", "会社員", "自営業", "主婦", "パート・アルバイト", "その他"];
     const desiredVehicles = ["AT普通車", "MT普通車", "MT準中型車", "MT大型二輪車", "AT普通二輪車", "MT普通二輪車", "AT普通二輪車（小型限定）", "MT普通二輪車（小型限定）", "限定解除", "ペーパードライバー"];
     const currentLicenses = ["持っていない", "MT普通車", "AT普通車", "MT準中型車", "AT大型二輪車", "MT大型二輪車", "AT普通二輪車", "MT普通二輪車", "AT普通二輪車（小型限定）", "MT普通二輪車（小型限定）", "原付", "MT5t限定準中型車", "AT5t限定準中型車", "中型車", "MT8t限定中型車", "AT8t限定中型車", "大型車", "けん引", "大型特殊", "大特農耕限定", "仮免許"];
-    const optionPlans = ["コミコミプラン", "スケジュールプラン", "合宿風ハイスピードプラン"];
+    const optionPlans = Object.keys(applicationOptionEligibility);
+    const optionPlanChoices = optionPlans.map((value, index) => `<span class="choice-item" data-option-plan="${safeText(value)}"><input type="checkbox" name="optionPlans" id="optionPlans-${index}" value="${safeText(value)}"><label for="optionPlans-${index}">${safeText(value)}</label></span>`).join("");
     const paymentMethods = ["現金", "ローン", "振込み", "未定"];
     const howKnown = ["DM・チラシ", "看板", "教習車・送迎バス", "インターネット", "ご家族・友人・知人", "学校設置のパンフレット", "その他"];
     const admissionMotives = ["交通の便がよい", "自宅から近い", "学校・会社から近い", "ご家族・友人・知人に勧められた", "当校職員に勧められた", "教習プランが魅力だから", "施設・サービスが魅力だから", "その他"];
@@ -1217,7 +1369,7 @@
           <fieldset class="form-field is-wide choice-field" data-required-group="desiredVehicles"><legend>入校車種（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "desiredVehicles", desiredVehicles)}</div></fieldset>
           <fieldset class="form-field is-wide choice-field" data-required-group="currentLicenses"><legend>現在の免許証の有無（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "currentLicenses", currentLicenses)}</div></fieldset>
           <fieldset class="form-field is-wide choice-field"><legend>技能教習プラン<span class="required">必須</span></legend><div class="choice-grid">${choices("radio", "lessonPlan", ["デイプラン", "フリープラン"], true)}</div></fieldset>
-          <fieldset class="form-field is-wide choice-field"><legend>オプションプラン（複数可）</legend><div class="choice-grid">${choices("checkbox", "optionPlans", optionPlans)}</div><small>スケジュールプラン・合宿風ハイスピードプランは、定員となり次第締め切ります。</small></fieldset>
+          <fieldset class="form-field is-wide choice-field" id="option-plan-field"><legend>オプションプラン（複数可）</legend><div class="choice-grid" id="option-plan-choices">${optionPlanChoices}</div><small id="option-plan-help" aria-live="polite">入校車種を選ぶと、利用できるオプションプランだけが表示されます。</small></fieldset>
         </div></section>
 
         <section class="application-section"><span class="application-section-no">03</span><h2>お支払い・当校を知ったきっかけ</h2><div class="form-grid">
@@ -1270,6 +1422,32 @@
     }
 
     const params = new URLSearchParams(location.search);
+    const vehicleInputs = Array.from(form.querySelectorAll('[name="desiredVehicles"]'));
+    const optionInputs = Array.from(form.querySelectorAll('[name="optionPlans"]'));
+    const optionHelp = form.querySelector("#option-plan-help");
+    const syncOptionPlanAvailability = () => {
+      const selectedVehicles = vehicleInputs.filter((input) => input.checked).map((input) => input.value);
+      const availablePlans = Object.entries(applicationOptionEligibility)
+        .filter(([, eligibleVehicles]) => selectedVehicles.length && selectedVehicles.every((vehicle) => eligibleVehicles.includes(vehicle)))
+        .map(([plan]) => plan);
+      optionInputs.forEach((input) => {
+        const available = availablePlans.includes(input.value);
+        input.disabled = !available;
+        if (!available) input.checked = false;
+        input.closest("[data-option-plan]").hidden = !available;
+      });
+      if (!selectedVehicles.length) {
+        optionHelp.textContent = "入校車種を選ぶと、利用できるオプションプランだけが表示されます。";
+      } else if (!availablePlans.length) {
+        optionHelp.textContent = "選択した車種で利用できるオプションプランはありません。";
+      } else {
+        const prefix = selectedVehicles.length > 1 ? "選択したすべての車種で共通して利用できるプラン：" : "利用できるプラン：";
+        optionHelp.textContent = `${prefix}${availablePlans.join("・")}`;
+      }
+    };
+    vehicleInputs.forEach((input) => input.addEventListener("change", syncOptionPlanAvailability));
+    syncOptionPlanAvailability();
+
     const checkByValue = (name, value) => {
       if (!value) return;
       const normalized = value === "なし" ? "持っていない" : value;
@@ -1281,9 +1459,12 @@
     const optionLabels = { komikomi: "コミコミプラン", schedule: "スケジュールプラン", "camp-style-high-speed": "合宿風ハイスピードプラン" };
     checkByValue("optionPlans", params.get("optionPlan") || optionLabels[params.get("optionPlans")] || "");
 
+    let submissionInProgress = false;
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      if (submissionInProgress) return;
       if (!validateForm()) return;
+      submissionInProgress = true;
       const submit = form.querySelector('[type="submit"]');
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
@@ -1337,7 +1518,7 @@
         if (!response.ok || !result.ok) throw new Error(result.message || result.error || "送信できませんでした。時間をおいて再度お試しください。");
         status.className = "form-status is-success";
         status.classList.add("is-success");
-        status.textContent = `送信が完了しました。受付ID：${result.applicationId || "発行済み"}`;
+        status.textContent = `送信が完了しました。入力いただいたメールアドレス宛にメールが届きますので、ご確認お願いします。10秒ほどお時間かかる場合がございます\n受付ID：${result.applicationId || "発行済み"}`;
         form.reset();
       } catch (error) {
         responseSettled = true;
@@ -1346,6 +1527,7 @@
         status.classList.add("is-error");
         status.textContent = error instanceof Error ? error.message : "送信できませんでした。時間をおいて再度お試しください。";
       } finally {
+        submissionInProgress = false;
         submit.disabled = false;
       }
     });

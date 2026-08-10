@@ -103,6 +103,7 @@ async function inspect(page) {
         if (/^http:\/\/(127\.0\.0\.1|localhost)/.test(baseUrl)) {
           await page.route("**/api/wordpress-posts*", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ posts: [] }) }));
           await page.route("**/api/public-schedule*", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, schedule: { updatedAt: new Date().toISOString(), today: [], week: [], month: [] } }) }));
+          await page.route("**/api/cms/events*", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, schedule: { updatedAt: new Date().toISOString(), today: [], week: [], month: [] } }) }));
           await page.route("**/api/application*", (route) => route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ok: true, service: "application", configured: false, turnstileSiteKey: "" }) }));
         }
         const consoleErrors = [];

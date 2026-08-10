@@ -160,8 +160,8 @@
     elements.optionPrice.textContent = yen(optionPrice);
     elements.total.textContent = formatter.format(total);
     elements.note.textContent = availableOptions(definition).length
-      ? "表示額は税込の概算です。卒業生割引・複数人入校割引は含まれていません。料金は学校で最終確認します。"
-      : "卒業生割引・複数人入校割引は含まれていません。この車種のオプション料金は学校へご相談ください。";
+      ? "表示金額は税込です。卒業生割引・複数人入校割引は含まれていません。料金は学校で最終確認します。"
+      : "表示金額は税込です。卒業生割引・複数人入校割引は含まれていません。この車種のオプション料金は学校へご相談ください。";
     elements.discountLink.href = `detail.html?page=${definition.discountPage}#discount-guide`;
 
     const params = new URLSearchParams({

@@ -54,7 +54,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/redesign-0718.css?v=20260724-1">
+<link rel="stylesheet" href="assets/redesign-0718.css?v=20260810-2">
 <link rel="stylesheet" href="assets/home-simulator-20260719.css?v=20260724-1">
 <style>
   :root {
@@ -923,6 +923,25 @@
     padding-right: 12px;
     animation: topicMarquee 24s linear infinite;
     will-change: transform;
+  }
+  .topics-grid.is-unique-feed {
+    box-sizing: border-box;
+    width: 100%;
+    flex-wrap: wrap;
+    animation: none;
+    will-change: auto;
+  }
+  .topics-grid.is-unique-feed > [aria-hidden="true"] {
+    display: none;
+  }
+  .topics-empty-state {
+    width: 100%;
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--muted);
+    text-align: center;
   }
   .topics-viewport:hover .topics-grid { animation-play-state: paused; }
   @keyframes topicMarquee {
@@ -1902,6 +1921,11 @@
     box-shadow:
       0 22px 42px rgba(45, 27, 87, .22),
       0 0 0 1px rgba(92, 49, 155, .08);
+  }
+  .point-visual .mini-photo.is-info-banner {
+    object-fit: contain;
+    padding: 4px;
+    background: #fff;
   }
   .point-copy {
     position: relative;
@@ -3339,7 +3363,7 @@
           <a href="detail.html?page=admission"><span>入校の流れ</span><small>FLOW</small></a>
           <a href="detail.html?page=application&amp;purpose=仮入校申し込み"><span>仮入校申し込み</span><small>APPLICATION</small></a>
           <a href="detail.html?page=application&amp;purpose=資料請求"><span>資料請求・お問い合わせ</span><small>CONTACT</small></a>
-          <a href="detail.html?page=license"><span>免許交付まで</span><small>LICENSE</small></a>
+          <a href="detail.html?page=license"><span>免許証交付まで</span><small>LICENSE</small></a>
         </div>
       </div>
       <div class="nav-item">
@@ -3429,7 +3453,7 @@
           <a class="more" href="detail.html?page=topics">一覧を見る <span>›</span></a>
         </div>
         <div class="topics-viewport" aria-label="横に流れるブログ・トピックス">
-          <div class="topics-grid">
+          <div class="topics-grid is-unique-feed">
             <a class="topic-card" href="detail.html?page=topics">
               <img loading="lazy" decoding="async" src="images/current-site/news/news-2026-05-27-16595.jpg" alt="交通事故防止コンクールの表彰状">
               <div class="topic-body">
@@ -3583,7 +3607,6 @@
           <div class="price-plan-head">
             <small>PRICE PLAN</small>
             <h2>料金プラン例</h2>
-            <p>代表的なコースの料金例です。現在お持ちの免許、通える時間帯、オプションによって料金が変わります。車種ごとの料金表でご確認ください。</p>
           </div>
           <div class="price-example-grid" aria-label="料金プラン例">
             <article class="price-example-card">
@@ -3611,9 +3634,9 @@
               <div class="price-example-tax">税込・デイプラン目安</div>
             </article>
           </div>
-          <p class="price-guide">上記は代表的な料金例です。<em>キャンペーンやオプション</em>で金額が変わることがあります。</p>
+          <p class="price-guide">表示金額は税込です。<br>上記は代表的な料金例です。現有免許やオプション等により料金が変わります。</p>
           <div class="price-cta-stack">
-            <a class="btn btn-purple" href="detail.html?page=price">車種別の料金を見る <span class="circle">›</span></a>
+            <a class="btn btn-purple" href="detail.html?page=price">車種別の料金表を見る <span class="circle">›</span></a>
             <a class="btn btn-white" href="detail.html?page=application&amp;purpose=資料請求">料金・入校日を相談する <span class="circle">›</span></a>
           </div>
         </div>
@@ -3648,6 +3671,7 @@
               <div id="sim-option-row" hidden><dt>オプション</dt><dd id="sim-option-price">0円</dd></div>
             </dl>
             <div class="sim-total"><span id="sim-total-price">0</span><small>円（税込）</small></div>
+            <p class="sim-status-note sim-tax-note">表示金額は税込です。</p>
             <button class="btn btn-purple simulate-btn" type="button" id="sim-calculate">結果を見る <span class="circle">›</span></button>
             <a class="btn btn-orange" id="sim-apply" href="detail.html?page=application&amp;purpose=仮入校申し込み">この条件で仮入校申し込みへ <span class="circle">›</span></a>
             <a class="btn btn-white" href="detail.html?page=price">料金を見る <span class="circle">›</span></a>
@@ -3670,7 +3694,7 @@
             <tbody id="option-details-body"></tbody>
           </table>
         </div>
-        <p class="option-dialog-note">※オプションの対象条件や空き状況は、申込時に学校へご確認ください。自動二輪車のオプション料金は正式資料に掲載されていません。</p>
+        <p class="option-dialog-note">表示金額は税込です。※オプションの対象条件や空き状況は、申込時に学校へご確認ください。自動二輪車にはオプションプランの設定がありません。</p>
       </div>
     </dialog>
 
@@ -3695,13 +3719,13 @@
           <article class="point-card">
             <div class="point-copy">
               <span class="point-no">02</span>
-              <h3>新しい校舎で、<br><span>学科も相談も</span>しやすく。</h3>
+              <h3><span>対面学科・オンデマンド学科</span>の<br>どちらも受講できます</h3>
             </div>
             <div class="point-visual">
               <img loading="lazy" decoding="async" src="images/real-20260714/bright-classroom.webp" alt="明るく清潔な学科教室">
-              <img loading="lazy" decoding="async" class="mini-photo" src="images/real-20260714/classroom-hallway.webp" alt="教室が並ぶ明るい校舎内の廊下">
+              <img loading="lazy" decoding="async" class="mini-photo is-info-banner" src="images/current-site/news/news-2025-01-18-13019.png" alt="オンデマンド学科教習実施中">
             </div>
-            <p>明るい教室や受付まわりで、分からないことも相談しやすい雰囲気を大切にしています。</p>
+            <p>対面学科とオンデマンド学科に対応し、生活スタイルに合わせて学びやすい環境を整えています。</p>
           </article>
           <article class="point-card">
             <div class="point-copy">
@@ -3935,7 +3959,7 @@
           <a href="detail.html?page=admission">入校の流れ</a>
           <a href="detail.html?page=application&amp;purpose=仮入校申し込み">仮入校申し込み</a>
           <a href="detail.html?page=application&amp;purpose=資料請求">資料請求・お問い合わせ</a>
-          <a href="detail.html?page=license">免許交付まで</a>
+          <a href="detail.html?page=license">免許証交付まで</a>
           <a href="detail.html?page=introduction">友人・知人紹介</a>
         </div>
         <div class="foot-col">
@@ -3952,8 +3976,8 @@
           <a class="why-banner-link" href="reasons/" target="_blank" rel="noopener" aria-label="私が自動車学校に通う理由">
             <img src="images/site-parts/why-banner.gif" alt="私が自動車学校に通う理由">
           </a>
-          <a href="detail.html?page=facilities">設備紹介</a>
-          <a href="detail.html?page=instructors">教官紹介</a>
+          <a href="detail.html?page=facilities">施設紹介</a>
+          <a href="detail.html?page=instructors">指導員紹介</a>
           <a href="detail.html?page=company">会社概要</a>
         </div>
         <div class="foot-col">
@@ -3976,7 +4000,7 @@
   </footer>
 
 <script src="data/price-master.js?v=20260724-1"></script>
-<script src="assets/home-simulator-20260719.js?v=20260724-1"></script>
+<script src="assets/home-simulator-20260719.js?v=20260727-1"></script>
 <script>
   function escapeHtml(value = "") {
     return String(value)
@@ -3993,7 +4017,7 @@
     if (/地域|消防|活動/.test(category)) return "is-local";
     return "is-award";
   }
-  function renderTopicCard(post, duplicate = false) {
+  function renderTopicCard(post) {
     const category = post.category || "お知らせ";
     const image = post.image || "images/current-site/news/news-2025-01-18-13019.png";
     const title = post.title || "筑紫野自動車学校からのお知らせ";
@@ -4001,8 +4025,8 @@
     const href = post.link || "detail.html?page=topics";
     const isExternal = /^https?:\/\//.test(href);
     return `
-      <a class="topic-card" href="${escapeHtml(href)}"${isExternal ? ' target="_blank" rel="noopener"' : ""} ${duplicate ? 'aria-hidden="true" tabindex="-1"' : ""}>
-        <img loading="lazy" decoding="async" src="${escapeHtml(image)}" alt="${duplicate ? "" : escapeHtml(title)}">
+      <a class="topic-card" href="${escapeHtml(href)}"${isExternal ? ' target="_blank" rel="noopener"' : ""}>
+        <img loading="lazy" decoding="async" src="${escapeHtml(image)}" alt="${escapeHtml(title)}">
         <div class="topic-body">
           <div class="meta"><span class="pill ${topicPillClass(category)}">${escapeHtml(category)}</span><time>${escapeHtml(date)}</time></div>
           <h3 class="topic-title">${escapeHtml(title)}</h3>
@@ -4010,17 +4034,33 @@
       </a>
     `;
   }
-  function applyTopicPosts(posts) {
+  function uniqueTopicPosts(posts = []) {
+    const seen = new Set();
+    return posts.filter((post) => {
+      const key = String(post.link || "").trim()
+        || [post.category || "", post.date || "", post.title || ""].join("|");
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+  function applyTopicPosts(posts, { cms = false } = {}) {
     const grid = document.querySelector(".topics-grid");
     const importantBar = document.querySelector(".important-news-bar");
-    if (!posts.length || (!grid && !importantBar)) return false;
+    const uniquePosts = uniqueTopicPosts(posts);
+    if (!grid && !importantBar) return false;
 
     if (grid) {
-      grid.innerHTML = posts.map((post) => renderTopicCard(post)).join("") + posts.map((post) => renderTopicCard(post, true)).join("");
+      grid.classList.add("is-unique-feed");
+      grid.innerHTML = uniquePosts.length
+        ? uniquePosts.map((post) => renderTopicCard(post)).join("")
+        : '<div class="topics-empty-state">現在公開中のお知らせはありません。</div>';
     }
 
-    const first = posts.find((post) => post.category === "重要") || posts[0];
+    const important = uniquePosts.find((post) => post.category === "重要");
+    const first = important || (cms ? null : uniquePosts[0]);
     if (importantBar && first) {
+      importantBar.closest(".important-news")?.removeAttribute("hidden");
       importantBar.href = first.link;
       if (/^https?:\/\//.test(first.link)) {
         importantBar.target = "_blank";
@@ -4031,15 +4071,18 @@
       }
       importantBar.querySelector(".important-news-date").textContent = first.date || "";
       importantBar.querySelector(".important-news-title").textContent = first.title || "筑紫野自動車学校からのお知らせ";
+    } else if (importantBar && cms) {
+      importantBar.closest(".important-news")?.setAttribute("hidden", "");
     }
     return true;
   }
   async function setupTopics() {
+    let cmsPosts = [];
     try {
       const cmsResponse = await fetch("/api/cms/posts?limit=6", { headers: { accept: "application/json" } });
       if (cmsResponse.ok) {
         const cmsData = await cmsResponse.json();
-        const cmsPosts = Array.isArray(cmsData.posts)
+        cmsPosts = Array.isArray(cmsData.posts)
           ? cmsData.posts.filter((post) => post.title && post.slug).map((post) => ({
               category: post.tag || "お知らせ",
               image: post.imageUrl || "images/current-site/news/news-2025-01-18-13019.png",
@@ -4048,17 +4091,11 @@
               link: `article.html?slug=${encodeURIComponent(post.slug)}`
             }))
           : [];
-        if (applyTopicPosts(cmsPosts)) return;
       }
-
-      const response = await fetch("/api/wordpress-posts?limit=6", { headers: { accept: "application/json" } });
-      if (!response.ok) throw new Error(`WordPress posts API failed: ${response.status}`);
-      const data = await response.json();
-      const posts = Array.isArray(data.posts) ? data.posts.filter((post) => post.title && post.link) : [];
-      applyTopicPosts(posts);
     } catch (error) {
-      console.warn("記事の取得に失敗しました。静的な初期表示を使います。", error);
+      console.warn("CMS記事の取得に失敗したため、既存記事を読み込みます。", error);
     }
+    applyTopicPosts(cmsPosts, { cms: true });
   }
   setupTopics();
 

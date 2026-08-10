@@ -46,7 +46,7 @@ async function checkAdmission(page, viewport) {
     ["必要書類を準備", "入校手続き来校", "写真撮影・視力検査", "入校日を決定", "入校受付完了"],
     ["入校式", "適性検査・学科1", "第1段階 技能教習（場内）・学科教習", "修了検定", "仮免学科試験", "第2段階 技能教習（路上）・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"],
     ["AT普通車課程", "AT卒業検定", "MT技能教習", "技能審査", "卒業証明書", "本免学科試験", "運転免許証交付"],
-    ["入校式", "適性検査", "第1段階 技能・学科教習", "第2段階 技能・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"]
+    ["入校式", "適性検査・学科1", "第1段階 技能教習・学科教習", "第2段階 技能教習・学科教習", "卒業検定", "卒業証明書", "本免学科試験", "運転免許証交付"]
   ];
   const expectedTimes = [
     "8:30〜9:20", "9:30〜10:20", "10:30〜11:20", "11:30〜12:20",
@@ -60,6 +60,7 @@ async function checkAdmission(page, viewport) {
   assert(await page.locator("#admission-day .admission-day-card").count() === 2, `${viewport.name}/admission: 入校日の対象区分が2種類ではありません。`);
   assert(await page.locator("#preparation .r-actions").count() === 0, `${viewport.name}/admission: 削除対象のCTAが残っています。`);
   const admissionDayText = await page.locator("#admission-day").innerText();
+  assert(!admissionDayText.includes("入校する車種と免許の取得状況により、当日の時間が異なります。"), `${viewport.name}/admission: 削除指定の入校日説明が残っています。`);
   for (const keyword of ["入校説明", "17:40〜18:30", "運転適性検査", "18:40〜19:30", "学科第1教程", "19:40〜20:30", "14:30〜15:20", "15:30〜16:20", "16:30〜17:20"]) {
     assert(admissionDayText.includes(keyword), `${viewport.name}/admission: 入校日の「${keyword}」がありません。`);
   }
@@ -69,7 +70,7 @@ async function checkAdmission(page, viewport) {
   assert(await page.locator("#lesson-time .lesson-time-figure img").count() === 1, `${viewport.name}/admission: 指定された教習時間図がありません。`);
   const lessonImage = page.locator("#lesson-time .lesson-time-figure img");
   await lessonImage.evaluate((image) => image.complete || new Promise((resolve) => image.addEventListener("load", resolve, { once: true })));
-  assert(await lessonImage.evaluate((image) => image.naturalWidth >= 1000 && image.currentSrc.endsWith("/images/detail-pages/admission/lesson-times-imagegen-v2.webp")), `${viewport.name}/admission: 高解像度の教習時間図ではありません。`);
+  assert(await lessonImage.evaluate((image) => image.naturalWidth >= 1000 && image.currentSrc.endsWith("/images/detail-pages/admission/lesson-times-imagegen-v3.webp")), `${viewport.name}/admission: フォント統一済みの高解像度教習時間図ではありません。`);
   const actualTimes = await page.locator(".lesson-time-text li").evaluateAll((items) => items.map((item) => item.textContent.replace(/^\d+時限\s*/, "").trim()));
   assert(JSON.stringify(actualTimes) === JSON.stringify(expectedTimes), `${viewport.name}/admission: 教習時間がExcelと一致しません。`);
   assert(text.includes("現有免許により学科教習時限が異なります。"), `${viewport.name}/admission: 自動二輪の注記がありません。`);
@@ -115,28 +116,24 @@ async function checkFeePage(page, id, viewport) {
     assert(await root.locator("#small-motorcycle-fees [data-fee-row]").count() === 8, `${viewport.name}/${id}: 小型限定の料金行が4件ではありません。`);
   }
 
-  await root.locator('[data-fee-view="breakdown"]').click();
+  const breakdownSelector = id === "bike"
+    ? '[data-catalog="motorcycle"][data-fee-scope="large"][data-fee-view="breakdown"]'
+    : '[data-fee-view="breakdown"]';
+  await root.locator(breakdownSelector).click();
   const modalText = await root.locator("#fee-modal-content").innerText();
   assert(!modalText.includes("限定解除"), `${viewport.name}/${id}: 通常料金モーダルに限定解除料金が混ざっています。`);
   if (id === "bike") {
-    const comparison = root.locator(".r-motorcycle-comparison");
-    assert(await comparison.count() === 1, `${viewport.name}/bike: 二輪料金内訳が比較表になっていません。`);
-    assert(await comparison.locator(".r-motorcycle-comparison-row").count() === 12, `${viewport.name}/bike: 二輪料金内訳の項目数が正しくありません。`);
-    const vehicleLabels = await comparison.locator(".r-motorcycle-fee-amount").evaluateAll((items) => items.map((item) => item.dataset.vehicle));
-    assert(vehicleLabels.includes("大型二輪車") && vehicleLabels.includes("普通・小型二輪車"), `${viewport.name}/bike: 二輪料金内訳の車種見出しがありません。`);
-    assert(modalText.includes("教科書代（免許なし・原付）") && modalText.includes("教科書代（免許あり）"), `${viewport.name}/bike: 教科書代の適用条件が明記されていません。`);
-    const skillRow = comparison.locator(".r-motorcycle-comparison-row").first();
-    assert((await skillRow.locator(".r-motorcycle-fee-amount").allTextContents()).join("|").includes("5,060円") && (await skillRow.locator(".r-motorcycle-fee-amount").allTextContents()).join("|").includes("4,510円"), `${viewport.name}/bike: 大型・普通二輪の技能料金が同じ行で比較できません。`);
+    assert(modalText.includes("大型二輪車 料金内訳"), `${viewport.name}/bike: 大型二輪車の料金内訳見出しがありません。`);
+    assert(modalText.includes("技能教習料") && modalText.includes("5,060円"), `${viewport.name}/bike: 大型二輪車の技能料金が正しくありません。`);
+    assert(modalText.includes("教科書代（免有の方）"), `${viewport.name}/bike: 教科書代の適用条件が明記されていません。`);
   }
   await page.keyboard.press("Escape");
 
   if (id === "bike") {
-    await root.locator('[data-fee-view="other"]').click();
-    const comparison = root.locator(".r-motorcycle-comparison");
-    assert(await comparison.count() === 1, `${viewport.name}/bike: その他費用が比較表になっていません。`);
-    const extensionRow = comparison.locator(".r-motorcycle-comparison-row").first();
-    const extensionAmounts = (await extensionRow.locator(".r-motorcycle-fee-amount").allTextContents()).join("|");
-    assert(extensionAmounts.includes("5,060円") && extensionAmounts.includes("4,510円"), `${viewport.name}/bike: 大型・普通二輪の延長料金が同じ行で比較できません。`);
+    await root.locator('[data-catalog="motorcycle"][data-fee-scope="large"][data-fee-view="other"]').click();
+    const otherText = await root.locator("#fee-modal-content").innerText();
+    assert(otherText.includes("大型二輪車 その他の費用"), `${viewport.name}/bike: 大型二輪車のその他費用見出しがありません。`);
+    assert(otherText.includes("延長・補習教習料（1時限）") && otherText.includes("5,060円"), `${viewport.name}/bike: 大型二輪車の延長料金が正しくありません。`);
     await page.keyboard.press("Escape");
   }
 }
