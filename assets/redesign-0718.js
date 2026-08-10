@@ -396,7 +396,9 @@
     const hiddenFlow = (title, items) => `<div class="visually-hidden"><h3>${title}</h3><ol>${items.map(([stepTitle, text]) => `<li><strong>${safeText(stepTitle)}</strong> ${safeText(text)}</li>`).join("")}</ol></div>`;
     const flowPicture = (basename, alt) => {
       const directory = basename === "license-bike" ? "flows-20260724" : "flows-20260723";
-      return `<picture class="flow-artwork"><source media="(max-width: 560px)" srcset="images/detail-pages/${directory}/${basename}-mobile.webp"><img src="images/detail-pages/${directory}/${basename}-desktop.webp" alt="${safeText(alt)}" loading="eager" decoding="async"></picture>`;
+      const mobileFile = basename === "license-bike" ? "license-bike-mobile-v3-20260730.webp" : `${basename}-mobile.webp`;
+      const desktopFile = basename === "license-bike" ? "license-bike-desktop-v3-20260730.webp" : `${basename}-desktop.webp`;
+      return `<picture class="flow-artwork"><source media="(max-width: 560px)" srcset="images/detail-pages/${directory}/${mobileFile}"><img src="images/detail-pages/${directory}/${desktopFile}" alt="${safeText(alt)}" loading="eager" decoding="async"></picture>`;
     };
     const lessonTimes = ["8:30〜9:20", "9:30〜10:20", "10:30〜11:20", "11:30〜12:20", "12:30〜13:20", "13:30〜14:20", "14:30〜15:20", "15:30〜16:20", "16:30〜17:20", "17:40〜18:30", "18:40〜19:30", "19:40〜20:30"];
     setPage(`
@@ -495,7 +497,7 @@
         <div class="license-flow-list">
           <section><h3>AT普通車</h3>${flowPicture("license-at", "AT普通車の免許証交付までの10工程")}</section>
           <section><h3>MT普通車</h3>${flowPicture("license-mt", "MT普通車の免許証交付までの7工程")}</section>
-          <section class="license-flow-bike"><h3>自動二輪</h3>${flowPicture("license-bike", "自動二輪の免許証交付までの8工程")}<p class="license-flow-note">現有免許により学科教習時限が異なります。</p></section>
+          <section class="license-flow-bike"><h3>自動二輪</h3>${flowPicture("license-bike", "自動二輪の免許証交付までの8工程")}</section>
         </div>
         ${hiddenFlow("AT普通車の免許証交付まで", atSteps)}
         ${hiddenFlow("MT普通車の免許証交付まで", mtSteps)}
@@ -594,47 +596,512 @@
   }
 
   function renderSchedule() {
-    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("CURRENT SCHEDULE", "教習・検定日程", "確認したい期間を選ぶと、公開中の予定をすぐに確認できます。")}
-      <div class="schedule-tabs" role="tablist" aria-label="表示する期間">
-        <button type="button" class="is-active" data-period="today" role="tab" aria-selected="true">本日</button>
-        <button type="button" data-period="week" role="tab" aria-selected="false">今週</button>
-        <button type="button" data-period="month" role="tab" aria-selected="false">今月</button>
+    setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("LESSON CALENDAR", "教習・検定日程", "教習日・検定日などの公開中の予定を、月・週・日ごとに確認できます。")}
+      <div class="schedule-calendar">
+        <div class="schedule-view-switch" role="group" aria-label="カレンダーの表示方法">
+          <button type="button" class="is-active" data-calendar-view="month" aria-pressed="true">月</button>
+          <button type="button" data-calendar-view="week" aria-pressed="false">週</button>
+          <button type="button" data-calendar-view="day" aria-pressed="false">日</button>
+        </div>
+        <div class="schedule-calendar-nav" aria-label="表示する月">
+          <button type="button" data-calendar-move="-1" aria-label="前月を表示">‹ <span data-calendar-prev-label>前月</span></button>
+          <h3 id="schedule-month-label"></h3>
+          <button type="button" data-calendar-move="1" aria-label="次月を表示"><span data-calendar-next-label>次月</span> ›</button>
+        </div>
+        <div id="schedule-calendar-panel" aria-live="polite"></div>
       </div>
-      <div id="schedule-panels" class="schedule-stack" aria-live="polite"></div><p class="r-note" id="schedule-updated"></p>
+      <p class="r-note" id="schedule-updated"></p>
+      <dialog class="schedule-detail-dialog" id="schedule-detail-dialog" aria-labelledby="schedule-detail-title">
+        <div class="schedule-detail-header">
+          <div><span>予定の詳細</span><h3 id="schedule-detail-title"></h3></div>
+          <button type="button" data-calendar-detail-close aria-label="詳細を閉じる">×</button>
+        </div>
+        <div class="schedule-detail-body" id="schedule-detail-body"></div>
+      </dialog>
     </div></section>`);
-    const panels = main.querySelector("#schedule-panels");
+    const panel = main.querySelector("#schedule-calendar-panel");
+    const monthLabel = main.querySelector("#schedule-month-label");
     const updated = main.querySelector("#schedule-updated");
-    const tabs = [...main.querySelectorAll("[data-period]")];
-    let data = fallbackSchedule();
-    let activePeriod = "today";
-    function paint() {
-      const labels = { today: "本日", week: "今週", month: "今月" };
-      panels.innerHTML = `<section class="schedule-group" role="tabpanel"><h3>${labels[activePeriod]}</h3>${scheduleRows(data[activePeriod] || [])}</section>`;
-      updated.textContent = data.updatedAt ? `最終更新：${new Intl.DateTimeFormat("ja-JP", { dateStyle: "long", timeStyle: "short" }).format(new Date(data.updatedAt))}` : "";
+    const moveButtons = [...main.querySelectorAll("[data-calendar-move]")];
+    const viewButtons = [...main.querySelectorAll("[data-calendar-view]")];
+    const previousLabel = main.querySelector("[data-calendar-prev-label]");
+    const nextLabel = main.querySelector("[data-calendar-next-label]");
+    const detailDialog = main.querySelector("#schedule-detail-dialog");
+    const detailTitle = main.querySelector("#schedule-detail-title");
+    const detailBody = main.querySelector("#schedule-detail-body");
+    const today = new Date();
+    today.setHours(12, 0, 0, 0);
+    const firstMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const lastMonthOffset = 3;
+    const lastDate = new Date(firstMonth.getFullYear(), firstMonth.getMonth() + lastMonthOffset + 1, 0, 12);
+    const monthCache = new Map();
+    let activeMonthOffset = 0;
+    let activeDate = new Date(today);
+    let activeView = "month";
+    let activeLoadToken = 0;
+    let eventLookup = new Map();
+    let detailReturnFocus = null;
+
+    function monthDate(offset = activeMonthOffset) {
+      return new Date(firstMonth.getFullYear(), firstMonth.getMonth() + offset, 1);
     }
-    tabs.forEach((tab) => tab.addEventListener("click", () => {
-      activePeriod = tab.dataset.period;
-      tabs.forEach((button) => {
-        const isActive = button === tab;
-        button.classList.toggle("is-active", isActive);
-        button.setAttribute("aria-selected", isActive ? "true" : "false");
+
+    function midday(date) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 12);
+    }
+
+    function dateKey(date) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function dateFromKey(value) {
+      const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      return match ? new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 12) : null;
+    }
+
+    function monthKey(date) {
+      return dateKey(date).slice(0, 7);
+    }
+
+    function clampDate(date) {
+      const value = midday(date);
+      if (value < firstMonth) return new Date(firstMonth);
+      if (value > lastDate) return new Date(lastDate);
+      return value;
+    }
+
+    function addDays(date, amount) {
+      const result = midday(date);
+      result.setDate(result.getDate() + amount);
+      return result;
+    }
+
+    function startOfWeek(date) {
+      return addDays(date, -date.getDay());
+    }
+
+    function datesBetween(start, end) {
+      const dates = [];
+      for (let date = midday(start); date <= end; date = addDays(date, 1)) {
+        if (date >= firstMonth && date <= lastDate) dates.push(date);
+      }
+      return dates;
+    }
+
+    function formatLongDate(date) {
+      return new Intl.DateTimeFormat("ja-JP", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "short"
+      }).format(date);
+    }
+
+    function itemDateKey(item, targetMonth) {
+      const rawDate = String(item?.date || item?.eventDate || item?.time || "");
+      const isoMatch = rawDate.match(/(\d{4})-(\d{2})-(\d{2})/);
+      if (isoMatch) return `${isoMatch[1]}-${isoMatch[2]}-${isoMatch[3]}`;
+      const japaneseMatch = rawDate.match(/(\d{1,2})月(\d{1,2})日/);
+      if (!japaneseMatch || Number(japaneseMatch[1]) !== targetMonth.getMonth() + 1) return "";
+      return `${targetMonth.getFullYear()}-${String(japaneseMatch[1]).padStart(2, "0")}-${String(japaneseMatch[2]).padStart(2, "0")}`;
+    }
+
+    function normalizeSchedule(schedule, targetMonth) {
+      const seen = new Set();
+      return ["month", "week", "today"].flatMap((period) => Array.isArray(schedule?.[period]) ? schedule[period] : [])
+        .map((item) => ({ ...item, calendarDate: itemDateKey(item, targetMonth) }))
+        .filter((item) => {
+          if (!item.calendarDate || !item.calendarDate.startsWith(`${targetMonth.getFullYear()}-${String(targetMonth.getMonth() + 1).padStart(2, "0")}-`)) return false;
+          const key = `${item.id || ""}|${item.calendarDate}|${item.title || ""}|${item.category || ""}|${item.note || item.details || ""}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
+    }
+
+    function eventTime(item) {
+      const explicitValues = [
+        item?.startTime,
+        item?.start_time,
+        item?.eventTime,
+        item?.event_time
+      ].filter(Boolean);
+      const searchableValues = [
+        ...explicitValues,
+        item?.title,
+        item?.note,
+        item?.details
+      ].filter(Boolean);
+      for (const value of searchableValues) {
+        const text = String(value);
+        const rangeMatch = text.match(/([01]?\d|2[0-3]):([0-5]\d)(?:\s*[〜～\-–]\s*([01]?\d|2[0-3]):([0-5]\d))?/);
+        if (rangeMatch) {
+          const start = `${Number(rangeMatch[1])}:${rangeMatch[2]}`;
+          return rangeMatch[3] == null ? start : `${start}〜${Number(rangeMatch[3])}:${rangeMatch[4]}`;
+        }
+        const japaneseMatch = text.match(/([01]?\d|2[0-3])時(?:([0-5]?\d)分)?/);
+        if (japaneseMatch) {
+          return `${Number(japaneseMatch[1])}:${String(japaneseMatch[2] || "00").padStart(2, "0")}`;
+        }
+      }
+      return "";
+    }
+
+    function eventNote(item) {
+      return String(item?.note || item?.details || "").trim();
+    }
+
+    function eventSortTime(item) {
+      const match = eventTime(item).match(/^(\d{1,2}):(\d{2})/);
+      return match ? `${match[1].padStart(2, "0")}:${match[2]}` : "99:99";
+    }
+
+    function eventSortRank(item) {
+      if (item?.category === "検定") return "1";
+      if (item?.category === "学科") return "2";
+      if (item?.category === "休校") return "3";
+      return "4";
+    }
+
+    function eventCategoryClass(item) {
+      if (item?.category === "休校" || item?.title === "休校日") return "is-closed";
+      if (item?.category === "検定") return "is-exam";
+      if (item?.category === "学科" || item?.category === "教習") return "is-lesson";
+      return "is-other";
+    }
+
+    function registerEvent(item) {
+      const token = `event-${eventLookup.size}`;
+      eventLookup.set(token, item);
+      return token;
+    }
+
+    function calendarEvent(item, context = "month") {
+      const time = context === "month" && item.category === "学科" ? "" : eventTime(item);
+      const token = registerEvent(item);
+      return `<li class="schedule-calendar-event">
+        <button type="button" class="schedule-calendar-event-button is-${context} ${eventCategoryClass(item)}" data-calendar-event="${token}" aria-label="${safeText(`${item.title || "教習予定"}の詳細を表示`)}">
+          <span class="schedule-event-category">${safeText(item.category || "予定")}</span>
+          <strong>${safeText(item.title || "教習予定")}</strong>
+          ${time ? `<small class="schedule-event-time">${safeText(time)}</small>` : ""}
+        </button>
+      </li>`;
+    }
+
+    function cacheKeysForRange(start, end) {
+      const keys = [];
+      const cursor = new Date(start.getFullYear(), start.getMonth(), 1);
+      const finalMonth = new Date(end.getFullYear(), end.getMonth(), 1);
+      while (cursor <= finalMonth) {
+        keys.push(monthKey(cursor));
+        cursor.setMonth(cursor.getMonth() + 1);
+      }
+      return keys;
+    }
+
+    function viewRange() {
+      if (activeView === "month") {
+        const start = monthDate();
+        return {
+          start,
+          end: new Date(start.getFullYear(), start.getMonth() + 1, 0, 12)
+        };
+      }
+      if (activeView === "week") {
+        const start = startOfWeek(activeDate);
+        const end = addDays(start, 6);
+        return {
+          start: start < firstMonth ? new Date(firstMonth) : start,
+          end: end > lastDate ? new Date(lastDate) : end
+        };
+      }
+      return { start: midday(activeDate), end: midday(activeDate) };
+    }
+
+    function eventsForRange(start, end) {
+      const seen = new Set();
+      return cacheKeysForRange(start, end)
+        .flatMap((key) => monthCache.get(key)?.events || [])
+        .filter((item) => {
+          if (item.calendarDate < dateKey(start) || item.calendarDate > dateKey(end)) return false;
+          const identity = `${item.id || ""}|${item.calendarDate}|${item.title || ""}|${item.category || ""}|${item.note || item.details || ""}`;
+          if (seen.has(identity)) return false;
+          seen.add(identity);
+          return true;
+        })
+        .sort((a, b) => `${a.calendarDate}|${eventSortRank(a)}|${eventSortTime(a)}|${a.title || ""}`.localeCompare(`${b.calendarDate}|${eventSortRank(b)}|${eventSortTime(b)}|${b.title || ""}`, "ja"));
+    }
+
+    function eventsForDate(key) {
+      const date = dateFromKey(key);
+      return date ? eventsForRange(date, date) : [];
+    }
+
+    function eventDetailCard(item) {
+      const time = eventTime(item);
+      const note = eventNote(item);
+      return `<article class="schedule-detail-event">
+        <span>${safeText(item.category || "予定")}</span>
+        <h4>${safeText(item.title || "教習予定")}</h4>
+        ${time ? `<dl><div><dt>時刻</dt><dd>${safeText(time)}</dd></div></dl>` : ""}
+        ${note ? `<div class="schedule-detail-note"><strong>${item.category === "学科" ? "時間割" : "補足"}</strong><p>${safeText(note)}</p></div>` : ""}
+      </article>`;
+    }
+
+    function closeDetails() {
+      if (typeof detailDialog.close === "function" && detailDialog.open) {
+        detailDialog.close();
+      } else {
+        detailDialog.removeAttribute("open");
+      }
+      document.body.classList.remove("is-schedule-dialog-open");
+      detailReturnFocus?.focus?.();
+      detailReturnFocus = null;
+    }
+
+    function openDetails(key, selectedEvent = null, trigger = null) {
+      const date = dateFromKey(key);
+      if (!date) return;
+      detailReturnFocus = trigger;
+      const items = selectedEvent ? [selectedEvent] : eventsForDate(key);
+      detailTitle.textContent = formatLongDate(date);
+      detailBody.innerHTML = items.length
+        ? `<div class="schedule-detail-list">${items.map(eventDetailCard).join("")}</div>`
+        : '<p class="schedule-detail-empty">この日に公開中の予定はありません。</p>';
+      document.body.classList.add("is-schedule-dialog-open");
+      if (typeof detailDialog.showModal === "function") {
+        if (!detailDialog.open) detailDialog.showModal();
+      } else {
+        detailDialog.setAttribute("open", "");
+      }
+      detailDialog.querySelector("[data-calendar-detail-close]")?.focus();
+    }
+
+    function monthView(events, targetMonth) {
+      const eventsByDate = events.reduce((groups, item) => {
+        (groups[item.calendarDate] ||= []).push(item);
+        return groups;
+      }, {});
+      const firstWeekday = targetMonth.getDay();
+      const daysInMonth = new Date(targetMonth.getFullYear(), targetMonth.getMonth() + 1, 0).getDate();
+      const trailingCells = (7 - ((firstWeekday + daysInMonth) % 7)) % 7;
+      const cells = [];
+      for (let index = 0; index < firstWeekday; index += 1) {
+        cells.push('<div class="schedule-calendar-day is-outside" aria-hidden="true"></div>');
+      }
+      for (let day = 1; day <= daysInMonth; day += 1) {
+        const currentDate = new Date(targetMonth.getFullYear(), targetMonth.getMonth(), day, 12);
+        const currentKey = dateKey(currentDate);
+        const dayEvents = eventsByDate[currentKey] || [];
+        const visibleEvents = dayEvents.slice(0, 2);
+        const remaining = Math.max(0, dayEvents.length - visibleEvents.length);
+        const isToday = currentKey === dateKey(today);
+        cells.push(`<article class="schedule-calendar-day${isToday ? " is-today" : ""}" aria-label="${targetMonth.getMonth() + 1}月${day}日${dayEvents.length ? `、予定${dayEvents.length}件` : "、予定なし"}">
+          <button type="button" class="schedule-calendar-date" data-calendar-date="${currentKey}" aria-label="${targetMonth.getMonth() + 1}月${day}日の詳細を表示"><time datetime="${currentKey}">${day}</time></button>
+          ${visibleEvents.length ? `<ul>${visibleEvents.map((item) => calendarEvent(item, "month")).join("")}</ul>` : ""}
+          ${remaining ? `<button type="button" class="schedule-calendar-more" data-calendar-date="${currentKey}" aria-label="${targetMonth.getMonth() + 1}月${day}日の残り${remaining}件を表示">ほか${remaining}件</button>` : ""}
+        </article>`);
+      }
+      for (let index = 0; index < trailingCells; index += 1) {
+        cells.push('<div class="schedule-calendar-day is-outside" aria-hidden="true"></div>');
+      }
+      return `<div class="schedule-calendar-weekdays" aria-hidden="true"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+        <div class="schedule-calendar-grid">${cells.join("")}</div>`;
+    }
+
+    function agendaDay(date, items, context) {
+      const key = dateKey(date);
+      const isToday = key === dateKey(today);
+      return `<article class="schedule-agenda-day${isToday ? " is-today" : ""}">
+        <button type="button" class="schedule-agenda-date" data-calendar-date="${key}" aria-label="${safeText(`${formatLongDate(date)}の詳細を表示`)}">
+          <time datetime="${key}"><strong>${date.getDate()}</strong><span>${new Intl.DateTimeFormat("ja-JP", { weekday: "short" }).format(date)}</span></time>
+        </button>
+        ${items.length
+          ? `<ul class="schedule-agenda-events">${items.map((item) => calendarEvent(item, context)).join("")}</ul>`
+          : '<p>公開中の予定はありません。</p>'}
+      </article>`;
+    }
+
+    function agendaView(events, range, context) {
+      const groups = events.reduce((result, item) => {
+        (result[item.calendarDate] ||= []).push(item);
+        return result;
+      }, {});
+      const dates = datesBetween(range.start, range.end);
+      return `<div class="schedule-${context}-view">${dates.map((date) => agendaDay(date, groups[dateKey(date)] || [], context)).join("")}</div>`;
+    }
+
+    function updateNavigation(range) {
+      if (activeView === "month") {
+        const targetMonth = monthDate();
+        monthLabel.textContent = `${targetMonth.getFullYear()}年 ${targetMonth.getMonth() + 1}月`;
+        previousLabel.textContent = "前月";
+        nextLabel.textContent = "次月";
+      } else if (activeView === "week") {
+        const displayStart = range.start < firstMonth ? firstMonth : range.start;
+        const displayEnd = range.end > lastDate ? lastDate : range.end;
+        monthLabel.textContent = `${displayStart.getFullYear()}年 ${displayStart.getMonth() + 1}月${displayStart.getDate()}日〜${displayEnd.getMonth() + 1}月${displayEnd.getDate()}日`;
+        previousLabel.textContent = "前週";
+        nextLabel.textContent = "次週";
+      } else {
+        monthLabel.textContent = formatLongDate(activeDate);
+        previousLabel.textContent = "前日";
+        nextLabel.textContent = "翌日";
+      }
+      moveButtons.forEach((button) => {
+        const direction = Number(button.dataset.calendarMove);
+        if (activeView === "month") {
+          const nextOffset = activeMonthOffset + direction;
+          button.disabled = nextOffset < 0 || nextOffset > lastMonthOffset;
+        } else {
+          const step = activeView === "week" ? 7 : 1;
+          const candidate = addDays(activeDate, direction * step);
+          button.disabled = candidate < firstMonth || candidate > lastDate;
+        }
+        const period = activeView === "month" ? "月" : activeView === "week" ? "週" : "日";
+        button.setAttribute("aria-label", `${direction < 0 ? "前" : activeView === "day" ? "翌" : "次"}${period}を表示`);
       });
-      paint();
-    }));
-    paint();
-    fetch("/api/cms/events", { headers: { accept: "application/json" } })
-      .then((response) => response.ok ? response.json() : Promise.reject(new Error("not configured")))
-      .then((result) => {
-        const schedule = result?.schedule;
-        const hasCmsEvents = schedule && ["today", "week", "month"].some((period) => Array.isArray(schedule[period]) && schedule[period].length);
-        if (!result?.ok || !hasCmsEvents) throw new Error("cms schedule is empty");
-        data = schedule;
-        paint();
-      })
-      .catch(() => fetch("/api/public-schedule", { headers: { accept: "application/json" } })
+    }
+
+    function paint() {
+      const range = viewRange();
+      const keys = cacheKeysForRange(range.start, range.end);
+      const events = eventsForRange(range.start, range.end);
+      const loading = keys.some((key) => monthCache.get(key)?.loading);
+      const updatedValues = keys.map((key) => monthCache.get(key)?.updatedAt).filter(Boolean);
+      const updatedAt = updatedValues.sort().at(-1) || "";
+      eventLookup = new Map();
+      updateNavigation(range);
+      const content = activeView === "month"
+        ? monthView(events, monthDate())
+        : agendaView(events, range, activeView);
+      panel.innerHTML = `${loading ? '<p class="schedule-calendar-status">予定を読み込んでいます。</p>' : ""}
+        ${content}
+        ${activeView === "month" && !loading && !events.length ? '<p class="schedule-calendar-empty">公開中の予定はありません。予定は受付へご確認ください。</p>' : ""}`;
+      const updatedDate = updatedAt ? new Date(updatedAt) : null;
+      updated.textContent = updatedDate && !Number.isNaN(updatedDate.getTime())
+        ? `最終更新：${new Intl.DateTimeFormat("ja-JP", { dateStyle: "long", timeStyle: "short" }).format(updatedDate)}`
+        : "";
+    }
+
+    function fetchSchedule(url, targetMonth) {
+      return fetch(url, { headers: { accept: "application/json" } })
         .then((response) => response.ok ? response.json() : Promise.reject(new Error("not configured")))
-        .then((result) => { if (result?.ok && result.schedule) { data = result.schedule; paint(); } })
-        .catch(() => {}));
+        .then((result) => {
+          if (!result?.ok || !result.schedule) throw new Error("schedule is unavailable");
+          return {
+            events: normalizeSchedule(result.schedule, targetMonth),
+            updatedAt: result.schedule.updatedAt || result.generatedAt || ""
+          };
+        });
+    }
+
+    function ensureMonth(key) {
+      const cached = monthCache.get(key);
+      if (cached && !cached.loading) return Promise.resolve(cached);
+      if (cached?.promise) return cached.promise;
+      const targetMonth = new Date(`${key}-01T12:00:00`);
+      const entry = {
+        events: cached?.events || [],
+        updatedAt: cached?.updatedAt || "",
+        loading: true,
+        promise: null
+      };
+      monthCache.set(key, entry);
+      const anchor = `${key}-01`;
+      const publicSchedule = fetchSchedule(`/api/cms/events?today=${encodeURIComponent(anchor)}`, targetMonth)
+        .catch(() => fetchSchedule(`/api/public-schedule?today=${encodeURIComponent(anchor)}`, targetMonth))
+        .catch(() => ({ events: [], updatedAt: "" }));
+      entry.promise = publicSchedule
+        .then((result) => {
+          Object.assign(entry, result, { loading: false });
+          return entry;
+        })
+        .catch(() => {
+          Object.assign(entry, { events: [], updatedAt: "", loading: false });
+          return entry;
+        })
+        .finally(() => {
+          entry.promise = null;
+        });
+      return entry.promise;
+    }
+
+    function loadView() {
+      const token = ++activeLoadToken;
+      const range = viewRange();
+      const requests = cacheKeysForRange(range.start, range.end).map(ensureMonth);
+      paint();
+      Promise.all(requests).finally(() => {
+        if (token === activeLoadToken) paint();
+      });
+    }
+
+    moveButtons.forEach((button) => button.addEventListener("click", () => {
+      const direction = Number(button.dataset.calendarMove);
+      if (activeView === "month") {
+        const nextOffset = activeMonthOffset + direction;
+        if (nextOffset < 0 || nextOffset > lastMonthOffset) return;
+        activeMonthOffset = nextOffset;
+        const targetMonth = monthDate();
+        activeDate = activeMonthOffset === 0 ? new Date(today) : new Date(targetMonth.getFullYear(), targetMonth.getMonth(), 1, 12);
+      } else {
+        const step = activeView === "week" ? 7 : 1;
+        const candidate = addDays(activeDate, direction * step);
+        if (candidate < firstMonth || candidate > lastDate) return;
+        activeDate = clampDate(candidate);
+        activeMonthOffset = Math.min(lastMonthOffset, Math.max(0,
+          (activeDate.getFullYear() - firstMonth.getFullYear()) * 12 + activeDate.getMonth() - firstMonth.getMonth()
+        ));
+      }
+      loadView();
+    }));
+
+    viewButtons.forEach((button) => button.addEventListener("click", () => {
+      const nextView = button.dataset.calendarView;
+      if (!["month", "week", "day"].includes(nextView) || nextView === activeView) return;
+      if (activeView === "month" && nextView !== "month") {
+        const targetMonth = monthDate();
+        activeDate = activeMonthOffset === 0 ? new Date(today) : new Date(targetMonth.getFullYear(), targetMonth.getMonth(), 1, 12);
+      }
+      if (nextView === "month") {
+        activeMonthOffset = Math.min(lastMonthOffset, Math.max(0,
+          (activeDate.getFullYear() - firstMonth.getFullYear()) * 12 + activeDate.getMonth() - firstMonth.getMonth()
+        ));
+      }
+      activeView = nextView;
+      viewButtons.forEach((item) => {
+        const isActive = item.dataset.calendarView === activeView;
+        item.classList.toggle("is-active", isActive);
+        item.setAttribute("aria-pressed", String(isActive));
+      });
+      loadView();
+    }));
+
+    panel.addEventListener("click", (event) => {
+      const eventButton = event.target.closest("[data-calendar-event]");
+      if (eventButton) {
+        const item = eventLookup.get(eventButton.dataset.calendarEvent);
+        if (item) openDetails(item.calendarDate, item, eventButton);
+        return;
+      }
+      const dateButton = event.target.closest("[data-calendar-date]");
+      if (dateButton) openDetails(dateButton.dataset.calendarDate, null, dateButton);
+    });
+
+    detailDialog.querySelector("[data-calendar-detail-close]")?.addEventListener("click", closeDetails);
+    detailDialog.addEventListener("click", (event) => {
+      if (event.target === detailDialog) closeDetails();
+    });
+    detailDialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      closeDetails();
+    });
+    detailDialog.addEventListener("close", () => {
+      document.body.classList.remove("is-schedule-dialog-open");
+    });
+
+    loadView();
   }
 
   function renderTopics() {
@@ -677,7 +1144,7 @@
 
   function renderStudents() {
     setPage(`<section class="r-section"><div class="r-wrap">${sectionHeader("STUDENTS", "在校生メニュー", "予定確認、学科教習、効果測定、送迎予約へ迷わず進めます。")}
-      <div class="simple-grid"><a class="simple-item" href="detail.html?page=teaching"><h3>教習カレンダー</h3><p>本日・今週・今月の教習・検定予定</p></a><a class="simple-item" href="https://dondora.online/chikushi/students/sign_in" target="_blank" rel="noopener"><h3>オンライン学科教習</h3><p>オンライン学科のログイン画面へ</p></a><a class="simple-item" href="https://www.musasi.jp/amagi/requirements" target="_blank" rel="noopener"><h3>効果測定MUSASI</h3><p>学科試験対策のログイン画面へ</p></a><a class="simple-item" href="https://buscatch.jp/pc/login.php?rosen_group_id=1926" target="_blank" rel="noopener"><h3>スクールバス予約</h3><p>BusCatchの予約画面へ</p></a><a class="simple-item" href="detail.html?page=syuryokentei"><h3>修了検定</h3><p>集合時間と必要条件を確認</p></a><a class="simple-item" href="detail.html?page=sotsugyoukentei"><h3>卒業検定</h3><p>卒業前の手続きを確認</p></a></div>
+      <div class="simple-grid"><a class="simple-item" href="detail.html?page=teaching"><h3>教習カレンダー</h3><p>本日・今週・今月の教習・検定予定</p></a><a class="simple-item" href="https://dondora.online/chikushi/students/sign_in" target="_blank" rel="noopener"><h3>オンライン学科教習</h3><p>オンライン学科のログイン画面へ</p></a><a class="simple-item" href="https://www.musasi.jp/amagi/requirements" target="_blank" rel="noopener"><h3>効果測定MUSASI</h3><p>学科試験対策のログイン画面へ</p></a><a class="simple-item" href="https://buscatch.jp/pc/login.php?rosen_group_id=1926" target="_blank" rel="noopener"><h3>送迎バス予約</h3><p>BusCatchの予約画面へ</p></a><a class="simple-item" href="detail.html?page=syuryokentei"><h3>修了検定</h3><p>集合時間と必要条件を確認</p></a><a class="simple-item" href="detail.html?page=sotsugyoukentei"><h3>卒業検定</h3><p>卒業前の手続きを確認</p></a></div>
     </div></section>`);
   }
 
@@ -696,11 +1163,14 @@
     const params = new URLSearchParams(location.search);
     const purpose = params.get("purpose")?.includes("資料") ? "資料請求" : "仮入校申し込み";
     const isMaterialRequest = purpose === "資料請求";
+    const isReferralApplication = !isMaterialRequest && (params.get("referral") === "1" || params.get("purpose")?.includes("紹介"));
     const sectionEyebrow = isMaterialRequest ? "REQUEST / CONTACT" : "ONLINE ENTRY";
     const sectionTitle = isMaterialRequest ? "資料請求・お問い合わせ" : "仮入校申し込み";
     const sectionLead = isMaterialRequest
       ? "資料請求やご不明点を入力できます。入校をご検討中の日程があれば、任意でご記入ください。"
-      : "従来の公式申込書と同じ項目・順番で入力できます。複数選択の項目はチェックボックスでお選びください。";
+      : isReferralApplication
+        ? "友達割引をご希望の方は、お客様情報の「紹介者名（姓・名）」を入力してください。割引条件は受付で最終確認します。"
+        : "従来の公式申込書と同じ項目・順番で入力できます。複数選択の項目はチェックボックスでお選びください。";
     const desiredEntryDateLabel = isMaterialRequest ? "入校をご検討中の日程" : "入校希望日";
     const desiredEntryDateBadge = isMaterialRequest ? '<span class="optional">任意</span>' : '<span class="required">必須</span>';
     const desiredEntryDateRequired = isMaterialRequest ? "" : " required";
@@ -714,10 +1184,11 @@
     const currentLicenses = ["持っていない", "MT普通車", "AT普通車", "MT準中型車", "AT大型二輪車", "MT大型二輪車", "AT普通二輪車", "MT普通二輪車", "AT普通二輪車（小型限定）", "MT普通二輪車（小型限定）", "原付", "MT5t限定準中型車", "AT5t限定準中型車", "中型車", "MT8t限定中型車", "AT8t限定中型車", "大型車", "けん引", "大型特殊", "大特農耕限定", "仮免許"];
     const optionPlans = ["コミコミプラン", "スケジュールプラン", "合宿風ハイスピードプラン"];
     const paymentMethods = ["現金", "ローン", "振込み", "未定"];
-    const howKnown = ["DM・チラシ", "看板", "教習車・スクールバス", "インターネット", "ご家族・友人・知人", "学校設置のパンフレット", "その他"];
+    const howKnown = ["DM・チラシ", "看板", "教習車・送迎バス", "インターネット", "ご家族・友人・知人", "学校設置のパンフレット", "その他"];
     const admissionMotives = ["交通の便がよい", "自宅から近い", "学校・会社から近い", "ご家族・友人・知人に勧められた", "当校職員に勧められた", "教習プランが魅力だから", "施設・サービスが魅力だから", "その他"];
     const otherInput = (source, name, label, placeholder) => `<label class="choice-other" data-other-source="${source}" hidden><span>${label}</span><input name="${name}" maxlength="100" placeholder="${placeholder}"></label>`;
     return `<section class="r-section"><div class="r-wrap">${sectionHeader(sectionEyebrow, sectionTitle, sectionLead)}
+      ${isReferralApplication ? '<div class="notice-box referral-application-note" id="referral-application-note"><strong>友達割引をご希望の方へ</strong><p>下記のお客様情報にある「紹介者名（姓・名）」を入力してください。入力せず、電話または入校申し込み時にお伝えいただくこともできます。</p></div>' : ""}
       <form id="applicationForm" novalidate>
         <div class="form-honeypot" aria-hidden="true"><label>この欄は入力しないでください<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
         <input type="hidden" name="purpose" value="${purpose}">
@@ -737,8 +1208,8 @@
           <label class="form-field"><span>電話番号<span class="required">必須</span></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" required placeholder="0927102188"></label>
           <fieldset class="form-field is-wide choice-field"><legend>職業<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("radio", "occupation", occupations, true)}</div>${otherInput("occupation", "occupationOther", "その他の職業", "職業をご入力ください")}</fieldset>
           <label class="form-field is-wide"><span>お勤め先（学校・会社）名</span><input name="organization" autocomplete="organization" placeholder="○○大学"></label>
-          <label class="form-field"><span>紹介者名（姓）</span><input name="introducerFamilyName" placeholder="筑紫野"></label>
-          <label class="form-field"><span>紹介者名（名）</span><input name="introducerGivenName" placeholder="花子"></label>
+          <label class="form-field" id="referral-name-field"><span>紹介者名（姓）${isReferralApplication ? '<span class="optional">割引利用時に入力</span>' : ""}</span><input name="introducerFamilyName" placeholder="筑紫野"></label>
+          <label class="form-field"><span>紹介者名（名）${isReferralApplication ? '<span class="optional">割引利用時に入力</span>' : ""}</span><input name="introducerGivenName" placeholder="花子"></label>
           <label class="form-field is-wide"><span>${desiredEntryDateLabel}${desiredEntryDateBadge}</span><input type="date" name="desiredEntryDate"${desiredEntryDateRequired} aria-describedby="desired-entry-date-help"><small id="desired-entry-date-help">${desiredEntryDateHelp}</small></label>
         </div></section>
 
