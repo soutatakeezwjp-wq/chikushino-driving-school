@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>学校情報 更新画面｜筑紫野自動車学校</title>
-  <link rel="stylesheet" href="admin.css">
-  <script src="admin.js" defer></script>
+  <link rel="stylesheet" href="admin.css?v=20260727-2">
+  <script src="admin.js?v=20260727-2" defer></script>
 </head>
 <body>
   <header class="admin-header">
@@ -52,10 +52,28 @@
           <div>
             <p class="eyebrow">SCHEDULE</p>
             <h2>教習カレンダー</h2>
-            <p>日付と内容を登録すると、公開サイトの「本日・今週・今月」に自動で表示されます。</p>
+            <p>月・週・日を切り替えて予定を管理できます。日付を押すと追加、予定を押すと編集できます。</p>
           </div>
           <button class="primary-button" type="button" data-new="event">予定を追加</button>
         </div>
+
+        <section class="calendar-manager" aria-labelledby="admin-calendar-title">
+          <div class="calendar-toolbar">
+            <div class="calendar-navigation" aria-label="表示する期間を移動">
+              <button class="calendar-nav-button" type="button" data-calendar-move="-1" aria-label="前の期間">‹</button>
+              <button class="calendar-today-button" type="button" data-calendar-today>今日</button>
+              <button class="calendar-nav-button" type="button" data-calendar-move="1" aria-label="次の期間">›</button>
+            </div>
+            <h3 id="admin-calendar-title" aria-live="polite"></h3>
+            <div class="calendar-view-switch" role="group" aria-label="カレンダーの表示方法">
+              <button class="is-active" type="button" data-calendar-view="month" aria-pressed="true">月</button>
+              <button type="button" data-calendar-view="week" aria-pressed="false">週</button>
+              <button type="button" data-calendar-view="day" aria-pressed="false">日</button>
+            </div>
+          </div>
+          <p class="calendar-help" id="calendar-help">日付を押すと、その日の予定を追加できます。予定を押すと補足を含む編集画面が開きます。</p>
+          <div class="admin-calendar" id="event-calendar" aria-describedby="calendar-help" aria-live="polite"></div>
+        </section>
 
         <form class="editor" id="event-form" hidden>
           <input type="hidden" name="id">
@@ -68,21 +86,21 @@
             <label><span>分類</span>
               <select name="category">
                 <option>教習</option>
+                <option>学科</option>
                 <option>検定</option>
                 <option>休校</option>
                 <option>その他</option>
               </select>
             </label>
             <label class="is-wide"><span>タイトル</span><input name="title" maxlength="80" required placeholder="例：卒業検定"></label>
-            <label class="is-wide"><span>補足</span><textarea name="details" maxlength="300" placeholder="例：受付は9:45までです"></textarea></label>
+            <label class="is-wide"><span>補足</span><textarea name="details" maxlength="300" placeholder="例：受付は9:45までです"></textarea><small>補足はカレンダー内には表示せず、予定を押した後の画面で確認できます。</small></label>
           </div>
           <div class="form-actions">
+            <button class="delete-button form-delete-button" id="event-delete-button" type="button" hidden>この予定を削除</button>
             <button class="secondary-button" type="button" data-cancel="event">キャンセル</button>
             <button class="primary-button" type="submit">保存する</button>
           </div>
         </form>
-
-        <div class="content-list" id="event-list" aria-live="polite"></div>
       </section>
 
       <section class="admin-view" id="posts-view">
@@ -90,7 +108,7 @@
           <div>
             <p class="eyebrow">NEWS</p>
             <h2>記事・お知らせ</h2>
-            <p>「重要」または「お知らせ」を選び、画像・タイトル・本文を登録できます。</p>
+            <p>「重要」または「お知らせ」を選び、タイトルと本文を登録できます。本文には文章・太字・画像を好きな順番で配置できます。</p>
           </div>
           <button class="primary-button" type="button" data-new="post">記事を追加</button>
         </div>
@@ -98,6 +116,7 @@
         <form class="editor" id="post-form" hidden>
           <input type="hidden" name="id">
           <input type="hidden" name="imageUrl">
+          <input type="hidden" name="body">
           <div class="form-heading">
             <h3 id="post-form-title">記事を追加</h3>
             <button class="icon-button" type="button" data-cancel="post" aria-label="閉じる">×</button>
@@ -108,14 +127,26 @@
           </div>
           <div class="form-grid">
             <label class="is-wide"><span>タイトル</span><input name="title" maxlength="120" required></label>
-            <label class="is-wide"><span>一覧に表示する短い説明</span><textarea name="summary" maxlength="240" required></textarea></label>
-            <label class="is-wide"><span>本文</span><textarea class="body-input" name="body" required placeholder="段落の間は1行空けてください。"></textarea></label>
-            <label><span>公開日時</span><input type="datetime-local" name="publishedAt" required></label>
-            <label class="publish-check"><input type="checkbox" name="isPublished" checked><span>公開する</span></label>
-            <label class="is-wide image-picker"><span>イメージ画像</span><input type="file" id="post-image" accept="image/jpeg,image/png,image/webp"></label>
+            <div class="is-wide rich-editor-field">
+              <span class="field-label">本文</span>
+              <div class="rich-editor-shell">
+                <div class="rich-editor-toolbar" role="toolbar" aria-label="本文の編集">
+                  <button type="button" class="rich-tool-button" id="rich-bold-button" aria-label="選択した文字を太字にする"><strong>B</strong> 太字</button>
+                  <label class="rich-tool-button rich-image-button">
+                    <span>画像を挿入</span>
+                    <input type="file" id="post-inline-image" accept="image/jpeg,image/png,image/webp">
+                  </label>
+                </div>
+                <div class="body-editor" id="body-editor" contenteditable="true" role="textbox" aria-multiline="true" data-placeholder="ここに本文を入力してください。画像は「画像を挿入」から、文章の途中へ追加できます。"></div>
+              </div>
+              <small>文章を書く →「画像を挿入」→ その下へ文章を書く、という順番で自由に作成できます。文字を選択して「太字」を押すと強調できます。</small>
+            </div>
+            <label><span>公開日時（日本時間）</span><input type="datetime-local" name="publishedAt" required></label>
+            <label class="publish-check"><input type="checkbox" name="isPublished" checked><span>公開する（未来日時は予約公開）</span></label>
+            <label class="is-wide image-picker"><span>トップ画像</span><input type="file" id="post-image" accept="image/jpeg,image/png,image/webp"></label>
             <div class="image-preview is-wide" id="image-preview" hidden>
-              <img alt="選択した記事画像">
-              <button class="quiet-button" type="button" id="remove-image">画像を外す</button>
+              <img alt="選択したトップ画像">
+              <button class="quiet-button" type="button" id="remove-image">トップ画像を外す</button>
             </div>
           </div>
           <div class="form-actions">

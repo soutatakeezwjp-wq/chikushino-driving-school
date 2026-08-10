@@ -35,7 +35,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/redesign-0718.css?v=20260724-1">
+<link rel="stylesheet" href="assets/redesign-0718.css?v=20260729-1">
 <style>
   :root {
     --purple: #5c319b;
@@ -1454,6 +1454,7 @@
     border-radius: 14px;
     font-weight: 800;
     line-height: 1.7;
+    white-space: pre-line;
   }
   .application-status.is-visible { display: block; }
   .application-status.is-loading {
@@ -2436,7 +2437,7 @@
           <a href="detail.html?page=admission"><span>入校の流れ</span><small>FLOW</small></a>
           <a href="detail.html?page=application&amp;purpose=仮入校申し込み"><span>仮入校申し込み</span><small>APPLICATION</small></a>
           <a href="detail.html?page=application&amp;purpose=資料請求"><span>資料請求・お問い合わせ</span><small>CONTACT</small></a>
-          <a href="detail.html?page=license"><span>免許交付まで</span><small>LICENSE</small></a>
+          <a href="detail.html?page=license"><span>免許証交付まで</span><small>LICENSE</small></a>
         </div>
       </div>
       <div class="nav-item">
@@ -2488,7 +2489,7 @@
           <a href="detail.html?page=admission">入校の流れ</a>
           <a href="detail.html?page=application&amp;purpose=仮入校申し込み">仮入校申し込み</a>
           <a href="detail.html?page=application&amp;purpose=資料請求">資料請求・お問い合わせ</a>
-          <a href="detail.html?page=license">免許交付まで</a>
+          <a href="detail.html?page=license">免許証交付まで</a>
         </div>
         <div class="foot-col">
           <h4>免許・料金</h4>
@@ -2504,8 +2505,8 @@
           <a class="why-banner-link" href="reasons/" target="_blank" rel="noopener" aria-label="私が自動車学校に通う理由">
             <img src="images/site-parts/why-banner.gif" alt="私が自動車学校に通う理由">
           </a>
-          <a href="detail.html?page=facilities">設備紹介</a>
-          <a href="detail.html?page=instructors">教官紹介</a>
+          <a href="detail.html?page=facilities">施設紹介</a>
+          <a href="detail.html?page=instructors">指導員紹介</a>
           <a href="detail.html?page=company">会社概要</a>
         </div>
         <div class="foot-col">
@@ -2700,7 +2701,7 @@
             <li>◎ 当校の作成したスケジュールどおりに教習を進めていくプランです。</li>
             <li>とにかく早く免許が取りたい方におすすめです。最短17日が目安です。</li>
           </ul>
-          <p class="subnote">※最短日数は目安であり、個人差等により延びる場合があります。※各入校日先着1名。※各種料金に合宿風ハイスピードプラン料金（55,000円・12〜3月開始は77,000円）が別途必要です。</p>
+          <p class="subnote">※最短日数は目安であり、個人差等により延びる場合があります。※入校希望日の2週間前までにお手続きが必要です。※各入校日先着3名のため、お受けできない場合があります。※各種料金に合宿風ハイスピードプラン料金（55,000円・12〜3月開始は77,000円）が別途必要です。</p>
           <h4>オプションプラン（税込）</h4>
           ${ordinaryOptionTableHtml("highspeed")}
           <div class="sample-shot"><img loading="lazy" decoding="async" src="images/current-site/pages/camp_price-01.jpg" alt="合宿風ハイスピードプラン サンプル"></div>
@@ -2709,13 +2710,13 @@
         </article>
         <article class="plan-panel" id="ordinary-schedule">
           <h3>スケジュールプラン</h3>
-          <p><strong>対応車種：AT普通車</strong></p>
+          <p><strong>対応車種：AT普通車・MT普通車・MT準中型車</strong></p>
           <ul class="info-list">
             <li>毎日は通えないけれど早く免許を取りたい方におすすめです。</li>
             <li>都合の良い日時のみ通って短期間で免許取得を目指すプランです。</li>
             <li>お客様の都合に合わせてスケジュールを作成します。</li>
             <li>デイプランでご入校の方は8:30〜18:30、フリープランでご入校の方は8:30〜20:30の間でスケジュールを作成します。</li>
-            <li>最短25日が目安です。各入校日先着3名です。</li>
+            <li>最短25日が目安です。入校希望日の1週間前までにお手続きが必要です。各入校日先着3名のため、お受けできない場合があります。</li>
           </ul>
           <h4>オプションプラン（税込）</h4>
           ${ordinaryOptionTableHtml("schedule")}
@@ -2872,7 +2873,7 @@
               <li>とにかく早く免許が取りたい方におすすめです。</li>
               <li>自宅から通って、合宿とほぼ同じ期間で免許取得するプランです。</li>
               <li>当校の作成したスケジュールどおりに教習を進めていきます。</li>
-              <li>最短17日が目安です（個人差等により延びる場合があります）。各入校日先着1名です。</li>
+              <li>最短17日が目安です（個人差等により延びる場合があります）。入校希望日の2週間前までにお手続きが必要です。各入校日先着3名のため、お受けできない場合があります。</li>
               <li>※各種料金に合宿風ハイスピードプラン料金（55,000円・12〜3月開始は77,000円）が別途必要です。</li>
             </ul>
             <h4>オプションプラン（税込）</h4>
@@ -3478,7 +3479,7 @@
           <article class="summary-card"><span class="eyebrow">GRADUATION TEST</span><strong>卒業前の技能検定について確認できます。</strong><p>卒業検定は、教習の最終段階となる大切な検定です。集合時間、検定の流れ、卒業後の免許センターでの手続きまで見通しを持って準備してください。</p></article>
           <div class="compact-list">
             <a class="compact-row" href="detail.html?page=teaching"><small>CALENDAR</small><strong>教習カレンダーを確認</strong><span>›</span></a>
-            <a class="compact-row" href="detail.html?page=license"><small>LICENSE</small><strong>免許交付までの流れを見る</strong><span>›</span></a>
+            <a class="compact-row" href="detail.html?page=license"><small>LICENSE</small><strong>免許証交付までの流れを見る</strong><span>›</span></a>
           </div>
         </div></section>
         <section class="reveal exam-guide-section"><div class="wrap">
@@ -3687,7 +3688,7 @@
           <p class="section-lead">筑紫野自動車学校では、教習指導員有資格者を募集しています。教習生のために親身になれる方を募集しています。しばらく教習業務から離れていた方もご相談ください。</p>
           <table class="data-table"><tbody><tr><th>職種</th><td>インストラクター（教習指導員）</td></tr><tr><th>仕事内容</th><td>初心運転者の育成に携わる教習指導を行っていただきます。</td></tr><tr><th>雇用形態</th><td>正社員（指導員候補生期間は契約社員）</td></tr><tr><th>対象学歴</th><td>インストラクター：大学卒・短大卒・専門学校卒</td></tr><tr><th>勤務地</th><td>筑紫野自動車学校</td></tr><tr><th>勤務時間</th><td>10:30〜20:30（4月〜1月）/ 9:30〜20:30（2月〜3月）</td></tr><tr><th>給与</th><td>教習開始後、給与に実績に応じた教習手当・残業手当を支給します。</td></tr><tr><th>諸手当</th><td>役職給、職能給、通勤手当、家族手当、残業手当、資格手当、休日手当 等</td></tr><tr><th>賞与</th><td>実績による</td></tr><tr><th>昇給</th><td>年1回（10月）。当社規定により基本給（年齢テーブル）と職能給が上がります。</td></tr><tr><th>福利厚生</th><td>社会保険等（健康・厚生年金・雇用・労災）、車通勤可、資格取得支援</td></tr><tr><th>休日・休暇</th><td>年間スケジュールにより年間約105日。有給休暇、慶弔休暇あり。</td></tr><tr><th>応募方法</th><td>履歴書を〒818-0025 福岡県筑紫野市筑紫120番地1 筑紫野自動車学校 総務課宛に郵送してください。</td></tr><tr><th>連絡先</th><td>筑紫野自動車学校 総務課 / TEL：092-710-2188</td></tr></tbody></table>
         </div></section>
-        <section class="reveal"><div class="wrap cta-strip"><div><strong>応募前に学校の雰囲気を知りたい方へ。</strong><p>学校紹介、施設紹介、教官紹介ページで働く環境を確認できます。</p></div><a class="btn btn-purple" href="detail.html?page=school">学校紹介を見る</a></div></section>`
+        <section class="reveal"><div class="wrap cta-strip"><div><strong>応募前に学校の雰囲気を知りたい方へ。</strong><p>学校紹介、施設紹介、指導員紹介ページで働く環境を確認できます。</p></div><a class="btn btn-purple" href="detail.html?page=school">学校紹介を見る</a></div></section>`
     },
     introduction: {
       eyebrow: "INTRODUCTION",
@@ -3806,7 +3807,7 @@
           <div class="grid cols-3" style="margin-top:18px;">
             <article class="card"><h3>企業様向け安全講習</h3><p>運転診断を通して安全運転意識の再確認を図り、「安全運転の心得とは？」を再認識していただくことを目的に実施します。</p></article>
             <article class="card"><h3>3時間講習例</h3><p>1時間目はOD式運転適性検査、2時間目は運転技能診断、3時間目は運転技能矯正を行います。</p></article>
-            <article class="card"><h3>講習費用</h3><p>講習料は1時限7,000円（税込）。AT普通車・MT普通車、MT準中型車の講習に対応します。</p></article>
+            <article class="card"><h3>講習費用</h3><p>講習料は1時限7,000円（税込）。AT普通車・MT普通車、MT準中型車の講習に対応します。</p><p class="mini">表示金額は税込です。</p></article>
           </div>
           <div class="notice-box" style="margin-top:18px;">
             <ul class="info-list">
@@ -3964,7 +3965,7 @@
     return `<section class="reveal price-simulator-cta"><div class="wrap page-summary">
       <article class="summary-card"><span class="eyebrow">PRICE</span><strong>料金表で条件ごとの金額を確認。</strong><p>${lead}</p></article>
       <div class="compact-list">
-        <a class="compact-row" href="detail.html?page=price"><small>PRICE</small><strong>車種別の料金を見る</strong><span>›</span></a>
+        <a class="compact-row" href="detail.html?page=price"><small>PRICE</small><strong>車種別の料金表を見る</strong><span>›</span></a>
         <a class="compact-row" href="detail.html?page=application&amp;purpose=資料請求"><small>FORM</small><strong>条件を相談する</strong><span>›</span></a>
       </div>
     </div></section>`;
@@ -3977,10 +3978,10 @@
   function relatedCards(current) {
     const relatedMap = {
       admission: [["application", "仮入校申し込み", "準備できたら、そのまま申し込みへ進めます。"], ["price", "料金プラン", "必要な費用を先に確認して不安を減らします。"], ["access", "送迎バス", "通えるルートを確認して、通学イメージを固めます。"]],
-      courses: [["price", "料金プラン", "選んだ免許の費用目安を確認できます。"], ["license", "免許交付まで", "卒業までの流れと必要時限を確認できます。"], ["application", "仮入校申し込み", "取りたい免許が決まったら相談へ進めます。"]],
+      courses: [["price", "料金プラン", "選んだ免許の費用目安を確認できます。"], ["license", "免許証交付まで", "卒業までの流れと必要時限を確認できます。"], ["application", "仮入校申し込み", "取りたい免許が決まったら相談へ進めます。"]],
       standard: [["camp_price", "合宿風ハイスピード", "短期取得を目指すAT普通車プランへ。"], ["price", "料金一覧", "免許ごとの料金ページを確認できます。"], ["application", "普通車教習を相談", "入校日や必要書類も確認できます。"]],
       camp_price: [["standard", "普通自動車教習", "基本プランと比較できます。"], ["application", "空き状況を相談", "短期プランの受付可否を確認。"], ["access", "通学方法を確認", "短期取得に必要な通いやすさを確認。"]],
-      semi_medium: [["price", "料金プラン", "準中型の料金目安を確認。"], ["license", "免許交付まで", "必要時限と卒業までの流れを確認。"], ["application", "準中型を相談", "仕事や取得時期に合わせて相談。"]],
+      semi_medium: [["price", "料金プラン", "準中型の料金目安を確認。"], ["license", "免許証交付まで", "必要時限と卒業までの流れを確認。"], ["application", "準中型を相談", "仕事や取得時期に合わせて相談。"]],
       bike: [["motorcycle", "原付講習", "二輪と原付の違いも確認できます。"], ["limited", "限定解除", "二輪のAT限定・小型限定解除を確認。"], ["application", "二輪教習を相談", "希望車種と時期を相談できます。"]],
       limited: [["bike", "自動二輪車教習", "二輪免許の全体を確認。"], ["standard", "普通自動車教習", "AT/MTの違いも確認。"], ["application", "限定解除を相談", "必要な審査を確認できます。"]],
       paper: [["training", "各種講習", "企業・高齢者・原付講習も確認。"], ["access", "アクセス", "講習当日の来校方法を確認。"], ["application", "ペーパー講習を相談", "回数や内容を相談できます。"]],
@@ -3991,13 +3992,13 @@
       students: [["teaching", "教習カレンダー", "月別の教習予定を確認。"], ["syuryokentei", "修了検定", "仮免許前の検定情報へ。"], ["sotsugyoukentei", "卒業検定", "卒業前の検定情報へ。"]],
       teaching: [["students", "在校生メニュー", "在校中によく使う入口へ戻る。"], ["syuryokentei", "修了検定", "検定予定も確認できます。"], ["sotsugyoukentei", "卒業検定", "卒業前の案内を確認。"]],
       syuryokentei: [["students", "在校生メニュー", "教習中の入口へ戻る。"], ["teaching", "教習カレンダー", "学科・休校日も確認。"], ["sotsugyoukentei", "卒業検定", "次の検定情報へ。"]],
-      sotsugyoukentei: [["students", "在校生メニュー", "教習中の入口へ戻る。"], ["teaching", "教習カレンダー", "日程を合わせて確認。"], ["license", "免許交付まで", "卒業後の流れへ。"]],
+      sotsugyoukentei: [["students", "在校生メニュー", "教習中の入口へ戻る。"], ["teaching", "教習カレンダー", "日程を合わせて確認。"], ["license", "免許証交付まで", "卒業後の流れへ。"]],
       topics: [["courses", "免許を取る", "キャンペーン対象になりやすい免許を確認。"], ["students", "在校生の方へ", "教習カレンダーや検定情報はこちら。"], ["application", "資料請求", "気になる情報があればすぐ相談できます。"]],
       instructors: [["school", "学校紹介", "校舎やサポート体制を確認。"], ["facilities", "施設・設備", "教室やコースの雰囲気も確認。"], ["application", "相談してみる", "不安な点を申し込み前に確認できます。"]],
       facilities: [["school", "学校紹介", "学校全体の安心感を確認できます。"], ["access", "アクセス", "通いやすさも合わせて見られます。"], ["application", "見学・相談", "気になる施設があれば相談へ。"]],
       why: [["courses", "免許を取る", "理由に合う免許を選べます。"], ["price", "料金プラン", "費用の目安をすぐ確認できます。"], ["access", "送迎バス", "通える場所か確認できます。"]],
       faq: [["application", "問い合わせ", "解決しない質問はそのまま相談できます。"], ["price", "料金プラン", "費用・支払いの確認へ。"], ["admission", "入校案内", "手続きと必要書類を確認できます。"]],
-      recruit: [["school", "学校紹介", "学校の雰囲気や理念を確認できます。"], ["instructors", "教官紹介", "仕事のイメージを掴めます。"], ["application", "問い合わせ", "採用に関する相談にも対応します。"]],
+      recruit: [["school", "学校紹介", "学校の雰囲気や理念を確認できます。"], ["instructors", "指導員紹介", "仕事のイメージを掴めます。"], ["application", "問い合わせ", "採用に関する相談にも対応します。"]],
       introduction: [["application", "紹介フォーム", "紹介者・入校希望者の情報を入力できます。"], ["courses", "免許を取る", "紹介相手に合う免許を確認。"], ["price", "料金プラン", "紹介後の費用目安を確認できます。"]],
       license: [["courses", "取扱免許", "免許種別ごとの詳細へ戻れます。"], ["price", "料金表", "必要時限に応じた料金を確認。"], ["application", "相談する", "取得ルートを学校へ確認できます。"]],
       training: [["school", "学校紹介", "地域交通安全への取り組みを確認。"], ["access", "アクセス", "講習当日の来校方法を確認。"], ["application", "講習相談", "法人・個人講習の相談へ進めます。"]]
@@ -4026,10 +4027,10 @@
   }
 
   const directoryGroups = [
-    ["入校案内", [["admission", "入校の流れ"], ["application", "仮入校申し込み"], ["license", "免許交付まで"], ["introduction", "友人・知人紹介"]]],
+    ["入校案内", [["admission", "入校の流れ"], ["application", "仮入校申し込み"], ["license", "免許証交付まで"], ["introduction", "友人・知人紹介"]]],
     ["教習・講習", [["standard", "普通自動車教習"], ["semi_medium", "準中型車教習"], ["bike", "自動二輪車教習"], ["limited", "各種限定解除"], ["paper", "ペーパー講習"], ["senior", "高齢者講習"], ["motorcycle", "原付講習"], ["training", "企業講習"]]],
     ["料金・アクセス", [["access", "送迎バス・アクセス"], ["faq", "よくあるご質問"]]],
-    ["学校紹介", [["school", "学校紹介"], ["company", "会社概要"], ["facilities", "施設・設備"], ["instructors", "教官紹介"], ["topics", "TOPICS"], ["recruit", "採用情報"]]],
+    ["学校紹介", [["school", "学校紹介"], ["company", "会社概要"], ["facilities", "施設・設備"], ["instructors", "指導員紹介"], ["topics", "TOPICS"], ["recruit", "採用情報"]]],
     ["在校生の方へ", [["students", "在校生の方へ"], ["teaching", "教習カレンダー"], ["syuryokentei", "修了検定について"], ["sotsugyoukentei", "卒業検定について"], ["students#online-class", "オンライン学科教習"], ["students#musasi", "効果測定MUSASI"], ["access#buscatch", "スクールバス予約"]]],
     ["サイト情報", [["sitemap", "サイトマップ"], ["privacy", "個人情報保護方針"]]],
     ["在校生向け", [["students", "在校生メニュー"], ["teaching", "教習カレンダー"], ["syuryokentei", "修了検定"], ["sotsugyoukentei", "卒業検定"]]]
@@ -4045,7 +4046,7 @@
   }
 
   const subpageNavigationGroups = [
-    ["入校案内", [["admission", "入校の流れ"], ["application", "仮入校申し込み"], ["license", "免許交付まで"], ["introduction", "友人・知人紹介"]]],
+    ["入校案内", [["admission", "入校の流れ"], ["application", "仮入校申し込み"], ["license", "免許証交付まで"], ["introduction", "友人・知人紹介"]]],
     ["教習・講習", [["courses", "教習・講習一覧"], ["standard", "普通自動車教習"], ["camp_price", "合宿風ハイスピード"], ["semi_medium", "準中型車教習"], ["bike", "自動二輪車教習"], ["limited", "各種限定解除"], ["paper", "ペーパー講習"], ["senior", "高齢者講習"], ["motorcycle", "原付講習"], ["training", "企業講習"]]],
     ["料金・アクセス", [["access", "送迎バス・アクセス"], ["faq", "よくあるご質問"]]],
     ["学校紹介", [["school", "学校紹介"], ["company", "会社概要"], ["facilities", "施設・設備"], ["instructors", "指導員紹介"], ["topics", "TOPICS"], ["recruit", "採用情報"]]],
@@ -4519,6 +4520,7 @@
 	    const requiredFields = new Set(["purpose", "vehicle", "name", "gender", "birthdate", "postalCode", "address", "email", "phone", "occupation", "currentLicense", "lessonPlan", "paymentMethod"]);
 	    const entryFields = form.querySelectorAll("[data-entry-field]");
 	    const fallbackMessage = "送信できませんでした。お手数ですがお電話（092-710-2188）にてご連絡ください。";
+	    let submissionInProgress = false;
 	
 	    function setStatus(type, message) {
 	      if (!status) return;
@@ -4689,9 +4691,11 @@
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      if (submissionInProgress) return;
       if (!form.reportValidity()) return;
 
       const payload = collectPayload();
+      submissionInProgress = true;
       submitButton.disabled = true;
       submitButton.textContent = "送信中です...";
       setStatus("loading", "送信しています。少しだけお待ちください。");
@@ -4708,13 +4712,14 @@
 	          throw new Error(fallbackMessage);
 	        }
 
-	        setStatus("success", `送信が完了しました。受付ID：${result.applicationId || "発行済み"}。担当者より順次ご連絡します。`);
+	        setStatus("success", `送信が完了しました。入力いただいたメールアドレス宛にメールが届きますので、ご確認お願いします。10秒ほどお時間かかる場合がございます\n受付ID：${result.applicationId || "発行済み"}`);
 	        form.reset();
 	        syncPriceFields();
 	        toggleEntryFields();
 	      } catch (error) {
 	        setStatus("error", error.message || fallbackMessage);
 	      } finally {
+        submissionInProgress = false;
         submitButton.disabled = false;
         submitButton.textContent = "この内容で送信する";
       }
@@ -4763,7 +4768,7 @@
   renderPage();
 </script>
 <script src="data/price-master.js?v=20260724-1"></script>
-<script src="assets/redesign-0718.js?v=20260724-1"></script>
+<script src="assets/redesign-0718.js?v=20260729-2"></script>
 <script src="assets/mobile-menu-motion.js?v=20260720-1"></script>
 </body>
 </html>

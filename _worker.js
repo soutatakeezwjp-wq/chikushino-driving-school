@@ -77,6 +77,12 @@ const ALLOWED_VEHICLES = new Set([
   "その他・相談"
 ]);
 
+const OPTION_PLAN_ELIGIBILITY = {
+  "コミコミプラン": new Set(["AT普通車", "MT準中型車"]),
+  "スケジュールプラン": new Set(["AT普通車", "MT普通車", "MT準中型車"]),
+  "合宿風ハイスピードプラン": new Set(["AT普通車"])
+};
+
 function fetchWithTimeout(url, options = {}, timeoutMs = 8000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -417,6 +423,12 @@ function validateApplicationPayload(payload) {
   if (requestedVehicles.some((vehicle) => !ALLOWED_VEHICLES.has(vehicle))) {
     throw new ApplicationRequestError("VALIDATION_VEHICLE", "希望する免許・講習を選び直してください。", 400);
   }
+  if (payload.optionPlans.some((plan) => {
+    const eligibleVehicles = OPTION_PLAN_ELIGIBILITY[plan];
+    return !eligibleVehicles || requestedVehicles.some((vehicle) => !eligibleVehicles.has(vehicle));
+  })) {
+    throw new ApplicationRequestError("VALIDATION_OPTION_PLAN", "選択した車種では利用できないオプションプランが含まれています。車種とプランを選び直してください。", 400);
+  }
   if (payload.kana && !/^[ァ-ヶヴー・\s]+$/.test(payload.kana)) {
     throw new ApplicationRequestError("VALIDATION_KANA", "フリガナは全角カタカナで入力してください。", 400);
   }
@@ -670,6 +682,50 @@ function cleanCmsText(value, maxLength = 500) {
   return String(value || "").trim().slice(0, maxLength);
 }
 
+function normalizeCmsBody(value = "") {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  let documentBody;
+  try {
+    documentBody = JSON.parse(raw);
+  } catch {
+    return raw.slice(0, 12000);
+  }
+  if (documentBody?.format !== "rich-v1" || !Array.isArray(documentBody.blocks)) {
+    return raw.slice(0, 12000);
+  }
+
+  let textLength = 0;
+  const blocks = [];
+  for (const block of documentBody.blocks.slice(0, 100)) {
+    if (block?.type === "image") {
+      const url = cleanCmsText(block.url, 120);
+      if (/^\/cms-media\/[a-z0-9-]+$/i.test(url)) {
+        blocks.push({ type: "image", url, alt: cleanCmsText(block.alt, 160) });
+      }
+      continue;
+    }
+    if (block?.type !== "text" || !Array.isArray(block.runs)) continue;
+    const runs = [];
+    for (const run of block.runs.slice(0, 200)) {
+      if (textLength >= 12000) break;
+      const textValue = String(run?.text || "")
+        .replace(/\u0000/g, "")
+        .slice(0, 12000 - textLength);
+      textLength += textValue.length;
+      if (!textValue) continue;
+      const bold = Boolean(run?.bold);
+      const previous = runs[runs.length - 1];
+      if (previous && previous.bold === bold) previous.text += textValue;
+      else runs.push({ text: textValue, bold });
+    }
+    if (runs.some((run) => run.text.trim())) blocks.push({ type: "text", runs });
+  }
+  if (!blocks.some((block) => block.type === "image" || block.runs?.some((run) => run.text.trim()))) return "";
+  const normalized = JSON.stringify({ format: "rich-v1", blocks });
+  return normalized.length <= 50000 ? normalized : "";
+}
+
 function createCmsSlug(title = "") {
   const base = String(title)
     .normalize("NFKC")
@@ -686,6 +742,15 @@ function formatCmsDate(dateValue = "") {
   return match ? `${match[1]}.${match[2]}.${match[3]}` : value;
 }
 
+function cmsNowJstLocal() {
+  return new Date(Date.now() + 9 * 60 * 60 * 1000).toISOString().slice(0, 19);
+}
+
+function normalizeCmsPublishedAt(value = "") {
+  const match = cleanCmsText(value, 25).match(/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})/);
+  return match ? `${match[1]}T${match[2]}:${match[3]}` : cmsNowJstLocal().slice(0, 16);
+}
+
 function cmsPostToPublic(row) {
   return {
     id: row.id,
@@ -700,6 +765,7 @@ function cmsPostToPublic(row) {
     published: Boolean(row.published),
     publishedAt: row.published_at,
     date: formatCmsDate(row.published_at),
+    publishedDate: formatCmsDate(row.published_at),
     link: `article.html?slug=${encodeURIComponent(row.slug)}`
   };
 }
@@ -817,20 +883,21 @@ async function handleCmsPosts(request, env, admin = false) {
   const isSinglePublic = !admin && parts.length > 3;
 
   if (!admin && request.method === "GET") {
+    const nowJst = cmsNowJstLocal();
     if (isSinglePublic) {
       const row = await db.prepare(
-        "SELECT * FROM cms_posts WHERE slug = ?1 AND published = 1 LIMIT 1"
-      ).bind(last).first();
+        "SELECT * FROM cms_posts WHERE slug = ?1 AND published = 1 AND published_at <= ?2 LIMIT 1"
+      ).bind(last, nowJst).first();
       if (!row) return cmsResponse({ ok: false, error: "記事が見つかりません。" }, 404);
-      return cmsResponse({ ok: true, post: cmsPostToPublic(row) }, 200, "public, max-age=60");
+      return cmsResponse({ ok: true, post: cmsPostToPublic(row) });
     }
     const limit = Math.min(Math.max(Number(url.searchParams.get("limit") || 20), 1), 100);
     const tag = cleanCmsText(url.searchParams.get("tag"), 20);
     const statement = tag
-      ? db.prepare("SELECT * FROM cms_posts WHERE published = 1 AND tag = ?1 ORDER BY published_at DESC, id DESC LIMIT ?2").bind(tag, limit)
-      : db.prepare("SELECT * FROM cms_posts WHERE published = 1 ORDER BY published_at DESC, id DESC LIMIT ?1").bind(limit);
+      ? db.prepare("SELECT * FROM cms_posts WHERE published = 1 AND published_at <= ?1 AND tag = ?2 ORDER BY published_at DESC, id DESC LIMIT ?3").bind(nowJst, tag, limit)
+      : db.prepare("SELECT * FROM cms_posts WHERE published = 1 AND published_at <= ?1 ORDER BY published_at DESC, id DESC LIMIT ?2").bind(nowJst, limit);
     const rows = await statement.all();
-    return cmsResponse({ ok: true, posts: (rows.results || []).map(cmsPostToPublic) }, 200, "public, max-age=30, stale-while-revalidate=120");
+    return cmsResponse({ ok: true, posts: (rows.results || []).map(cmsPostToPublic) });
   }
 
   if (!isCmsAdmin(request, env)) return cmsUnauthorized();
@@ -846,11 +913,11 @@ async function handleCmsPosts(request, env, admin = false) {
   if (request.method === "POST") {
     const input = await readCmsJson(request);
     const title = cleanCmsText(input.title, 160);
-    const body = cleanCmsText(input.body, 12000);
+    const body = normalizeCmsBody(input.body);
     const tag = input.tag === "重要" ? "重要" : "お知らせ";
     const summary = cleanCmsText(input.summary, 240);
     const imageUrl = cleanCmsText(input.imageUrl, 500);
-    const publishedAt = cleanCmsText(input.publishedAt, 25) || new Date().toISOString();
+    const publishedAt = normalizeCmsPublishedAt(input.publishedAt);
     const published = input.isPublished === false || input.isPublished === "false" ? 0 : 1;
     if (!title || !body) return cmsResponse({ ok: false, error: "タイトルと本文を入力してください。" }, 400);
     const slug = createCmsSlug(title);
@@ -865,11 +932,11 @@ async function handleCmsPosts(request, env, admin = false) {
   if (request.method === "PUT") {
     const input = await readCmsJson(request);
     const title = cleanCmsText(input.title, 160);
-    const body = cleanCmsText(input.body, 12000);
+    const body = normalizeCmsBody(input.body);
     const tag = input.tag === "重要" ? "重要" : "お知らせ";
     const summary = cleanCmsText(input.summary, 240);
     const imageUrl = cleanCmsText(input.imageUrl, 500);
-    const publishedAt = cleanCmsText(input.publishedAt, 25) || new Date().toISOString();
+    const publishedAt = normalizeCmsPublishedAt(input.publishedAt);
     const published = input.isPublished === false || input.isPublished === "false" ? 0 : 1;
     if (!title || !body) return cmsResponse({ ok: false, error: "タイトルと本文を入力してください。" }, 400);
     await db.prepare(
@@ -878,7 +945,8 @@ async function handleCmsPosts(request, env, admin = false) {
     return cmsResponse({ ok: true });
   }
   if (request.method === "DELETE") {
-    await db.prepare("DELETE FROM cms_posts WHERE id = ?1").bind(id).run();
+    const result = await db.prepare("DELETE FROM cms_posts WHERE id = ?1").bind(id).run();
+    if (!result.meta?.changes) return cmsResponse({ ok: false, error: "記事が見つかりません。" }, 404);
     return cmsResponse({ ok: true });
   }
   return cmsResponse({ ok: false, error: "Method not allowed" }, 405);

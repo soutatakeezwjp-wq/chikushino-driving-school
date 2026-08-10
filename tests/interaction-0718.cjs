@@ -27,6 +27,19 @@ async function openPage(context, path) {
       }
     })
   }));
+  await page.route("**/api/cms/events*", (route) => route.fulfill({
+    status: 200,
+    contentType: "application/json",
+    body: JSON.stringify({
+      ok: true,
+      schedule: {
+        updatedAt: "2026-07-18T00:00:00.000Z",
+        today: [{ date: "2026-07-18", title: "教習予定", note: "受付確認" }],
+        week: [],
+        month: []
+      }
+    })
+  }));
   await page.goto(`${baseUrl}${path}`, { waitUntil: "domcontentloaded", timeout: 30000 });
   await page.waitForTimeout(500);
   return page;
@@ -82,7 +95,9 @@ async function selectChoice(page, selector) {
 
     const application = await openPage(context, "/detail.html?page=application");
     let submittedPayload = null;
+    let submissionCount = 0;
     await application.route("**/api/application", async (route) => {
+      submissionCount += 1;
       submittedPayload = route.request().postDataJSON();
       await route.fulfill({
         status: 200,
@@ -106,10 +121,12 @@ async function selectChoice(page, selector) {
     assert(await application.locator('[name="desiredEntryDate"]').getAttribute("required") !== null, "入校希望日が必須ではありません。");
     await application.fill('[name="desiredEntryDate"]', "2026-08-06");
     await selectChoice(application, '[name="desiredVehicles"][value="AT普通車"]');
+    assert(await application.locator('[name="optionPlans"]:not([disabled])').count() === 3, "AT普通車で3つのオプションが表示されていません。");
     await selectChoice(application, '[name="desiredVehicles"][value="MT普通車"]');
+    assert(await application.locator('[name="optionPlans"]:not([disabled])').count() === 1, "AT普通車・MT普通車の共通オプションが1つに絞られていません。");
     await selectChoice(application, '[name="currentLicenses"][value="持っていない"]');
     await selectChoice(application, '[name="lessonPlan"][value="デイプラン"]');
-    await selectChoice(application, '[name="optionPlans"][value="コミコミプラン"]');
+    await selectChoice(application, '[name="optionPlans"][value="スケジュールプラン"]');
     await selectChoice(application, '[name="paymentMethod"][value="未定"]');
     await selectChoice(application, '[name="howKnown"][value="インターネット"]');
     await selectChoice(application, '[name="admissionMotives"][value="自宅から近い"]');
@@ -121,13 +138,18 @@ async function selectChoice(page, selector) {
     await application.check('[name="privacyConsent"]', { force: true });
     await application.locator('button[type="submit"]').click();
     await application.waitForSelector("#application-status.is-success");
+    const successMessage = await application.locator("#application-status").textContent();
+    assert(successMessage.includes("入力いただいたメールアドレス宛にメールが届きますので、ご確認お願いします。"), "メール確認の完了案内がありません。");
+    assert(successMessage.includes("10秒ほどお時間かかる場合がございます"), "メール到着時間の案内がありません。");
+    assert(successMessage.includes("受付ID：TEST-0718"), "完了案内に受付IDがありません。");
+    assert(submissionCount === 1, "フォームから申込APIが複数回呼ばれています。");
     assert(submittedPayload?.desiredVehicles?.length === 2, "希望車種が配列で送信されていません。");
     assert(submittedPayload?.currentLicenses?.[0] === "持っていない", "現有免許が配列で送信されていません。");
-    assert(submittedPayload?.optionPlans?.[0] === "コミコミプラン", "オプションが配列で送信されていません。");
+    assert(submittedPayload?.optionPlans?.[0] === "スケジュールプラン", "対象車種に合うオプションが配列で送信されていません。");
     assert(submittedPayload?.howKnown?.[0] === "インターネット", "認知経路が配列で送信されていません。");
     assert(submittedPayload?.admissionMotives?.[0] === "自宅から近い", "入校動機が配列で送信されていません。");
     assert(submittedPayload?.desiredEntryDate === "2026-08-06", "入校希望日が送信されていません。");
-    assert(submittedPayload?.formVersion === "2026-07-25.1", "フォームバージョンが更新されていません。");
+    assert(submittedPayload?.formVersion === "2026-07-28.1", "フォームバージョンが更新されていません。");
     checks.push("application-flow");
     await application.close();
 
@@ -148,10 +170,20 @@ async function selectChoice(page, selector) {
     await instructors.close();
 
     const schedule = await openPage(context, "/detail.html?page=teaching");
-    await schedule.waitForFunction(() => document.querySelector("#schedule-panels")?.textContent?.includes("教習予定"));
-    assert((await schedule.locator("#schedule-panels").textContent()).includes("受付確認"), "公開日程APIの内容が表示されません。");
-    assert(await schedule.locator(".schedule-tabs [data-period]").count() === 3, "本日・今週・今月の切替タブが表示されていません。");
-    assert(await schedule.locator(".schedule-tabs [data-period]").allTextContents().then((items) => items.join("/") === "本日/今週/今月"), "日程タブの表示順が本日・今週・今月になっていません。");
+    await schedule.waitForFunction(() => document.querySelector(".schedule-calendar-event")?.textContent?.includes("教習予定"));
+    assert(!(await schedule.locator("#schedule-calendar-panel").textContent()).includes("受付確認"), "予定の補足が月間カレンダーに露出しています。");
+    assert(await schedule.locator("[data-calendar-view]").count() === 3, "月・週・日の表示切替が揃っていません。");
+    await schedule.locator(".schedule-calendar-event-button").click();
+    assert((await schedule.locator("#schedule-detail-dialog").textContent()).includes("受付確認"), "予定の詳細に補足が表示されません。");
+    await schedule.locator("[data-calendar-detail-close]").click();
+    assert(await schedule.locator(".schedule-calendar-weekdays span").count() === 7, "曜日見出しが7日分表示されていません。");
+    assert(await schedule.locator(".schedule-calendar-day:not(.is-outside)").count() >= 28, "1か月分の日付が表示されていません。");
+    const firstMonthLabel = await schedule.locator("#schedule-month-label").textContent();
+    const nextMonth = schedule.locator('[data-calendar-move="1"]');
+    assert(await nextMonth.isEnabled(), "次月ボタンが利用できません。");
+    await nextMonth.click();
+    await schedule.waitForFunction((label) => document.querySelector("#schedule-month-label")?.textContent !== label, firstMonthLabel);
+    assert((await schedule.locator(".schedule-calendar-empty").textContent()).includes("予定は受付へご確認ください"), "予定がない月の案内が表示されません。");
     checks.push("public-schedule");
     await schedule.close();
 

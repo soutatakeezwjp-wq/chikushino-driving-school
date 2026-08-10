@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "include": [
+    "/api/application",
+    "/api/public-schedule",
+    "/api/wordpress-posts",
+    "/api/cms/*",
+    "/cms-media/*"
+  ],
+  "exclude": []
+}

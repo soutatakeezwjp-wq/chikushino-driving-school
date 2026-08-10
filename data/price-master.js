@@ -270,7 +270,7 @@ var CDS_PRICE_MASTER = (function () {
           },
           {
             "id": "textbook",
-            "label": "教科書代",
+            "label": "教科書代（免なし・原付持の方）",
             "amount": 3300,
             "currency": "JPY",
             "tax": "included",
@@ -807,7 +807,7 @@ var CDS_PRICE_MASTER = (function () {
           },
           {
             "id": "textbook",
-            "label": "教科書代",
+            "label": "教科書代（免なし・原付持の方）",
             "amount": 3300,
             "currency": "JPY",
             "tax": "included",
@@ -1565,7 +1565,7 @@ var CDS_PRICE_MASTER = (function () {
           },
           {
             "id": "textbook-no-license-or-moped",
-            "label": "教科書代",
+            "label": "教科書代（免なし・原付持の方）",
             "amount": 3300,
             "currency": "JPY",
             "tax": "included",
@@ -1576,7 +1576,7 @@ var CDS_PRICE_MASTER = (function () {
           },
           {
             "id": "textbook-license-holder",
-            "label": "教科書代",
+            "label": "教科書代（免有の方）",
             "amount": 1100,
             "currency": "JPY",
             "tax": "included",

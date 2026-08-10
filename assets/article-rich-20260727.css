@@ -1,0 +1,15 @@
+@import url("./article.css");
+
+.article-body strong { color: #211538; font-weight: 900; }
+.article-inline-image { margin: 38px 0; }
+.article-inline-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 680px;
+  object-fit: contain;
+}
+
+@media (max-width: 700px) {
+  .article-inline-image { margin-block: 28px; }
+}
