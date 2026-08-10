@@ -16,19 +16,16 @@ PROJECT_NAME="chikushino-driving-school"
 
 cd "$SITE_DIR"
 
-if [[ "$(git branch --show-current)" != "main" ]]; then
-  echo "安全のため停止しました: mainブランチ以外から本番へ配備できません。" >&2
-  exit 1
-fi
-
 if [[ -n "$(git status --porcelain)" ]]; then
   echo "安全のため停止しました: 未コミット変更があります。" >&2
   exit 1
 fi
 
 git fetch origin main --quiet
-if [[ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]]; then
-  echo "安全のため停止しました: ローカルmainとorigin/mainが一致していません。" >&2
+HEAD_COMMIT="$(git rev-parse HEAD)"
+ORIGIN_MAIN_COMMIT="$(git rev-parse origin/main)"
+if [[ "$HEAD_COMMIT" != "$ORIGIN_MAIN_COMMIT" ]]; then
+  echo "安全のため停止しました: 対象checkoutとorigin/mainが一致していません。" >&2
   exit 1
 fi
 
@@ -41,4 +38,6 @@ fi
 
 "$WRANGLER_BIN" pages deploy "$SITE_DIR" \
   --project-name "$PROJECT_NAME" \
-  --branch main
+  --branch main \
+  --commit-hash "$HEAD_COMMIT" \
+  --commit-message "検証済みorigin/mainを安全配備"
