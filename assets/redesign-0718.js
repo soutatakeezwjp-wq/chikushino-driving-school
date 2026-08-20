@@ -1328,6 +1328,10 @@
     const desiredEntryDateHelp = isMaterialRequest
       ? "入校をご検討中の日程があればご記入ください。未定の場合は空欄で構いません。"
       : "入校式が行われる木曜日、土曜日のいずれかを入力してください。";
+    const entryDateMin = (() => {
+      const today = new Date();
+      return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    })();
     const choice = (type, name, value, label, index, required = false) => `<span class="choice-item"><input type="${type}" name="${name}" id="${name}-${index}" value="${safeText(value)}" ${required ? "required" : ""}><label for="${name}-${index}">${safeText(label)}</label></span>`;
     const choices = (type, name, values, required = false) => values.map((value, index) => choice(type, name, value, value, index, required && index === 0)).join("");
     const occupations = ["大学生", "短大生", "専門学生", "高校生", "予備校生", "会社員", "自営業", "主婦", "パート・アルバイト", "その他"];
@@ -1362,7 +1366,7 @@
           <label class="form-field is-wide"><span>お勤め先（学校・会社）名</span><input name="organization" autocomplete="organization" placeholder="○○大学"></label>
           <label class="form-field" id="referral-name-field"><span>紹介者名（姓）${isReferralApplication ? '<span class="optional">割引利用時に入力</span>' : ""}</span><input name="introducerFamilyName" placeholder="筑紫野"></label>
           <label class="form-field"><span>紹介者名（名）${isReferralApplication ? '<span class="optional">割引利用時に入力</span>' : ""}</span><input name="introducerGivenName" placeholder="花子"></label>
-          <label class="form-field is-wide"><span>${desiredEntryDateLabel}${desiredEntryDateBadge}</span><input type="date" name="desiredEntryDate"${desiredEntryDateRequired} aria-describedby="desired-entry-date-help"><small id="desired-entry-date-help">${desiredEntryDateHelp}</small></label>
+          <label class="form-field is-wide"><span>${desiredEntryDateLabel}${desiredEntryDateBadge}</span><input type="date" name="desiredEntryDate"${desiredEntryDateRequired} min="${entryDateMin}" aria-describedby="desired-entry-date-help"><small id="desired-entry-date-help">${desiredEntryDateHelp}</small></label>
         </div></section>
 
         <section class="application-section"><span class="application-section-no">02</span><h2>希望する免許・教習プラン</h2><div class="form-grid">
@@ -1447,6 +1451,29 @@
     };
     vehicleInputs.forEach((input) => input.addEventListener("change", syncOptionPlanAvailability));
     syncOptionPlanAvailability();
+
+    // 仮入校申し込みでは入校式のない曜日（木・土以外）を選んだときに注意文を出す。
+    // 送信自体は止めない（学校側で日程相談に乗れるようにするため）。
+    const entryDateInput = form.querySelector('[name="desiredEntryDate"]');
+    const entryDateHelpNote = form.querySelector("#desired-entry-date-help");
+    const entryDateDefaultHelp = entryDateHelpNote ? entryDateHelpNote.textContent : "";
+    const entryDateIsMaterialRequest = form.querySelector('[name="purpose"]')?.value === "資料請求";
+    const syncEntryDateNotice = () => {
+      if (!entryDateInput || !entryDateHelpNote) return;
+      entryDateHelpNote.classList.remove("is-warning");
+      entryDateHelpNote.textContent = entryDateDefaultHelp;
+      if (entryDateIsMaterialRequest) return;
+      const match = String(entryDateInput.value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (!match) return;
+      const picked = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 12);
+      const day = picked.getDay();
+      if (day === 4 || day === 6) return;
+      const dayLabel = ["日", "月", "火", "水", "木", "金", "土"][day];
+      entryDateHelpNote.classList.add("is-warning");
+      entryDateHelpNote.textContent = `選択した日付は${dayLabel}曜日です。入校式は毎週木曜日・土曜日に行っています。このままでも送信できますが、日程は学校からのご連絡時にご相談ください。`;
+    };
+    entryDateInput?.addEventListener("change", syncEntryDateNotice);
+    entryDateInput?.addEventListener("input", syncEntryDateNotice);
 
     const checkByValue = (name, value) => {
       if (!value) return;
