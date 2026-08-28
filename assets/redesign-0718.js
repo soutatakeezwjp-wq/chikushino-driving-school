@@ -182,7 +182,6 @@
       const notes = (presentation.notes || []).map((note) => `<li>${safeText(note)}</li>`).join("");
       return `<article class="option-item">
         <h3>${safeText(option.label)}</h3>
-        ${presentation.target ? `<strong class="option-target">対象：${safeText(presentation.target)}</strong>` : ""}
         <p>${safeText(option.description)}</p>
         <strong class="option-price">${price}</strong>
         ${notes ? `<ul class="option-notes">${notes}</ul>` : ""}
