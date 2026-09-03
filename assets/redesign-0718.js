@@ -1319,7 +1319,7 @@
     const sectionLead = isMaterialRequest
       ? "資料請求やご不明点を入力できます。入校をご検討中の日程があれば、任意でご記入ください。"
       : isReferralApplication
-        ? "友達割引をご希望の方は、お客様情報の「紹介者名（姓・名）」を入力してください。割引条件は受付で最終確認します。"
+        ? "友人・知人紹介をご希望の方は、お客様情報の「紹介者名（姓・名）」を入力してください。割引条件は受付で最終確認します。"
         : "従来の公式申込書と同じ項目・順番で入力できます。複数選択の項目はチェックボックスでお選びください。";
     const desiredEntryDateLabel = isMaterialRequest ? "入校をご検討中の日程" : "入校希望日";
     const desiredEntryDateBadge = isMaterialRequest ? '<span class="optional">任意</span>' : '<span class="required">必須</span>';
@@ -1343,7 +1343,7 @@
     const admissionMotives = ["交通の便がよい", "自宅から近い", "学校・会社から近い", "ご家族・友人・知人に勧められた", "当校職員に勧められた", "教習プランが魅力だから", "施設・サービスが魅力だから", "その他"];
     const otherInput = (source, name, label, placeholder) => `<label class="choice-other" data-other-source="${source}" hidden><span>${label}</span><input name="${name}" maxlength="100" placeholder="${placeholder}"></label>`;
     return `<section class="r-section"><div class="r-wrap">${sectionHeader(sectionEyebrow, sectionTitle, sectionLead)}
-      ${isReferralApplication ? '<div class="notice-box referral-application-note" id="referral-application-note"><strong>友達割引をご希望の方へ</strong><p>下記のお客様情報にある「紹介者名（姓・名）」を入力してください。入力せず、電話または入校申し込み時にお伝えいただくこともできます。</p></div>' : ""}
+      ${isReferralApplication ? '<div class="notice-box referral-application-note" id="referral-application-note"><strong>友人・知人紹介をご希望の方へ</strong><p>下記のお客様情報にある「紹介者名（姓・名）」を入力してください。入力せず、電話または入校申し込み時にお伝えいただくこともできます。</p></div>' : ""}
       <form id="applicationForm" novalidate>
         <div class="form-honeypot" aria-hidden="true"><label>この欄は入力しないでください<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
         <input type="hidden" name="purpose" value="${purpose}">
