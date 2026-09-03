@@ -1559,6 +1559,124 @@
     });
   }
 
+
+  // 友人・知人紹介フォーム（detail.html?page=referral）
+  // 紹介する側が友達を登録するための専用フォーム。仮入校申し込みフォームとは別物なので、
+  // 共通関数には手を入れず、この関数の中だけで完結させている。
+  function referralHtml() {
+    const field = (label, name, options = {}) => {
+      const { required = false, type = "text", placeholder = "", inputmode = "", autocomplete = "", wide = false } = options;
+      const badge = required ? '<span class="required">必須</span>' : '<span class="optional">任意</span>';
+      const attrs = [
+        `name="${name}"`,
+        type !== "text" ? `type="${type}"` : "",
+        required ? "required" : "",
+        placeholder ? `placeholder="${safeText(placeholder)}"` : "",
+        inputmode ? `inputmode="${inputmode}"` : "",
+        autocomplete ? `autocomplete="${autocomplete}"` : ""
+      ].filter(Boolean).join(" ");
+      return `<label class="form-field${wide ? " is-wide" : ""}"><span>${safeText(label)}${badge}</span><input ${attrs}></label>`;
+    };
+    const inputErrorNote = '<p class="form-note">※入力内容に誤りがあると返信をお送りできませんのでご注意ください。</p>';
+    return `<section class="r-section"><div class="r-wrap">${sectionHeader("INTRODUCTION FORM", "友人・知人ご紹介", "友人、知人ご紹介フォームからご紹介して頂いた方には、謝礼をお渡しします。また、入校される方の入校費用も割引させて頂きます。")}
+      <div class="notice-box referral-form-note">
+        <p>入力の際、アルファベット・数字は半角文字、カタカナは全角文字をお使いください。また、外字等の特殊な文字は使用しないでください。</p>
+      </div>
+      <form id="referralForm" novalidate>
+        <div class="form-honeypot" aria-hidden="true"><label>この欄は入力しないでください<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <input type="hidden" name="purpose" value="友人・知人紹介">
+        <section class="application-section"><span class="application-section-no">01</span><h2>ご紹介者情報</h2><div class="form-grid">
+          ${field("お名前（姓）", "familyName", { required: true, placeholder: "筑紫野", autocomplete: "family-name" })}
+          ${field("お名前（名）", "givenName", { required: true, placeholder: "太郎", autocomplete: "given-name" })}
+          ${field("ふりがな（姓）", "familyKana", { placeholder: "チクシノ", inputmode: "kana" })}
+          ${field("ふりがな（名）", "givenKana", { placeholder: "タロウ", inputmode: "kana" })}
+          ${field("電話番号", "phone", { required: true, type: "tel", placeholder: "09012345678", inputmode: "tel", autocomplete: "tel" })}
+          ${field("メールアドレス", "email", { required: true, type: "email", placeholder: "example@example.com", autocomplete: "email" })}
+        </div>${inputErrorNote}</section>
+
+        <section class="application-section"><span class="application-section-no">02</span><h2>ご入校者情報</h2>
+          <p class="form-lead">ご入校者ご本人の了承を得たうえでご入力ください。</p>
+          <div class="form-grid">
+          ${field("お名前（姓）", "friendFamilyName", { required: true, placeholder: "筑紫野" })}
+          ${field("お名前（名）", "friendGivenName", { required: true, placeholder: "花子" })}
+          ${field("ふりがな（姓）", "friendFamilyKana", { placeholder: "チクシノ", inputmode: "kana" })}
+          ${field("ふりがな（名）", "friendGivenKana", { placeholder: "ハナコ", inputmode: "kana" })}
+          ${field("電話番号", "friendPhone", { type: "tel", placeholder: "09012345678", inputmode: "tel" })}
+          ${field("メールアドレス", "friendEmail", { type: "email", placeholder: "example@example.com" })}
+        </div>${inputErrorNote}</section>
+
+        <section class="application-section"><span class="application-section-no">03</span><h2>そのほか</h2><div class="form-grid">
+          <label class="form-field is-wide"><span>質問・ご意見<span class="optional">任意</span></span><textarea name="notes" placeholder="質問・ご意見を入力してください。"></textarea></label>
+          <label class="form-field is-wide privacy-check"><span><input type="checkbox" name="privacyConsent" value="同意済み" required>個人情報保護方針に同意します<span class="required">必須</span></span></label>
+        </div>${inputErrorNote}<div class="form-submit"><button class="r-button is-orange" type="submit">上記内容で送信する</button></div><div class="form-status" id="referral-status" hidden aria-live="polite"></div></section>
+      </form>
+    </div></section>`;
+  }
+
+  function renderReferral() {
+    setPage(referralHtml());
+    const form = main.querySelector("#referralForm");
+    if (!form) return;
+    const status = form.querySelector("#referral-status");
+    const joinName = (first, second) => `${first || ""} ${second || ""}`.trim();
+    let submissionInProgress = false;
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (submissionInProgress) return;
+      if (!form.checkValidity()) {
+        form.querySelector(":invalid")?.focus();
+        form.reportValidity();
+        return;
+      }
+      submissionInProgress = true;
+      const submit = form.querySelector('[type="submit"]');
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      data.name = joinName(data.familyName, data.givenName);
+      data.kana = joinName(data.familyKana, data.givenKana);
+      data.friendName = joinName(data.friendFamilyName, data.friendGivenName);
+      data.friendKana = joinName(data.friendFamilyKana, data.friendGivenKana);
+      data.privacyConsent = Boolean(form.elements.privacyConsent.checked);
+      data.honeypot = data.website || "";
+      data.formVersion = "referral-2026-09-04.1";
+      data.landingPage = location.href;
+      data.referrer = document.referrer;
+      const params = new URLSearchParams(location.search);
+      data.utmSource = params.get("utm_source") || "";
+      data.utmMedium = params.get("utm_medium") || "";
+      data.utmCampaign = params.get("utm_campaign") || "";
+      data.utmContent = params.get("utm_content") || "";
+      status.hidden = false;
+      status.className = "form-status";
+      status.textContent = "送信しています。";
+      submit.disabled = true;
+      let responseSettled = false;
+      const earlyReceiptTimer = window.setTimeout(() => {
+        if (responseSettled) return;
+        status.className = "form-status is-success";
+        status.textContent = "送信を受け付けました。受付処理を進めています。";
+      }, 3000);
+      try {
+        const response = await fetch("/api/application", { method: "POST", headers: { "content-type": "application/json", accept: "application/json" }, body: JSON.stringify(data) });
+        const result = await response.json().catch(() => ({}));
+        responseSettled = true;
+        window.clearTimeout(earlyReceiptTimer);
+        if (!response.ok || !result.ok) throw new Error(result.message || result.error || "送信できませんでした。時間をおいて再度お試しください。");
+        status.className = "form-status is-success";
+        status.textContent = `送信が完了しました。入力いただいたメールアドレス宛にメールが届きますので、ご確認お願いします。10秒ほどお時間かかる場合がございます\n受付ID：${result.applicationId || "発行済み"}`;
+        form.reset();
+      } catch (error) {
+        responseSettled = true;
+        window.clearTimeout(earlyReceiptTimer);
+        status.className = "form-status is-error";
+        status.textContent = error instanceof Error ? error.message : "送信できませんでした。時間をおいて再度お試しください。";
+      } finally {
+        submissionInProgress = false;
+        submit.disabled = false;
+      }
+    });
+  }
+
   const instructors = [
     { name: "澤水 信雄", nickname: "さわみん", hobby: "孤独の久留米散策", image: "images/instructors-anime-20260724-v2/sawamizu-nobuo.webp", assignments: ["car", "motorcycle"] },
     { name: "谷川 拓郎", nickname: "たっしゃん", hobby: "読書", image: "images/instructors-anime-20260724-v2/tanigawa-takuro.webp", assignments: ["car", "motorcycle"] },
@@ -1627,6 +1745,9 @@
       break;
     case "application":
       renderApplication();
+      break;
+    case "referral":
+      renderReferral();
       break;
     case "instructors":
       renderInstructors();

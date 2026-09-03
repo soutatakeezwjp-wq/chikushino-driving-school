@@ -30,6 +30,10 @@ const APPLICATION_FIELD_LIMITS = {
   occupation: 80,
   organization: 160,
   introducer: 100,
+  friendName: 100,
+  friendKana: 100,
+  friendPhone: 20,
+  friendEmail: 254,
   desiredEntryDate: 80,
   priceCourse: 60,
   currentLicense: 80,
@@ -60,6 +64,9 @@ const ALLOWED_PURPOSES = new Set([
   "料金について相談",
   "友人・知人紹介"
 ]);
+
+// 友人・知人紹介フォームは入校申し込みと必須項目が異なるため、判定用に定数化する。
+const REFERRAL_PURPOSE = "友人・知人紹介";
 
 const ALLOWED_VEHICLES = new Set([
   "AT普通車",
@@ -407,12 +414,19 @@ function normalizeApplicationPayload(payload, request) {
 }
 
 function validateApplicationPayload(payload) {
-  const requiredFields = ["purpose", "name", "gender", "birthdate", "phone", "email", "postalCode", "address", "occupation", "privacyConsent"];
+  // 友人・知人紹介は紹介者と入校者の連絡先だけを受け取るフォームなので、
+  // 住所・車種などの入校申し込み向け項目は必須にしない。
+  const isReferral = payload.purpose === REFERRAL_PURPOSE;
+  const requiredFields = isReferral
+    ? ["purpose", "name", "phone", "email", "friendName", "privacyConsent"]
+    : ["purpose", "name", "gender", "birthdate", "phone", "email", "postalCode", "address", "occupation", "privacyConsent"];
   if (payload.purpose === "仮入校申し込み") {
     requiredFields.push("lessonPlan", "paymentMethod", "desiredEntryDate");
   }
   const missing = requiredFields.filter((field) => !hasApplicationValue(payload[field]));
-  if (!hasApplicationValue(payload.desiredVehicles) && !hasApplicationValue(payload.vehicle)) missing.push("desiredVehicles");
+  if (!isReferral && !hasApplicationValue(payload.desiredVehicles) && !hasApplicationValue(payload.vehicle)) {
+    missing.push("desiredVehicles");
+  }
   if (
     payload.purpose === "仮入校申し込み"
     && !hasApplicationValue(payload.currentLicenses)
@@ -427,7 +441,7 @@ function validateApplicationPayload(payload) {
     throw new ApplicationRequestError("VALIDATION_PURPOSE", "お問い合わせ種別を選び直してください。", 400);
   }
   const requestedVehicles = payload.desiredVehicles.length ? payload.desiredVehicles : [payload.vehicle];
-  if (requestedVehicles.some((vehicle) => !ALLOWED_VEHICLES.has(vehicle))) {
+  if (!isReferral && requestedVehicles.some((vehicle) => !ALLOWED_VEHICLES.has(vehicle))) {
     throw new ApplicationRequestError("VALIDATION_VEHICLE", "希望する免許・講習を選び直してください。", 400);
   }
   if (payload.optionPlans.some((plan) => {
@@ -445,6 +459,16 @@ function validateApplicationPayload(payload) {
   const phoneDigits = payload.phone.replace(/\D/g, "");
   if (phoneDigits.length < 10 || phoneDigits.length > 11) {
     throw new ApplicationRequestError("VALIDATION_PHONE", "電話番号の形式を確認してください。", 400);
+  }
+  // 入校者の連絡先は任意項目なので、入力があるときだけ形式を確認する。
+  if (payload.friendPhone) {
+    const friendPhoneDigits = payload.friendPhone.replace(/\D/g, "");
+    if (friendPhoneDigits.length < 10 || friendPhoneDigits.length > 11) {
+      throw new ApplicationRequestError("VALIDATION_FRIEND_PHONE", "ご紹介される方の電話番号の形式を確認してください。", 400);
+    }
+  }
+  if (payload.friendEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.friendEmail)) {
+    throw new ApplicationRequestError("VALIDATION_FRIEND_EMAIL", "ご紹介される方のメールアドレスの形式を確認してください。", 400);
   }
   if (payload.postalCode && !/^\d{3}-?\d{4}$/.test(payload.postalCode)) {
     throw new ApplicationRequestError("VALIDATION_POSTAL_CODE", "郵便番号の形式を確認してください。", 400);
@@ -485,6 +509,14 @@ async function createSubmissionKey(payload) {
     howKnown: payload.howKnown,
     admissionMotives: payload.admissionMotives
   };
+  // 紹介フォームは紹介者が同じでも入校者ごとに別の申し込みなので、
+  // 重複判定の材料に入校者の情報を加える（他の種別のキーは従来どおり）。
+  if (payload.purpose === REFERRAL_PURPOSE) {
+    keyFields.friendName = payload.friendName;
+    keyFields.friendKana = payload.friendKana;
+    keyFields.friendPhone = payload.friendPhone.replace(/\D/g, "");
+    keyFields.friendEmail = payload.friendEmail.toLowerCase();
+  }
   return sha256Hex(canonicalStringify(keyFields));
 }
 

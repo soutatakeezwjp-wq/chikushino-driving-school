@@ -1182,3 +1182,8 @@ body.is-schedule-dialog-open { overflow: hidden; }
   .redesign-0718 *::before,
   .redesign-0718 *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+/* 友人・知人紹介フォーム（detail.html?page=referral） */
+.redesign-0718 .referral-form-note { margin-bottom: 8px; }
+.redesign-0718 .application-section .form-lead { margin: -12px 0 20px; color: var(--cds-muted); font-size: 14px; line-height: 1.8; }
+.redesign-0718 .application-section .form-note { margin: 18px 0 0; color: var(--cds-muted); font-size: 13px; line-height: 1.8; }

@@ -43,7 +43,8 @@ assert.match(redesign, /lesson-times-imagegen-v3\.webp/);
 assert.match(redesign, /license-bike-desktop-v3-20260730\.webp/);
 assert.match(redesign, /license-bike-mobile-v3-20260730\.webp/);
 
-assert.match(detail, /友人・知人紹介・友達割引のご案内/);
+// 2026-09 学校の指示でページ名を「友人・知人紹介」へ変更
+assert.match(detail, /友人・知人紹介/);
 assert.match(detail, /referral=1/);
 assert.match(redesign, /isReferralApplication/);
 assert.match(worker, /introducerName/);
@@ -65,7 +66,11 @@ for (const asset of [
 
 assert.match(detail, /送迎バス/);
 assert.match(redesign, /送迎バス予約/);
-assert.match(worker, /const requiredFields = \["purpose", "name", "gender", "birthdate", "phone", "email", "postalCode", "address", "occupation", "privacyConsent"\]/);
+// 2026-09 友人・知人紹介フォームの追加で、必須項目が用件ごとに分岐した。
+// 入校申し込み側の必須項目が欠けていないことを確認する。
+assert.match(worker, /\["purpose", "name", "gender", "birthdate", "phone", "email", "postalCode", "address", "occupation", "privacyConsent"\]/);
+// 紹介フォーム側の必須項目
+assert.match(worker, /\["purpose", "name", "phone", "email", "friendName", "privacyConsent"\]/);
 
 for (const route of [
   "/api/application",
