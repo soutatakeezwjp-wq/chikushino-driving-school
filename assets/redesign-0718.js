@@ -1580,7 +1580,7 @@
     const inputErrorNote = '<p class="form-note">※入力内容に誤りがあると返信をお送りできませんのでご注意ください。</p>';
     return `<section class="r-section"><div class="r-wrap">${sectionHeader("INTRODUCTION FORM", "友人・知人ご紹介", "友人、知人ご紹介フォームからご紹介して頂いた方には、謝礼をお渡しします。また、入校される方の入校費用も割引させて頂きます。")}
       <div class="notice-box referral-form-note">
-        <p>入力の際、アルファベット・数字は半角文字、カタカナは全角文字をお使いください。また、外字等の特殊な文字は使用しないでください。</p>
+        <p>入力の際、アルファベット・数字は半角文字、カタカナは全角文字をお使いください。</p>
       </div>
       <form id="referralForm" novalidate>
         <div class="form-honeypot" aria-hidden="true"><label>この欄は入力しないでください<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
