@@ -6,6 +6,7 @@
     token: sessionStorage.getItem(tokenKey) || "",
     events: [],
     posts: [],
+    postView: "active",
     calendarView: "month",
     calendarCursor: initialCalendarDate
   };
@@ -211,6 +212,12 @@
       ]);
       state.events = eventResult.events || [];
       state.posts = postResult.posts || [];
+      let cursor = postResult.nextCursor;
+      while (cursor) {
+        const next = await api(`/api/cms/admin/posts?before=${cursor}`);
+        state.posts.push(...(next.posts || []));
+        cursor = next.nextCursor;
+      }
       paintCalendar();
       paintPosts();
     } catch (error) {
@@ -225,19 +232,57 @@
 
   function paintPosts() {
     const list = document.querySelector("#post-list");
-    if (!state.posts.length) {
-      list.innerHTML = '<div class="empty-state">まだ記事は登録されていません。</div>';
+    const posts = state.posts.filter((post) => Boolean(post.archivedAt) === (state.postView === "archived"));
+    if (!posts.length) {
+      list.innerHTML = `<div class="empty-state">${state.postView === "archived" ? "アーカイブされた記事はありません。" : "公開・下書きの記事はありません。"}</div>`;
       return;
     }
-    list.innerHTML = state.posts.map((post) => `
+    list.innerHTML = posts.map((post) => `
       <article class="list-row">
         <div class="date">${escapeHtml((post.publishedAt || "").replace("T", " ").slice(0, 16))}</div>
-        <div><h3><span class="status-chip ${post.tag === "重要" ? "is-important" : ""}">${escapeHtml(post.tag)}</span>${escapeHtml(post.title)}</h3><p>${post.isPublished ? (String(post.publishedAt || "") > jstDateTimeLocal() ? "公開予約" : "公開中") : "下書き（非公開）"}</p></div>
+        <div><h3><span class="status-chip ${post.tag === "重要" ? "is-important" : ""}">${escapeHtml(post.tag)}</span>${escapeHtml(post.title)}</h3><p>${post.archivedAt ? "アーカイブ（非公開）" : post.isPublished ? (String(post.publishedAt || "") > jstDateTimeLocal() ? "公開予約" : "公開中") : "下書き（非公開）"}</p><p>作成日：${escapeHtml(formatRecordDate(post.createdAt))}</p></div>
         <div class="list-actions">
-          <button class="edit-button" type="button" data-edit-post="${post.id}">編集</button>
-          <button class="delete-button" type="button" data-delete-post="${post.id}">削除</button>
+          <button class="edit-button" type="button" data-edit-post="${post.id}">確認・編集</button>
+          ${post.archivedAt
+            ? `<button class="edit-button" type="button" data-publish-post="${post.id}">再公開</button>`
+            : `<button class="delete-button" type="button" data-archive-post="${post.id}">アーカイブ</button>`}
         </div>
       </article>`).join("");
+  }
+
+  function formatRecordDate(value) {
+    if (!value) return "不明";
+    const date = new Date(String(value).replace(" ", "T") + "Z");
+    return Number.isNaN(date.getTime()) ? value : date.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
+  }
+
+  document.querySelectorAll('[name="postView"]').forEach((input) => {
+    input.addEventListener("change", () => {
+      state.postView = input.value;
+      hideEditor("post");
+      paintPosts();
+    });
+  });
+
+  async function setAdminImage(image, url) {
+    const previous = image.dataset.objectUrl;
+    if (previous) URL.revokeObjectURL(previous);
+    delete image.dataset.objectUrl;
+    image.dataset.sourceUrl = url;
+    image.removeAttribute("src");
+    if (!/^\/cms-media\/[a-z0-9-]+$/i.test(url)) {
+      image.src = url.startsWith("images/") ? `/${url}` : url;
+      return;
+    }
+    try {
+      const response = await fetch(url, { headers: { authorization: `Bearer ${state.token}` }, cache: "no-store" });
+      if (!response.ok) throw new Error("画像を読み込めませんでした。");
+      const blob = await response.blob();
+      if (image.dataset.sourceUrl !== url) return;
+      const objectUrl = URL.createObjectURL(blob);
+      image.dataset.objectUrl = objectUrl;
+      image.src = objectUrl;
+    } catch (error) { notify(error.message, true); }
   }
 
   function resetEventForm() {
@@ -250,12 +295,19 @@
   }
 
   function resetPostForm() {
+    postForm.querySelectorAll('img[data-object-url]').forEach((image) => {
+      URL.revokeObjectURL(image.dataset.objectUrl);
+      delete image.dataset.objectUrl;
+      delete image.dataset.sourceUrl;
+    });
     postForm.reset();
     postForm.elements.id.value = "";
     postForm.elements.imageUrl.value = "";
     postForm.elements.body.value = "";
     postForm.elements.publishedAt.value = jstDateTimeLocal();
     postForm.elements.isPublished.checked = true;
+    postForm.elements.isPublished.disabled = false;
+    document.querySelector("#post-dates").hidden = true;
     imagePreview.hidden = true;
     imagePreview.querySelector("img").removeAttribute("src");
     setRichBody("");
@@ -288,9 +340,16 @@
       });
       if (type === "post" && item.imageUrl) {
         imagePreview.hidden = false;
-        imagePreview.querySelector("img").src = item.imageUrl;
+        setAdminImage(imagePreview.querySelector("img"), item.imageUrl);
       }
-      if (type === "post") setRichBody(item.body || "");
+      if (type === "post") {
+        setRichBody(item.body || "");
+        postForm.elements.isPublished.disabled = Boolean(item.archivedAt);
+        if (item.archivedAt) postForm.elements.isPublished.checked = false;
+        const dates = document.querySelector("#post-dates");
+        dates.hidden = false;
+        dates.textContent = `作成日：${formatRecordDate(item.createdAt)}${item.archivedAt ? ` ／ アーカイブ日：${formatRecordDate(item.archivedAt)}` : ""}`;
+      }
       if (type === "event") {
         eventDeleteButton.hidden = false;
         eventDeleteButton.dataset.deleteEvent = item.id;
@@ -391,7 +450,7 @@
     figure.contentEditable = "false";
     figure.dataset.inlineImage = url;
     const image = document.createElement("img");
-    image.src = url;
+    setAdminImage(image, url);
     image.alt = alt;
     const remove = document.createElement("button");
     remove.type = "button";
@@ -426,6 +485,7 @@
   }
 
   function setRichBody(value) {
+    bodyEditor.querySelectorAll('img[data-object-url]').forEach((image) => URL.revokeObjectURL(image.dataset.objectUrl));
     const documentBody = parsedRichBody(value);
     bodyEditor.replaceChildren();
     documentBody.blocks.forEach((block) => {
@@ -586,7 +646,7 @@
     event.preventDefault();
     const values = formObject(postForm);
     values.body = serializeRichBody();
-    values.summary = "";
+    values.summary = state.posts.find((post) => post.id === Number(values.id))?.summary || "";
     if (!richBodyHasContent(values.body)) {
       notify("本文を入力してください。", true);
       bodyEditor.focus();
@@ -614,7 +674,7 @@
       const result = await api("/api/cms/admin/media", { method: "POST", body: JSON.stringify({ dataUrl, alt: postForm.elements.title.value }) });
       postForm.elements.imageUrl.value = result.url;
       imagePreview.hidden = false;
-      imagePreview.querySelector("img").src = result.url;
+      setAdminImage(imagePreview.querySelector("img"), result.url);
       notify("画像を追加しました。");
     } catch (error) {
       notify(error.message, true);
@@ -664,7 +724,8 @@
     const editEvent = event.target.closest("[data-edit-event]");
     const editPost = event.target.closest("[data-edit-post]");
     const deleteEvent = event.target.closest("[data-delete-event]");
-    const deletePost = event.target.closest("[data-delete-post]");
+    const archivePost = event.target.closest("[data-archive-post]");
+    const publishPost = event.target.closest("[data-publish-post]");
     const removeInlineImage = event.target.closest("[data-remove-inline-image]");
     if (removeInlineImage) {
       const figure = removeInlineImage.closest("figure");
@@ -698,12 +759,16 @@
         loadAll();
       } catch (error) { notify(error.message, true); }
     }
-    if (deletePost && confirm("この記事を削除しますか？")) {
+    const postAction = archivePost || publishPost;
+    if (postAction && confirm(archivePost ? "この記事をアーカイブして、ホームページから非表示にしますか？内容は保存されます。" : "保存済みの内容を今すぐ再公開しますか？")) {
+      postAction.disabled = true;
       try {
-        await api(`/api/cms/admin/posts/${deletePost.dataset.deletePost}`, { method: "DELETE" });
-        notify("記事を削除しました。");
-        loadAll();
+        await api(`/api/cms/admin/posts/${postAction.dataset.archivePost || postAction.dataset.publishPost}`, { method: "PATCH", body: JSON.stringify({ action: archivePost ? "archive" : "publish" }) });
+        hideEditor("post");
+        notify(archivePost ? "記事をアーカイブしました。" : "記事を再公開しました。");
+        await loadAll();
       } catch (error) { notify(error.message, true); }
+      finally { postAction.disabled = false; }
     }
   });
 

@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow">
   <title>学校情報 更新画面｜筑紫野自動車学校</title>
   <link rel="stylesheet" href="admin.css?v=20260727-2">
-  <script src="admin.js?v=20260727-2" defer></script>
+  <script src="admin.js?v=20260909-archive" defer></script>
 </head>
 <body>
   <header class="admin-header">
@@ -113,6 +113,10 @@
           <button class="primary-button" type="button" data-new="post">記事を追加</button>
         </div>
 
+        <div class="tag-picker" role="group" aria-label="記事の一覧">
+          <label><input type="radio" name="postView" value="active" checked><span>公開・下書き</span></label>
+          <label><input type="radio" name="postView" value="archived"><span>アーカイブ</span></label>
+        </div>
         <form class="editor" id="post-form" hidden>
           <input type="hidden" name="id">
           <input type="hidden" name="imageUrl">
@@ -121,6 +125,7 @@
             <h3 id="post-form-title">記事を追加</h3>
             <button class="icon-button" type="button" data-cancel="post" aria-label="閉じる">×</button>
           </div>
+          <p id="post-dates" hidden></p>
           <div class="tag-picker" role="group" aria-label="記事のタグ">
             <label><input type="radio" name="tag" value="お知らせ" checked><span>お知らせ</span></label>
             <label><input type="radio" name="tag" value="重要"><span>重要</span></label>

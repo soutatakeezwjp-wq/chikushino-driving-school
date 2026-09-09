@@ -926,7 +926,7 @@ async function handleCmsPosts(request, env, admin = false) {
     const nowJst = cmsNowJstLocal();
     if (isSinglePublic) {
       const row = await db.prepare(
-        "SELECT * FROM cms_posts WHERE slug = ?1 AND published = 1 AND published_at <= ?2 LIMIT 1"
+        "SELECT * FROM cms_posts WHERE slug = ?1 AND archived_at IS NULL AND published = 1 AND published_at <= ?2 LIMIT 1"
       ).bind(last, nowJst).first();
       if (!row) return cmsResponse({ ok: false, error: "記事が見つかりません。" }, 404);
       return cmsResponse({ ok: true, post: cmsPostToPublic(row) });
@@ -934,20 +934,25 @@ async function handleCmsPosts(request, env, admin = false) {
     const limit = Math.min(Math.max(Number(url.searchParams.get("limit") || 20), 1), 100);
     const tag = cleanCmsText(url.searchParams.get("tag"), 20);
     const statement = tag
-      ? db.prepare("SELECT * FROM cms_posts WHERE published = 1 AND published_at <= ?1 AND tag = ?2 ORDER BY published_at DESC, id DESC LIMIT ?3").bind(nowJst, tag, limit)
-      : db.prepare("SELECT * FROM cms_posts WHERE published = 1 AND published_at <= ?1 ORDER BY published_at DESC, id DESC LIMIT ?2").bind(nowJst, limit);
+      ? db.prepare("SELECT * FROM cms_posts WHERE archived_at IS NULL AND published = 1 AND published_at <= ?1 AND tag = ?2 ORDER BY published_at DESC, id DESC LIMIT ?3").bind(nowJst, tag, limit)
+      : db.prepare("SELECT * FROM cms_posts WHERE archived_at IS NULL AND published = 1 AND published_at <= ?1 ORDER BY published_at DESC, id DESC LIMIT ?2").bind(nowJst, limit);
     const rows = await statement.all();
     return cmsResponse({ ok: true, posts: (rows.results || []).map(cmsPostToPublic) });
   }
 
   if (!isCmsAdmin(request, env)) return cmsUnauthorized();
   if (request.method === "GET") {
-    const rows = await db.prepare("SELECT * FROM cms_posts ORDER BY published_at DESC, id DESC LIMIT 200").all();
-    const posts = (rows.results || []).map((row) => ({
+    const before = Number(url.searchParams.get("before") || Number.MAX_SAFE_INTEGER);
+    if (!Number.isSafeInteger(before) || before <= 0) return cmsResponse({ ok: false, error: "一覧の指定が正しくありません。" }, 400);
+    const rows = await db.prepare("SELECT * FROM cms_posts WHERE id < ?1 ORDER BY id DESC LIMIT 201").bind(before).all();
+    const posts = (rows.results || []).slice(0, 200).map((row) => ({
       ...cmsPostToPublic(row),
-      isPublished: Boolean(row.published)
+      isPublished: Boolean(row.published),
+      archivedAt: row.archived_at || null,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at
     }));
-    return cmsResponse({ ok: true, posts });
+    return cmsResponse({ ok: true, posts, nextCursor: rows.results?.length > 200 ? posts[posts.length - 1].id : null });
   }
 
   if (request.method === "POST") {
@@ -969,6 +974,16 @@ async function handleCmsPosts(request, env, admin = false) {
 
   const id = Number(last);
   if (!Number.isInteger(id) || id <= 0) return cmsResponse({ ok: false, error: "記事が見つかりません。" }, 404);
+  if (request.method === "PATCH" || request.method === "DELETE") {
+    // Legacy delete controls also preserve the article instead of destroying it.
+    const input = request.method === "DELETE" ? { action: "archive" } : await readCmsJson(request);
+    if (!["archive", "publish"].includes(input.action)) return cmsResponse({ ok: false, error: "操作が正しくありません。" }, 400);
+    const result = input.action === "archive"
+      ? await db.prepare("UPDATE cms_posts SET archived_at = COALESCE(archived_at, CURRENT_TIMESTAMP), published = 0, updated_at = CURRENT_TIMESTAMP WHERE id = ?1").bind(id).run()
+      : await db.prepare("UPDATE cms_posts SET archived_at = NULL, published = 1, published_at = ?1, updated_at = CURRENT_TIMESTAMP WHERE id = ?2 AND archived_at IS NOT NULL").bind(cmsNowJstLocal().slice(0, 16), id).run();
+    if (!result.meta?.changes) return cmsResponse({ ok: false, error: "記事が見つからないか、状態が変わりました。一覧を更新してください。" }, 404);
+    return cmsResponse({ ok: true });
+  }
   if (request.method === "PUT") {
     const input = await readCmsJson(request);
     const title = cleanCmsText(input.title, 160);
@@ -979,13 +994,9 @@ async function handleCmsPosts(request, env, admin = false) {
     const publishedAt = normalizeCmsPublishedAt(input.publishedAt);
     const published = input.isPublished === false || input.isPublished === "false" ? 0 : 1;
     if (!title || !body) return cmsResponse({ ok: false, error: "タイトルと本文を入力してください。" }, 400);
-    await db.prepare(
-      "UPDATE cms_posts SET tag = ?1, title = ?2, summary = ?3, body = ?4, image_url = ?5, published = ?6, published_at = ?7, updated_at = CURRENT_TIMESTAMP WHERE id = ?8"
+    const result = await db.prepare(
+      "UPDATE cms_posts SET tag = ?1, title = ?2, summary = ?3, body = ?4, image_url = ?5, published = CASE WHEN archived_at IS NULL THEN ?6 ELSE 0 END, published_at = ?7, updated_at = CURRENT_TIMESTAMP WHERE id = ?8"
     ).bind(tag, title, summary, body, imageUrl, published, publishedAt, id).run();
-    return cmsResponse({ ok: true });
-  }
-  if (request.method === "DELETE") {
-    const result = await db.prepare("DELETE FROM cms_posts WHERE id = ?1").bind(id).run();
     if (!result.meta?.changes) return cmsResponse({ ok: false, error: "記事が見つかりません。" }, 404);
     return cmsResponse({ ok: true });
   }
@@ -997,13 +1008,26 @@ async function handleCmsMedia(request, env) {
   const url = new URL(request.url);
   if (url.pathname.startsWith("/cms-media/") && request.method === "GET") {
     const id = cleanCmsText(url.pathname.split("/").pop(), 80);
+    if (!isCmsAdmin(request, env)) {
+      // Uploaded media is public only while an actually published article uses it.
+      const path = `/cms-media/${id}`;
+      const candidates = await db.prepare("SELECT image_url, body FROM cms_posts WHERE archived_at IS NULL AND published = 1 AND published_at <= ?1").bind(cmsNowJstLocal()).all();
+      const referenced = (candidates.results || []).some((post) => {
+        if (post.image_url === path) return true;
+        try {
+          const body = JSON.parse(post.body);
+          return body.format === "rich-v1" && Array.isArray(body.blocks) && body.blocks.some((block) => block.type === "image" && block.url === path);
+        } catch { return false; }
+      });
+      if (!referenced) return new Response("Not found", { status: 404, headers: { "cache-control": "no-store" } });
+    }
     const row = await db.prepare("SELECT content_type, data FROM cms_media WHERE id = ?1").bind(id).first();
     if (!row) return new Response("Not found", { status: 404 });
     const binary = Uint8Array.from(atob(row.data), (char) => char.charCodeAt(0));
     return new Response(binary, {
       headers: {
         "content-type": row.content_type,
-        "cache-control": "public, max-age=31536000, immutable"
+        "cache-control": "no-store"
       }
     });
   }
