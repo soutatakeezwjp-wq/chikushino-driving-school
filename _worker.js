@@ -34,6 +34,9 @@ const APPLICATION_FIELD_LIMITS = {
   friendKana: 100,
   friendPhone: 20,
   friendEmail: 254,
+  friendPostalCode: 12,
+  friendAddress: 300,
+  friendOccupation: 80,
   desiredEntryDate: 80,
   priceCourse: 60,
   currentLicense: 80,
@@ -388,6 +391,8 @@ function normalizeApplicationPayload(payload, request) {
   );
 
   normalized.purpose = normalizePurpose(payload.purpose);
+  normalized.friendDesiredVehicles = cleanStringList(payload.friendDesiredVehicles, 12, APPLICATION_FIELD_LIMITS.vehicle)
+    .map(normalizeVehicle).filter((value, index, array) => value && array.indexOf(value) === index);
   normalized.desiredVehicles = desiredVehicles;
   normalized.vehicle = normalizeVehicle(cleanStringList(payload.vehicle, 1, APPLICATION_FIELD_LIMITS.vehicle)[0] || desiredVehicles[0] || payload.priceCourse);
   if (!normalized.desiredVehicles.length && normalized.vehicle) normalized.desiredVehicles = [normalized.vehicle];
@@ -414,8 +419,7 @@ function normalizeApplicationPayload(payload, request) {
 }
 
 function validateApplicationPayload(payload) {
-  // 友人・知人紹介は紹介者と入校者の連絡先だけを受け取るフォームなので、
-  // 住所・車種などの入校申し込み向け項目は必須にしない。
+  // 紹介の住所・希望教習車種・職業は任意。旧フォームからの送信も受け付ける。
   const isReferral = payload.purpose === REFERRAL_PURPOSE;
   const requiredFields = isReferral
     ? ["purpose", "name", "phone", "email", "friendName", "privacyConsent"]
@@ -470,6 +474,12 @@ function validateApplicationPayload(payload) {
   if (payload.friendEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.friendEmail)) {
     throw new ApplicationRequestError("VALIDATION_FRIEND_EMAIL", "ご紹介される方のメールアドレスの形式を確認してください。", 400);
   }
+  if (payload.friendPostalCode && !/^\d{3}-?\d{4}$/.test(payload.friendPostalCode)) {
+    throw new ApplicationRequestError("VALIDATION_FRIEND_POSTAL_CODE", "ご紹介される方の郵便番号の形式を確認してください。", 400);
+  }
+  if (payload.friendDesiredVehicles.some((vehicle) => !ALLOWED_VEHICLES.has(vehicle))) {
+    throw new ApplicationRequestError("VALIDATION_FRIEND_VEHICLE", "ご紹介される方の希望教習車種を選び直してください。", 400);
+  }
   if (payload.postalCode && !/^\d{3}-?\d{4}$/.test(payload.postalCode)) {
     throw new ApplicationRequestError("VALIDATION_POSTAL_CODE", "郵便番号の形式を確認してください。", 400);
   }
@@ -516,6 +526,11 @@ async function createSubmissionKey(payload) {
     keyFields.friendKana = payload.friendKana;
     keyFields.friendPhone = payload.friendPhone.replace(/\D/g, "");
     keyFields.friendEmail = payload.friendEmail.toLowerCase();
+    // 空欄の場合は従来のキーを保持し、入力の訂正は別内容として保存する。
+    if (payload.friendPostalCode) keyFields.friendPostalCode = payload.friendPostalCode.replace(/\D/g, "");
+    if (payload.friendAddress) keyFields.friendAddress = payload.friendAddress;
+    if (payload.friendDesiredVehicles.length) keyFields.friendDesiredVehicles = payload.friendDesiredVehicles;
+    if (payload.friendOccupation) keyFields.friendOccupation = payload.friendOccupation;
   }
   return sha256Hex(canonicalStringify(keyFields));
 }

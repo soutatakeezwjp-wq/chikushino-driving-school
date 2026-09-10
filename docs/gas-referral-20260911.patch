@@ -1,0 +1,46 @@
+--- a/Code.gs
++++ b/Code.gs
+@@ -152 +152,2 @@
+-  "対応ステータス", "担当者", "連絡済み", "入校済み", "流入元"
++  "対応ステータス", "担当者", "連絡済み", "入校済み", "流入元",
++  "入校者郵便番号", "入校者住所", "入校者希望教習車種", "入校者職業"
+@@ -1956,0 +1958 @@
++  normalized.friendDesiredVehicles = normalizeStringList(payload.friendDesiredVehicles, 12);
+@@ -2024 +2026,4 @@
+-  const commonRequired = ["purpose", "name", "gender", "birthdate", "phone", "email", "postalCode", "address", "occupation", "privacyConsent"];
++  const isReferral = isReferralPurpose_(payload);
++  const commonRequired = isReferral
++    ? ["purpose", "name", "phone", "email", "friendName", "privacyConsent"]
++    : ["purpose", "name", "gender", "birthdate", "phone", "email", "postalCode", "address", "occupation", "privacyConsent"];
+@@ -2028 +2033 @@
+-  if (!hasPayloadValue(payload.desiredVehicles) && !hasPayloadValue(payload.vehicle)) missing.push("desiredVehicles");
++  if (!isReferral && !hasPayloadValue(payload.desiredVehicles) && !hasPayloadValue(payload.vehicle)) missing.push("desiredVehicles");
+@@ -2048,0 +2054,12 @@
++  }
++  if (payload.friendPostalCode && !/^\d{3}-?\d{4}$/.test(String(payload.friendPostalCode))) {
++    throw createAppError("VALIDATION_FRIEND_POSTAL_CODE", "ご紹介される方の郵便番号の形式を確認してください。", 400);
++  }
++  if (payload.friendEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(payload.friendEmail))) {
++    throw createAppError("VALIDATION_FRIEND_EMAIL", "ご紹介される方のメールアドレスの形式を確認してください。", 400);
++  }
++  if (payload.friendPhone) {
++    const friendDigits = String(payload.friendPhone).replace(/\D/g, "");
++    if (friendDigits.length < 10 || friendDigits.length > 11) {
++      throw createAppError("VALIDATION_FRIEND_PHONE", "ご紹介される方の電話番号の形式を確認してください。", 400);
++    }
+@@ -4376,0 +4394,4 @@
++    "入校者郵便番号": payload.friendPostalCode || "",
++    "入校者住所": payload.friendAddress || "",
++    "入校者希望教習車種": listText(payload.friendDesiredVehicles),
++    "入校者職業": payload.friendOccupation || "",
+@@ -4443,0 +4465,4 @@
++    ["ご入校者 郵便番号", payload.friendPostalCode || ""],
++    ["ご入校者 住所", payload.friendAddress || ""],
++    ["ご入校者 希望教習車種", listText(payload.friendDesiredVehicles)],
++    ["ご入校者 職業", payload.friendOccupation || ""],
+@@ -4452 +4477 @@
+-  MailApp.sendEmail(recipients.join(","), subject, body, {
++  GmailApp.sendEmail(recipients.join(","), subject, body, {
+@@ -4482 +4507 @@
+-  MailApp.sendEmail(payload.email, subject, lines.join("\n"), {
++  GmailApp.sendEmail(payload.email, subject, lines.join("\n"), {

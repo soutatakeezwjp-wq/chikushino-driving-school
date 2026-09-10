@@ -1309,6 +1309,11 @@
     "合宿風ハイスピードプラン": ["AT普通車"]
   };
 
+  const choice = (type, name, value, label, index, required = false) => `<span class="choice-item"><input type="${type}" name="${name}" id="${name}-${index}" value="${safeText(value)}" ${required ? "required" : ""}><label for="${name}-${index}">${safeText(label)}</label></span>`;
+  const choices = (type, name, values, required = false) => values.map((value, index) => choice(type, name, value, value, index, required && index === 0)).join("");
+  const applicationOccupations = ["大学生", "短大生", "専門学生", "高校生", "予備校生", "会社員", "自営業", "主婦", "パート・アルバイト", "その他"];
+  const applicationDesiredVehicles = ["AT普通車", "MT普通車", "MT準中型車", "MT大型二輪車", "AT普通二輪車", "MT普通二輪車", "AT普通二輪車（小型限定）", "MT普通二輪車（小型限定）", "限定解除", "ペーパードライバー"];
+
   function applicationHtml() {
     const params = new URLSearchParams(location.search);
     const purpose = params.get("purpose")?.includes("資料") ? "資料請求" : "仮入校申し込み";
@@ -1331,10 +1336,6 @@
       const today = new Date();
       return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
     })();
-    const choice = (type, name, value, label, index, required = false) => `<span class="choice-item"><input type="${type}" name="${name}" id="${name}-${index}" value="${safeText(value)}" ${required ? "required" : ""}><label for="${name}-${index}">${safeText(label)}</label></span>`;
-    const choices = (type, name, values, required = false) => values.map((value, index) => choice(type, name, value, value, index, required && index === 0)).join("");
-    const occupations = ["大学生", "短大生", "専門学生", "高校生", "予備校生", "会社員", "自営業", "主婦", "パート・アルバイト", "その他"];
-    const desiredVehicles = ["AT普通車", "MT普通車", "MT準中型車", "MT大型二輪車", "AT普通二輪車", "MT普通二輪車", "AT普通二輪車（小型限定）", "MT普通二輪車（小型限定）", "限定解除", "ペーパードライバー"];
     const currentLicenses = ["持っていない", "MT普通車", "AT普通車", "MT準中型車", "AT大型二輪車", "MT大型二輪車", "AT普通二輪車", "MT普通二輪車", "AT普通二輪車（小型限定）", "MT普通二輪車（小型限定）", "原付", "MT5t限定準中型車", "AT5t限定準中型車", "中型車", "MT8t限定中型車", "AT8t限定中型車", "大型車", "けん引", "大型特殊", "大特農耕限定", "仮免許"];
     const optionPlans = Object.keys(applicationOptionEligibility);
     const optionPlanChoices = optionPlans.map((value, index) => `<span class="choice-item" data-option-plan="${safeText(value)}"><input type="checkbox" name="optionPlans" id="optionPlans-${index}" value="${safeText(value)}"><label for="optionPlans-${index}">${safeText(value)}</label></span>`).join("");
@@ -1361,7 +1362,7 @@
           <label class="form-field is-wide"><span>住所<span class="required">必須</span></span><input name="address" autocomplete="street-address" required></label>
           <label class="form-field"><span>メールアドレス<span class="required">必須</span></span><input type="email" name="email" autocomplete="email" required placeholder="example@example.com"></label>
           <label class="form-field"><span>電話番号<span class="required">必須</span></span><input type="tel" name="phone" autocomplete="tel" inputmode="tel" required placeholder="0927102188"></label>
-          <fieldset class="form-field is-wide choice-field"><legend>職業<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("radio", "occupation", occupations, true)}</div>${otherInput("occupation", "occupationOther", "その他の職業", "職業をご入力ください")}</fieldset>
+          <fieldset class="form-field is-wide choice-field"><legend>職業<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("radio", "occupation", applicationOccupations, true)}</div>${otherInput("occupation", "occupationOther", "その他の職業", "職業をご入力ください")}</fieldset>
           <label class="form-field is-wide"><span>お勤め先（学校・会社）名</span><input name="organization" autocomplete="organization" placeholder="○○大学"></label>
           <label class="form-field" id="referral-name-field"><span>紹介者名（姓）${isReferralApplication ? '<span class="optional">割引利用時に入力</span>' : ""}</span><input name="introducerFamilyName" placeholder="筑紫野"></label>
           <label class="form-field"><span>紹介者名（名）${isReferralApplication ? '<span class="optional">割引利用時に入力</span>' : ""}</span><input name="introducerGivenName" placeholder="花子"></label>
@@ -1369,7 +1370,7 @@
         </div></section>
 
         <section class="application-section"><span class="application-section-no">02</span><h2>希望する免許・教習プラン</h2><div class="form-grid">
-          <fieldset class="form-field is-wide choice-field" data-required-group="desiredVehicles"><legend>入校車種（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "desiredVehicles", desiredVehicles)}</div></fieldset>
+          <fieldset class="form-field is-wide choice-field" data-required-group="desiredVehicles"><legend>入校車種（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "desiredVehicles", applicationDesiredVehicles)}</div></fieldset>
           <fieldset class="form-field is-wide choice-field" data-required-group="currentLicenses"><legend>現在の免許証の有無（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "currentLicenses", currentLicenses)}</div></fieldset>
           <fieldset class="form-field is-wide choice-field"><legend>技能教習プラン<span class="required">必須</span></legend><div class="choice-grid">${choices("radio", "lessonPlan", ["デイプラン", "フリープラン"], true)}</div></fieldset>
           <fieldset class="form-field is-wide choice-field" id="option-plan-field"><legend>オプションプラン（複数可）</legend><div class="choice-grid" id="option-plan-choices">${optionPlanChoices}</div><small id="option-plan-help" aria-live="polite">入校車種を選ぶと、利用できるオプションプランだけが表示されます。</small></fieldset>
@@ -1562,10 +1563,10 @@
 
   // 友人・知人紹介フォーム（detail.html?page=referral）
   // 紹介する側が友達を登録するための専用フォーム。仮入校申し込みフォームとは別物なので、
-  // 共通関数には手を入れず、この関数の中だけで完結させている。
+  // 選択肢は申込フォームと共通化し、入力・送信の項目は friend 接頭辞で区別する。
   function referralHtml() {
     const field = (label, name, options = {}) => {
-      const { required = false, type = "text", placeholder = "", inputmode = "", autocomplete = "", wide = false } = options;
+      const { required = false, type = "text", placeholder = "", inputmode = "", autocomplete = "", wide = false, maxlength = 0, pattern = "" } = options;
       const badge = required ? '<span class="required">必須</span>' : '<span class="optional">任意</span>';
       const attrs = [
         `name="${name}"`,
@@ -1573,7 +1574,9 @@
         required ? "required" : "",
         placeholder ? `placeholder="${safeText(placeholder)}"` : "",
         inputmode ? `inputmode="${inputmode}"` : "",
-        autocomplete ? `autocomplete="${autocomplete}"` : ""
+        autocomplete ? `autocomplete="${autocomplete}"` : "",
+        maxlength ? `maxlength="${maxlength}"` : "",
+        pattern ? `pattern="${pattern}"` : ""
       ].filter(Boolean).join(" ");
       return `<label class="form-field${wide ? " is-wide" : ""}"><span>${safeText(label)}${badge}</span><input ${attrs}></label>`;
     };
@@ -1594,8 +1597,8 @@
           ${field("メールアドレス", "email", { required: true, type: "email", placeholder: "example@example.com", autocomplete: "email" })}
         </div>${inputErrorNote}</section>
 
-        <section class="application-section"><span class="application-section-no">02</span><h2>ご入校者情報</h2>
-          <p class="form-lead">ご入校者ご本人の了承を得たうえでご入力ください。</p>
+        <section class="application-section"><span class="application-section-no">02</span><h2>ご入校者情報（紹介された方）</h2>
+          <p class="form-lead">ご入校者ご本人の了承を得たうえでご入力ください。住所・希望教習車種・職業は、わかる範囲でご入力ください。</p>
           <div class="form-grid">
           ${field("お名前（姓）", "friendFamilyName", { required: true, placeholder: "筑紫野" })}
           ${field("お名前（名）", "friendGivenName", { required: true, placeholder: "花子" })}
@@ -1603,6 +1606,10 @@
           ${field("ふりがな（名）", "friendGivenKana", { placeholder: "ハナコ", inputmode: "kana" })}
           ${field("電話番号", "friendPhone", { type: "tel", placeholder: "09012345678", inputmode: "tel" })}
           ${field("メールアドレス", "friendEmail", { type: "email", placeholder: "example@example.com" })}
+          ${field("郵便番号", "friendPostalCode", { placeholder: "818-0025", inputmode: "numeric", maxlength: 8, pattern: "[0-9]{3}-?[0-9]{4}" })}
+          ${field("住所", "friendAddress", { wide: true, maxlength: 300 })}
+          <fieldset class="form-field is-wide choice-field"><legend>希望教習車種（複数可）<span class="optional">任意</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "friendDesiredVehicles", applicationDesiredVehicles)}</div></fieldset>
+          <fieldset class="form-field is-wide choice-field"><legend>職業<span class="optional">任意</span></legend><div class="choice-grid is-two-columns">${choices("radio", "friendOccupation", applicationOccupations)}</div><label class="choice-other" id="friend-occupation-other" hidden><span>その他の職業</span><input name="friendOccupationOther" maxlength="76" placeholder="職業をご入力ください"></label></fieldset>
         </div>${inputErrorNote}</section>
 
         <section class="application-section"><span class="application-section-no">03</span><h2>そのほか</h2><div class="form-grid">
@@ -1618,6 +1625,15 @@
     const form = main.querySelector("#referralForm");
     if (!form) return;
     const status = form.querySelector("#referral-status");
+    const occupationOther = form.querySelector("#friend-occupation-other");
+    const syncOccupationOther = () => {
+      const selected = form.querySelector('[name="friendOccupation"]:checked')?.value === "その他";
+      occupationOther.hidden = !selected;
+      occupationOther.querySelector("input").disabled = !selected;
+      if (!selected) occupationOther.querySelector("input").value = "";
+    };
+    form.querySelectorAll('[name="friendOccupation"]').forEach((input) => input.addEventListener("change", syncOccupationOther));
+    syncOccupationOther();
     const joinName = (first, second) => `${first || ""} ${second || ""}`.trim();
     let submissionInProgress = false;
     form.addEventListener("submit", async (event) => {
@@ -1636,9 +1652,14 @@
       data.kana = joinName(data.familyKana, data.givenKana);
       data.friendName = joinName(data.friendFamilyName, data.friendGivenName);
       data.friendKana = joinName(data.friendFamilyKana, data.friendGivenKana);
+      data.friendDesiredVehicles = formData.getAll("friendDesiredVehicles");
+      if (data.friendOccupation === "その他" && data.friendOccupationOther?.trim()) {
+        data.friendOccupation = `その他：${data.friendOccupationOther.trim()}`;
+      }
+      delete data.friendOccupationOther;
       data.privacyConsent = Boolean(form.elements.privacyConsent.checked);
       data.honeypot = data.website || "";
-      data.formVersion = "referral-2026-09-04.1";
+      data.formVersion = "referral-2026-09-11.1";
       data.landingPage = location.href;
       data.referrer = document.referrer;
       const params = new URLSearchParams(location.search);
@@ -1665,6 +1686,7 @@
         status.className = "form-status is-success";
         status.textContent = `送信が完了しました。入力いただいたメールアドレス宛にメールが届きますので、ご確認お願いします。10秒ほどお時間かかる場合がございます\n受付ID：${result.applicationId || "発行済み"}`;
         form.reset();
+        syncOccupationOther();
       } catch (error) {
         responseSettled = true;
         window.clearTimeout(earlyReceiptTimer);
