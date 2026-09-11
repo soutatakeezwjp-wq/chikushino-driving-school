@@ -1,0 +1,9 @@
+#cds-measurement-choice { position:fixed; z-index:10020; bottom:52px; left:16px; width:min(480px,calc(100vw - 32px)); padding:20px; box-sizing:border-box; border:1px solid #d6cde4; border-radius:12px; background:#fff; color:#272031; box-shadow:0 8px 32px #25123d26; font:14px/1.7 sans-serif; }
+#cds-measurement-choice p { margin:0 0 14px; }
+#cds-measurement-choice a { color:#57318b; text-decoration:underline; margin-left:6px; }
+#cds-measurement-choice div { display:flex; gap:10px; }
+#cds-measurement-choice button { flex:1; min-height:44px; padding:8px; border:1px solid #57318b; border-radius:6px; background:#fff; color:#452570; font:inherit; cursor:pointer; }
+#cds-measurement-choice button:focus-visible, #cds-measurement-settings:focus-visible { outline:3px solid #b68ae4; outline-offset:3px; }
+#cds-measurement-settings { position:fixed; bottom:8px; left:12px; z-index:10010; min-height:36px; padding:6px 12px; border:1px solid #d6cde4; border-radius:6px; background:#fff; color:#452570; font:12px/1.5 sans-serif; cursor:pointer; }
+@media (max-width:900px) { #cds-measurement-choice { bottom:124px; } #cds-measurement-settings { bottom:80px; } }
+@media print { #cds-measurement-choice, #cds-measurement-settings { display:none; } }

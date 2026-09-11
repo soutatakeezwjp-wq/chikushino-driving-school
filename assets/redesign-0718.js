@@ -1520,13 +1520,7 @@
       data.honeypot = data.website || "";
       data.estimatedPrice = Number(data.estimatedPrice) || null;
       data.formVersion = "2026-08-01.1";
-      data.landingPage = location.href;
-      data.referrer = document.referrer;
-      const params = new URLSearchParams(location.search);
-      data.utmSource = params.get("utm_source") || "";
-      data.utmMedium = params.get("utm_medium") || "";
-      data.utmCampaign = params.get("utm_campaign") || "";
-      data.utmContent = params.get("utm_content") || "";
+      Object.assign(data, window.CDSMeasurement?.attribution() || {});
       status.hidden = false;
       status.className = "form-status";
       status.textContent = "送信しています。";
@@ -1543,6 +1537,7 @@
         responseSettled = true;
         window.clearTimeout(earlyReceiptTimer);
         if (!response.ok || !result.ok) throw new Error(result.message || result.error || "送信できませんでした。時間をおいて再度お試しください。");
+        try { window.CDSMeasurement?.complete(response, result, data.purpose); } catch (_) { /* 計測の失敗で受付成功を取り消さない */ }
         status.className = "form-status is-success";
         status.classList.add("is-success");
         status.textContent = `送信が完了しました。入力いただいたメールアドレス宛にメールが届きますので、ご確認お願いします。10秒ほどお時間かかる場合がございます\n受付ID：${result.applicationId || "発行済み"}`;
@@ -1660,13 +1655,7 @@
       data.privacyConsent = Boolean(form.elements.privacyConsent.checked);
       data.honeypot = data.website || "";
       data.formVersion = "referral-2026-09-11.1";
-      data.landingPage = location.href;
-      data.referrer = document.referrer;
-      const params = new URLSearchParams(location.search);
-      data.utmSource = params.get("utm_source") || "";
-      data.utmMedium = params.get("utm_medium") || "";
-      data.utmCampaign = params.get("utm_campaign") || "";
-      data.utmContent = params.get("utm_content") || "";
+      Object.assign(data, window.CDSMeasurement?.attribution() || {});
       status.hidden = false;
       status.className = "form-status";
       status.textContent = "送信しています。";
@@ -1683,6 +1672,7 @@
         responseSettled = true;
         window.clearTimeout(earlyReceiptTimer);
         if (!response.ok || !result.ok) throw new Error(result.message || result.error || "送信できませんでした。時間をおいて再度お試しください。");
+        try { window.CDSMeasurement?.complete(response, result, data.purpose); } catch (_) { /* 計測の失敗で受付成功を取り消さない */ }
         status.className = "form-status is-success";
         status.textContent = `送信が完了しました。入力いただいたメールアドレス宛にメールが届きますので、ご確認お願いします。10秒ほどお時間かかる場合がございます\n受付ID：${result.applicationId || "発行済み"}`;
         form.reset();

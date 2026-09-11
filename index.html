@@ -13,25 +13,9 @@
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="canonical" href="https://chikushi-ds.com/">
 <link rel="icon" href="images/brand-assets/cds-symbol-logo.png" type="image/png">
-<script>
-  /* ★GA4測定ID：公開前に analytics.google.com で取得した「G-」で始まる実IDに、
-     この1行だけ差し替えてください（index.html と detail.html の2ファイルにあります） */
-  window.GA4_MEASUREMENT_ID = "G-XXXXXXXXXX";
-</script>
-<script>
-  (function () {
-    var id = window.GA4_MEASUREMENT_ID;
-    if (!id || id.indexOf("XXXX") !== -1) return; /* 未設定の間は何も送信しない */
-    var s = document.createElement("script");
-    s.async = true;
-    s.src = "https://www.googletagmanager.com/gtag/js?id=" + id;
-    document.head.appendChild(s);
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { dataLayer.push(arguments); };
-    gtag("js", new Date());
-    gtag("config", id);
-  })();
-</script>
+<link rel="stylesheet" href="/assets/measurement.css?v=20260911-1">
+<script src="/assets/measurement-config.js?v=20260911-1"></script>
+<script src="/assets/measurement.js?v=20260911-1"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
