@@ -81,6 +81,11 @@ const ALLOWED_VEHICLES = new Set([
   "AT普通二輪車（小型限定）",
   "MT普通二輪車（小型限定）",
   "限定解除",
+  "四輪限定解除（普通車AT解除）",
+  "四輪限定解除（準中型5t解除）",
+  "二輪限定解除（普通二輪MT）",
+  "二輪限定解除（普通二輪AT）",
+  "二輪限定解除（小型二輪AT解除）",
   "ペーパードライバー",
   "高齢者講習",
   "原付講習",
@@ -265,6 +270,11 @@ function normalizeVehicle(value) {
   const raw = cleanText(value, APPLICATION_FIELD_LIMITS.vehicle);
   const aliases = {
     ordinary_at: "AT普通車",
+    "四輪限定解除(普通車AT解除)": "四輪限定解除（普通車AT解除）",
+    "四輪限定解除(準中型5t解除)": "四輪限定解除（準中型5t解除）",
+    "二輪限定解除(普通二輪MT)": "二輪限定解除（普通二輪MT）",
+    "二輪限定解除(普通二輪AT)": "二輪限定解除（普通二輪AT）",
+    "二輪限定解除(小型二輪AT解除)": "二輪限定解除（小型二輪AT解除）",
     ordinary_mt: "MT普通車",
     semi_medium: "MT準中型車",
     motorcycle_large_mt: "MT大型二輪車",

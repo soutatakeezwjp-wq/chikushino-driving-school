@@ -1,0 +1,214 @@
+--- a/Code.gs
++++ b/Code.gs
+@@ -2083,7 +2083,211 @@
+   }
+ }
+ 
++// 2026-09-11学校回答：限定解除は希望する四輪/二輪と同じ系統の所持免許を参照。
++// 金額は2026-08-01正式PDFの審査料金表。通常取得・MT卒業証明書移行とは別。
++const LIMITED_CHANGE_PRICE_MASTER = {
++  "limited_ordinary_mt": {
++    "label": "四輪限定解除（普通車AT解除）",
++    "family": "four",
++    "licenses": {
++      "at_car": {
++        "label": "AT普通車",
++        "student": {
++          "day": 62150,
++          "free": 67650
++        },
++        "general": {
++          "day": 67150,
++          "free": 72650
++        }
++      }
++    }
++  },
++  "limited_semi_medium": {
++    "label": "四輪限定解除（準中型5t解除）",
++    "family": "four",
++    "licenses": {
++      "at_semi5": {
++        "label": "AT5t限定",
++        "student": {
++          "day": 95480,
++          "free": 100980
++        },
++        "general": {
++          "day": 100480,
++          "free": 105980
++        }
++      },
++      "mt_semi5": {
++        "label": "MT5t限定",
++        "student": {
++          "day": 69960,
++          "free": 75460
++        },
++        "general": {
++          "day": 74960,
++          "free": 80460
++        }
++      }
++    }
++  },
++  "limited_motorcycle_mt": {
++    "label": "二輪限定解除（普通二輪MT）",
++    "family": "two",
++    "licenses": {
++      "small_at": {
++        "label": "AT普通二輪車（小型限定）",
++        "student": {
++          "day": 74030,
++          "free": 79530
++        },
++        "general": {
++          "day": 79030,
++          "free": 84530
++        }
++      },
++      "small_mt": {
++        "label": "MT普通二輪車（小型限定）",
++        "student": {
++          "day": 60500,
++          "free": 66000
++        },
++        "general": {
++          "day": 65500,
++          "free": 71000
++        }
++      },
++      "motorcycle_at": {
++        "label": "AT普通二輪車",
++        "student": {
++          "day": 60500,
++          "free": 66000
++        },
++        "general": {
++          "day": 65500,
++          "free": 71000
++        }
++      }
++    }
++  },
++  "limited_motorcycle_at": {
++    "label": "二輪限定解除（普通二輪AT）",
++    "family": "two",
++    "licenses": {
++      "small_at": {
++        "label": "AT普通二輪車（小型限定）",
++        "student": {
++          "day": 60500,
++          "free": 66000
++        },
++        "general": {
++          "day": 65500,
++          "free": 71000
++        }
++      },
++      "small_mt": {
++        "label": "MT普通二輪車（小型限定）",
++        "student": {
++          "day": 51480,
++          "free": 56980
++        },
++        "general": {
++          "day": 56480,
++          "free": 61980
++        }
++      }
++    }
++  },
++  "limited_small_mt": {
++    "label": "二輪限定解除（小型二輪AT解除）",
++    "family": "two",
++    "licenses": {
++      "small_at": {
++        "label": "AT普通二輪車（小型限定）",
++        "student": {
++          "day": 55990,
++          "free": 61490
++        },
++        "general": {
++          "day": 60990,
++          "free": 66490
++        }
++      }
++    }
++  }
++};
++
++function limitedLicenseInfo_(raw) {
++  const aliases = { none: "持っていない", moped: "原付", at_car: "AT普通車", mt_car: "MT普通車", car: "普通車", small_at: "AT小型二輪", small_mt: "MT小型二輪", motorcycle_at: "AT普通二輪", motorcycle_mt: "MT普通二輪", motorcycle: "自動二輪" };
++  const original = String(raw || "").normalize("NFKC").trim();
++  const label = normalizeQuoteLabel_(aliases[original.toLowerCase()] || original);
++  if (["持っていない", "なし", "無し", "免許なし"].indexOf(label) !== -1) return { family: "none", key: "none" };
++  if (["原付", "原付免許", "原動機付自転車"].indexOf(label) !== -1) return { family: "moped", key: "moped" };
++  const at = label.indexOf("AT") !== -1, mt = label.indexOf("MT") !== -1;
++  const bare = label.replace(/AT|MT/g, "");
++  const small = ["小型二輪", "小型二輪車", "小型自動二輪", "小型自動二輪車", "普通二輪小型限定", "普通二輪車小型限定", "普通自動二輪車小型限定"];
++  const standard = ["普通二輪", "普通二輪車", "普通自動二輪", "普通自動二輪車"];
++  const large = ["大型二輪", "大型二輪車", "大型自動二輪", "大型自動二輪車"];
++  if (small.indexOf(bare) !== -1 || standard.indexOf(bare) !== -1 || large.indexOf(bare) !== -1) {
++    const prefix = small.indexOf(bare) !== -1 ? "small" : standard.indexOf(bare) !== -1 ? "motorcycle" : "large";
++    return { family: "two", key: at !== mt ? prefix + (at ? "_at" : "_mt") : "" };
++  }
++  if (["二輪", "二輪車", "自動二輪", "自動二輪車"].indexOf(bare) !== -1) return { family: "two", key: "" };
++  if (["普通車", "普通自動車", "普通免許", "普通自動車免許"].indexOf(bare) !== -1) return { family: "four", key: at !== mt ? (at ? "at_car" : "mt_car") : "" };
++  if (["5T限定準中型", "5T限定準中型車", "5T限定準中型自動車", "準中型5T限定", "準中型車5T限定"].indexOf(bare) !== -1) return { family: "four", key: at !== mt ? (at ? "at_semi5" : "mt_semi5") : "" };
++  const otherFour = ["準中型", "準中型車", "準中型自動車", "中型", "中型車", "中型自動車", "8T限定中型", "8T限定中型車", "8T限定中型自動車", "大型", "大型車", "大型自動車", "けん引", "牽引", "大型特殊", "大型特殊車", "大特農耕限定"];
++  if (otherFour.indexOf(bare) !== -1) return { family: "four", key: "" };
++  return { family: "unknown", key: "" };
++}
++
++function recalculateLimitedQuote_(payload) {
++  let vehicles = quoteSelectionList_(payload.desiredVehicles, 12);
++  if (!vehicles.length) vehicles = quoteSelectionList_(payload.vehicle, 12);
++  const explicit = String(payload.priceCourse || "").trim();
++  const hasLimited = vehicles.some(function (v) { return /限定解除|審査/.test(normalizeQuoteLabel_(v)) || Object.prototype.hasOwnProperty.call(LIMITED_CHANGE_PRICE_MASTER, v); }) || Object.prototype.hasOwnProperty.call(LIMITED_CHANGE_PRICE_MASTER, explicit);
++  if (!hasLimited) return null;
++  const userKey = payload.userType || normalizeOccupationToUserType(payload.occupation);
++  const planKey = payload.pricePlan || normalizePlanToPriceKey(payload.lessonPlan);
++  let rawLicenses = quoteSelectionList_(payload.currentLicenses, 30);
++  if (!rawLicenses.length) rawLicenses = quoteSelectionList_(payload.currentLicense, 30);
++  let courseKey = "", course = null;
++  const pending = function (reason) {
++    return Object.assign(unavailableQuote(reason, courseKey, course ? course.label : vehicles.join("、")), {
++      licenseKey: "", licenseLabel: rawLicenses.join("、"), userType: userKey,
++      userTypeLabel: userKey === "student" ? "学生" : userKey === "general" ? "一般" : "",
++      planKey: planKey, planLabel: planKey === "free" ? "フリープラン" : planKey === "day" ? "デイプラン" : ""
++    });
++  };
++  // 限定解除という旧入力だけ、又は通常取得との併願では解除先を推測しない。
++  const keys = vehicles.map(function (v) {
++    return Object.keys(LIMITED_CHANGE_PRICE_MASTER).find(function (key) { return v === key || normalizeQuoteLabel_(v) === normalizeQuoteLabel_(LIMITED_CHANGE_PRICE_MASTER[key].label); }) || "";
++  });
++  const unique = keys.filter(function (key, i) { return keys.indexOf(key) === i; });
++  if (!vehicles.length || keys.indexOf("") !== -1 || unique.length !== 1) return pending("限定解除の種類・解除後の免許を学校で確認します。旧入力・併願・対象外の審査は自動計算しません。");
++  courseKey = unique[0]; course = LIMITED_CHANGE_PRICE_MASTER[courseKey];
++  if (explicit && explicit !== courseKey) return pending("希望する限定解除と料金コースが一致しないため、学校で確認します。");
++  if (["student", "general"].indexOf(userKey) === -1 || (!payload.userType && !String(payload.occupation || "").trim())) return pending("学生・一般の区分を学校で確認します。");
++  if (["day", "free"].indexOf(planKey) === -1) return pending("限定解除の料金プランを学校で確認します。");
++  if (quoteSelectionList_(payload.optionPlans || payload.options, 10).length || normalizeOptionPlans(payload).length) return pending("限定解除のオプション適用が未確定のため、学校で料金を確認します。");
++  const held = rawLicenses.map(function (raw) { return Object.assign({raw: raw}, limitedLicenseInfo_(raw)); });
++  if (!held.length || held.some(function (h) { return h.family === "none" || h.family === "unknown"; })) return pending("限定解除の所持免許が未選択・不明、または『持っていない』を含むため、学校で確認します。");
++  // 学校承認範囲：反対系統と原付は審査料金の選択対象から外す。元の申込記録は保持。
++  const sameFamily = held.filter(function (h) { return h.family === course.family; });
++  if (!sameFamily.length) return pending("希望する限定解除と同じ系統の所持免許を学校で確認します。");
++  if (sameFamily.some(function (h) { return !h.key || !Object.prototype.hasOwnProperty.call(course.licenses, h.key); })) return pending("同じ系統の所持免許に審査料金の未対応区分・取得済み区分があります。学校で確認します。");
++  const licenseKeys = sameFamily.map(function (h) { return h.key; }).filter(function (key, i, values) { return values.indexOf(key) === i; });
++  if (licenseKeys.length !== 1) return pending("同じ系統に複数の審査区分があるため、適用区分を学校で確認します。最安料金は自動選択しません。");
++  const license = course.licenses[licenseKeys[0]], amount = license[userKey] && license[userKey][planKey];
++  if (typeof amount !== "number" || !Number.isFinite(amount) || amount <= 0) return pending("該当する限定解除の料金が未設定のため、学校で確認します。");
++  return { available: true, priceMasterVersion: PRICE_MASTER_VERSION, courseKey: courseKey, courseLabel: course.label,
++    licenseKey: licenseKeys[0], licenseLabel: license.label, userType: userKey, userTypeLabel: userKey === "student" ? "学生" : "一般",
++    planKey: planKey, planLabel: planKey === "free" ? "フリープラン" : "デイプラン", baseAmount: amount, optionAmount: 0, amount: amount,
++    breakdown: [{label: "審査基本料金", amount: amount}] };
++}
++
+ function recalculateQuote(payload) {
++  const limitedQuote = recalculateLimitedQuote_(payload);
++  if (limitedQuote) return limitedQuote;
+   const courseSelection = resolveRequestedCourseKey(payload);
+   if (!courseSelection.courseKey) {
+     return unavailableQuote(courseSelection.reason || "対象外の料金コースです。");

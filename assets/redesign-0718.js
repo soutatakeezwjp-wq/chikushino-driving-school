@@ -1312,7 +1312,7 @@
   const choice = (type, name, value, label, index, required = false) => `<span class="choice-item"><input type="${type}" name="${name}" id="${name}-${index}" value="${safeText(value)}" ${required ? "required" : ""}><label for="${name}-${index}">${safeText(label)}</label></span>`;
   const choices = (type, name, values, required = false) => values.map((value, index) => choice(type, name, value, value, index, required && index === 0)).join("");
   const applicationOccupations = ["大学生", "短大生", "専門学生", "高校生", "予備校生", "会社員", "自営業", "主婦", "パート・アルバイト", "その他"];
-  const applicationDesiredVehicles = ["AT普通車", "MT普通車", "MT準中型車", "MT大型二輪車", "AT普通二輪車", "MT普通二輪車", "AT普通二輪車（小型限定）", "MT普通二輪車（小型限定）", "限定解除", "ペーパードライバー"];
+  const applicationDesiredVehicles = ["AT普通車", "MT普通車", "MT準中型車", "MT大型二輪車", "AT普通二輪車", "MT普通二輪車", "AT普通二輪車（小型限定）", "MT普通二輪車（小型限定）", "四輪限定解除（普通車AT解除）", "四輪限定解除（準中型5t解除）", "二輪限定解除（普通二輪MT）", "二輪限定解除（普通二輪AT）", "二輪限定解除（小型二輪AT解除）", "限定解除", "ペーパードライバー"];
 
   function applicationHtml() {
     const params = new URLSearchParams(location.search);
@@ -1370,7 +1370,7 @@
         </div></section>
 
         <section class="application-section"><span class="application-section-no">02</span><h2>希望する免許・教習プラン</h2><div class="form-grid">
-          <fieldset class="form-field is-wide choice-field" data-required-group="desiredVehicles"><legend>入校車種（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "desiredVehicles", applicationDesiredVehicles)}</div></fieldset>
+          <fieldset class="form-field is-wide choice-field" data-required-group="desiredVehicles"><legend>入校車種（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "desiredVehicles", applicationDesiredVehicles)}</div><p class="form-help">限定解除は、解除後に取得したい免許の種類を1つ選んでください。種類が分からない場合は「限定解除」を選ぶと、学校から確認します。四輪・二輪の両方をお持ちの場合も、所持免許はすべて選択してください。</p></fieldset>
           <fieldset class="form-field is-wide choice-field" data-required-group="currentLicenses"><legend>現在の免許証の有無（複数可）<span class="required">必須</span></legend><div class="choice-grid is-two-columns">${choices("checkbox", "currentLicenses", currentLicenses)}</div></fieldset>
           <fieldset class="form-field is-wide choice-field"><legend>技能教習プラン<span class="required">必須</span></legend><div class="choice-grid">${choices("radio", "lessonPlan", ["デイプラン", "フリープラン"], true)}</div></fieldset>
           <fieldset class="form-field is-wide choice-field" id="option-plan-field"><legend>オプションプラン（複数可）</legend><div class="choice-grid" id="option-plan-choices">${optionPlanChoices}</div><small id="option-plan-help" aria-live="polite">入校車種を選ぶと、利用できるオプションプランだけが表示されます。</small></fieldset>
