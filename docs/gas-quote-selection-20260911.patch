@@ -1,0 +1,208 @@
+--- a/Code.gs
++++ b/Code.gs
+@@ -2106 +2106,5 @@
+-    return unavailableQuote(licenseSelection.reason, courseKey, course.label);
++    return Object.assign(unavailableQuote(licenseSelection.reason, courseKey, course.label), {
++      licenseKey: "", licenseLabel: quoteSelectionList_(payload.currentLicenses || payload.currentLicense, 30).join("、"),
++      userType: userKey, userTypeLabel: userKey === "general" ? "一般" : "学生",
++      planKey: planKey, planLabel: planKey === "free" ? "フリープラン" : "デイプラン"
++    });
+@@ -2129,0 +2134,10 @@
++// 料金照合専用。保管された「、」区切り、全角英数字、重複を同じ選択として読む。
++// 元のpayloadとシートに保存する所持免許表記は書き換えない。
++function quoteSelectionList_(value, maxItems) {
++  const source = Array.isArray(value) ? value : [value];
++  const values = source.reduce(function (items, item) {
++    return items.concat(String(item || "").normalize("NFKC").split(/[,、\r\n]+/));
++  }, []).map(function (item) { return item.trim(); }).filter(Boolean);
++  return values.filter(function (item, index) { return values.indexOf(item) === index; }).slice(0, maxItems || 30);
++}
++
+@@ -2132,5 +2146,8 @@
+-  if (explicitCourse) return { courseKey: explicitCourse };
+-
+-  const vehicles = normalizeStringList(payload.desiredVehicles, 12);
+-  if (!vehicles.length && payload.vehicle) vehicles.push(String(payload.vehicle));
+-  const keys = vehicles.map(normalizeCourseToPriceKey).filter(Boolean);
++  let vehicles = quoteSelectionList_(payload.desiredVehicles, 12);
++  if (!vehicles.length) vehicles = quoteSelectionList_(payload.vehicle, 12);
++  // 車種の選択がない旧シミュレーターだけ、明示された既存コースキーを使う。
++  if (!vehicles.length) return { courseKey: Object.prototype.hasOwnProperty.call(PRICE_MASTER, explicitCourse) ? explicitCourse : "", reason: "希望車種を学校で確認します。" };
++  const keys = vehicles.map(normalizeCourseToPriceKey);
++  if (keys.some(function (key) { return !key || !Object.prototype.hasOwnProperty.call(PRICE_MASTER, key); })) {
++    return { courseKey: "", reason: "料金表の自動計算対象外の希望車種を含みます（" + vehicles.join("、") + "）。学校で確認します。" };
++  }
+@@ -2138,5 +2155,7 @@
+-  if (uniqueKeys.length === 1) return { courseKey: uniqueKeys[0] };
+-  if (uniqueKeys.length > 1) {
+-    return { courseKey: "", reason: "希望車種が複数あるため、学校で料金を確認します。" };
+-  }
+-  return { courseKey: "", reason: "対象外の料金コースです。" };
++  if (uniqueKeys.length !== 1) {
++    return { courseKey: "", reason: "希望車種が複数あるため、学校で料金を確認します（" + vehicles.join("、") + "）。" };
++  }
++  if (explicitCourse && explicitCourse !== uniqueKeys[0]) {
++    return { courseKey: "", reason: "希望車種と料金コースが一致しないため、学校で確認します。" };
++  }
++  return { courseKey: uniqueKeys[0] };
+@@ -2146,16 +2165,27 @@
+-  const rawLicenses = normalizeStringList(payload.currentLicenses, 30);
+-  if (!rawLicenses.length && payload.currentLicense) rawLicenses.push(String(payload.currentLicense));
+-  const normalizedKeys = rawLicenses.map(function (value) {
+-    return normalizeLicenseKey(value, courseKey);
+-  }).filter(function (key) {
+-    return key && course.licenses[key];
+-  });
+-  const licenseKeys = normalizedKeys.filter(function (key, index) {
+-    return normalizedKeys.indexOf(key) === index;
+-  });
+-
+-  if (rawLicenses.length > 1 && licenseKeys.indexOf("none") !== -1) {
+-    return { available: false, reason: "所持免許の選択内容を学校で確認します。" };
+-  }
+-  if (!licenseKeys.length) {
+-    return { available: false, reason: "所持免許に応じた料金確認が必要です。" };
++  let rawLicenses = quoteSelectionList_(payload.currentLicenses, 30);
++  if (!rawLicenses.length) rawLicenses = quoteSelectionList_(payload.currentLicense, 30);
++  const selections = rawLicenses.map(function (value) {
++    return { raw: value, key: normalizeLicenseKey(value, courseKey) };
++  });
++  const unsupported = selections.filter(function (item) { return !item.key || !course.licenses[item.key]; });
++  // 対応外の免許を捨て、残った区分だけで金額を出すことを防ぐ。
++  if (unsupported.length) {
++    return { available: false, reason: "所持免許の料金区分が未設定、または学校の適用確認が必要です（" + unsupported.map(function (item) { return item.raw; }).join("、") + "）。" };
++  }
++  const normalizedKeys = selections.map(function (item) { return item.key; });
++  let licenseKeys = normalizedKeys.filter(function (key, index) { return normalizedKeys.indexOf(key) === index; });
++  if (licenseKeys.length > 1 && licenseKeys.indexOf("none") !== -1) {
++    return { available: false, reason: "「持っていない」と所持免許が同時に選択されています。学校で確認します。" };
++  }
++  if (!licenseKeys.length) return { available: false, reason: "所持免許が未選択のため、学校で確認します。" };
++
++  // 2026-09-11学校確認済み：普通車MT希望の「普通二輪＋原付」は普通二輪区分。
++  // 最安選択ではなく、この承認された組合せだけで原付の候補を除く。
++  if (courseKey === "ordinary_mt" && licenseKeys.length === 2 && licenseKeys.indexOf("motorcycle") !== -1 && licenseKeys.indexOf("moped") !== -1) {
++    const standardMotorcycleOnly = selections.filter(function (item) { return item.key === "motorcycle"; }).every(function (item) {
++      const key = String(item.raw || "").normalize("NFKC").trim().toLowerCase();
++      if (key === "motorcycle_at" || key === "motorcycle_mt") return true;
++      const label = normalizeQuoteLabel_(item.raw).replace(/AT|MT/g, "");
++      return ["普通二輪", "普通二輪車", "普通自動二輪", "普通自動二輪車"].indexOf(label) !== -1;
++    });
++    if (standardMotorcycleOnly) licenseKeys = ["motorcycle"];
+@@ -2166,14 +2196,6 @@
+-    const userPrices = license && license[userKey];
+-    const amount = userPrices ? Number(userPrices[planKey]) : NaN;
+-    return {
+-      key: licenseKey,
+-      label: license ? license.label : licenseKey,
+-      amount: amount
+-    };
+-  }).filter(function (candidate) {
+-    return Number.isFinite(candidate.amount);
+-  });
+-  if (!candidates.length) {
+-    return { available: false, reason: "料金確認が必要です。" };
+-  }
+-
++    const rawAmount = license[userKey] && license[userKey][planKey];
++    return { key: licenseKey, label: license.label, amount: Number(rawAmount), populated: rawAmount !== "" && rawAmount != null };
++  });
++  if (candidates.some(function (candidate) { return !candidate.populated || !Number.isFinite(candidate.amount) || candidate.amount <= 0; })) {
++    return { available: false, reason: "該当区分の料金が未設定のため、学校で確認します。" };
++  }
+@@ -2181,0 +2204 @@
++  // 上記以外の異なる複数免許区分は学校確認。最安区分を自動選択しない。
+@@ -2183 +2206 @@
+-    return { available: false, reason: "所持免許が複数あり料金が一意に決まらないため、学校で確認します。" };
++    return { available: false, reason: "複数の所持免許で料金区分が異なります（" + rawLicenses.join("、") + "）。適用する区分を学校で確認します。" };
+@@ -3035,0 +3059,4 @@
++function normalizeQuoteLabel_(value) {
++  return String(value || "").normalize("NFKC").toUpperCase().replace(/[\s・（）()]/g, "");
++}
++
+@@ -3037,9 +3064,14 @@
+-  const value = String(vehicle || "");
+-  if (value.indexOf("準中型") !== -1) return "semi_medium";
+-  if (value.indexOf("大型") !== -1 && value.indexOf("二輪") !== -1) return "motorcycle_large_mt";
+-  if (value.indexOf("小型") !== -1 && value.indexOf("二輪") !== -1 && value.indexOf("AT") !== -1) return "motorcycle_small_at";
+-  if (value.indexOf("小型") !== -1 && value.indexOf("二輪") !== -1) return "motorcycle_small_mt";
+-  if (value.indexOf("二輪") !== -1 && value.indexOf("AT") !== -1) return "motorcycle_at";
+-  if (value.indexOf("二輪") !== -1) return "motorcycle_mt";
+-  if (value.indexOf("普通") !== -1 && value.indexOf("MT") !== -1) return "ordinary_mt";
+-  if (value.indexOf("普通") !== -1) return "ordinary_at";
++  const raw = String(vehicle || "").trim();
++  if (Object.prototype.hasOwnProperty.call(PRICE_MASTER, raw)) return raw;
++  const value = normalizeQuoteLabel_(raw);
++  // 限定解除/審査・ペーパードライバーは別料金。部分一致で通常教習にしない。
++  if (/限定解除|審査|ペーパー|仮免/.test(value)) return "";
++  const isAt = value.indexOf("AT") !== -1;
++  const isMt = value.indexOf("MT") !== -1;
++  if (isAt && isMt) return "";
++  const label = value.replace(/AT|MT/g, "");
++  if (["準中型", "準中型車", "準中型自動車"].indexOf(label) !== -1) return isAt ? "" : "semi_medium";
++  if (["大型二輪", "大型二輪車", "大型自動二輪", "大型自動二輪車"].indexOf(label) !== -1) return isAt ? "" : "motorcycle_large_mt";
++  if (["小型二輪", "小型二輪車", "小型自動二輪", "小型自動二輪車", "普通二輪小型限定", "普通二輪車小型限定", "普通自動二輪車小型限定"].indexOf(label) !== -1) return isAt ? "motorcycle_small_at" : "motorcycle_small_mt";
++  if (["普通二輪", "普通二輪車", "普通自動二輪", "普通自動二輪車", "二輪", "二輪車", "自動二輪", "自動二輪車"].indexOf(label) !== -1) return isAt ? "motorcycle_at" : "motorcycle_mt";
++  if (["普通", "普通車", "普通自動車"].indexOf(label) !== -1) return isMt ? "ordinary_mt" : "ordinary_at";
+@@ -3050,2 +3082,7 @@
+-  const raw = String(value || "").trim();
+-  const knownKeys = ["none", "moped", "motorcycle", "at_car", "mt_car", "car", "small_at", "small_mt", "motorcycle_at", "motorcycle_mt"];
++  const raw = String(value || "").normalize("NFKC").trim();
++  // 旧シミュレーターのキーも、現行フォームのラベルと同じ文脈で照合する。
++  const keyLabels = {
++    none: "持っていない", moped: "原付", motorcycle: "自動二輪", at_car: "AT普通車", mt_car: "MT普通車", car: "普通車",
++    small_at: "AT普通二輪車（小型限定）", small_mt: "MT普通二輪車（小型限定）", motorcycle_at: "AT普通二輪車", motorcycle_mt: "MT普通二輪車"
++  };
++  const compact = normalizeQuoteLabel_(keyLabels[raw.toLowerCase()] || raw);
+@@ -3053,13 +3090,15 @@
+-  if (knownKeys.indexOf(raw) !== -1) {
+-    if (motorcycleCourse && (raw === "at_car" || raw === "mt_car")) return "car";
+-    return raw;
+-  }
+-
+-  const compact = raw.replace(/[\s・（）()]/g, "");
+-  const isAt = /AT/i.test(compact);
+-  const isMt = /MT/i.test(compact);
+-  if (!compact || compact.indexOf("なし") !== -1 || compact.indexOf("持っていない") !== -1) return "none";
+-  if (compact.indexOf("原付") !== -1) return "moped";
+-
+-  if (compact.indexOf("小型") !== -1 && compact.indexOf("二輪") !== -1) {
+-    if (courseKey === "motorcycle_large_mt") return isAt ? "small_at" : isMt ? "small_mt" : compact;
++  const isAt = compact.indexOf("AT") !== -1;
++  const isMt = compact.indexOf("MT") !== -1;
++  if (!compact) return "";
++  if (["なし", "無し", "免許なし", "持っていない"].indexOf(compact) !== -1) return "none";
++  if (["原付", "原付免許", "原動機付自転車"].indexOf(compact) !== -1) return "moped";
++  const label = compact.replace(/AT|MT/g, "");
++  if (isAt && isMt) return "";
++  // 2026-09-11学校確認済み：二輪教習では準中型・中型（8t限定含む）・大型を普通車所持区分へ。
++  const approvedCarLabels = ["準中型", "準中型車", "準中型自動車", "5T限定準中型", "5T限定準中型車", "5T限定準中型自動車", "中型", "中型車", "中型自動車", "8T限定中型", "8T限定中型車", "8T限定中型自動車", "大型", "大型車", "大型自動車"];
++  if (motorcycleCourse && approvedCarLabels.indexOf(label) !== -1) return "car";
++  // 二輪以外の教習・特殊/けん引・仮免許へは承認規則を拡張しない。
++  if (/仮免|準中型|中型|大型車|大型自動車|特殊|けん引|牽引/.test(compact)) return "";
++  const smallLabels = ["小型二輪", "小型二輪車", "小型自動二輪", "小型自動二輪車", "普通二輪小型限定", "普通二輪車小型限定", "普通自動二輪車小型限定"];
++  if (smallLabels.indexOf(label) !== -1) {
++    if (courseKey === "motorcycle_large_mt") return isAt ? "small_at" : isMt ? "small_mt" : "";
+@@ -3068,2 +3107,2 @@
+-  if (compact.indexOf("普通") !== -1 && compact.indexOf("二輪") !== -1) {
+-    if (courseKey === "motorcycle_large_mt") return isAt ? "motorcycle_at" : isMt ? "motorcycle_mt" : compact;
++  if (["普通二輪", "普通二輪車", "普通自動二輪", "普通自動二輪車"].indexOf(label) !== -1) {
++    if (courseKey === "motorcycle_large_mt") return isAt ? "motorcycle_at" : isMt ? "motorcycle_mt" : "";
+@@ -3072,6 +3111,5 @@
+-  if (compact.indexOf("大型") !== -1 && compact.indexOf("二輪") !== -1) {
+-    return courseKey === "motorcycle_large_mt" ? compact : "motorcycle";
+-  }
+-  if (compact.indexOf("二輪") !== -1) return "motorcycle";
+-
+-  if (compact.indexOf("普通車") !== -1 || compact.indexOf("普通自動車") !== -1) {
++  if (["大型二輪", "大型二輪車", "大型自動二輪", "大型自動二輪車"].indexOf(label) !== -1) {
++    return courseKey === "motorcycle_large_mt" ? "" : "motorcycle";
++  }
++  if (["二輪", "二輪車", "自動二輪", "自動二輪車"].indexOf(label) !== -1) return "motorcycle";
++  if (["普通車", "普通自動車", "普通免許", "普通自動車免許"].indexOf(label) !== -1) {
+@@ -3079 +3117 @@
+-    if (courseKey === "semi_medium") return isAt ? "at_car" : isMt ? "mt_car" : "car";
++    if (courseKey === "semi_medium") return isAt ? "at_car" : isMt ? "mt_car" : "";
+@@ -3082 +3120 @@
+-  return raw;
++  return "";

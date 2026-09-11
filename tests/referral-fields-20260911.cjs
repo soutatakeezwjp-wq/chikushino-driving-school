@@ -136,7 +136,7 @@ async function main() {
   assert.throws(()=>gas.validatePayload(gas.normalizeSubmissionLists({...fixture,friendPostalCode:'123'})),e=>e.code==='VALIDATION_FRIEND_POSTAL_CODE');
   // Old validation mismatch is reproduced; candidate handles referral without generic fields.
   const oldGas = vm.createContext({console,Date});
-  vm.runInContext(fs.readFileSync(gasPath.replace('Code.after.gs','Code.before.gs'),'utf8'),oldGas);
+  vm.runInContext(fs.readFileSync(process.env.GAS_REFERRAL_BASELINE || gasPath.replace('Code.after.gs','Code.before.gs'),'utf8'),oldGas);
   assert.throws(()=>oldGas.validatePayload(oldGas.normalizeSubmissionLists(fixture)),e=>e.code==='VALIDATION_REQUIRED');
   const application = {...fixture,purpose:'資料請求',gender:'女性',birthdate:'2000-01-01',postalCode:'818-0000',address:'架空住所',occupation:'会社員',desiredVehicles:['AT普通車']};
   gas.validatePayload(gas.normalizeSubmissionLists(application));
