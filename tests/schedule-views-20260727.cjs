@@ -37,7 +37,8 @@ const events = [
     category: "お知らせ",
     title: "休校案内",
     note: "補足本文C"
-  }
+  },
+  { id: 104, date: eventDate, category: "お知らせ", title: "追加予定", note: "補足本文D" }
 ];
 
 async function openCalendar(browser, viewport) {
@@ -69,7 +70,7 @@ async function openCalendar(browser, viewport) {
     timeout: 30000
   });
   assert(response?.ok(), `${viewport.width}px: HTTP ${response?.status()}`);
-  await page.waitForFunction(() => document.querySelectorAll(".schedule-calendar-event").length === 2);
+  await page.waitForFunction(() => document.querySelectorAll(".schedule-calendar-event").length === 3);
   assert(pageErrors.length === 0, `${viewport.width}px: JavaScript error: ${pageErrors.join(" / ")}`);
   return { context, page };
 }
@@ -92,16 +93,16 @@ async function runViewport(browser, viewport) {
     assert(await page.locator("[data-calendar-view]").count() === 3, `${label}: 月・週・日ボタンが揃っていません。`);
     assert(await page.locator('[data-calendar-view="month"]').getAttribute("aria-pressed") === "true", `${label}: 初期表示が月ビューではありません。`);
     const monthText = await page.locator("#schedule-calendar-panel").innerText();
-    for (const expected of ["検定", "卒業検定", "9:30〜10:30", "教習", "学科教習"]) {
+    for (const expected of ["検定", "卒業検定", "9:30〜10:30", "教習", "学科教習", "休校案内"]) {
       assert(monthText.includes(expected), `${label}/月: 「${expected}」が表示されていません。`);
     }
     for (const hidden of ["集合は受付前です", "補足本文B", "補足本文C"]) {
       assert(!monthText.includes(hidden), `${label}/月: 補足「${hidden}」が月セルに露出しています。`);
     }
-    assert(await page.locator(".schedule-calendar-event").count() === 2, `${label}/月: 月セルに3件以上の予定が展開されています。`);
+    assert(await page.locator(".schedule-calendar-event").count() === 3, `${label}/月: 月セルに予定3件が表示されていません。`);
     assert((await page.locator(".schedule-calendar-more").innerText()).includes("ほか1件"), `${label}/月: 残り件数の導線がありません。`);
     const todayCellHeight = await page.locator(".schedule-calendar-day.is-today").evaluate((element) => element.getBoundingClientRect().height);
-    assert(todayCellHeight <= (viewport.width <= 560 ? 112 : 168), `${label}/月: 複数予定で日付セルが肥大化しています (${todayCellHeight}px)。`);
+    assert(todayCellHeight >= (viewport.width <= 560 ? 180 : 260), `${label}/月: 3段を収める日付セルの高さが不足しています (${todayCellHeight}px)。`);
     await assertNoOverflow(page, `${label}/月`);
 
     await page.locator(".schedule-calendar-event-button").first().click();
@@ -129,7 +130,7 @@ async function runViewport(browser, viewport) {
 
     await page.locator('[data-calendar-view="day"]').click();
     await page.waitForSelector(".schedule-day-view");
-    assert(await page.locator(".schedule-day-view .schedule-calendar-event").count() === 3, `${label}/日: 当日の予定3件が揃っていません。`);
+    assert(await page.locator(".schedule-day-view .schedule-calendar-event").count() === 4, `${label}/日: 当日の予定4件が揃っていません。`);
     const dayText = await page.locator("#schedule-calendar-panel").innerText();
     assert(!dayText.includes("補足本文B"), `${label}/日: 補足が一覧に露出しています。`);
     await assertNoOverflow(page, `${label}/日`);
@@ -158,7 +159,7 @@ async function runViewport(browser, viewport) {
         "月・週・日ビュー切替",
         "月セルはタイトル・種別・時刻のみ",
         "予定クリック・日付クリック詳細",
-        "月セル最大2件＋残り件数",
+        "月セル最大3件＋残り件数",
         "当月から3か月先までのナビ制限",
         "PC 1440px・スマホ390px横スクロールなし"
       ]

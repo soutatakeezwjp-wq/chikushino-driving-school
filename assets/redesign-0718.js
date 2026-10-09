@@ -1031,7 +1031,7 @@
         const currentDate = new Date(targetMonth.getFullYear(), targetMonth.getMonth(), day, 12);
         const currentKey = dateKey(currentDate);
         const dayEvents = eventsByDate[currentKey] || [];
-        const visibleEvents = dayEvents.slice(0, 2);
+        const visibleEvents = dayEvents.slice(0, 3);
         const remaining = Math.max(0, dayEvents.length - visibleEvents.length);
         const isToday = currentKey === dateKey(today);
         cells.push(`<article class="schedule-calendar-day${isToday ? " is-today" : ""}" aria-label="${targetMonth.getMonth() + 1}月${day}日${dayEvents.length ? `、予定${dayEvents.length}件` : "、予定なし"}">
