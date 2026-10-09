@@ -7,3 +7,9 @@
 本番未反映。Cloudflare公開先への認証エラーにより停止。現在のCLIログインはKALEIDOアカウントのみ参照可能で、学校側プロジェクト一覧の取得が拒否される。学校アカウントへの正当な権限の再接続後に安全デプロイを再開する。本番反映はユーザー承認済み。変更は専用コミットで保存し、公開待ち。
 
 再試行でもCloudflare APIの認証エラー10000。ブラウザ連携もrequest-header policy取得エラーにより再接続操作不可。OAuth再ログインの試行はscope検証で終了し、認証情報変更・デプロイ・本番データ変更はなし。Cloudflareで学校アカウントとPages公開権限の確認が必要。
+
+## 2026-10-10 本番反映完了
+
+Cloudflare再ログイン後、学校アカウントのPagesへの接続成功。58ea710を公開後、ブラウザに残る旧ファイルへの対応としてdetail.htmlのJS/CSSバージョンを更新（f102042）。クリーンなcloneで安全デプロイスクリプトと既存5群チェックを通過。最終公開URL：https://abb0395c.chikushino-driving-school.pages.dev 。
+
+本番 https://chikushi-ds.com/detail?page=teaching の10月8日で卒業検定・学科・教習の3段をブラウザ確認。390px幅でも3段が見え、documentElement.scrollWidth=390で横はみ出しなし。画面幅は確認後に復元。予定データの変更なし。
